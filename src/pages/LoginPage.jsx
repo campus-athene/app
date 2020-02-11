@@ -1,10 +1,30 @@
-import React from 'react';
-import { Container, Row, Image, Form, FormGroup, Button, Alert } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Row, Image, Form, FormGroup, Button, Alert, Spinner } from 'react-bootstrap';
 import logo from '../logo.svg';
+import { connect } from 'react-redux';
+import { login } from '../redux/user';
 
-const LoginPage = () => {
-  const [setUsername, setPassword, onSubmit] = [null, null, null];
-  let [processing, error] = [null, "Benutzername oder Passwort falsch!"];
+const LoginPage = ({ login }) => {
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [processing, setProcessing] = useState();
+  const [error, setError] = useState();
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    if (!username || !password) {
+      setError("Bitte vervollständige deine Eingaben.");
+      return;
+    }
+
+    setProcessing(true);
+
+    new Promise(resolve => setTimeout(resolve, 1500))
+      .then(result => {
+        login(username, password);
+      });
+  };
 
   return (
     <Container style={ { minHeight: "100vh", background: "#463A54" } }>
@@ -24,10 +44,21 @@ const LoginPage = () => {
         <Alert variant="warning" hidden={!error}>
           {error}
         </Alert>
-        <Button type='submit' disabled={processing}>Anmelden</Button>
+        {
+          processing ? (
+            <div style={ { display: "block", textAlign: "center" } }>
+              <Spinner animation="grow" variant="light" />
+            </div>
+          ) : (
+            <Button type='submit' disabled={processing}>Anmelden</Button>
+          )
+        }
       </Form>
     </Container>
     );
 };
 
-export default LoginPage;
+export default connect(
+  null,
+  { login }
+)(LoginPage);

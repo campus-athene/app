@@ -4,24 +4,30 @@ import LoginPage from './pages/LoginPage';
 import ExamListPage from './pages/ExamListPage';
 import ExamDetailsPage from './pages/ExamDetailsPage';
 import { Container, Alert, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
 
-function App() {
+const App = ({user}) => {
   return (
     <Router>
-      <Switch>
-        <Route path="/exams/:id">
-          <ExamDetailsPage />
-        </Route>
-        <Route path="/exams">
-          <ExamListPage />
-        </Route>
-        <Route path="/" exact>
-          <LoginPage />
-        </Route>
-        <Route path="*">
-          <NoMatch />
-        </Route>
-      </Switch>
+      { user ? (
+        <Switch>
+          <Route path="/exams/:id">
+            <ExamDetailsPage />
+          </Route>
+          <Route path="/exams">
+            <ExamListPage />
+          </Route>
+          <Route path="/" exact>
+            <ExamListPage />
+          </Route>
+          <Route path="*">
+            <NoMatch />
+          </Route>
+        </Switch>
+        ) : (
+        <LoginPage />
+        )
+      }
     </Router>
   );
 }
@@ -46,4 +52,6 @@ function NoMatch() {
   );
 }
 
-export default App;
+export default connect(
+  state => ({ user: state.user })
+)(App);
