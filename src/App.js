@@ -1,22 +1,46 @@
 import React from 'react';
-import logo from './logo.svg';
-import Container from 'react-bootstrap/Container'
-import { Image, Alert, Button } from 'react-bootstrap';
+import { BrowserRouter as Router, Switch, Route, Link, useLocation } from 'react-router-dom';
+import LoginPage from './pages/LoginPage';
+import ExamListPage from './pages/ExamListPage';
+import ExamDetailsPage from './pages/ExamDetailsPage';
+import { Container, Alert, Button } from 'react-bootstrap';
 
 function App() {
   return (
+    <Router>
+      <Switch>
+        <Route path="/exams/:id">
+          <ExamDetailsPage />
+        </Route>
+        <Route path="/exams">
+          <ExamListPage />
+        </Route>
+        <Route path="/" exact>
+          <LoginPage />
+        </Route>
+        <Route path="*">
+          <NoMatch />
+        </Route>
+      </Switch>
+    </Router>
+  );
+}
+
+function NoMatch() {
+  let location = useLocation();
+
+  return (
     <Container>
-      <Image src={logo} alt="logo" />
-      <Alert variant="primary">
-        Edit <code>src/App.js</code> and save to reload.
+      <h2>404</h2>
+      <Alert variant="danger">
+        No match for <code>{location.pathname}</code>.
       </Alert>
       <Button
         variant="primary"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
+        to="/"
+        as={Link}
       >
-        Learn React
+        Go Home
       </Button>
     </Container>
   );
