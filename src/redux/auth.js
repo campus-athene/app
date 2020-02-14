@@ -1,3 +1,5 @@
+import { session } from "../api";
+
 export const processingStarted = () => ({
   type: 'PROCESSING_STARTED'
 });
@@ -20,9 +22,12 @@ export const login = (username, password) => dispatch => {
 
   dispatch(processingStarted());
 
-  return new Promise(resolve => setTimeout(resolve, 1500))
-    .then(result => {
-      dispatch(processingSucceeded({ username, password }));
+  return session.login(username, password)
+    .then(creds => {
+      dispatch(processingSucceeded(creds));
+    })
+    .catch(error => {
+      dispatch(processingFailed(error));
     });
 };
 
