@@ -53,5 +53,5 @@ function NoMatch() {
 }
 
 export default connect(
-  state => ({ loggedIn: state.auth.loggedIn })
+  state => ({ loggedIn: state.auth.creds })
 )(App);
