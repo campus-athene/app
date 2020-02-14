@@ -6,10 +6,10 @@ import ExamDetailsPage from './pages/ExamDetailsPage';
 import { Container, Alert, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-const App = ({user}) => {
+const App = ({ loggedIn }) => {
   return (
     <Router>
-      { user ? (
+      { loggedIn ? (
         <Switch>
           <Route path="/exams/:id">
             <ExamDetailsPage />
@@ -53,5 +53,5 @@ function NoMatch() {
 }
 
 export default connect(
-  state => ({ user: state.user })
+  state => ({ loggedIn: state.auth.loggedIn })
 )(App);

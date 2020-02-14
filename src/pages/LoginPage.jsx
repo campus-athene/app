@@ -2,28 +2,16 @@ import React, { useState } from 'react';
 import { Container, Row, Image, Form, FormGroup, Button, Alert, Spinner } from 'react-bootstrap';
 import logo from '../logo.svg';
 import { connect } from 'react-redux';
-import { login } from '../redux/user';
+import { login } from '../redux/auth';
 
-const LoginPage = ({ login }) => {
+const LoginPage = ({ processing, error, login }) => {
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
-  const [processing, setProcessing] = useState();
-  const [error, setError] = useState();
 
   const onSubmit = (event) => {
     event.preventDefault();
 
-    if (!username || !password) {
-      setError("Bitte vervollständige deine Eingaben.");
-      return;
-    }
-
-    setProcessing(true);
-
-    new Promise(resolve => setTimeout(resolve, 1500))
-      .then(result => {
-        login(username, password);
-      });
+    login(username, password);
   };
 
   return (
@@ -59,6 +47,9 @@ const LoginPage = ({ login }) => {
 };
 
 export default connect(
-  null,
+  ({ auth }) => ({
+    processing: auth.processing,
+    error: auth.error
+  }),
   { login }
 )(LoginPage);
