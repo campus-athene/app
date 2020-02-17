@@ -4,16 +4,7 @@ export const reset = (exams) => ({
 });
 
 
-const initialState = [
-  {
-    courseTitle: 'Studienfach',
-    examTitle: 'Klausurname',
-    shortGrade: '3,7',
-    longGrade: 'befriedigend'
-  }
-]
-
-const exams = (state = initialState, action) => {
+const exams = (state = [], action) => {
   switch (action.type) {
     case 'RESET':
       return action.exams;
