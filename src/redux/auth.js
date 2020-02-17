@@ -1,12 +1,12 @@
 import { session } from "../api";
+import { dispatchInstructions } from "./instructions";
 
 export const processingStarted = () => ({
   type: 'PROCESSING_STARTED'
 });
 
-export const processingSucceeded = (creds) => ({
-  type: 'PROCESSING_SUCCEEDED',
-  creds
+export const processingSucceeded = () => ({
+  type: 'PROCESSING_SUCCEEDED'
 });
 
 export const processingFailed = (error) => ({
@@ -23,14 +23,23 @@ export const login = (username, password) => dispatch => {
   dispatch(processingStarted());
 
   return session.login(username, password)
-    .then(creds => {
-      dispatch(processingSucceeded(creds));
-      localStorage.setItem('creds', JSON.stringify(creds));
+    .then(result => {
+      dispatch(processingSucceeded());
+      dispatchInstructions(dispatch, result.instructions);
     })
     .catch(error => {
       dispatch(processingFailed(error));
+      dispatchInstructions(dispatch, error.instructions);
     });
 };
+
+export const updateCreds = (creds) => dispatch => {
+  dispatch({
+    type: 'UPDATE_CREDS',
+    creds
+  });
+  localStorage.setItem('creds', JSON.stringify(creds));
+}
 
 export const logout = () => dispatch => {
   dispatch(({
@@ -49,13 +58,16 @@ export default (state = { creds: JSON.parse(localStorage.getItem('creds')) }, ac
     case 'PROCESSING_SUCCEEDED':
       return Object.assign({}, state, {
         processing: false,
-        creds: action.creds,
         error: null
       });
     case 'PROCESSING_FAILED':
       return Object.assign({}, state, {
         processing: false,
         error: action.error
+      })
+    case 'UPDATE_CREDS':
+      return Object.assign({}, state, {
+        creds: action.creds
       })
     case 'LOGOUT':
       return Object.assign({}, state, {

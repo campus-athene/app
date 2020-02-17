@@ -14,7 +14,7 @@ export class session {
     .then(response => response.json())
     .then(body => {
       if (body.success) {
-        resolve(body.content);
+        resolve(body);
       }
       else {
         reject(body.message ?? "Ein unbekannter Fehler ist aufgetreten.")
