@@ -1,57 +1,25 @@
-import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, useLocation } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import ExamListPage from './pages/ExamListPage';
-import ExamDetailsPage from './pages/ExamDetailsPage';
-import { Container, Alert, Button } from 'react-bootstrap';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
+import thunkMiddleware from 'redux-thunk'
+import rootReducer, { update } from './redux';
+import Router from './Router';
 
-const App = ({ loggedIn }) => {
+const store = createStore(
+  rootReducer,
+  applyMiddleware(
+    thunkMiddleware
+  ));
+
+const App = () => {
+  // Check for outdated or missing state and fetch is asyncronously from the server.
+  useEffect(() => store.dispatch(update()), []);
+
   return (
-    <Router>
-      { loggedIn ? (
-        <Switch>
-          <Route path="/exams/:id">
-            <ExamDetailsPage />
-          </Route>
-          <Route path="/exams">
-            <ExamListPage />
-          </Route>
-          <Route path="/" exact>
-            <ExamListPage />
-          </Route>
-          <Route path="*">
-            <NoMatch />
-          </Route>
-        </Switch>
-        ) : (
-        <LoginPage />
-        )
-      }
-    </Router>
+    <Provider store={store}>
+      <Router />
+    </Provider>
   );
 }
 
-function NoMatch() {
-  let location = useLocation();
-
-  return (
-    <Container>
-      <h2>404</h2>
-      <Alert variant="danger">
-        No match for <code>{location.pathname}</code>.
-      </Alert>
-      <Button
-        variant="primary"
-        to="/"
-        as={Link}
-      >
-        Go Home
-      </Button>
-    </Container>
-  );
-}
-
-export default connect(
-  state => ({ loggedIn: state.auth.creds })
-)(App);
+export default App;
