@@ -17,7 +17,7 @@ const ellipsis = {
   textOverflow: 'ellipsis'
 };
 
-const ExamListPage = ({ exams, logout }) => (
+const ExamListPage = ({ allExams, logout }) => (
   <div style={{ display: 'flex', height: '100vh' }}>
     <Navbar bg="dark" variant="dark" fixed="top">
       <Navbar.Brand className="">
@@ -26,13 +26,13 @@ const ExamListPage = ({ exams, logout }) => (
       <Navbar.Brand>Klausurergebnisse</Navbar.Brand>
     </Navbar>
     <Container style={{ marginTop: '3.5em', overflow: 'scroll' }}>
-      <Card style={{ marginTop: '1rem', marginBottom: '1rem' }}>
-        <Card.Header style={clip}>
-          Wintersemester 2019 / 2020
-        </Card.Header>
-        <ListGroup variant="flush">
-          {
-            exams.map(exam => (
+      { Object.values(groupExams(allExams)).map(({ id, display, exams }) =>
+        <Card key={id} style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+          <Card.Header style={clip}>
+            { display }
+          </Card.Header>
+          <ListGroup variant="flush">
+            { exams.map(exam =>
               <ListGroup.Item key={exam.id} style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}>
                 <div style={{ flexGrow: 1, overflow: 'hidden' }}>
                   <Card.Title style={ellipsis}>{exam.courseName}</Card.Title>
@@ -43,16 +43,38 @@ const ExamListPage = ({ exams, logout }) => (
                   <FontAwesomeIcon icon={faAngleRight} />
                 </div>
               </ListGroup.Item>
-            ))
-          }
-        </ListGroup>
-      </Card>
+            )}
+          </ListGroup>
+        </Card>
+      )}
       <Button variant="danger" block style={{ marginTop: '1rem', marginBottom: '1rem' }} onClick={logout}>Abmelden</Button>
     </Container>
   </div>
   );
 
+const groupExams = (exams) => {
+  const desc = {
+    '000000015026000': "Wintersemester 2017 / 2018",
+		'000000015036000': "Sommersemester 2018",
+		'000000015046000': "Wintersemester 2018 / 2019",
+		'000000015056000': "Sommersemester 2019",
+		'000000015066000': "Wintersemester 2019 / 2020"
+  }
+  return Object.values(
+    exams.reduce((groups, exam) => {
+      (
+        groups[exam.semester] = groups[exam.semester] || {
+          id: exam.semester,
+          display: desc[exam.semester] || "Sonstige",
+          exams: []
+        }
+      ).exams.push(exam);
+      return groups;
+    }, {})
+  ).sort((a, b) => b - a);
+}
+
 export default connect(
-  state => ({ exams: state.exams }),
+  state => ({ allExams: state.exams }),
   { logout }
 )(ExamListPage);

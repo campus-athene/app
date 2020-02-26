@@ -7,10 +7,10 @@ export const reset = (exams) => ({
 });
 
 export const loadExams = () => (dispatch, getState) => {
-  new session(getState().auth.creds).getExamsResults()
+  new session(getState().auth.creds).getExams()
     .then(result => {
       dispatchInstructions(dispatch, result.instructions);
-      dispatch(reset(result.content));
+      dispatch(reset(result.result));
     });
 }
 

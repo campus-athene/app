@@ -1,4 +1,4 @@
-const base = "http://localhost:8110";
+const base = "https://0re227lzyl.execute-api.eu-central-1.amazonaws.com/v1";
 
 export class session {
   constructor(creds) {
@@ -25,8 +25,8 @@ export class session {
     });
   });
 
-  getExamsResults = () => new Promise((resolve, reject) => {
-    fetch(base + "/tucan/examresults", {
+  getExams = () => new Promise((resolve, reject) => {
+    fetch(base + "/tucan/exams", {
       headers: { 'Authorization': `tucan ${this.token}` }
     })
     .then(response => response.json())
