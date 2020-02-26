@@ -19,8 +19,14 @@ const LoginPage = ({ processing, error, login }) => {
       <Row style={ { display: "block", textAlign: "center", padding: "80px 0 40px 0" } }>
         <Image src={logo} width="100px" />
       </Row>
+      <p style={ { fontWeight: 'bold', color: "lightgray" }}>
+        Campus, eine App für Studenten der TU Darmstadt.
+      </p>
       <p style={ { color: "lightgray" }}>
-        Herzlich willkommen in Campus. Der lange Text kommt noch. Der wird dann ganz, ganz lang sein, nicht so wie dieser extrem kurze Text.
+        Hinweis: Die App befindet sich derzeit noch in einer frühen Entwicklungsphase.
+        Um Fehlern schneller auf die Schliche zu kommen, werden umfangreiche Protokolle angelegt.
+        Diese können auch personenbezogene Daten enthalten.
+        Mit der Nutzung dieser App erklärst du dich damit einverstanden.
       </p>
       <Form onSubmit={onSubmit}>
         <FormGroup>
