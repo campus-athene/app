@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Route, Switch, Link, useLocation } from "react-router-dom";
+import { MemoryRouter, Route, Switch, Link, useLocation } from "react-router-dom";
 import { Container, Alert, Button } from 'react-bootstrap';
 import LoginPage from './pages/LoginPage';
 import ExamListPage from './pages/ExamListPage';
 import ExamDetailsPage from './pages/ExamDetailsPage';
 
 const Router = ({ loggedIn, update }) => (
-  <BrowserRouter>
+  <MemoryRouter>
     { loggedIn ? (
       <Switch>
         <Route path="/exams/:id">
@@ -27,7 +27,7 @@ const Router = ({ loggedIn, update }) => (
       <LoginPage />
       )
     }
-  </BrowserRouter>
+  </MemoryRouter>
 );
 
 const NoMatch = () => {
