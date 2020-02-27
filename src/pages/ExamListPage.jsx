@@ -1,9 +1,10 @@
 import React from 'react';
-import { Navbar, Container, Card, ListGroup, Button } from 'react-bootstrap';
+import { Navbar, Container, ListGroup, Button, Badge } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { logout } from '../redux/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { useHistory } from 'react-router-dom';
 
 const clip = {
   whiteSpace: 'nowrap',
@@ -17,27 +18,36 @@ const ellipsis = {
   textOverflow: 'ellipsis'
 };
 
-const ExamListPage = ({ allExams, logout }) => (
-  <div style={{ display: 'flex', height: '100vh' }}>
-    <Navbar bg="dark" variant="dark" fixed="top">
-      <Navbar.Brand className="">
-        <FontAwesomeIcon icon={faAngleLeft} />
-      </Navbar.Brand>
-      <Navbar.Brand>Klausurergebnisse</Navbar.Brand>
-    </Navbar>
-    <Container style={{ marginTop: '3.5em', overflow: 'scroll' }}>
-      { Object.values(groupExams(allExams)).map(({ id, display, exams }) =>
-        <Card key={id} style={{ marginTop: '1rem', marginBottom: '1rem' }}>
-          <Card.Header style={clip}>
-            { display }
-          </Card.Header>
-          <ListGroup variant="flush">
-            { exams.map(exam =>
-              <ListGroup.Item key={exam.id} style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}>
+const ExamListPage = ({ allExams, logout }) => {
+  const history = useHistory();
+  return (
+    <div style={{ display: 'flex', height: '100vh' }}>
+      <Navbar bg="dark" variant="dark" fixed="top">
+        <Navbar.Brand style={{ margin: '-0.5rem 0 -0.5rem -1rem', alignSelf: 'stretch', display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+          <FontAwesomeIcon icon={faAngleLeft} />
+        </Navbar.Brand>
+        <Navbar.Brand>Klausuren</Navbar.Brand>
+      </Navbar>
+      <Container style={{ marginTop: '3.5em', overflow: 'scroll' }}>
+        { Object.values(groupExams(allExams)).map(({ id, display, exams }) =>
+          <ListGroup key={id} style={{ marginBottom: '1rem', marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
+            <ListGroup.Item className='bg-light' style={clip}>
+              { display }
+            </ListGroup.Item>
+            { exams.map(({ id, courseName, examName, grade, gradeDesc }) =>
+              <ListGroup.Item
+                key={id} action
+                style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}
+                onClick={() => history.push(`/exams/${id}`)}>
                 <div style={{ flexGrow: 1, overflow: 'hidden' }}>
-                  <Card.Title style={ellipsis}>{exam.courseName}</Card.Title>
-                  <Card.Subtitle style={ellipsis}>{exam.examName}</Card.Subtitle>
-                  <Card.Text>{exam.gradeDesc} ({exam.grade})</Card.Text>
+                  <h5 style={ Object.assign({}, ellipsis, { marginBottom: '0', paddingBottom: '0.75rem' }) }>{courseName}</h5>
+                  <h6 style={ Object.assign({}, ellipsis, { marginBottom: '-0.5rem', paddingBottom: '0.5rem'}) }>{examName}</h6>
+                  <p style={{ marginBottom: '0' }}>
+                    { grade ?
+                      <Badge pill variant={mapGradeToVariant(grade)}>{gradeDesc} ({grade})</Badge> :
+                      <i>Offen</i>
+                    }
+                  </p>
                 </div>
                 <div style={{ flexShrink: 0, marginRight: '-1.25rem', width: '2.25rem', paddingRight: '0.5rem', textAlign: 'center', color: 'gray' }}>
                   <FontAwesomeIcon icon={faAngleRight} />
@@ -45,12 +55,12 @@ const ExamListPage = ({ allExams, logout }) => (
               </ListGroup.Item>
             )}
           </ListGroup>
-        </Card>
-      )}
-      <Button variant="danger" block style={{ marginTop: '1rem', marginBottom: '1rem' }} onClick={logout}>Abmelden</Button>
-    </Container>
-  </div>
-  );
+        )}
+        <Button variant="danger" block style={{ marginTop: '1rem', marginBottom: '1rem' }} onClick={logout}>Abmelden</Button>
+      </Container>
+    </div>
+    );
+  }
 
 const groupExams = (exams) => {
   const desc = {
@@ -72,6 +82,29 @@ const groupExams = (exams) => {
       return groups;
     }, {})
   ).sort((a, b) => b - a);
+}
+
+const mapGradeToVariant = (grade) => {
+  switch (grade) {
+    case 'b':
+    case '1,0':
+    case '1,3':
+    case '1,7':
+    case '2,0':
+    case '2,3':
+    case '2,7':
+      return 'success';
+    case '3,0':
+    case '3,3':
+    case '3,7':
+    case '4,0':
+      return 'warning';
+    case 'nb':
+    case '5,0':
+      return 'danger';
+    default:
+      return 'info';
+  }
 }
 
 export default connect(

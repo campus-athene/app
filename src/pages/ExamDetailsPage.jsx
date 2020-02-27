@@ -1,22 +1,44 @@
 import React from 'react';
-import { Container, ButtonGroup, Button } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import { Container, Navbar } from 'react-bootstrap';
+import { useParams, useHistory } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { connect } from 'react-redux';
 
-const LoginPage = () => {
+const LoginPage = ({ exams }) => {
   const { id } = useParams();
+  const history = useHistory();
+  const exam = exams.find(e => e.id === id);
+
+  if (!exam) {
+    console.warn(`The requested exam '${id}' does not exist.`);
+    history.goBack();
+    return null;
+  }
   
   return (
-    <Container>
-      <h1>ExamDetailsPage</h1>
-      <p>Exam number <code>{id}</code> will be shown.</p>
-      <ButtonGroup>
-      <Button to="/" as={Link}>Home</Button>
-        <Button to="/exams" as={Link}>Exams</Button>
-        <Button to="/exams/2" as={Link}>Exam 2</Button>
-        <Button to="/404" as={Link}>404</Button>
-      </ButtonGroup>
-    </Container>
+    <div style={{ display: 'flex', height: '100vh' }}>
+      <Navbar bg="dark" variant="dark" fixed="top">
+        <Navbar.Brand onClick={() => history.goBack()} style={{ margin: '-0.5rem 0 -0.5rem -1rem', alignSelf: 'stretch', display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+          <FontAwesomeIcon icon={faAngleLeft} />
+        </Navbar.Brand>
+        <Navbar.Brand>Klausurdetails</Navbar.Brand>
+      </Navbar>
+      <Container style={{ marginTop: '3.5em', overflow: 'scroll' }}>
+        <h3 style={{ marginTop: '1rem' }}>{exam.courseName}</h3>
+        <h4>{exam.examName}</h4>
+        <p>
+          K&uuml;rzel: {exam.code}<br />
+          Datum: {exam.date}<br />
+          { exam.grade && <span>Bewertung: {exam.gradeDesc} ({exam.grade})</span> }
+        </p>
+      </Container>
+    </div>
     );
 };
 
-export default LoginPage;
+export default connect(
+  state => ({
+    exams: state.exams
+  })
+)(LoginPage);
