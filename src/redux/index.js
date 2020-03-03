@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import auth from './auth';
+import courseOffers from './courseOffers';
 import exams, { loadExams } from './exams';
 
 export const update = () => (dispatch, getState) => {
@@ -13,5 +14,6 @@ export const update = () => (dispatch, getState) => {
 
 export default combineReducers({
   auth,
+  courseOffers,
   exams
 });

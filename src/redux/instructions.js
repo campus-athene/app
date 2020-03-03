@@ -1,5 +1,6 @@
 import { updateCreds, logout } from "./auth";
-import { reset } from "./exams";
+import { reset as resetCourseOffers } from "./courseOffers";
+import { reset as resetExams } from "./exams";
 
 export const dispatchInstructions = (dispatch, instructions) =>
   Object.keys(instructions || {}).forEach(key => 
@@ -13,7 +14,10 @@ const handlers = {
   logout: (dispatch) => {
     dispatch(logout);
   },
+  updateCourseOffers: (dispatch, { offers }) => {
+    dispatch(resetCourseOffers(offers));
+  },
   updateExams: (dispatch, { exams }) => {
-    dispatch(reset(exams));
+    dispatch(resetExams(exams));
   }
 }

@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { MemoryRouter, Route, Switch, Link, useLocation } from "react-router-dom";
 import { Container, Alert, Button } from 'react-bootstrap';
 import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
+import CourseRegPage from './pages/CourseRegPage';
 import ExamListPage from './pages/ExamListPage';
 import ExamDetailsPage from './pages/ExamDetailsPage';
 
@@ -10,6 +12,9 @@ const Router = ({ loggedIn, update }) => (
   <MemoryRouter>
     { loggedIn ? (
       <Switch>
+        <Route path="/classreg">
+          <CourseRegPage />
+        </Route>
         <Route path="/exams/:id">
           <ExamDetailsPage />
         </Route>
@@ -17,7 +22,7 @@ const Router = ({ loggedIn, update }) => (
           <ExamListPage />
         </Route>
         <Route path="/" exact>
-          <ExamListPage />
+          <HomePage />
         </Route>
         <Route path="*">
           <NoMatch />

@@ -23,7 +23,7 @@ const ExamListPage = ({ allExams, logout }) => {
   return (
     <div style={{ display: 'flex', height: '100vh' }}>
       <Navbar bg="dark" variant="dark" fixed="top">
-        <Navbar.Brand style={{ margin: '-0.5rem 0 -0.5rem -1rem', alignSelf: 'stretch', display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
+        <Navbar.Brand onClick={() => history.goBack()} style={{ margin: '-0.5rem 0 -0.5rem -1rem', alignSelf: 'stretch', display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
           <FontAwesomeIcon icon={faAngleLeft} />
         </Navbar.Brand>
         <Navbar.Brand>Klausuren</Navbar.Brand>
