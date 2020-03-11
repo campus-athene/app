@@ -1,9 +1,7 @@
 import React from 'react';
-import { Container, Navbar } from 'react-bootstrap';
 import { useParams, useHistory } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
+import PageFrame from '../components/PageFrame';
 
 const LoginPage = ({ exams }) => {
   const { id } = useParams();
@@ -17,24 +15,16 @@ const LoginPage = ({ exams }) => {
   }
   
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <Navbar bg="dark" variant="dark" fixed="top">
-        <Navbar.Brand onClick={() => history.goBack()} style={{ margin: '-0.5rem 0 -0.5rem -1rem', alignSelf: 'stretch', display: 'flex', flexDirection: 'row', alignItems: 'center', paddingLeft: '1.25rem', paddingRight: '1.25rem' }}>
-          <FontAwesomeIcon icon={faAngleLeft} />
-        </Navbar.Brand>
-        <Navbar.Brand>Klausurdetails</Navbar.Brand>
-      </Navbar>
-      <Container style={{ marginTop: '3.5em', overflow: 'scroll' }}>
-        <h3 style={{ marginTop: '1rem' }}>{exam.courseName}</h3>
-        <h4>{exam.examName}</h4>
-        <p>
-          K&uuml;rzel: {exam.code}<br />
-          Datum: {exam.date}<br />
-          { exam.grade && <span>Bewertung: {exam.gradeDesc} ({exam.grade})</span> }
-        </p>
-      </Container>
-    </div>
-    );
+    <PageFrame title="Klausurdetails">
+      <h3 style={{ marginTop: '1rem' }}>{exam.courseName}</h3>
+      <h4>{exam.examName}</h4>
+      <p>
+        K&uuml;rzel: {exam.code}<br />
+        Datum: {exam.date}<br />
+        { exam.grade && <span>Bewertung: {exam.gradeDesc} ({exam.grade})</span> }
+      </p>
+    </PageFrame>
+  );
 };
 
 export default connect(
