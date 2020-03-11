@@ -5,6 +5,7 @@ import { session } from '../api';
 import PageFrame from '../components/PageFrame';
 
 const CourseRegPage = ({ lists, creds }) => {
+  // undefined | 0: closed, 1: executing, 2: success, String: User friendly error message.
   const [regState, setRegState] = useState();
 
   const onRegister = async (rgtrArgs) => {
@@ -15,8 +16,8 @@ const CourseRegPage = ({ lists, creds }) => {
     }
     catch (error) {
       console.log(`Register failed with '${JSON.stringify(error)}'.`);
-      // Todo: error is a string with a user friendly error message. Display it.
-      setRegState(3);
+      // Error is a string with a user friendly error message.
+      setRegState(error);
     }
   }
 
@@ -69,8 +70,8 @@ const CourseRegPage = ({ lists, creds }) => {
           )}
         </ListGroup>
       )}
-      <Modal show={Boolean(regState)}>
-        <Modal.Header closeButton>
+      <Modal show={Boolean(regState)} centered>
+        <Modal.Header>
           <Modal.Title>Anmeldung</Modal.Title>
         </Modal.Header>
         <Modal.Body>{
@@ -78,9 +79,9 @@ const CourseRegPage = ({ lists, creds }) => {
             <span>Anmeldung wird ausgeführt...</span> :
           regState === 2 ?
             <span>Anmeldung erfolgreich.</span> :
-            <span>Anmeldung fehlgeschlagen. Bitte versuche es später nocheinmal.</span> }
+            <span>{ regState }</span> }
         </Modal.Body>
-        { regState > 1 ?
+        { regState !== 1 ?
           <Modal.Footer>
             <Button variant="primary" onClick={() => setRegState(0)}>
               Schließen
