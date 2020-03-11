@@ -1,7 +1,6 @@
 import React from 'react';
-import { ListGroup, Button, Badge } from 'react-bootstrap';
+import { ListGroup, Badge } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { logout } from '../redux/auth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
@@ -19,7 +18,7 @@ const ellipsis = {
   textOverflow: 'ellipsis'
 };
 
-const ExamListPage = ({ allExams, logout }) => {
+const ExamListPage = ({ allExams }) => {
   const history = useHistory();
   return (
     <PageFrame title="Klausuren">
@@ -50,7 +49,6 @@ const ExamListPage = ({ allExams, logout }) => {
           )}
         </ListGroup>
       )}
-      <Button variant="danger" block style={{ marginTop: '1rem', marginBottom: '1rem' }} onClick={logout}>Abmelden</Button>
     </PageFrame>
   );
 }
@@ -101,6 +99,5 @@ const mapGradeToVariant = (grade) => {
 }
 
 export default connect(
-  state => ({ allExams: state.exams }),
-  { logout }
+  state => ({ allExams: state.exams })
 )(ExamListPage);
