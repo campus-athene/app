@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import CourseRegPage from './pages/CourseRegPage';
 import ExamListPage from './pages/ExamListPage';
 import ExamDetailsPage from './pages/ExamDetailsPage';
+import MapsPage from './pages/MapsPage';
 
 const Router = ({ loggedIn, update }) => (
   <MemoryRouter>
@@ -20,6 +21,9 @@ const Router = ({ loggedIn, update }) => (
         </Route>
         <Route path="/exams">
           <ExamListPage />
+        </Route>
+        <Route path="/maps">
+          <MapsPage />
         </Route>
         <Route path="/" exact>
           <HomePage />
