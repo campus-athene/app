@@ -32,7 +32,7 @@ export class session {
         'Content-Type': 'application/json',
         'Authorization': `tucan ${this.token}`
       },
-      body: JSON.stringify({ rgtrArgs })
+      body: JSON.stringify(rgtrArgs)
     })
       .then(response => response.json())
       .then(body => {
