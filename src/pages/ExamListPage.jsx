@@ -72,7 +72,7 @@ const groupExams = (exams) => {
       ).exams.push(exam);
       return groups;
     }, {})
-  ).sort((a, b) => b - a);
+  ).sort((a, b) => b.id - a.id);
 }
 
 const mapGradeToVariant = (grade) => {
