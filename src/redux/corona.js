@@ -1,5 +1,5 @@
 export const reset = (state) => (dispatch) => {
-  localStorage.setItem('corona', state);
+  localStorage.setItem('corona', JSON.stringify(state));
   dispatch({
     type: 'CORONA_RESET',
     state
