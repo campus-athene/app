@@ -1,11 +1,29 @@
 import React from 'react';
-import { ListGroup, Button } from 'react-bootstrap';
+import { ListGroup, Button, Spinner } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { showModal } from '../redux/courseReg';
 import PageFrame from '../components/PageFrame';
 import CourseRegModal from '../components/CourseRegModal';
 
-const CourseRegPage = ({ lists, showModal }) => {
+const CourseRegPage = ({ syncState, lists, showModal }) => {
+  if (syncState.isLoading || syncState.isOffline || syncState.error) {
+    return (
+      <PageFrame title="Anmeldung">
+        <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+          {
+            syncState.isLoading ?
+              <Spinner animation="grow" variant="dark" /> :
+            syncState.isOffline ?
+              <>Offline</> :
+            syncState.error ?
+              syncState.error :
+              null
+          }
+        </div>
+      </PageFrame>
+    );
+  }
+
   return (
     <PageFrame title="Anmeldung">
       {lists.map(({ id, title, modules, courses }) =>
@@ -38,6 +56,9 @@ const CourseRegPage = ({ lists, showModal }) => {
 };
 
 export default connect(
-  state => ({ lists: state.courseOffers }),
+  state => ({
+    syncState: state.sync,
+    lists: state.courseOffers
+  }),
   { showModal }
 )(CourseRegPage);

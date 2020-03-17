@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk'
-import rootReducer, { update } from './redux';
+import rootReducer from './redux';
+import { update } from './redux/sync';
 import Router from './Router';
 
 const store = createStore(

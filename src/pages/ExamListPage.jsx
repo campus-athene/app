@@ -18,7 +18,7 @@ const ellipsis = {
   textOverflow: 'ellipsis'
 };
 
-const ExamListPage = ({ allExams }) => {
+const ExamListPage = ({ isLoading, allExams }) => {
   const history = useHistory();
   return (
     <PageFrame title="Klausuren">
@@ -38,7 +38,7 @@ const ExamListPage = ({ allExams }) => {
                 <p style={{ marginBottom: '0' }}>
                   { grade ?
                     <Badge pill variant={mapGradeToVariant(grade)}>{gradeDesc} ({grade})</Badge> :
-                    <i>Offen</i>
+                    <i>{ isLoading ? "Lädt..." : "Offen" }</i>
                   }
                 </p>
               </div>
@@ -99,5 +99,8 @@ const mapGradeToVariant = (grade) => {
 }
 
 export default connect(
-  state => ({ allExams: state.exams })
+  state => ({
+    isLoading: state.sync.isLoading,
+    allExams: state.exams
+  })
 )(ExamListPage);

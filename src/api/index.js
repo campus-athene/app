@@ -1,3 +1,5 @@
+import { NetworkError, ServerError } from "./errors";
+
 const base = "https://0re227lzyl.execute-api.eu-central-1.amazonaws.com/v1";
 
 export class session {
@@ -22,6 +24,24 @@ export class session {
     })
     .catch(error => {
       reject("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
+    });
+  });
+
+  sync = () => new Promise((resolve, reject) => {
+    fetch(base + "/tucan/sync", {
+      headers: { 'Authorization': `tucan ${this.token}` }
+    })
+    .then(response => response.json())
+    .then(body => {
+      if (body.success) {
+        resolve(body);
+      }
+      else {
+        reject(new ServerError(body.message));
+      }
+    })
+    .catch(error => {
+      reject(new NetworkError());
     });
   });
 
