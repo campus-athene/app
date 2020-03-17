@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import CourseRegPage from './pages/CourseRegPage';
 import ExamListPage from './pages/ExamListPage';
 import ExamDetailsPage from './pages/ExamDetailsPage';
+import CoronaPage from './pages/CoronaPage';
 import MapsPage from './pages/MapsPage';
 
 const Router = ({ loggedIn, update }) => (
@@ -21,6 +22,9 @@ const Router = ({ loggedIn, update }) => (
         </Route>
         <Route path="/exams">
           <ExamListPage />
+        </Route>
+        <Route path="/corona">
+          <CoronaPage />
         </Route>
         <Route path="/maps">
           <MapsPage />
