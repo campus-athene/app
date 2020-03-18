@@ -1,5 +1,4 @@
 import { updateCreds, logout } from "./auth";
-import { reset as resetCorona } from "./corona";
 import { reset as resetCourseOffers } from "./courseOffers";
 import { reset as resetExams } from "./exams";
 
@@ -14,9 +13,6 @@ const handlers = {
   },
   logout: (dispatch) => {
     dispatch(logout);
-  },
-  updateCorona: (dispatch, corona) => {
-    dispatch(resetCorona(corona));
   },
   updateCourseOffers: (dispatch, { offers }) => {
     dispatch(resetCourseOffers(offers));

@@ -1,10 +1,12 @@
 import { session } from "../api";
 import { dispatchInstructions } from "./instructions";
 import { NetworkError, ServerError } from "../api/errors";
+import { update as updateCorona } from "./corona";
 
 // Update used in useEffect must not be async.
 export const update = () => (dispatch) => {
   dispatch(updateAsync());
+  dispatch(updateCorona());
 }
 
 const updateAsync = () => async (dispatch, getState) => {
