@@ -12,7 +12,6 @@ const HomePage = ({ logout }) => {
     <PageFrame title="Campus">
       <h4><Link to="classreg">Veranstaltungsanmeldung</Link></h4>
       <h4><Link to="exams">Klausurergebnisse</Link></h4>
-      <h4><Link to="corona">Corona-News</Link></h4>
       <h4><Link to="maps">Campuskarten</Link></h4>
       <Button
           variant="danger"
