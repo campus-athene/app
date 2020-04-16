@@ -4,6 +4,7 @@ import { MemoryRouter, Route, Switch, Link, useLocation } from "react-router-dom
 import { Container, Alert, Button } from 'react-bootstrap';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
+import MessagesPage from './pages/MessagesPage';
 import CourseRegPage from './pages/CourseRegPage';
 import ExamListPage from './pages/ExamListPage';
 import ExamDetailsPage from './pages/ExamDetailsPage';
@@ -13,6 +14,12 @@ const Router = ({ loggedIn, update }) => (
   <MemoryRouter>
     { loggedIn ? (
       <Switch>
+        <Route path="/messages/:id">
+          <MessagesPage />
+        </Route>
+        <Route path="/messages">
+          <MessagesPage />
+        </Route>
         <Route path="/classreg">
           <CourseRegPage />
         </Route>

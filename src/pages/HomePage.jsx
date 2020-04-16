@@ -10,6 +10,7 @@ const HomePage = ({ logout }) => {
 
   return (
     <PageFrame title="Campus">
+      <h4><Link to="messages">Nachrichten</Link></h4>
       <h4><Link to="classreg">Veranstaltungsanmeldung</Link></h4>
       <h4><Link to="exams">Klausurergebnisse</Link></h4>
       <h4><Link to="maps">Campuskarten</Link></h4>

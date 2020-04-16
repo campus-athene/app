@@ -1,4 +1,5 @@
 import { updateCreds, logout } from "./auth";
+import { update as updateMessages } from "./messages";
 import { reset as resetCourseOffers } from "./courseOffers";
 import { reset as resetExams } from "./exams";
 
@@ -13,6 +14,9 @@ const handlers = {
   },
   logout: (dispatch) => {
     dispatch(logout);
+  },
+  updateMessages: (dispatch, { messages }) => {
+    dispatch(updateMessages(messages));
   },
   updateCourseOffers: (dispatch, { offers }) => {
     dispatch(resetCourseOffers(offers));
