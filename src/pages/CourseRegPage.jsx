@@ -27,7 +27,7 @@ const CourseRegPage = ({ syncState, lists, showModal }) => {
   return (
     <PageFrame title="Anmeldung">
       {lists.map(({ id, title, modules, courses }) =>
-        <ListGroup key={id} style={{ marginBottom: '1rem', marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
+        <ListGroup key={id} style={{ marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
           <ListGroup.Item className="bg-light">
             <b>{title}</b>
           </ListGroup.Item>

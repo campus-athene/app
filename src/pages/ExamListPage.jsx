@@ -23,7 +23,7 @@ const ExamListPage = ({ isLoading, allExams }) => {
   return (
     <PageFrame title="Klausuren">
       { Object.values(groupExams(allExams)).map(({ id, display, exams }) =>
-        <ListGroup key={id} style={{ marginBottom: '1rem', marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
+        <ListGroup key={id} style={{ marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
           <ListGroup.Item className='bg-light' style={clip}>
             { display }
           </ListGroup.Item>
