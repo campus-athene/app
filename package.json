@@ -22,7 +22,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "publish": "node ./scripts/publish"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,5 +38,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.657.0",
+    "mime": "^2.4.4"
   }
 }
