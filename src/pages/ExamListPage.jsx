@@ -38,7 +38,7 @@ const ExamListPage = ({ isLoading, allExams }) => {
                 <p style={{ marginBottom: '0' }}>
                   { grade ?
                     <Badge pill variant={mapGradeToVariant(grade)}>{gradeDesc} ({grade})</Badge> :
-                    <i>{ isLoading ? "Lädt..." : regAction ? "An-/Abmeldung möglich" : "Offen" }</i>
+                    <i>{ isLoading ? "Lädt..." : regAction === 'register' ? "Anmeldung geöffnet" : "Angemeldet" }</i>
                   }
                 </p>
               </div>
