@@ -5,6 +5,7 @@ import thunkMiddleware from 'redux-thunk'
 import rootReducer from './redux';
 import { update } from './redux/sync';
 import Router from './Router';
+import './App.css';
 
 const store = createStore(
   rootReducer,
