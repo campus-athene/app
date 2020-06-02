@@ -61,7 +61,7 @@ const CourseRegModal = ({ state, course, message, execute, close }) => {
                 <Modal.Body>
                   <p>{isReg ? "Anmeldung zu" : "Abmeldung von"}</p>
                   {courseDisplay}
-                  <p>fehlgeschlagen.</p>
+                  <p className="text-danger">fehlgeschlagen.</p>
                   <p style={{ fontStyle: 'italic' }}>{message}</p>
                 </Modal.Body>
                 <Modal.Footer>
