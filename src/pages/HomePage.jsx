@@ -23,7 +23,7 @@ const HomePage = ({ logout }) => {
       </div>
       <HomeButton target={'/messages'} icon={faEnvelope}>Nachrichten</HomeButton>
       <HomeButton target={'/classreg'} icon={faChalkboardTeacher}>Veranstaltungsanmeldung</HomeButton>
-      <HomeButton target={'/exams'} icon={faFileAlt}>Klausurergebnisse</HomeButton>
+      <HomeButton target={'/exams'} icon={faFileAlt}>Klausuren</HomeButton>
       <HomeButton target={'/maps'} icon={faMapMarkedAlt}>Campuskarten</HomeButton>
       <HomeButton onClick={() => setLogoutModal(true)} icon={faSignOutAlt} seperator color="#dc3545">Abmelden</HomeButton>
       <Modal show={logoutModal} centered>

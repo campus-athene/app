@@ -27,7 +27,7 @@ const ExamListPage = ({ isLoading, allExams }) => {
           <ListGroup.Item className='bg-light' style={clip}>
             { display }
           </ListGroup.Item>
-          { exams.map(({ id, courseName, examName, grade, gradeDesc }) =>
+          { exams.map(({ id, courseName, examName, regAction, grade, gradeDesc }) =>
             <ListGroup.Item
               key={id} action
               style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}
@@ -38,7 +38,7 @@ const ExamListPage = ({ isLoading, allExams }) => {
                 <p style={{ marginBottom: '0' }}>
                   { grade ?
                     <Badge pill variant={mapGradeToVariant(grade)}>{gradeDesc} ({grade})</Badge> :
-                    <i>{ isLoading ? "Lädt..." : "Offen" }</i>
+                    <i>{ isLoading ? "Lädt..." : regAction ? "An-/Abmeldung möglich" : "Offen" }</i>
                   }
                 </p>
               </div>
@@ -59,7 +59,8 @@ const groupExams = (exams) => {
 		'000000015036000': "Sommersemester 2018",
 		'000000015046000': "Wintersemester 2018 / 2019",
 		'000000015056000': "Sommersemester 2019",
-		'000000015066000': "Wintersemester 2019 / 2020"
+		'000000015066000': "Wintersemester 2019 / 2020",
+		'000000015076000': "Sommersemester 2020"
   }
   return Object.values(
     exams.reduce((groups, exam) => {

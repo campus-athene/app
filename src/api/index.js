@@ -70,6 +70,25 @@ export class session {
     });
   });
 
+  registerExam = async (id, semester, type) => {
+    try {
+      const response = await fetch(base + '/tucan/registerexam', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `tucan ${this.token}`
+        },
+        body: JSON.stringify({ id, semester, type })
+      });
+      const body = await response.json();
+      
+      return body;
+    }
+    catch {
+      return { success: false, message: "Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?" };
+    }
+  };
+
   getExams = () => new Promise((resolve, reject) => {
     fetch(base + "/tucan/exams", {
       headers: { 'Authorization': `tucan ${this.token}` }

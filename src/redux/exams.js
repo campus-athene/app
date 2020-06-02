@@ -26,4 +26,13 @@ const exams = (state = JSON.parse(localStorage.getItem('exams')), action) => {
   }
 }
 
+export const registerExam = (id, semester, type) => async (dispatch, getState) => {
+  try {
+    const response = await new session(getState().auth.creds).registerExam(id, semester, type);
+    dispatchInstructions(dispatch, response.instructions);
+    return response.success ? null : (response.message || "Ein unbekannter Fehler ist aufgetreten.");
+  }
+  catch { return "Ein unbekannter Fehler ist aufgetreten." }
+}
+
 export default exams;
