@@ -33,14 +33,14 @@ const ExamListPage = ({ isLoading, allExams }) => {
               style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}
               onClick={() => history.push(`/exams/${id}`)}>
               <div style={{ flexGrow: 1, overflow: 'hidden' }}>
-                <h5 style={ Object.assign({}, ellipsis, { marginBottom: '0', paddingBottom: '0.75rem' }) }>{courseName}</h5>
-                <h6 style={ Object.assign({}, ellipsis, { marginBottom: '-0.5rem', paddingBottom: '0.5rem'}) }>{examName}</h6>
-                <p style={{ marginBottom: '0' }}>
+                <div style={Object.assign({}, ellipsis, { fontSize: '1.25rem' })}>{courseName}</div>
+                <div style={ellipsis}>{examName}</div>
+                <div>
                   { grade ?
                     <Badge pill variant={mapGradeToVariant(grade)}>{gradeDesc} ({grade})</Badge> :
                     <i>{ isLoading ? "Lädt..." : regAction === 'register' ? "Anmeldung geöffnet" : "Angemeldet" }</i>
                   }
-                </p>
+                </div>
               </div>
               <div style={{ flexShrink: 0, marginRight: '-1.25rem', width: '2.25rem', paddingRight: '0.5rem', textAlign: 'center', color: 'gray' }}>
                 <FontAwesomeIcon icon={faAngleRight} />
