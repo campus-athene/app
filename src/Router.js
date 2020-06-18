@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { MemoryRouter, Route, Switch, Link, useLocation } from "react-router-dom";
+import { HashRouter as ReactRouter, Route, Switch, Link, useLocation } from "react-router-dom";
 import { Container, Alert, Button } from 'react-bootstrap';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
@@ -11,7 +11,7 @@ import ExamDetailsPage from './pages/ExamDetailsPage';
 import MapsPage from './pages/MapsPage';
 
 const Router = ({ loggedIn, update }) => (
-  <MemoryRouter>
+  <ReactRouter>
     { loggedIn ? (
       <Switch>
         <Route path="/messages/:id">
@@ -43,7 +43,7 @@ const Router = ({ loggedIn, update }) => (
       <LoginPage />
       )
     }
-  </MemoryRouter>
+  </ReactRouter>
 );
 
 const NoMatch = () => {
