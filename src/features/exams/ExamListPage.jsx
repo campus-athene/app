@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
-import PageFrame from '../components/PageFrame';
+import PageFrame from '../common/PageFrame';
 
 const clip = {
   whiteSpace: 'nowrap',

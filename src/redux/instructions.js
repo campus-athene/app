@@ -1,7 +1,7 @@
-import { updateCreds, logout } from "./auth";
-import { update as updateMessages } from "./messages";
-import { reset as resetCourseOffers } from "./courseOffers";
-import { reset as resetExams } from "./exams";
+import { updateCreds, logout } from "../features/auth/state";
+import { update as updateMessages } from "../features/messages/state";
+import { reset as resetCourseOffers } from "../features/courses/offersState";
+import { reset as resetExams } from "../features/exams/state";
 
 export const dispatchInstructions = (dispatch, instructions) =>
   Object.keys(instructions || {}).forEach(key => 

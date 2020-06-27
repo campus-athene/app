@@ -1,9 +1,9 @@
 import React from 'react';
 import { ListGroup, Button, Spinner } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import { showModal } from '../redux/courseReg';
-import PageFrame from '../components/PageFrame';
-import CourseRegModal from '../components/CourseRegModal';
+import { showModal } from './regState';
+import PageFrame from '../common/PageFrame';
+import CourseRegModal from './CourseRegModal';
 
 const CourseRegPage = ({ syncState, lists, showModal }) => {
   if (syncState.isLoading || syncState.isOffline || syncState.error) {

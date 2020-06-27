@@ -1,5 +1,5 @@
 import React from 'react';
-import PageFrame from '../components/PageFrame';
+import PageFrame from '../common/PageFrame';
 import { Image } from 'react-bootstrap';
 
 const MapsPage = () => {

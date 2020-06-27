@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { ListGroup, Modal, Button, Row } from 'react-bootstrap';
-import PageFrame from '../components/PageFrame';
+import PageFrame from '../common/PageFrame';
 
 const MessagesPage = ({ messages }) => {
   const history = useHistory();

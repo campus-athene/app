@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import PageFrame from '../components/PageFrame';
-import ExamRegModal from '../components/ExamRegModal';
+import PageFrame from '../common/PageFrame';
+import ExamRegModal from './ExamRegModal';
 
 const ExamDetailsPage = ({ exams }) => {
   const { id } = useParams();

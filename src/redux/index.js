@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import auth from './auth';
+import auth from '../features/auth/state';
 import sync from './sync';
-import messages from './messages';
-import courseOffers from './courseOffers';
-import exams from './exams';
-import courseReg from './courseReg';
+import messages from '../features/messages/state';
+import courseOffers from '../features/courses/offersState';
+import exams from '../features/exams/state';
+import courseReg from '../features/courses/regState';
 
 export default combineReducers({
   auth,

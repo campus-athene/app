@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Row, Image, Form, FormGroup, Button, Alert, Spinner } from 'react-bootstrap';
-import logo from '../logo.svg';
+import logo from '../../logo.svg';
 import { connect } from 'react-redux';
-import { login } from '../redux/auth';
+import { login } from './state';
 
 const LoginPage = ({ processing, error, login }) => {
   const [username, setUsername] = useState();

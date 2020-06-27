@@ -1,5 +1,5 @@
-import { session } from '../api';
-import { dispatchInstructions } from './instructions';
+import { session } from '../../api';
+import { dispatchInstructions } from '../../redux/instructions';
 
 export const showModal = (course) => ({
   type: 'REG_SHOWMODAL',

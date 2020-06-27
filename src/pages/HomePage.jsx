@@ -4,8 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { Image, Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faChalkboardTeacher, faFileAlt, faMapMarkedAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { logout } from '../redux/auth';
-import PageFrame from '../components/PageFrame';
+import { logout } from '../features/auth/state';
+import PageFrame from '../features/common/PageFrame';
 import logo from '../logo.svg';
 
 const HomePage = ({ logout }) => {

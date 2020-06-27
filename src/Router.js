@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { HashRouter as ReactRouter, Route, Switch, Link, useLocation } from "react-router-dom";
 import { Container, Alert, Button } from 'react-bootstrap';
-import LoginPage from './pages/LoginPage';
+import LoginPage from './features/auth/LoginPage';
 import HomePage from './pages/HomePage';
-import MessagesPage from './pages/MessagesPage';
-import CourseRegPage from './pages/CourseRegPage';
-import ExamListPage from './pages/ExamListPage';
-import ExamDetailsPage from './pages/ExamDetailsPage';
-import MapsPage from './pages/MapsPage';
+import MessagesPage from './features/messages/MessagesPage';
+import CourseRegPage from './features/courses/CourseRegPage';
+import ExamListPage from './features/exams/ExamListPage';
+import ExamDetailsPage from './features/exams/ExamDetailsPage';
+import MapsPage from './features/maps/MapsPage';
 
 const Router = ({ loggedIn, update }) => (
   <ReactRouter>
