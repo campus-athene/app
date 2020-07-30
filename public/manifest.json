@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo-bg-333.png",
+      "src": "logo-violet-192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo-bg-333.png",
+      "src": "logo-violet-512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
