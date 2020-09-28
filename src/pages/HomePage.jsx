@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Image, Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faChalkboardTeacher, faFileAlt, faMapMarkedAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faChalkboardTeacher, faFileAlt, faBook, faMapMarkedAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { logout } from '../features/auth/state';
 import PageFrame from '../features/common/PageFrame';
 import logo from '../logo.svg';
@@ -24,6 +24,7 @@ const HomePage = ({ logout }) => {
       <HomeButton target={'/messages'} icon={faEnvelope}>Nachrichten</HomeButton>
       <HomeButton target={'/classreg'} icon={faChalkboardTeacher}>Veranstaltungsanmeldung</HomeButton>
       <HomeButton target={'/exams'} icon={faFileAlt}>Klausuren</HomeButton>
+      <HomeButton target={'/oapp'} icon={faBook}>Orientierung</HomeButton>
       <HomeButton target={'/maps'} icon={faMapMarkedAlt}>Campuskarten</HomeButton>
       <HomeButton onClick={() => setLogoutModal(true)} icon={faSignOutAlt} seperator color="#dc3545">Abmelden</HomeButton>
       <Modal show={logoutModal} centered>
