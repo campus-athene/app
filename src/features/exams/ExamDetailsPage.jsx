@@ -3,10 +3,11 @@ import { useParams, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import PageFrame from '../common/PageFrame';
+import convertGrade from './gradeConverter';
 import ExamRegModal from './ExamRegModal';
 
 const ExamDetailsPage = ({ exams }) => {
-  const { id } = useParams();
+  const id = Number.parseInt(useParams().id);
   const history = useHistory();
   const exam = exams.find(e => e.id === id);
   const [modalOpen, setModalOpen] = useState();
@@ -24,14 +25,14 @@ const ExamDetailsPage = ({ exams }) => {
       <p>
         K&uuml;rzel: {exam.code}<br />
         Datum: {exam.date}<br />
-        {exam.grade && <span>Bewertung: {exam.gradeDesc} ({exam.grade})</span>}
+        {exam.grade && <span>Bewertung: {convertGrade(exam.grade).desc} ({exam.grade})</span>}
       </p>
-      {exam.regAction === 'register' &&
+      {exam.status === 'register' &&
         <Button variant="outline-success" onClick={() => setModalOpen(true)}>
           Anmelden
         </Button>
       }
-      {exam.regAction === 'unregister' &&
+      {exam.status === 'unregister' &&
         <Button variant="outline-danger" onClick={() => setModalOpen(true)}>
           Abmelden
         </Button>

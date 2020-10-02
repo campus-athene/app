@@ -9,9 +9,9 @@ const ExamRegModal = ({ exam, closeCallback }) => {
   const [state, setState] = useState('CONFIRM');
   const [message, setMessage] = useState();
 
-  const isReg = exam.regAction === 'register';
-  if (!isReg && exam.regAction !== 'unregister')
-    throw Error(`Illegal regAction ${exam.regAction}.`);
+  const isReg = exam.status === 'register';
+  if (!isReg && exam.status !== 'unregister')
+    throw Error(`Illegal regAction ${exam.status}.`);
 
   const display =
     <p>
@@ -21,7 +21,7 @@ const ExamRegModal = ({ exam, closeCallback }) => {
 
   const execute = async () => {
     setState('EXECUTING');
-    const result = await dispatch(registerExam(exam.id, exam.semester, exam.regAction));
+    const result = await dispatch(registerExam(exam.id, exam.semester, exam.status));
     if (result) {
       setState('ERROR');
       setMessage(result);

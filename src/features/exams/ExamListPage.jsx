@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
 import PageFrame from '../common/PageFrame';
+import convertGrade from './gradeConverter';
 
 const clip = {
   whiteSpace: 'nowrap',
@@ -27,7 +28,7 @@ const ExamListPage = ({ isLoading, allExams }) => {
           <ListGroup.Item className='bg-light' style={clip}>
             { display }
           </ListGroup.Item>
-          { exams.map(({ id, courseName, examName, regAction, grade, gradeDesc }) =>
+          { exams.map(({ id, courseName, examName, status, grade }) =>
             <ListGroup.Item
               key={id} action
               style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}
@@ -37,8 +38,8 @@ const ExamListPage = ({ isLoading, allExams }) => {
                 <div style={ellipsis}>{examName}</div>
                 <div>
                   { grade ?
-                    <Badge pill variant={mapGradeToVariant(grade)}>{gradeDesc} ({grade})</Badge> :
-                    <i>{ isLoading ? "Lädt..." : regAction === 'register' ? "Anmeldung geöffnet" : "Angemeldet" }</i>
+                    <Badge pill variant={convertGrade(grade).color}>{convertGrade(grade).desc} ({grade})</Badge> :
+                    <i>{ isLoading ? "Lädt..." : status === 'register' ? "Anmeldung geöffnet" : "Angemeldet" }</i>
                   }
                 </div>
               </div>
@@ -55,12 +56,23 @@ const ExamListPage = ({ isLoading, allExams }) => {
 
 const groupExams = (exams) => {
   const desc = {
-    '000000015026000': "Wintersemester 2017 / 2018",
-		'000000015036000': "Sommersemester 2018",
-		'000000015046000': "Wintersemester 2018 / 2019",
-		'000000015056000': "Sommersemester 2019",
-		'000000015066000': "Wintersemester 2019 / 2020",
-		'000000015076000': "Sommersemester 2020"
+    // Yes, the first two are irregular.
+    15024000: "Wintersemester 2016 / 2017",
+		15025000: "Sommersemester 2017",
+    15026000: "Wintersemester 2017 / 2018",
+		15036000: "Sommersemester 2018",
+		15046000: "Wintersemester 2018 / 2019",
+		15056000: "Sommersemester 2019",
+		15066000: "Wintersemester 2019 / 2020",
+    15076000: "Sommersemester 2020",
+    15086000: "Wintersemester 2020 / 2021",
+    15096000: "Sommersemester 2021",
+    15106000: "Wintersemester 2021 / 2022",
+    15116000: "Sommersemester 2022",
+    15126000: "Wintersemester 2022 / 2023",
+    15136000: "Sommersemester 2023",
+    15146000: "Wintersemester 2023 / 2024",
+    15156000: "Sommersemester 2024",
   }
   return Object.values(
     exams.reduce((groups, exam) => {
@@ -74,29 +86,6 @@ const groupExams = (exams) => {
       return groups;
     }, {})
   ).sort((a, b) => b.id - a.id);
-}
-
-const mapGradeToVariant = (grade) => {
-  switch (grade) {
-    case 'b':
-    case '1,0':
-    case '1,3':
-    case '1,7':
-    case '2,0':
-    case '2,3':
-    case '2,7':
-      return 'success';
-    case '3,0':
-    case '3,3':
-    case '3,7':
-    case '4,0':
-      return 'warning';
-    case 'nb':
-    case '5,0':
-      return 'danger';
-    default:
-      return 'info';
-  }
 }
 
 export default connect(
