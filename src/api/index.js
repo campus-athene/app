@@ -1,7 +1,7 @@
 import { NetworkError, ServerError } from "./errors";
 const base = process.env.NODE_ENV === 'development' ?
   "http://localhost:3010" :
-  "https://0re227lzyl.execute-api.eu-central-1.amazonaws.com/v1";
+  "https://dffblc0bqe.execute-api.eu-central-1.amazonaws.com/v2";
 
 export class session {
   constructor(creds) {
