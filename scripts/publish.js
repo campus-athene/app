@@ -51,7 +51,7 @@ async function checkRepoClean() {
 
 async function getVersion() {
   const gitVersions = execSync('git tag', { encoding: 'utf-8' });
-  const lastVersion = Array.from(gitVersions.matchAll(/^V_(?<major>\d*)\.(?<minor>\d*)(\.(?<rev>\d*))?$/gm),
+  const lastVersion = Array.from(gitVersions.matchAll(/^v(?<major>\d*)\.(?<minor>\d*)(\.(?<rev>\d*))?$/gm),
     m => [Number.parseInt(m.groups.major), Number.parseInt(m.groups.minor), Number.parseInt(m.groups.rev) || 0])
     .sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]).splice(-1)[0];
 
@@ -71,7 +71,7 @@ async function getVersion() {
 }
 
 async function createTag() {
-  execSync(`git tag V_${version}`);
+  execSync(`git tag v${version}`);
 }
 
 function build() {
