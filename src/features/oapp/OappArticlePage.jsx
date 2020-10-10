@@ -10,15 +10,15 @@ const OappArticlePage = () => {
   const a = articles[url];
   return <PageFrame title={a.title1}>
     {a.image ? <img src={'https://www.oapp.tu-darmstadt.de' + a.image} alt="" style={{ width: '100%' }} /> : null}
-    <h2>{a.title2}</h2>
+    <h2 style={{ userSelect: 'text' }}>{a.title2}</h2>
     {!a.section2 ?
-      <div dangerouslySetInnerHTML={{ __html: a.section1 }} /> :
+      <div style={{ userSelect: 'text' }} dangerouslySetInnerHTML={{ __html: a.section1 }} /> :
       <Tabs defaultActiveKey="tab1">
         <Tab title={a.tab1} eventKey="tab1">
-          <div dangerouslySetInnerHTML={{ __html: a.section1 }} />
+          <div style={{ userSelect: 'text' }} dangerouslySetInnerHTML={{ __html: a.section1 }} />
         </Tab>
         <Tab title={a.tab2} eventKey="tab2">
-          <div dangerouslySetInnerHTML={{ __html: a.section2 }} />
+          <div style={{ userSelect: 'text' }} dangerouslySetInnerHTML={{ __html: a.section2 }} />
         </Tab>
       </Tabs>
     }

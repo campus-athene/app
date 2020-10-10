@@ -11,11 +11,11 @@ const MessagesPage = ({ messages }) => {
   const renderModal = ({ subject, from, date, time, body }) => (
     <Modal show centered scrollable>
       <Modal.Header style={{ display: 'block' }}>
-        <div style={{ fontSize: '1.2em', fontWeight: 'bold' }}>{subject}</div>
+        <div style={{ fontSize: '1.2em', fontWeight: 'bold', userSelect: 'text' }}>{subject}</div>
         <div>{date} {time} - {from}</div>
       </Modal.Header>
       <Modal.Body>
-        <p style={{ overflowWrap: 'anywhere' }}>
+        <p style={{ overflowWrap: 'anywhere', userSelect: 'text' }}>
           {body.split(/\r?\n/).reduce((a, p, i) => [...a, ...(i ? [<br />] : []), p])}
         </p>
       </Modal.Body>
