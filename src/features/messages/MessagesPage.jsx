@@ -15,9 +15,8 @@ const MessagesPage = ({ messages }) => {
         <div>{date} {time} - {from}</div>
       </Modal.Header>
       <Modal.Body>
-        <p style={{ overflowWrap: 'anywhere', userSelect: 'text' }}>
-          {body.split(/\r?\n/).reduce((a, p, i) => [...a, ...(i ? [<br />] : []), p])}
-        </p>
+        {React.createElement('p', { style: { overflowWrap: 'anywhere', userSelect: 'text' } },
+          ...body.split(/\r?\n/).reduce((a, p, i) => [...a, ...(i ? [<br />] : []), p]))}
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={() => history.goBack()}>Schließen</Button>
