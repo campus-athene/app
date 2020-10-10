@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Container, Row, Image, Form, FormGroup, Button, Alert, Spinner } from 'react-bootstrap';
-import logo from '../../logo.svg';
+import { Container, Row, Form, FormGroup, Button, Alert, Spinner } from 'react-bootstrap';
+import Logo from '../common/Logo';
 import { connect } from 'react-redux';
 import { login } from './state';
 
@@ -17,7 +17,7 @@ const LoginPage = ({ processing, error, login }) => {
   return (
     <Container style={ { minHeight: "100vh", background: "#463A54" } }>
       <Row style={ { display: "block", textAlign: "center", padding: "80px 0 40px 0" } }>
-        <Image src={logo} width="100px" />
+        <Logo style={{ height: '40vw' }} />
       </Row>
       <p style={ { fontWeight: 'bold', color: "lightgray" }}>
         Campus, eine App für Studenten der TU Darmstadt.

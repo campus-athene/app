@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Image, Button, Modal } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faChalkboardTeacher, faFileAlt, faBook, faMapMarkedAlt, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
-import { logout } from '../features/auth/state';
-import PageFrame from '../features/common/PageFrame';
-import logo from '../logo.svg';
+import { logout } from '../auth/state';
+import PageFrame from '../common/PageFrame';
+import Logo from '../common/Logo';
 
 const HomePage = ({ logout }) => {
   const [logoutModal, setLogoutModal] = useState();
@@ -18,9 +18,7 @@ const HomePage = ({ logout }) => {
 
   return (
     <PageFrame noBack>
-      <div style={{ textAlign: 'center', paddingTop: '2rem' }}>
-        <Image src={logo} width="100px" />
-      </div>
+      <Logo style={{ textAlign: 'center', paddingTop: '2rem', height: '40vw' }} />
       <HomeButton target={'/messages'} icon={faEnvelope}>Nachrichten</HomeButton>
       <HomeButton target={'/classreg'} icon={faChalkboardTeacher}>Veranstaltungsanmeldung</HomeButton>
       <HomeButton target={'/exams'} icon={faFileAlt}>Klausuren</HomeButton>

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { HashRouter as ReactRouter, Route, Switch, Link, useLocation } from "react-router-dom";
 import { Container, Alert, Button } from 'react-bootstrap';
 import LoginPage from './features/auth/LoginPage';
-import HomePage from './pages/HomePage';
+import HomePage from './features/home/HomePage';
 import MessagesPage from './features/messages/MessagesPage';
 import CourseRegPage from './features/courses/CourseRegPage';
 import ExamListPage from './features/exams/ExamListPage';
