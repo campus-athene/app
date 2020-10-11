@@ -1,5 +1,6 @@
 import { session } from "../../api";
 import { dispatchInstructions } from "../../redux/instructions";
+import { setLoaded } from "../../redux/sync";
 
 export const processingStarted = () => ({
   type: 'PROCESSING_STARTED'
@@ -25,6 +26,7 @@ export const login = (username, password) => dispatch => {
   return session.login(username, password)
     .then(result => {
       dispatch(processingSucceeded());
+      dispatch(setLoaded());
       dispatchInstructions(dispatch, result.instructions);
     })
     .catch(error => {

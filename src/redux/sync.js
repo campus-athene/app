@@ -1,3 +1,4 @@
+import { createSlice } from "@reduxjs/toolkit";
 import { session } from "../api";
 import { dispatchInstructions } from "./instructions";
 import { NetworkError, ServerError } from "../api/errors";
@@ -17,7 +18,7 @@ const updateAsync = () => async (dispatch, getState) => {
 
   try {
     const response = await new session(state.auth.creds).sync();
-    dispatch(setSyncState(response.result));
+    dispatch(setLoaded(response.result));
     dispatchInstructions(dispatch, response.instructions);
   }
   catch (err) {
@@ -32,45 +33,22 @@ const updateAsync = () => async (dispatch, getState) => {
   }
 }
 
-const setSyncState = (state) => ({
-  type: 'SYNC_SETSTATE',
-  state
-});
-
-const setLoading = () => ({
-  type: 'SYNC_LOADING'
-});
-
-const setOffline = () => ({
-  type: 'SYNC_OFFLINE'
-});
-
-const setError = (message) => ({
-  type: 'SYNC_ERROR',
-  message
-});
-
-export default (state = { isLoading: true }, action) => {
-  switch (action.type) {
-    case 'SYNC_SETSTATE':
-      return action.state;
-    case 'SYNC_LOADING':
-      return Object.assign({}, action.state, {
-        isLoading: true,
-        isOffline: false
-      });
-    case 'SYNC_OFFLINE':
-      return Object.assign({}, action.state, {
-        isLoading: false,
-        isOffline: true
-      });
-    case 'SYNC_ERROR':
-      return Object.assign({}, action.state, {
-        isLoading: false,
-        isOffline: false,
-        error: action.messages
-      });
-    default:
-      return state;
+// isLoading and isOffline are only for downwards compatibility and deprecated.
+const syncSlice = createSlice({
+  name: 'sync',
+  initialState: { isLoading: true },
+  reducers: {
+    setLoading: (state) => ({ type: 'LOADING', isLoading: true, isOffline: false }),
+    setLoaded: (state) => ({ type: 'LOADED', isLoading: false, isOffline: false }),
+    setOffline: (state) => ({ type: 'OFFLINE', isLoading: false, isOffline: true }),
+    setError: (state, action) => ({
+      type: 'ERROR',
+      isLoading: false, isOffline: false,
+      error: action.payload,
+    }),
   }
-}
+});
+
+export const { setLoading, setLoaded, setOffline, setError } = syncSlice.actions;
+
+export default syncSlice.reducer;
