@@ -47,7 +47,6 @@ export const logout = () => dispatch => {
   dispatch(({
     type: 'LOGOUT'
   }));
-  localStorage.setItem('creds', null);
 };
 
 export default (state = { creds: JSON.parse(localStorage.getItem('creds')) }, action) => {
@@ -70,10 +69,6 @@ export default (state = { creds: JSON.parse(localStorage.getItem('creds')) }, ac
     case 'UPDATE_CREDS':
       return Object.assign({}, state, {
         creds: action.creds
-      })
-    case 'LOGOUT':
-      return Object.assign({}, state, {
-        creds: null
       })
     default:
       return state;

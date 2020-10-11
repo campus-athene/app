@@ -3,27 +3,27 @@ import { session } from '../../api';
 import { dispatchInstructions } from '../../redux/instructions';
 import { descriptions as semesterDescs } from '../common/semesters';
 
-const loadState = () => {
+const loadState = ({ items }) => {
   try {
     const local = JSON.parse(localStorage.getItem('exams'));
-    const items = {};
     local.forEach(e => items[e.id] = e);
-    return { items };
   }
-  catch {
-    return { items: {} };
-  }
+  catch (e) { console.error(e); }
 }
 
 const examsSlice = createSlice({
   name: 'exams',
-  initialState: loadState(),
+  initialState: { items: {} },
   reducers: {
     reset(state, action) {
       state.items = {};
       Object.values(action.payload).forEach(e => state.items[e.id] = e);
       localStorage.setItem('exams', JSON.stringify(Object.values(state.items)));
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase('@@INIT', loadState)
   },
 });
 

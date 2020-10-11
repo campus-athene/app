@@ -6,7 +6,7 @@ import courseOffers from '../features/courses/offersState';
 import exams from '../features/exams/examsSlice';
 import courseReg from '../features/courses/regState';
 
-export default combineReducers({
+const appReducer = combineReducers({
   auth,
   sync,
 
@@ -18,3 +18,13 @@ export default combineReducers({
   // UI state
   courseReg
 });
+
+export default (state, action) => {
+  if (action.type === 'LOGOUT') {
+    localStorage.clear();
+    state = undefined;
+    // Todo: We also have to navigate to / here
+  }
+
+  return appReducer(state, action);
+}
