@@ -3,7 +3,7 @@ import auth from '../features/auth/state';
 import sync from './sync';
 import messages from '../features/messages/state';
 import courseOffers from '../features/courses/offersState';
-import exams from '../features/exams/state';
+import exams from '../features/exams/examsSlice';
 import courseReg from '../features/courses/regState';
 
 export default combineReducers({

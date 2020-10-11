@@ -1,11 +1,13 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { ListGroup, Badge } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
+import { selectIsLoaded } from '../../redux/sync';
 import PageFrame from '../common/PageFrame';
 import convertGrade from './gradeConverter';
+import { selectExamsGroupedBySemester } from './examsSlice';
 
 const clip = {
   whiteSpace: 'nowrap',
@@ -19,11 +21,13 @@ const ellipsis = {
   textOverflow: 'ellipsis'
 };
 
-const ExamListPage = ({ isLoading, allExams }) => {
+const ExamListPage = () => {
   const history = useHistory();
+  const isLoading = !useSelector(selectIsLoaded);
+  const groupedExams = useSelector(selectExamsGroupedBySemester);
   return (
     <PageFrame title="Klausuren">
-      { Object.values(groupExams(allExams)).map(({ id, display, exams }) =>
+      { groupedExams.map(({ id, display, exams }) =>
         <ListGroup key={id} style={{ marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
           <ListGroup.Item className='bg-light' style={clip}>
             { display }
@@ -54,43 +58,4 @@ const ExamListPage = ({ isLoading, allExams }) => {
   );
 }
 
-const groupExams = (exams) => {
-  const desc = {
-    // Yes, the first two are irregular.
-    15024000: "Wintersemester 2016 / 2017",
-		15025000: "Sommersemester 2017",
-    15026000: "Wintersemester 2017 / 2018",
-		15036000: "Sommersemester 2018",
-		15046000: "Wintersemester 2018 / 2019",
-		15056000: "Sommersemester 2019",
-		15066000: "Wintersemester 2019 / 2020",
-    15076000: "Sommersemester 2020",
-    15086000: "Wintersemester 2020 / 2021",
-    15096000: "Sommersemester 2021",
-    15106000: "Wintersemester 2021 / 2022",
-    15116000: "Sommersemester 2022",
-    15126000: "Wintersemester 2022 / 2023",
-    15136000: "Sommersemester 2023",
-    15146000: "Wintersemester 2023 / 2024",
-    15156000: "Sommersemester 2024",
-  }
-  return Object.values(
-    exams.reduce((groups, exam) => {
-      (
-        groups[exam.semester] = groups[exam.semester] || {
-          id: exam.semester,
-          display: desc[exam.semester] || "Sonstige",
-          exams: []
-        }
-      ).exams.push(exam);
-      return groups;
-    }, {})
-  ).sort((a, b) => b.id - a.id);
-}
-
-export default connect(
-  state => ({
-    isLoading: state.sync.isLoading,
-    allExams: state.exams
-  })
-)(ExamListPage);
+export default ExamListPage;

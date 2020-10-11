@@ -51,4 +51,6 @@ const syncSlice = createSlice({
 
 export const { setLoading, setLoaded, setOffline, setError } = syncSlice.actions;
 
+export const selectIsLoaded = ({ sync }) => sync.type !== 'LOADING';
+
 export default syncSlice.reducer;

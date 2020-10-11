@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
-import { registerExam } from './state';
+import { registerExam } from './examsSlice';
 
 const ExamRegModal = ({ exam, closeCallback }) => {
   const dispatch = useDispatch();

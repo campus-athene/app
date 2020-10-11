@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import PageFrame from '../common/PageFrame';
+import { selectExam } from './examsSlice';
 import convertGrade from './gradeConverter';
 import ExamRegModal from './ExamRegModal';
 
-const ExamDetailsPage = ({ exams }) => {
-  const id = Number.parseInt(useParams().id);
+const ExamDetailsPage = () => {
+  const { id } = useParams(); // This will return a string
   const history = useHistory();
-  const exam = exams.find(e => e.id === id);
+  const exam = useSelector(selectExam(id));
   const [modalOpen, setModalOpen] = useState();
 
   if (!exam) {
@@ -44,8 +45,4 @@ const ExamDetailsPage = ({ exams }) => {
   );
 };
 
-export default connect(
-  state => ({
-    exams: state.exams
-  })
-)(ExamDetailsPage);
+export default ExamDetailsPage;
