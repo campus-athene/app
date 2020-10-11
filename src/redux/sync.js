@@ -36,7 +36,7 @@ const updateAsync = () => async (dispatch, getState) => {
 // isLoading and isOffline are only for downwards compatibility and deprecated.
 const syncSlice = createSlice({
   name: 'sync',
-  initialState: { isLoading: true },
+  initialState: { type: 'INITIALIZED', isLoading: true, isOffline: false },
   reducers: {
     setLoading: (state) => ({ type: 'LOADING', isLoading: true, isOffline: false }),
     setLoaded: (state) => ({ type: 'LOADED', isLoading: false, isOffline: false }),
@@ -51,6 +51,6 @@ const syncSlice = createSlice({
 
 export const { setLoading, setLoaded, setOffline, setError } = syncSlice.actions;
 
-export const selectIsLoaded = ({ sync }) => sync.type !== 'LOADING';
+export const selectIsLoaded = ({ sync }) => sync.type !== 'LOADING' && sync.type !== 'INITIALIZED';
 
 export default syncSlice.reducer;
