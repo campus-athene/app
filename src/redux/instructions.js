@@ -4,8 +4,12 @@ import { reset as resetCourseOffers } from "../features/courses/offersState";
 import { reset as resetExams } from "../features/exams/examsSlice";
 
 export const dispatchInstructions = (dispatch, instructions) =>
-  Object.keys(instructions || {}).forEach(key => 
-    instructions[key] && handlers[key](dispatch, instructions[key])
+  Object.keys(instructions || {}).forEach(key => {
+    try {
+      instructions[key] && handlers[key](dispatch, instructions[key])
+    }
+    catch (e) { console.error(e); }
+  }
   );
 
 const handlers = {
