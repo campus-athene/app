@@ -1,23 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { ListGroup, Button, Spinner } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import { showModal } from './regState';
+import { selectIsLoaded, selectIsOffline, selectErrorMessage } from '../../redux/sync';
 import PageFrame from '../common/PageFrame';
+import { selectLists } from './offersSlice';
 import CourseRegModal from './CourseRegModal';
 
-const CourseRegPage = ({ syncState, lists, showModal }) => {
-  if (syncState.isLoading || syncState.isOffline || syncState.error) {
+const CourseRegPage = () => {
+  const syncState = {
+    loaded: useSelector(selectIsLoaded),
+    offline: useSelector(selectIsOffline),
+    error: useSelector(selectErrorMessage),
+  }
+  const lists = useSelector(selectLists);
+  const [openedOffer, setOpenedOffer] = useState();
+
+  if (!syncState.loaded || syncState.offline) {
     return (
       <PageFrame title="Anmeldung">
         <div style={{ display: 'flex', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
           {
-            syncState.isLoading ?
+            !syncState.loaded ?
               <Spinner animation="grow" variant="dark" /> :
-            syncState.isOffline ?
-              <>Offline</> :
-            syncState.error ?
-              syncState.error :
-              null
+              syncState.offline ?
+                <>Offline</> :
+                syncState.error ||
+                console.error("Unknown sync state in CoursePageReg") || "Da ist wohl technisch was schief gegangen :-("
           }
         </div>
       </PageFrame>
@@ -26,23 +34,28 @@ const CourseRegPage = ({ syncState, lists, showModal }) => {
 
   return (
     <PageFrame title="Anmeldung">
-      {lists.map(({ id, title, courses }) =>
-        <ListGroup key={id} style={{ marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
+      {lists.map(({ id: listId, title, modules }) =>
+        <ListGroup key={listId} style={{ marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
           <ListGroup.Item className="bg-light">
             <b>{title}</b>
           </ListGroup.Item>
-          {courses.map(({ id, title, lecturer, module, registration }) =>
+          {modules.map(({ id: moduleId, title, lecturer, status }) =>
             <ListGroup.Item
-              key={id}>
+              key={moduleId}>
               <h5>{title}</h5>
               <h6>{lecturer}</h6>
-              {registration?.action === 'register' &&
-                <Button variant="outline-success" onClick={() => showModal({ title, module, registration })}>
+              {status === 'register' &&
+                <Button variant="outline-success" onClick={() => setOpenedOffer({ listId, moduleId })}>
                   Anmelden
                 </Button>
               }
-              {registration?.action === 'unregister' &&
-                <Button variant="outline-danger" onClick={() => showModal({ title, module, registration })}>
+              {status === 'edit' &&
+                <Button variant="outline-warning" onClick={() => setOpenedOffer({ listId, moduleId })}>
+                  Ändern
+                </Button>
+              }
+              {status === 'unregister' &&
+                <Button variant="outline-danger" onClick={() => setOpenedOffer({ listId, moduleId })}>
                   Abmelden
                 </Button>
               }
@@ -50,15 +63,9 @@ const CourseRegPage = ({ syncState, lists, showModal }) => {
           )}
         </ListGroup>
       )}
-      <CourseRegModal />
+      {openedOffer && <CourseRegModal listId={openedOffer.listId} moduleId={openedOffer.moduleId} onClose={() => setOpenedOffer(null)} />}
     </PageFrame>
   );
 };
 
-export default connect(
-  state => ({
-    syncState: state.sync,
-    lists: state.courseOffers
-  }),
-  { showModal }
-)(CourseRegPage);
+export default CourseRegPage;

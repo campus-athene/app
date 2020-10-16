@@ -2,9 +2,8 @@ import { combineReducers } from 'redux';
 import auth from '../features/auth/state';
 import sync from './sync';
 import messages from '../features/messages/state';
-import courseOffers from '../features/courses/offersState';
+import offers from '../features/courses/offersSlice';
 import exams from '../features/exams/examsSlice';
-import courseReg from '../features/courses/regState';
 
 const appReducer = combineReducers({
   auth,
@@ -12,11 +11,8 @@ const appReducer = combineReducers({
 
   // data
   messages,
-  courseOffers,
+  offers,
   exams,
-
-  // UI state
-  courseReg
 });
 
 export default (state, action) => {
