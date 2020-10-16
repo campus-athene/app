@@ -34,7 +34,7 @@ const CourseRegPage = () => {
 
   return (
     <PageFrame title="Anmeldung">
-      {lists.map(({ id: listId, title, modules }) =>
+      {lists.filter(({ modules }) => modules.length).map(({ id: listId, title, modules }) =>
         <ListGroup key={listId} style={{ marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
           <ListGroup.Item className="bg-light">
             <b>{title}</b>
