@@ -4,7 +4,7 @@ import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { register, selectOffer } from './offersSlice';
 
 const CourseRegModal = ({ listId, moduleId, onClose }) => {
-  const offer = useSelector(selectOffer(listId, moduleId));
+  const [offer] = useState(useSelector(selectOffer(listId, moduleId)));
   const [state, setState] = useState('CONFIRM');
   const [selection, _setSelection] = useState(offer && { ...Object.fromEntries(offer.courses.map(({ id, status }) => [id, offer.status === status || (offer.status === 'edit' && status === 'register')])) });
   const setSelection = (key, value) => console.log({ key, value }) || _setSelection({ ...selection, [key]: value });
