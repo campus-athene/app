@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
 import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './redux';
 import { update } from './redux/sync';
+import Router from './Router';
+import './App.css';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -16,7 +17,7 @@ store.dispatch(update());
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Router />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
