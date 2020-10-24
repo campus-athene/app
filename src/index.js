@@ -7,7 +7,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './redux';
 import { update } from './redux/sync';
 import ErrorBoundary from './ErrorBoundary';
-import Router from './Router';
+import Routes from './Routes';
 import './App.css';
 
 const store = configureStore({
@@ -21,7 +21,7 @@ ReactDOM.render(
     <Provider store={store}>
       <ReactRouter>
         <ErrorBoundary>
-          <Router />
+          <Routes />
         </ErrorBoundary>
       </ReactRouter>
     </Provider>

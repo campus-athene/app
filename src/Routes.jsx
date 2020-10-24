@@ -12,7 +12,7 @@ import OappPage from './features/oapp/OappPage';
 import OappArticlePage from './features/oapp/OappArticlePage';
 import MapsPage from './features/maps/MapsPage';
 
-const Router = ({ loggedIn }) =>
+const Routes = ({ loggedIn }) =>
   loggedIn ? (
     <Switch>
       <Route path="/messages/:id">
@@ -66,4 +66,4 @@ const NoMatch = () => {
   );
 };
 
-export default connect((state) => ({ loggedIn: state.auth.creds }))(Router);
+export default connect((state) => ({ loggedIn: state.auth.creds }))(Routes);
