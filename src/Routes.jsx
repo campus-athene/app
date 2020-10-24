@@ -51,19 +51,7 @@ const Routes = ({ loggedIn }) =>
   );
 
 const NoMatch = () => {
-  let location = useLocation();
-
-  return (
-    <Container>
-      <h2>404</h2>
-      <Alert variant="danger">
-        No match for <code>{location.pathname}</code>.
-      </Alert>
-      <Button variant="primary" to="/" as={Link}>
-        Go Home
-      </Button>
-    </Container>
-  );
+  throw new Error('The requested path could not be found.');
 };
 
 export default connect((state) => ({ loggedIn: state.auth.creds }))(Routes);
