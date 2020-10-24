@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Switch, Link, useLocation } from 'react-router-dom';
-import { Container, Alert, Button } from 'react-bootstrap';
+import { Route, Switch } from 'react-router-dom';
 import LoginPage from './features/auth/LoginPage';
 import HomePage from './features/home/HomePage';
 import MessagesPage from './features/messages/MessagesPage';
