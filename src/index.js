@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { HashRouter as ReactRouter } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import { configureStore } from '@reduxjs/toolkit';
 import rootReducer from './redux';
 import { update } from './redux/sync';
+import ErrorBoundary from './ErrorBoundary';
 import Router from './Router';
 import './App.css';
 
@@ -17,7 +19,11 @@ store.dispatch(update());
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router />
+      <ReactRouter>
+        <ErrorBoundary>
+          <Router />
+        </ErrorBoundary>
+      </ReactRouter>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
