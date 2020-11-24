@@ -7,7 +7,7 @@ const CourseRegModal = ({ listId, moduleId, onClose }) => {
   const [offer] = useState(useSelector(selectOffer(listId, moduleId)));
   const [state, setState] = useState('CONFIRM');
   const [selection, _setSelection] = useState(offer && { ...Object.fromEntries(offer.courses.map(({ id, status }) => [id, offer.status === status || (offer.status === 'edit' && status === 'register')])) });
-  const setSelection = (key, value) => console.log({ key, value }) || _setSelection({ ...selection, [key]: value });
+  const setSelection = (key, value) => _setSelection({ ...selection, [key]: value });
   const [error, setError] = useState();
   const dispatch = useDispatch();
 

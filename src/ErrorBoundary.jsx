@@ -23,7 +23,6 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     const { history, logout } = this.props;
     // const history = useHistory();
 
