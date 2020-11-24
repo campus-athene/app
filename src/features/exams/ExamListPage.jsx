@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ListGroup, Badge } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { useHistory } from 'react-router-dom';
 import { selectIsLoaded } from '../../redux/sync';
 import PageFrame from '../common/PageFrame';
 import convertGrade from './gradeConverter';
 import { selectExamsGroupedBySemester } from './examsSlice';
+import { Register, Unregister } from '../../icons';
+import ExamRegModal from './ExamRegModal';
 
 const clip = {
   whiteSpace: 'nowrap',
@@ -25,14 +25,16 @@ const ExamListPage = () => {
   const history = useHistory();
   const isLoading = !useSelector(selectIsLoaded);
   const groupedExams = useSelector(selectExamsGroupedBySemester);
+  const [selectedExam, setSelectedExam] = useState();
+
   return (
-    <PageFrame title="Klausuren">
+    <PageFrame title="Prüfungen">
       { groupedExams.map(({ id, display, exams }) =>
         <ListGroup key={id} style={{ marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
           <ListGroup.Item className='bg-light' style={clip}>
-            { display }
+            {display}
           </ListGroup.Item>
-          { exams.map(({ id, courseName, examName, status, grade }) =>
+          {exams.map(exam => ({ exam })).map(({ exam, exam: { id, courseName, examName, date, status, grade } }) =>
             <ListGroup.Item
               key={id} action
               style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}
@@ -41,19 +43,28 @@ const ExamListPage = () => {
                 <div style={Object.assign({}, ellipsis, { fontSize: '1.25rem' })}>{courseName}</div>
                 <div style={ellipsis}>{examName}</div>
                 <div>
-                  { grade ?
+                  {grade ?
                     <Badge pill variant={convertGrade(grade).color}>{convertGrade(grade).desc} ({grade})</Badge> :
-                    <i>{ isLoading ? "Lädt..." : status === 'register' ? "Anmeldung geöffnet" : "Angemeldet" }</i>
+                    <>{date}</>
                   }
                 </div>
               </div>
-              <div style={{ flexShrink: 0, marginRight: '-1.25rem', width: '2.25rem', paddingRight: '0.5rem', textAlign: 'center', color: 'gray' }}>
-                <FontAwesomeIcon icon={faAngleRight} />
-              </div>
+              {(status === 'register' || status === 'unregister') &&
+                <div style={{
+                  flexShrink: 0, margin: '-0.75rem -1.25rem -0.75rem 0', width: '3.5rem', padding: '0 1.25rem 0 0.5rem',
+                  alignSelf: 'stretch', display: 'grid', alignContent: 'center'
+                }} onClick={(e) => { setSelectedExam(exam); e.stopPropagation(); }}>
+                  {status === 'register' &&
+                    <Register style={{ fill: '#28a745' }} />}
+                  {status === 'unregister' &&
+                    <Unregister style={{ fill: '#dc3545' }} />}
+                </div>}
             </ListGroup.Item>
           )}
         </ListGroup>
       )}
+      {selectedExam &&
+        <ExamRegModal exam={selectedExam} closeCallback={() => setSelectedExam(null)} />}
     </PageFrame>
   );
 }

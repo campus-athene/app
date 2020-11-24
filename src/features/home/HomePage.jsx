@@ -21,7 +21,7 @@ const HomePage = ({ logout }) => {
       <Logo style={{ textAlign: 'center', paddingTop: '2rem', height: '40vw' }} />
       <HomeButton target={'/messages'} icon={faEnvelope}>Nachrichten</HomeButton>
       <HomeButton target={'/classreg'} icon={faChalkboardTeacher}>Veranstaltungsanmeldung</HomeButton>
-      <HomeButton target={'/exams'} icon={faFileAlt}>Klausuren</HomeButton>
+      <HomeButton target={'/exams'} icon={faFileAlt}>Prüfungen</HomeButton>
       <HomeButton target={'/oapp'} icon={faBook}>Orientierung</HomeButton>
       <HomeButton target={'/maps'} icon={faMapMarkedAlt}>Campuskarten</HomeButton>
       <HomeButton onClick={() => setLogoutModal(true)} icon={faSignOutAlt} seperator color="#dc3545">Abmelden</HomeButton>

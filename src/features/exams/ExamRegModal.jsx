@@ -45,7 +45,7 @@ const ExamRegModal = ({ exam, closeCallback }) => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => closeCallback()}>Abbrechen</Button>
-            <Button onClick={() => execute()}>{isReg ? "Anmelden" : "Abmelden"}</Button>
+            <Button variant={isReg ? 'success' : 'danger'} onClick={() => execute()}>{isReg ? "Anmelden" : "Abmelden"}</Button>
           </Modal.Footer>
         </> :
           state === 'EXECUTING' ? <>
