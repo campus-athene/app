@@ -32,7 +32,7 @@ const ExamRegModal = ({ exam, closeCallback }) => {
   }
 
   return (
-    <Modal show={true} centered>
+    <Modal show={true} onHide={() => state !== 'EXECUTING' && closeCallback()} centered>
       <Modal.Header>
         <Modal.Title>{isReg ? "Anmelden" : "Abmelden"}</Modal.Title>
       </Modal.Header>
