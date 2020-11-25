@@ -70,8 +70,9 @@ async function getVersion() {
   version = versionInput;
 }
 
-async function createTag() {
+async function tagAndPush() {
   execSync(`git tag v${version}`);
+  execSync(`git push origin master v${version}`);
 }
 
 function build() {
@@ -136,7 +137,7 @@ async function run() {
 
     await checkRepoClean();
     await getVersion();
-    await createTag();
+    await tagAndPush();
     await build();
     await createScripts();
     await upload();
