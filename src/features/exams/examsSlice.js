@@ -6,7 +6,7 @@ import { descriptions as semesterDescs } from '../common/semesters';
 const loadState = ({ items }) => {
   try {
     const local = JSON.parse(localStorage.getItem('exams'));
-    if (!local) return null;
+    if (!local) return;
     local.forEach(e => items[e.id] = e);
   }
   catch (e) { console.error(e); }
