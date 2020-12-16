@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { useLocation, withRouter } from 'react-router-dom';
+import { Link, useLocation, withRouter } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { logout } from './features/auth/state';
 import PageFrame from './features/common/PageFrame';
@@ -14,7 +14,7 @@ class ErrorBoundary extends React.Component {
 
   static getDerivedStateFromError(error) {
     // Update state so the next render will show the fallback UI.
-    return { hasError: true };
+    return { hasError: true, error };
   }
 
   componentDidCatch(error, errorInfo) {
@@ -25,6 +25,17 @@ class ErrorBoundary extends React.Component {
   render() {
     const { history, logout } = this.props;
     // const history = useHistory();
+
+    const toMessage = (error) => {
+      if (typeof error?.toString !== 'function')
+        return 'Keine Informationen verfügbar.';
+
+      if (!(error instanceof Error)) return error.toString();
+
+      const appendix = error.stack ? '\n\n' + error.stack : '';
+
+      return error.toString() + appendix;
+    };
 
     if (this.state.hasError) {
       // You can render any custom fallback UI
@@ -43,6 +54,11 @@ class ErrorBoundary extends React.Component {
             Ups, hier ist wohl
             <br />
             was schief gegangen!
+          </p>
+          <p>
+            <Link onClick={() => alert(toMessage(this.state.error))}>
+              Technische Details anzeigen
+            </Link>
           </p>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <Button
