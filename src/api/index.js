@@ -46,6 +46,30 @@ export class session {
     });
   });
 
+  markMsgRead = async (messageId) => new Promise((resolve, reject) => {
+    fetch(base + '/tucan/markmsgread', {
+      method: "post",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `tucan ${this.token}`
+      },
+      body: JSON.stringify({ messageId })
+    })
+    .then(response => response.json())
+    .then(body => {
+    if (body.success) {
+      resolve(body);
+    }
+    else {
+      reject(body.message ?? "Ein unbekannter Fehler ist aufgetreten.");
+    }
+    })
+    .catch(error => {
+      console.log("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
+      reject("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
+    });
+  });
+
   registerCourse = async (rgtrArgs)  => new Promise((resolve, reject) => {
     fetch(base + '/tucan/registercourse', {
       method: "post",
