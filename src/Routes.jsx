@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import LoginPage from './features/auth/LoginPage';
 import HomePage from './features/home/HomePage';
 import MessagesPage from './features/messages/MessagesPage';
+import CoursListPage from './features/courses/CoursListPage';
 import CourseRegPage from './features/courses/CourseRegPage';
 import ExamListPage from './features/exams/ExamListPage';
 import ExamDetailsPage from './features/exams/ExamDetailsPage';
@@ -19,6 +20,9 @@ const Routes = ({ loggedIn }) =>
       </Route>
       <Route path="/messages">
         <MessagesPage />
+      </Route>
+      <Route path="/courses">
+        <CoursListPage />
       </Route>
       <Route path="/classreg">
         <CourseRegPage />

@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import auth from '../features/auth/state';
 import sync from './sync';
 import messages from '../features/messages/messagesSlice';
+import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
 import exams from '../features/exams/examsSlice';
 
@@ -11,6 +12,7 @@ const appReducer = combineReducers({
 
   // data
   messages,
+  courses,
   offers,
   exams,
 });
@@ -23,4 +25,4 @@ export default (state, action) => {
   }
 
   return appReducer(state, action);
-}
+};

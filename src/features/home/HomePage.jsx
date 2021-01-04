@@ -25,7 +25,7 @@ const HomePage = ({ logout }) => {
           ? <> <Badge style={{ fontSize: '0.75rem', verticalAlign: 'middle' }} pill variant="warning">{unreadMsgs}</Badge></>
           : null
       }</HomeButton>
-      <HomeButton target={'/classreg'} icon={Lecture}>Veranstaltungen</HomeButton>
+      <HomeButton target={'/courses'} icon={Lecture}>Veranstaltungen</HomeButton>
       <HomeButton target={'/exams'} icon={Exam}>Prüfungen</HomeButton>
       <HomeButton target={'/oapp'} icon={Orientation}>Orientierung</HomeButton>
       <HomeButton target={'/maps'} icon={Map}>Campuskarten</HomeButton>

@@ -1,5 +1,6 @@
 import { updateCreds, logout } from '../features/auth/state';
 import { reset as resetMessages } from '../features/messages/messagesSlice';
+import { reset as resetCourses } from '../features/courses/coursesSlice';
 import { reset as resetOffers } from '../features/courses/offersSlice';
 import { reset as resetExams } from '../features/exams/examsSlice';
 
@@ -21,6 +22,9 @@ const handlers = {
   },
   updateMessages: (dispatch, { messages }) => {
     dispatch(resetMessages({ messages }));
+  },
+  updateCourses: (dispatch, { courses }) => {
+    dispatch(resetCourses({ courses }));
   },
   updateCourseOffers: (dispatch, { offers }) => {
     dispatch(resetOffers(offers));
