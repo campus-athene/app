@@ -43,7 +43,7 @@ export const selectExam = (id) => ({ exams }) => exams.items[Number.parseInt(id)
 
 export const selectExamsGroupedBySemester = ({ exams }) =>
   Object.values(
-    Object.values(exams.items).reduce((groups, exam) => {
+    Object.values(exams.items).filter(e => !e.status).reduce((groups, exam) => {
       (
         groups[exam.semester] = groups[exam.semester] || {
           id: exam.semester,
@@ -54,5 +54,8 @@ export const selectExamsGroupedBySemester = ({ exams }) =>
       return groups;
     }, {}))
     .sort((a, b) => b.id - a.id);
+
+export const selectExamOffers = ({ exams }) =>
+  Object.values(exams.items).filter(e => e.status);
 
 export default examsSlice.reducer;

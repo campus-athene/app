@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ListGroup, Badge } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { selectIsLoaded } from '../../redux/sync';
 import PageFrame from '../common/PageFrame';
 import convertGrade from './gradeConverter';
-import { selectExamsGroupedBySemester } from './examsSlice';
+import { selectExamOffers, selectExamsGroupedBySemester } from './examsSlice';
 import { Register, Unregister } from '../../icons';
 import ExamRegModal from './ExamRegModal';
 
@@ -23,8 +22,10 @@ const ellipsis = {
 
 const ExamListPage = () => {
   const history = useHistory();
-  const isLoading = !useSelector(selectIsLoaded);
-  const groupedExams = useSelector(selectExamsGroupedBySemester);
+  const groupedExams = [
+    { id: 'registration', display: 'Anmeldung', exams: useSelector(selectExamOffers) },
+    ...useSelector(selectExamsGroupedBySemester)
+  ];
   const [selectedExam, setSelectedExam] = useState();
 
   return (
