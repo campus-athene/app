@@ -94,8 +94,10 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-export default ({ children }) =>
+const ErrorBoundaryWrapper = ({ children }) =>
   React.createElement(connect(null, { logout })(withRouter(ErrorBoundary)), {
     key: useLocation().pathname,
     children,
   });
+
+export default ErrorBoundaryWrapper;

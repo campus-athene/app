@@ -17,7 +17,7 @@ const appReducer = combineReducers({
   exams,
 });
 
-export default (state, action) => {
+const rootReducer = (state, action) => {
   if (action.type === 'LOGOUT') {
     localStorage.clear();
     state = undefined;
@@ -26,3 +26,5 @@ export default (state, action) => {
 
   return appReducer(state, action);
 };
+
+export default rootReducer;
