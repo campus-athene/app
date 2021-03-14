@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter as ReactRouter } from 'react-router-dom';
-import * as serviceWorker from './serviceWorker';
 import { configureStore } from '@reduxjs/toolkit';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import rootReducer from './redux';
 import { update } from './redux/sync';
 import ErrorBoundary from './ErrorBoundary';
@@ -31,5 +31,5 @@ ReactDOM.render(
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.register();
+// Learn more about service workers: https://cra.link/PWA
+serviceWorkerRegistration.unregister();
