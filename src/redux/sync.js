@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { session } from "../api";
 import { dispatchInstructions } from "./instructions";
 import { NetworkError, ServerError } from "../api/errors";
+import { selectCreds } from "../features/auth/authSlice";
 
 // Update used in useEffect must not be async.
 export const update = () => (dispatch) => {
@@ -9,15 +10,15 @@ export const update = () => (dispatch) => {
 }
 
 const updateAsync = () => async (dispatch, getState) => {
-  const state = getState();
+  const creds = selectCreds()(getState(), dispatch);
 
-  if (!state.auth.creds)
+  if (!creds)
     return;
 
   dispatch(setLoading());
 
   try {
-    const response = await new session(state.auth.creds).sync();
+    const response = await new session(creds).sync();
     dispatch(setLoaded(response.result));
     dispatchInstructions(dispatch, response.instructions);
   }

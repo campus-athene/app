@@ -1,4 +1,4 @@
-import { updateCreds, logout } from '../features/auth/state';
+import { updateCreds, logout } from '../features/auth/authSlice';
 import { reset as resetMessages } from '../features/messages/messagesSlice';
 import { reset as resetCourses } from '../features/courses/coursesSlice';
 import { reset as resetOffers } from '../features/courses/offersSlice';
@@ -15,7 +15,7 @@ export const dispatchInstructions = (dispatch, instructions) =>
 
 const handlers = {
   updateCreds: (dispatch, { creds }) => {
-    dispatch(updateCreds(creds));
+    dispatch(updateCreds({ creds }));
   },
   logout: (dispatch) => {
     dispatch(logout);

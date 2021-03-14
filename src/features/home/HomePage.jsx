@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Badge, Button, Modal } from 'react-bootstrap';
-import { logout } from '../auth/state';
+import { logout } from '../auth/authSlice';
 import PageFrame from '../common/PageFrame';
 import Logo from '../common/Logo';
 import { selectUnreadCount } from '../messages/messagesSlice';

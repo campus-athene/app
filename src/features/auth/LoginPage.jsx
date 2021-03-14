@@ -2,16 +2,25 @@ import React, { useState } from 'react';
 import { Container, Row, Form, FormGroup, Button, Alert, Spinner } from 'react-bootstrap';
 import Logo from '../common/Logo';
 import { connect } from 'react-redux';
-import { login } from './state';
+import { login } from './authSlice';
 
-const LoginPage = ({ processing, error, login }) => {
+const LoginPage = ({ login }) => {
+  const [processing, setProcessing] = useState();
+  const [error, setError] = useState();
+
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
 
-    login(username, password);
+    setProcessing(true);
+    setError(null);
+    
+    const error = await login(username, password);
+
+    setProcessing(false);
+    setError(error);
   };
 
   return (
@@ -53,9 +62,6 @@ const LoginPage = ({ processing, error, login }) => {
 };
 
 export default connect(
-  ({ auth }) => ({
-    processing: auth.processing,
-    error: auth.error
-  }),
+  null,
   { login }
 )(LoginPage);

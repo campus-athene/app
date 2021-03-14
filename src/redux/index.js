@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import auth from '../features/auth/state';
+import auth from '../features/auth/authSlice';
 import sync from './sync';
 import messages from '../features/messages/messagesSlice';
 import courses from '../features/courses/coursesSlice';
