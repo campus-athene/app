@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Container, Row, Form, FormGroup, Button, Alert, Spinner } from 'react-bootstrap';
+import { Alert, Button, Form, Spinner } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import Logo from '../common/Logo';
-import { connect } from 'react-redux';
 import { login } from './authSlice';
 
-const LoginPage = ({ login }) => {
+const LoginPage = () => {
+  const dispatch = useDispatch();
+
   const [processing, setProcessing] = useState();
   const [error, setError] = useState();
 
@@ -16,52 +18,96 @@ const LoginPage = ({ login }) => {
 
     setProcessing(true);
     setError(null);
-    
-    const error = await login(username, password);
+
+    const error = await dispatch(login(username, password));
 
     setProcessing(false);
     setError(error);
   };
 
   return (
-    <Container style={ { minHeight: "100vh", background: "#463A54" } }>
-      <Row style={ { display: "block", textAlign: "center", padding: "80px 0 40px 0" } }>
-        <Logo style={{ height: '40vw' }} />
-      </Row>
-      <p style={ { fontWeight: 'bold', color: "lightgray" }}>
-        Campus, eine App für Studenten der TU Darmstadt.
-      </p>
-      <p style={ { color: "lightgray" }}>
-        Hinweis: Die App befindet sich derzeit noch in einer frühen Entwicklungsphase.
-        Um Fehlern schneller auf die Schliche zu kommen, werden umfangreiche Protokolle angelegt.
-        Diese können auch personenbezogene Daten enthalten.
-        Mit der Nutzung dieser App erklärst du dich damit einverstanden.
-      </p>
-      <Form onSubmit={onSubmit}>
-        <FormGroup>
-          <Form.Control type='text' placeholder='TU-Id' disabled={processing} onChange={(event) => setUsername(event.target.value)} />
-        </FormGroup>
-        <FormGroup>
-          <Form.Control type='password' placeholder='Passwort' disabled={processing} onChange={(event) => setPassword(event.target.value)} />
-        </FormGroup>
-        <Alert variant="warning" hidden={!error}>
+    <div
+      style={{
+        height: '100vh',
+        background: '#463A54',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+        paddingTop: 'env(safe-area-inset-bottom))',
+        paddingBottom: 'env(safe-area-inset-bottom))',
+      }}
+    >
+      <Logo style={{ height: '40vw' }} />
+      <div
+        style={{ fontWeight: 'bold', color: 'lightgray', textAlign: 'center' }}
+      >
+        <p>Campus</p>
+        <p>
+          Die App für Studenten
+          <br />
+          der TU Darmstadt.
+        </p>
+      </div>
+      <div></div>
+      <form
+        onSubmit={onSubmit}
+        style={{
+          display: 'grid',
+          gridAutoRows: '2.5em',
+          rowGap: '1em',
+          marginRight: 'calc(1rem + env(safe-area-inset-right))',
+          marginLeft: 'calc(1rem + env(safe-area-inset-left))',
+        }}
+      >
+        <Alert
+          variant="warning"
+          style={{
+            visibility: error ? null : 'hidden',
+            marginBottom: '0',
+            padding: '0.375rem 0.75rem',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
           {error}
         </Alert>
-        {
-          processing ? (
-            <div style={ { display: "block", textAlign: "center" } }>
-              <Spinner animation="grow" variant="light" />
-            </div>
-          ) : (
-            <Button type='submit' disabled={processing}>Anmelden</Button>
-          )
-        }
-      </Form>
-    </Container>
-    );
+        <Form.Control
+          type="text"
+          placeholder="TU-Id"
+          autoCapitalize="off"
+          autoComplete="username"
+          disabled={processing}
+          onChange={(event) => setUsername(event.target.value)}
+          style={{ height: 'auto' }}
+        />
+        <Form.Control
+          type="password"
+          placeholder="Passwort"
+          autoComplete="current-password"
+          disabled={processing}
+          onChange={(event) => setPassword(event.target.value)}
+          style={{ height: 'auto' }}
+        />
+        {processing ? (
+          <Spinner
+            animation="grow"
+            variant="light"
+            style={{ margin: 'auto' }}
+          />
+        ) : (
+          <Button
+            type="submit"
+            variant="warning"
+            disabled={processing}
+            style={{ marginLeft: 'auto' }}
+          >
+            Anmelden
+          </Button>
+        )}
+      </form>
+    </div>
+  );
 };
 
-export default connect(
-  null,
-  { login }
-)(LoginPage);
+export default LoginPage;
