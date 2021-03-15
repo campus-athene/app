@@ -69,6 +69,6 @@
         <!-- iPad Pro -->
         <!-- <icon src="res/ios/icon/icon-83.5@2x.png" width="167" height="167" /> -->
         <!-- iTunes Marketing Image -->
-        <!-- <icon src="res/ios/icon/icon-1024.png" width="1024" height="1024" /> -->
+        <icon src="res/ios/icon/iTunesArtwork@2x.png" width="1024" height="1024" />
     </platform>
 </widget>
