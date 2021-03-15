@@ -30,7 +30,7 @@ const MessageDialog = ({ messageId }) => {
       <Modal.Body>
         {createElement(
           'p',
-          { style: { overflowWrap: 'anywhere', userSelect: 'text' } },
+          { style: { overflowWrap: 'break-word', userSelect: 'text' } },
           ...body
             .split(/\r?\n/)
             .reduce((a, p, i) => [...a, ...(i ? [<br />] : []), p])

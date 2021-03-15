@@ -8,8 +8,14 @@ const PageFrame = ({ children, title, noBack }) => {
   const history = useHistory();
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <Navbar bg="dark" variant="dark" fixed="top">
+    <div
+      style={{ display: 'grid', gridTemplateRows: 'auto 1fr', height: '100vh' }}
+    >
+      <Navbar
+        bg="dark"
+        variant="dark"
+        style={{ paddingTop: 'calc(0.5rem + env(safe-area-inset-top))' }}
+      >
         <Navbar.Brand
           onClick={() => history.goBack()}
           style={{
@@ -19,17 +25,18 @@ const PageFrame = ({ children, title, noBack }) => {
             flexDirection: 'row',
             alignItems: 'center',
             paddingLeft: '1.25rem',
-            paddingRight: '1.25rem'
-          }}>
+            paddingRight: '1.25rem',
+          }}
+        >
           <FontAwesomeIcon icon={faAngleLeft} />
         </Navbar.Brand>
         <Navbar.Brand>{title || <>&nbsp;</>}</Navbar.Brand>
       </Navbar>
-      <Container style={{ marginTop: '3.5em', overflow: 'scroll' }}>
+      <Container style={{ overflowX: 'hidden', overflowY: 'scroll' }}>
         {children}
       </Container>
     </div>
   );
-}
+};
 
 export default PageFrame;
