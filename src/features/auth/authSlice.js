@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { dispatchInstructions } from '../../redux/instructions';
 import { setLoaded } from '../../redux/sync';
+import dummyResponse from './dummyResponse';
 
 const loadState = (state) => {
   try {
@@ -31,7 +32,14 @@ export const login = (username, password) => async (dispatch) => {
   if (!username || !password) return 'Bitte vervollständige deine Eingaben.';
 
   try {
-    const result = await session.login(username, password);
+    const dummy = username === 'dummy' && password === 'dummy';
+
+    const result = dummy
+      ? await new Promise((resolve) =>
+          setTimeout(() => resolve(dummyResponse), 2000)
+        )
+      : await session.login(username, password);
+
     dispatch(setLoaded());
     dispatchInstructions(dispatch, result.instructions);
     return null;
