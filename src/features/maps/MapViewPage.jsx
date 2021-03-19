@@ -1,12 +1,29 @@
+import { useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
 import Hammer from 'react-hammerjs';
-import stadtmitte from './data/stadtmitte.svg';
-import { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import stadtmitte from './data/stadtmitte.png';
+import lichtwiese from './data/lichtwiese.png';
+import windkanal from './data/windkanal.png';
 
 const MapViewPage = () => {
-  const { map } = useParams();
+  const { map: mapArg } = useParams();
+  const [mapSource, initialPos] =
+    mapArg === 'stadtmitte'
+      ? [stadtmitte, { x: 935, y: 610 }]
+      : mapArg === 'lichtwiese'
+      ? [lichtwiese, { x: 895, y: 920 }]
+      : mapArg === 'botanischergarten'
+      ? [lichtwiese, { x: 905, y: 240 }]
+      : mapArg === 'hochschulstadion'
+      ? [lichtwiese, { x: 440, y: 960 }]
+      : mapArg === 'windkanal'
+      ? [windkanal, { x: 250, y: 500 }]
+      : console.warn(`Map four ${mapArg} could not be found.`) || [
+          stadtmitte,
+          { x: 935, y: 610 },
+        ];
   const history = useHistory();
 
   const mapImg = useRef(null);
@@ -17,8 +34,8 @@ const MapViewPage = () => {
   // pinchstart pinchend
 
   const [mapPosBase, setMapPosBase] = useState({
-    x: visualViewport.width / 2 - 935,
-    y: visualViewport.height / 2 - 610,
+    x: visualViewport.width / 2 - initialPos.x,
+    y: visualViewport.height / 2 - initialPos.y,
     s: 1,
   });
   const [mapPosStart, setMapPosStart] = useState({ x: 0, y: 0 });
@@ -76,7 +93,7 @@ const MapViewPage = () => {
         >
           <img
             ref={mapImg}
-            src={stadtmitte}
+            src={mapSource}
             alt="Karte"
             style={{
               transform: getTransform(mapPosBase),
@@ -92,8 +109,8 @@ const MapViewPage = () => {
           display: 'grid',
           alignItems: 'center',
           justifyItems: 'center',
-          top: '1em',
-          left: '1em',
+          top: 'calc(1em + env(safe-area-inset-top))',
+          left: 'calc(1em + env(safe-area-inset-left))',
           background: '#aaaa',
           width: '3em',
           height: '3em',
