@@ -3,6 +3,7 @@ import { session } from "../api";
 import { dispatchInstructions } from "./instructions";
 import { NetworkError, ServerError } from "../api/errors";
 import { selectCreds } from "../features/auth/authSlice";
+import { getOffers } from "../features/courses/offersSlice";
 
 // Update used in useEffect must not be async.
 export const update = () => (dispatch) => {
@@ -21,6 +22,7 @@ const updateAsync = () => async (dispatch, getState) => {
     const response = await new session(creds).sync();
     dispatch(setLoaded(response.result));
     dispatchInstructions(dispatch, response.instructions);
+    dispatch(getOffers());
   }
   catch (err) {
     if (err instanceof NetworkError)

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { dispatchInstructions } from '../../redux/instructions';
 import { setLoaded } from '../../redux/sync';
+import { getOffers } from '../courses/offersSlice';
 import dummyResponse from './dummyResponse';
 
 const loadState = (state) => {
@@ -42,6 +43,7 @@ export const login = (username, password) => async (dispatch) => {
 
     dispatch(setLoaded());
     dispatchInstructions(dispatch, result.instructions);
+    dispatch(getOffers());
     return null;
   } catch (error) {
     dispatchInstructions(dispatch, error.instructions);

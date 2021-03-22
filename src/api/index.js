@@ -46,6 +46,19 @@ export class session {
     });
   });
 
+  getCourseOffers = () =>
+    new Promise((resolve, reject) => {
+      fetch(base + '/tucan/courseoffers', {
+        headers: { Authorization: `tucan ${this.token}` },
+      })
+        .then((response) => response.json())
+        .then((body) => {
+          if (body.success) resolve(body.result);
+          else reject(new ServerError(body.message));
+        })
+        .catch(() => reject(new NetworkError()));
+    });
+
   markMsgRead = async (messageId) => new Promise((resolve, reject) => {
     fetch(base + '/tucan/markmsgread', {
       method: "post",
@@ -112,22 +125,4 @@ export class session {
       return { success: false, message: "Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?" };
     }
   };
-
-  getExams = () => new Promise((resolve, reject) => {
-    fetch(base + "/tucan/exams", {
-      headers: { 'Authorization': `tucan ${this.token}` }
-    })
-    .then(response => response.json())
-    .then(body => {
-      if (body.success) {
-        resolve(body);
-      }
-      else {
-        reject(body.message ?? "Ein unbekannter Fehler ist aufgetreten.")
-      }
-    })
-    .catch(error => {
-      reject("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
-    });
-  });
 }

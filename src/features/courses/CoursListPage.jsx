@@ -3,12 +3,14 @@ import { ListGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { selectGroupedBySemester } from './coursesSlice';
 import PageFrame from '../common/PageFrame';
+import { useHistory } from 'react-router';
 
 const CoursListPage = () => {
+  const history = useHistory();
   const semesters = useSelector(selectGroupedBySemester());
   return (
     <PageFrame title="Veranstaltungen">
-      {semesters.map(({ id: semesterId, name: semesterName, courses }) => (
+      {semesters.map(({ id: semesterId, name: semesterName, courses }, index) => (
         <ListGroup
           key={semesterId}
           style={{ marginLeft: '-15px', marginRight: '-15px' }}
@@ -29,6 +31,15 @@ const CoursListPage = () => {
               </div>
             </ListGroup.Item>
           ))}
+          {/* It would be better if we check for the current registration semester. */}
+          {index === 0 && (
+            <ListGroup.Item action onClick={() => history.push('/coursereg')}>
+              <div style={{ display: 'flex', fontWeight: 'bold' }}>
+                <div style={{ flexGrow: '1' }}>Anmeldung</div>
+                <div>&gt;</div>
+              </div>
+            </ListGroup.Item>
+          )}
         </ListGroup>
       ))}
     </PageFrame>

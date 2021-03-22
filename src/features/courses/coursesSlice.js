@@ -34,14 +34,25 @@ export const { reset } = coursesSlice.actions;
 
 export const selectGroupedBySemester = () => ({ courses }) =>
   Object.values(
-    Object.values(courses.items).reduce((s, c) => {
-      (s[c.semester] = s[c.semester] || {
-        id: c.semester,
-        name: semesterDescs[c.semester] || 'Sonstige',
-        courses: [],
-      }).courses.push(c);
-      return s;
-    }, {})
+    Object.values(courses.items).reduce(
+      (s, c) => {
+        (s[c.semester] = s[c.semester] || {
+          id: c.semester,
+          name: semesterDescs[c.semester] || 'Sonstige',
+          courses: [],
+        }).courses.push(c);
+        return s;
+      },
+      // Force add SoSe 2021 to ensure registration is offered on CourseListPage.
+      // Should be changed to current registration semester.
+      {
+        15096000: {
+          id: 15096000,
+          name: semesterDescs[15096000],
+          courses: [],
+        },
+      }
+    )
   ).sort((a, b) => b.id - a.id);
 
 export default coursesSlice.reducer;

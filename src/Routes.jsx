@@ -24,7 +24,7 @@ const Routes = ({ loggedIn }) =>
       <Route path="/courses">
         <CoursListPage />
       </Route>
-      <Route path="/classreg">
+      <Route path="/coursereg">
         <CourseRegPage />
       </Route>
       <Route path="/exams/:id">
