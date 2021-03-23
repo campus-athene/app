@@ -16,7 +16,6 @@ const offersSlice = createSlice({
 export const { reset } = offersSlice.actions;
 
 export const getOffers = () => async (dispatch, getState) => {
-  console.log('Getting offers.');
   const creds = selectCreds()(getState(), dispatch);
   try {
     const offers = await new session(creds).getCourseOffers();
