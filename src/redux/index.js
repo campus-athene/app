@@ -24,6 +24,16 @@ const rootReducer = (state, action) => {
     // Todo: We also have to navigate to / here
   }
 
+  if (action.type === '@@INIT' && state)
+    console.warn(
+      'An @@INIT action occured even though the state is not empty.'
+    );
+  if (!state) {
+    if (action.type !== '@@INIT')
+      console.warn(`State is empty but action is '${action.type}'`);
+    action.type = '@@INIT';
+  }
+
   return appReducer(state, action);
 };
 
