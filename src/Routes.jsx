@@ -1,6 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
+import { selectCreds } from './features/auth/authSlice';
 import LoginPage from './features/auth/LoginPage';
 import HomePage from './features/home/HomePage';
 import MessagesPage from './features/messages/MessagesPage';
@@ -12,8 +13,8 @@ import OappPage from './features/oapp/OappPage';
 import OappArticlePage from './features/oapp/OappArticlePage';
 import MapsPage from './features/maps/MapsPage';
 
-const Routes = ({ loggedIn }) =>
-  loggedIn ? (
+const Routes = () =>
+  useSelector(selectCreds()) ? (
     <Switch>
       <Route path="/messages/:id">
         <MessagesPage />
@@ -57,4 +58,4 @@ const NoMatch = () => {
   throw new Error('The requested path could not be found.');
 };
 
-export default connect((state) => ({ loggedIn: state.auth.creds }))(Routes);
+export default Routes;
