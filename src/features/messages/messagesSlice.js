@@ -7,10 +7,18 @@ const loadState = () => {
   try {
     const stored = localStorage.getItem('messages');
     if (stored) JSON.parse(stored).forEach((m) => (items[m.id] = m));
+    markOldMsgsRead(items);
   } catch (e) {
     console.error(e);
   }
   return { items };
+};
+
+const markOldMsgsRead = (msgs) => {
+  Object.values(msgs)
+    .reverse()
+    .forEach((m, i) => (m.unread = m.unread && i < 25));
+  return msgs;
 };
 
 const messagesSlice = createSlice({
@@ -24,6 +32,7 @@ const messagesSlice = createSlice({
         'messages',
         JSON.stringify(Object.values(payload.messages))
       );
+      markOldMsgsRead(state.items);
     },
     markRead(state, { payload }) {
       if (state.items[payload.messageId])
