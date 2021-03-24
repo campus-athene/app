@@ -19,7 +19,10 @@ const MessageDialog = ({ messageId }) => {
     <Modal show centered scrollable>
       <Modal.Header style={{ display: 'block' }}>
         <div
-          style={{ fontSize: '1.2em', fontWeight: 'bold', userSelect: 'text' }}
+          style={{
+            fontSize: '1.2em',
+            fontWeight: 'bold',
+          }}
         >
           {subject}
         </div>
@@ -30,7 +33,13 @@ const MessageDialog = ({ messageId }) => {
       <Modal.Body>
         {createElement(
           'p',
-          { style: { overflowWrap: 'break-word', userSelect: 'text' } },
+          {
+            style: {
+              overflowWrap: 'break-word',
+              userSelect: 'text',
+              '-webkit-user-select': 'text',
+            },
+          },
           ...body
             .split(/\r?\n/)
             .reduce((a, p, i) => [...a, ...(i ? [<br />] : []), p])
