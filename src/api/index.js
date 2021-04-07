@@ -9,7 +9,7 @@ export class session {
   }
 
   static login = (username, password) => new Promise((resolve, reject) => {
-    fetch(base + "/account/login", {
+    fetch(base + "/account/login2", {
       method: "post",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password })

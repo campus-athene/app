@@ -1,8 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
-import { dispatchInstructions } from '../../redux/instructions';
-import { setLoaded } from '../../redux/sync';
-import { getOffers } from '../courses/offersSlice';
+import { update } from '../../redux/sync';
 import dummyResponse from './dummyResponse';
 
 const loadState = (state) => {
@@ -35,19 +33,18 @@ export const login = (username, password) => async (dispatch) => {
   try {
     const dummy = username === 'dummy' && password === 'dummy';
 
-    const result = dummy
+    const { result: creds } = dummy
       ? await new Promise((resolve) =>
           setTimeout(() => resolve(dummyResponse), 2000)
         )
       : await session.login(username, password);
 
-    dispatch(setLoaded());
-    dispatchInstructions(dispatch, result.instructions);
-    dispatch(getOffers());
+    dispatch(updateCreds({ creds }));
+    dispatch(update());
     return null;
   } catch (error) {
-    dispatchInstructions(dispatch, error.instructions);
-    return error;
+    dispatch(logout());
+    return error.toString();
   }
 };
 
