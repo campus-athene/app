@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { ListGroup, Button, Spinner } from 'react-bootstrap';
+import { ListGroup, Button } from 'react-bootstrap';
 import PageFrame from '../common/PageFrame';
 import { selectLists, selectSyncState } from './offersSlice';
 import CourseRegModal from './CourseRegModal';
