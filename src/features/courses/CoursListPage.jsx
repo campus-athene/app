@@ -4,12 +4,13 @@ import { useSelector } from 'react-redux';
 import { selectGroupedBySemester } from './coursesSlice';
 import PageFrame from '../common/PageFrame';
 import { useHistory } from 'react-router';
+import { selectSyncState } from '../../redux/sync';
 
 const CoursListPage = () => {
   const history = useHistory();
   const semesters = useSelector(selectGroupedBySemester());
   return (
-    <PageFrame title="Veranstaltungen">
+    <PageFrame title="Veranstaltungen" syncState={useSelector(selectSyncState())}>
       {semesters.map(({ id: semesterId, name: semesterName, courses }, index) => (
         <ListGroup
           key={semesterId}

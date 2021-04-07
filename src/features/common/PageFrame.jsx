@@ -4,12 +4,21 @@ import { Navbar, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 
-const PageFrame = ({ children, title, noBack }) => {
+const PageFrame = ({
+  children,
+  title,
+  noBack,
+  syncState: { isLoading, isOffline } = { isLoading: false, isOffline: false },
+}) => {
   const history = useHistory();
 
   return (
     <div
-      style={{ display: 'grid', gridTemplateRows: 'auto 1fr', height: '100vh' }}
+      style={{
+        display: 'grid',
+        gridTemplateRows: 'auto auto 1fr',
+        height: '100vh',
+      }}
     >
       <Navbar
         bg="dark"
@@ -32,7 +41,21 @@ const PageFrame = ({ children, title, noBack }) => {
         </Navbar.Brand>
         <Navbar.Brand>{title || <>&nbsp;</>}</Navbar.Brand>
       </Navbar>
-      <Container style={{ overflowX: 'hidden', overflowY: 'scroll' }}>
+      {(isLoading || isOffline) && (
+        <div
+          style={{
+            background: '#777',
+            textAlign: 'center',
+            color: '#fff',
+            letterSpacing: '0.05em',
+          }}
+        >
+          {isLoading ? 'Lädt...' : 'Offline'}
+        </div>
+      )}
+      <Container
+        style={{ overflowX: 'hidden', overflowY: 'scroll', gridRow: '3' }}
+      >
         {children}
       </Container>
     </div>

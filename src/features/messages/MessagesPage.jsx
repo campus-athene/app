@@ -5,6 +5,7 @@ import { ListGroup, Row } from 'react-bootstrap';
 import PageFrame from '../common/PageFrame';
 import MessageDialog from './MessageDialog';
 import { selectAllMessages } from './messagesSlice';
+import { selectSyncState } from '../../redux/sync';
 
 const MessagesPage = () => {
   const history = useHistory();
@@ -12,7 +13,7 @@ const MessagesPage = () => {
   const selectedId = useParams().id;
 
   return (
-    <PageFrame title="Nachrichten">
+    <PageFrame title="Nachrichten"  syncState={useSelector(selectSyncState())}>
       <Row>
         <ListGroup variant="flush">
           {messages.reverse().map(({ id, subject, from, date, unread }) => (

@@ -7,6 +7,7 @@ import convertGrade from './gradeConverter';
 import { selectExamOffers, selectExamsGroupedBySemester } from './examsSlice';
 import { Register, Unregister } from '../../icons';
 import ExamRegModal from './ExamRegModal';
+import { selectSyncState } from '../../redux/sync';
 
 const clip = {
   whiteSpace: 'nowrap',
@@ -29,7 +30,7 @@ const ExamListPage = () => {
   const [selectedExam, setSelectedExam] = useState();
 
   return (
-    <PageFrame title="Prüfungen">
+    <PageFrame title="Prüfungen" syncState={useSelector(selectSyncState())}>
       { groupedExams.map(({ id, display, exams }) =>
         <ListGroup key={id} style={{ marginLeft: '-15px', marginRight: '-15px' }} variant="flush">
           <ListGroup.Item className='bg-light' style={clip}>

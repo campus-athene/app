@@ -5,10 +5,15 @@ import { selectCreds } from '../auth/authSlice';
 
 const offersSlice = createSlice({
   name: 'offers',
-  initialState: { lists: [] },
+  initialState: { lists: [], hasLoaded: false, error: null },
   reducers: {
-    reset(state, action) {
-      state.lists = action.payload;
+    reset(state, { payload }) {
+      state.lists = payload;
+      state.hasLoaded = true;
+      state.error = null;
+    },
+    setError(state, { payload }) {
+      state.error = payload;
     },
   },
 });
@@ -39,6 +44,11 @@ export const register = (registration) => async (dispatch, getState) => {
     return error;
   }
 };
+
+export const selectSyncState = () => ({ offers: { hasLoaded, error } }) => ({
+  isLoading: !hasLoaded && !error,
+  isOffline: !!error,
+});
 
 export const selectLists = ({ offers }) => offers.lists;
 export const selectOffer = (listId, moduleId) => ({ offers }) =>
