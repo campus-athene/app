@@ -7,7 +7,6 @@ import PageFrame from '../common/PageFrame';
 import Logo from '../common/Logo';
 import { selectUnreadCount } from '../messages/messagesSlice';
 import { Envelope, Exam, Lecture, Logout, Map, Orientation } from '../../icons';
-import { selectSyncState } from '../../redux/sync';
 
 const HomePage = ({ logout }) => {
   const [logoutModal, setLogoutModal] = useState();
@@ -19,7 +18,7 @@ const HomePage = ({ logout }) => {
       <Icon style={{ display: 'inline-block', width: '1.875em', marginLeft: '0.125em', marginRight: '0.625em' }} />{children}</h4>;
 
   return (
-    <PageFrame noBack syncState={useSelector(selectSyncState())}>
+    <PageFrame noBack>
       <Logo style={{ textAlign: 'center', paddingTop: '2rem', height: '10rem' }} />
       <HomeButton target={'/messages'} icon={Envelope}>Nachrichten{
         unreadMsgs
