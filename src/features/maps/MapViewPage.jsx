@@ -65,7 +65,7 @@ const MapViewPage = () => {
   };
 
   return (
-    <>
+    <div style={{ height: '100vh' }}>
       <Hammer
         onPan={onMapMove}
         onPinch={onMapMove}
@@ -84,10 +84,7 @@ const MapViewPage = () => {
         <div
           style={{
             position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
+            inset: 0,
             background: '#dad8c8',
           }}
         >
@@ -121,7 +118,7 @@ const MapViewPage = () => {
       >
         <FontAwesomeIcon icon={faAngleLeft} color="white" />
       </div>
-    </>
+    </div>
   );
 };
 
