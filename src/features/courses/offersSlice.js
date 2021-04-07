@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { dispatchInstructions } from '../../redux/instructions';
+import { selectSyncState as selectGlobalSyncState } from '../../redux/sync';
 import { selectCreds } from '../auth/authSlice';
 
 const offersSlice = createSlice({
@@ -18,7 +19,7 @@ const offersSlice = createSlice({
   },
 });
 
-export const { reset } = offersSlice.actions;
+export const { reset, setError } = offersSlice.actions;
 
 export const getOffers = () => async (dispatch, getState) => {
   const creds = selectCreds()(getState(), dispatch);
@@ -26,6 +27,7 @@ export const getOffers = () => async (dispatch, getState) => {
     const offers = await new session(creds).getCourseOffers();
     dispatch(reset(offers));
   } catch (error) {
+    dispatch(setError(String(error)));
     console.error(error);
   }
 };
@@ -45,10 +47,14 @@ export const register = (registration) => async (dispatch, getState) => {
   }
 };
 
-export const selectSyncState = () => ({ offers: { hasLoaded, error } }) => ({
-  isLoading: !hasLoaded && !error,
-  isOffline: !!error,
-});
+export const selectSyncState = () => (state) => {
+  const { hasLoaded, error } = state.offers;
+  const { isOffline } = selectGlobalSyncState()(state);
+  return {
+    isLoading: !hasLoaded && !error && !isOffline,
+    isOffline: !!error || isOffline,
+  };
+};
 
 export const selectLists = ({ offers }) => offers.lists;
 export const selectOffer = (listId, moduleId) => ({ offers }) =>
