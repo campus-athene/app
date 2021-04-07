@@ -11,7 +11,8 @@ import ExamListPage from './features/exams/ExamListPage';
 import ExamDetailsPage from './features/exams/ExamDetailsPage';
 import OappPage from './features/oapp/OappPage';
 import OappArticlePage from './features/oapp/OappArticlePage';
-import MapsPage from './features/maps/MapsPage';
+import MapViewPage from './features/maps/MapViewPage';
+import MapListPage from './features/maps/MapListPage';
 
 const Routes = () =>
   useSelector(selectCreds()) ? (
@@ -40,8 +41,11 @@ const Routes = () =>
       <Route path="/oapp">
         <OappPage />
       </Route>
+      <Route path="/maps/:map">
+        <MapViewPage />
+      </Route>
       <Route path="/maps">
-        <MapsPage />
+        <MapListPage />
       </Route>
       <Route path="/" exact>
         <HomePage />
