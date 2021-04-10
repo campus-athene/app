@@ -10,24 +10,38 @@ import ErrorBoundary from './ErrorBoundary';
 import Routes from './Routes';
 import './App.css';
 
-const store = configureStore({
-  reducer: rootReducer,
-});
-// Check for outdated or missing state and fetch is asyncronously from the server.
-store.dispatch(update());
+const initializeCordova = () => {
+  // Initialize plugins etc. here
+};
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <ReactRouter>
-        <ErrorBoundary>
-          <Routes />
-        </ErrorBoundary>
-      </ReactRouter>
-    </Provider>
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const initializeReact = () => {
+  const store = configureStore({
+    reducer: rootReducer,
+  });
+  // Check for outdated or missing state and fetch is asyncronously from the server.
+  store.dispatch(update());
+
+  ReactDOM.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <ReactRouter>
+          <ErrorBoundary>
+            <Routes />
+          </ErrorBoundary>
+        </ReactRouter>
+      </Provider>
+    </React.StrictMode>,
+    document.getElementById('root')
+  );
+};
+
+if (window.cordova)
+  document.addEventListener(
+    'deviceready',
+    () => initializeCordova() || initializeReact(),
+    false
+  );
+else initializeReact();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
