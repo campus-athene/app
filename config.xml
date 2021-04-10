@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.oliverrm.campus" version="1.0.0" defaultlocale="de-DE" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Campus</name>
+    <description>
+        Eine App für Studenten.
+    </description>
+    <author email="campus@oliverrm.de" href="https://www.study-campus.de/">
+        Campus Entwicklerteam
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <preference name="Orientation" value="portrait" />
+
+    <platform name="android">
+        <allow-intent href="market:*" />
+
+        <resource-file src="res/android/colors.xml" target="/app/src/main/res/values/colors.xml" />
+
+        <icon background="@color/background" density="ldpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_ldpi.png" />
+        <icon background="@color/background" density="mdpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_mdpi.png" />
+        <icon background="@color/background" density="hdpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_hdpi.png" />
+        <icon background="@color/background" density="xhdpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_xhdpi.png" />
+        <icon background="@color/background" density="xxhdpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_xxhdpi.png" />
+        <icon background="@color/background" density="xxxhdpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_xxxhdpi.png" />
+    </platform>
+
+    <platform name="ios">
+        <allow-intent href="itms:*" />
+        <allow-intent href="itms-apps:*" />
+        <preference name="scheme" value="cordova-app" />
+        <preference name="hostname" value="localhost" />
+        <preference name="target-device" value="handset" />
+
+        <edit-config target="CFBundleLocalizations" file="*-Info.plist" mode="overwrite">
+            <array>
+                <string>de</string>
+            </array>
+        </edit-config>
+
+        <!-- iOS 8.0+ -->
+        <!-- iPhone 6 Plus  -->
+        <icon src="res/ios/icon/icon-60@3x.png" width="180" height="180" />
+        <!-- iOS 7.0+ -->
+        <!-- iPhone / iPod Touch  -->
+        <icon src="res/ios/icon/icon-60.png" width="60" height="60" />
+        <icon src="res/ios/icon/icon-60@2x.png" width="120" height="120" />
+        <!-- iPad -->
+        <!-- <icon src="res/ios/icon/icon-76.png" width="76" height="76" />
+        <icon src="res/ios/icon/icon-76@2x.png" width="152" height="152" /> -->
+        <!-- Spotlight Icon -->
+        <icon src="res/ios/icon/icon-small-40.png" width="40" height="40" />
+        <icon src="res/ios/icon/icon-small-40@2x.png" width="80" height="80" />
+        <icon src="res/ios/icon/icon-small-40@3x.png" width="120" height="120" />
+        <!-- iOS 6.1 -->
+        <!-- iPhone / iPod Touch -->
+        <icon src="res/ios/icon/icon.png" width="57" height="57" />
+        <icon src="res/ios/icon/icon@2x.png" width="114" height="114" />
+        <!-- iPad -->
+        <!-- <icon src="res/ios/icon/icon-72.png" width="72" height="72" />
+        <icon src="res/ios/icon/icon-72@2x.png" width="144" height="144" /> -->
+        <!-- iPad Pro -->
+        <!-- <icon src="res/ios/icon/icon-167.png" width="167" height="167" /> -->
+        <!-- iPhone Spotlight and Settings Icon -->
+        <icon src="res/ios/icon/icon-small.png" width="29" height="29" />
+        <icon src="res/ios/icon/icon-small@2x.png" width="58" height="58" />
+        <icon src="res/ios/icon/icon-small@3x.png" width="87" height="87" />
+        <!-- iPad Spotlight and Settings Icon -->
+        <!-- <icon src="res/ios/icon/icon-50.png" width="50" height="50" />
+        <icon src="res/ios/icon/icon-50@2x.png" width="100" height="100" /> -->
+        <!-- iPad Pro -->
+        <!-- <icon src="res/ios/icon/icon-83.5@2x.png" width="167" height="167" /> -->
+        <!-- iTunes Marketing Image -->
+        <icon src="res/ios/icon/iTunesArtwork@2x.png" width="1024" height="1024" />
+    </platform>
+</widget>

@@ -1,6 +1,7 @@
 {
   "name": "campus",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "author": "OliverRM",
   "private": true,
   "homepage": "./",
   "dependencies": {
@@ -44,6 +45,19 @@
   },
   "devDependencies": {
     "aws-sdk": "^2.657.0",
+    "cordova": "^10.0.0",
+    "cordova-android": "^9.0.0",
+    "cordova-ios": "^6.2.0",
+    "cordova-plugin-whitelist": "^1.3.4",
     "mime": "^2.4.4"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {}
+    },
+    "platforms": [
+      "ios",
+      "android"
+    ]
   }
 }
