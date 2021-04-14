@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "341140806399",
+    "project_id": "campus-53bab",
+    "storage_bucket": "campus-53bab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341140806399:android:9144533d28c413f2750aca",
+        "android_client_info": {
+          "package_name": "com.oliverrm.campus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341140806399-hfo4608e3e2r2i6trcok9l4u7db8m75v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOD0smFMt6xPz4I1WsEkKqxBzhII-2PAI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341140806399-hfo4608e3e2r2i6trcok9l4u7db8m75v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

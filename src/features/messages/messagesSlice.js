@@ -21,6 +21,14 @@ const markOldMsgsRead = (msgs) => {
   return msgs;
 };
 
+const updateBadge = (count) =>
+  window.push &&
+  window.push.setApplicationIconBadgeNumber(
+    () => {},
+    (error) => console.error(`Error updating badge: ${error}`),
+    count
+  );
+
 const messagesSlice = createSlice({
   name: 'messages',
   initialState: { items: {} },
@@ -33,10 +41,12 @@ const messagesSlice = createSlice({
         JSON.stringify(Object.values(payload.messages))
       );
       markOldMsgsRead(state.items);
+      updateBadge(selectUnreadCount()({ messages: state }));
     },
     markRead(state, { payload }) {
       if (state.items[payload.messageId])
         state.items[payload.messageId].unread = false;
+      updateBadge(selectUnreadCount()({ messages: state }));
     },
   },
   extraReducers: (builder) => {

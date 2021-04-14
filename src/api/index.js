@@ -28,6 +28,30 @@ export class session {
     });
   });
 
+  subscribePNS = (registrationId, registrationType) => new Promise((resolve, reject) => {
+    fetch(base + '/account/subscribepns', {
+      method: "post",
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `tucan ${this.token}`
+      },
+      body: JSON.stringify({ registrationId, registrationType })
+    })
+    .then(response => response.json())
+    .then(body => {
+    if (body.success) {
+      resolve(body);
+    }
+    else {
+      reject(body.message ?? "Ein unbekannter Fehler ist aufgetreten.");
+    }
+    })
+    .catch(error => {
+      console.log("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
+      reject("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
+    });
+  });
+
   sync = () => new Promise((resolve, reject) => {
     fetch(base + "/tucan/sync", {
       headers: { 'Authorization': `tucan ${this.token}` }

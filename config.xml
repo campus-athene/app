@@ -20,6 +20,7 @@
     <platform name="android">
         <allow-intent href="market:*" />
 
+        <resource-file src="google-services.json" target="/app/google-services.json" />
         <resource-file src="res/android/colors.xml" target="/app/src/main/res/values/colors.xml" />
 
         <icon background="@color/background" density="ldpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_ldpi.png" />
