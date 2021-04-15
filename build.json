@@ -1,10 +1,17 @@
 {
   "ios": {
     "debug": {
-      "developmentTeam": "7MDBBP5CTL"
+      "codeSignIdentitiy": "iPhone Developer",
+      "developmentTeam": "7MDBBP5CTL",
+      "packageType": "developer",
+      "iCloudContainerEnvironment": "Development"
     },
     "release": {
-      "developmentTeam": "7MDBBP5CTL"
+      "codeSignIdentitiy": "iPhone Distribution",
+      "developmentTeam": "7MDBBP5CTL",
+      "provisioningProfile": "a0666a15-d619-4efa-b0cb-a4bcf1718540",
+      "packageType": "app-store",
+      "iCloudContainerEnvironment": "Production"
     }
   }
 }
