@@ -18,7 +18,7 @@ const handlers = {
     dispatch(updateCreds({ creds }));
   },
   logout: (dispatch) => {
-    dispatch(logout);
+    dispatch(logout());
   },
   updateMessages: (dispatch, { messages }) => {
     dispatch(resetMessages({ messages }));

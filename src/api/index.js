@@ -62,7 +62,7 @@ export class session {
         resolve(body);
       }
       else {
-        reject(new ServerError(body.message));
+        reject(new ServerError(body));
       }
     })
     .catch(error => {
@@ -78,7 +78,7 @@ export class session {
         .then((response) => response.json())
         .then((body) => {
           if (body.success) resolve(body.result);
-          else reject(new ServerError(body.message));
+          else reject(new ServerError(body));
         })
         .catch(() => reject(new NetworkError()));
     });

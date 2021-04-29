@@ -24,7 +24,9 @@ const updateAsync = () => async (dispatch, getState) => {
     dispatch(getOffers());
   } catch (err) {
     if (err instanceof NetworkError) dispatch(setOffline());
-    else
+    else {
+      if (err instanceof ServerError)
+        dispatchInstructions(dispatch, err.response.instructions);
       dispatch(
         setError(
           err instanceof ServerError
@@ -32,6 +34,7 @@ const updateAsync = () => async (dispatch, getState) => {
             : String(err)
         )
       );
+    }
   }
 };
 
