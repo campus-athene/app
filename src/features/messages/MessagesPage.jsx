@@ -1,11 +1,23 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
 import { ListGroup, Row } from 'react-bootstrap';
 import PageFrame from '../common/PageFrame';
 import MessageDialog from './MessageDialog';
-import { selectAllMessages } from './messagesSlice';
+import { markAllRead, selectAllMessages } from './messagesSlice';
 import { selectSyncState } from '../../redux/sync';
+
+// Must start with a capital letter as it is a React component.
+const ContextMenu = () => {
+  const dispatch = useDispatch();
+  return (
+    <ListGroup>
+      <ListGroup.Item action onClick={() => dispatch(markAllRead())}>
+        Alle als gelesen markieren
+      </ListGroup.Item>
+    </ListGroup>
+  );
+};
 
 const MessagesPage = () => {
   const history = useHistory();
@@ -13,7 +25,11 @@ const MessagesPage = () => {
   const selectedId = useParams().id;
 
   return (
-    <PageFrame title="Nachrichten"  syncState={useSelector(selectSyncState())}>
+    <PageFrame
+      title="Nachrichten"
+      more={ContextMenu()}
+      syncState={useSelector(selectSyncState())}
+    >
       <Row>
         <ListGroup variant="flush">
           {messages.reverse().map(({ id, subject, from, date, unread }) => (

@@ -1,13 +1,14 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Navbar, Container } from 'react-bootstrap';
+import { Navbar, Container, OverlayTrigger } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 
 const PageFrame = ({
   children,
   title,
   noBack,
+  more,
   syncState: { isLoading, isOffline } = { isLoading: false, isOffline: false },
 }) => {
   const history = useHistory();
@@ -39,7 +40,24 @@ const PageFrame = ({
         >
           <FontAwesomeIcon icon={faAngleLeft} />
         </Navbar.Brand>
-        <Navbar.Brand>{title || <>&nbsp;</>}</Navbar.Brand>
+        <Navbar.Brand
+          style={{
+            flexGrow: 1,
+          }}
+        >
+          {title || <>&nbsp;</>}
+        </Navbar.Brand>
+        {more && (
+          <Navbar.Brand
+            style={{
+              marginRight: 0,
+            }}
+          >
+            <OverlayTrigger placement="bottom" overlay={more}>
+              <FontAwesomeIcon icon={faEllipsisH} />
+            </OverlayTrigger>
+          </Navbar.Brand>
+        )}
       </Navbar>
       {(isLoading || isOffline) && (
         <div

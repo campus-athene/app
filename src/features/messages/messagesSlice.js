@@ -7,19 +7,14 @@ const loadState = () => {
   try {
     const stored = localStorage.getItem('messages');
     if (stored) JSON.parse(stored).forEach((m) => (items[m.id] = m));
-    markOldMsgsRead(items);
   } catch (e) {
     console.error(e);
   }
   return { items };
 };
 
-const markOldMsgsRead = (msgs) => {
-  Object.values(msgs)
-    .reverse()
-    .forEach((m, i) => (m.unread = m.unread && i < 25));
-  return msgs;
-};
+const saveState = (state) =>
+  localStorage.setItem('messages', JSON.stringify(Object.values(state.items)));
 
 const updateBadge = (count) =>
   window.push &&
@@ -36,17 +31,19 @@ const messagesSlice = createSlice({
     reset(state, { payload }) {
       state.items = {};
       payload.messages.forEach((m) => (state.items[m.id] = m));
-      localStorage.setItem(
-        'messages',
-        JSON.stringify(Object.values(payload.messages))
-      );
-      markOldMsgsRead(state.items);
+      saveState(state);
       updateBadge(selectUnreadCount()({ messages: state }));
     },
     markRead(state, { payload }) {
       if (state.items[payload.messageId])
         state.items[payload.messageId].unread = false;
+      saveState(state);
       updateBadge(selectUnreadCount()({ messages: state }));
+    },
+    markAllRead(state) {
+      Object.values(state.items).forEach((m) => (m.unread = false));
+      saveState(state);
+      updateBadge(0);
     },
   },
   extraReducers: (builder) => {
@@ -73,6 +70,12 @@ export const markRead = (messageId) => async (dispatch, getState) => {
   return response.success
     ? null
     : response.message || 'Ein unbekannter Fehler ist aufgetreten.';
+};
+
+export const markAllRead = () => async (dispatch, getState) => {
+  dispatch(messagesSlice.actions.markAllRead());
+  const response = await new session(getState().auth.creds).markAllMsgsRead();
+  dispatchInstructions(dispatch, response.instructions);
 };
 
 export default messagesSlice.reducer;
