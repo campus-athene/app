@@ -6,7 +6,7 @@ import articles from './articles.json';
 
 const OappArticlePage = () => {
   const params = useParams();
-  const url = `/${params.l1}/${params.l2}/${params.l3}/`;
+  const url = params.l3 ? `/${params.l1}/${params.l2}/${params.l3}/` : `/${params.l1}/${params.l2}/`;
   const a = articles[url];
   return <PageFrame title={a.title1}>
     {a.image ? <img src={'https://www.oapp.tu-darmstadt.de' + a.image} alt="" style={{ width: '100%' }} /> : null}

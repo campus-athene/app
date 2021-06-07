@@ -45,6 +45,9 @@ const Routes = () => {
       <Route path="/oapp/:l1/:l2/:l3">
         <OappArticlePage />
       </Route>
+      <Route path="/oapp/:l1/:l2">
+        <OappArticlePage />
+      </Route>
       <Route path="/oapp">
         <OappPage />
       </Route>
