@@ -12,14 +12,7 @@ const OappArticlePage = () => {
   const a = articles[url];
   return (
     <PageFrame title={a.title1}>
-      {a.image ? (
-        <img
-          src={'https://www.oapp.tu-darmstadt.de' + a.image}
-          alt=""
-          style={{ width: '100%' }}
-        />
-      ) : null}
-      <h2 style={{ userSelect: 'text' }}>{a.title2}</h2>
+      <h2 style={{ userSelect: 'text', marginTop: '1.2rem' }}>{a.title2}</h2>
       {!a.section2 ? (
         <div
           style={{ userSelect: 'text' }}
