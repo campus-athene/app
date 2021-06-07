@@ -42,14 +42,17 @@ const MapViewPage = () => {
   const [mapPosStart, setMapPosStart] = useState({ x: 0, y: 0 });
   const mapPosCurrent = useRef(mapPosBase);
 
+  const limitScale = (s) => Math.max(Math.min(s, 4), 0.3);
   const calcMapPos = (e) => ({
     x:
       e.center.x +
-      e.scale * (mapPosBase.x + e.deltaX - mapPosStart.x - e.center.x),
+      (limitScale(mapPosBase.s * e.scale) / mapPosBase.s) *
+        (mapPosBase.x + e.deltaX - mapPosStart.x - e.center.x),
     y:
       e.center.y +
-      e.scale * (mapPosBase.y + e.deltaY - mapPosStart.y - e.center.y),
-    s: mapPosBase.s * e.scale,
+      (limitScale(mapPosBase.s * e.scale) / mapPosBase.s) *
+        (mapPosBase.y + e.deltaY - mapPosStart.y - e.center.y),
+    s: limitScale(mapPosBase.s * e.scale),
   });
 
   const getTransform = (pos) =>
