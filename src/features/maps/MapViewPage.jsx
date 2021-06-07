@@ -27,6 +27,7 @@ const MapViewPage = () => {
   const history = useHistory();
 
   const mapImg = useRef(null);
+  const requestRef = useRef();
 
   // Following event orders are possible for pinch:
   // pinchstart pinchend panstart panend
@@ -39,6 +40,7 @@ const MapViewPage = () => {
     s: 1,
   });
   const [mapPosStart, setMapPosStart] = useState({ x: 0, y: 0 });
+  const mapPosCurrent = useRef(mapPosBase);
 
   const calcMapPos = (e) => ({
     x:
@@ -53,8 +55,16 @@ const MapViewPage = () => {
   const getTransform = (pos) =>
     `translate(${pos.x + 'px'}, ${pos.y + 'px'}) scale(${pos.s})`;
 
+  const callback = () => {
+    requestRef.current = null;
+    if (!mapImg.current) return;
+    mapImg.current.style.transform = getTransform(mapPosCurrent.current);
+  };
+
   const onMapMove = (e) => {
-    mapImg.current.style.transform = getTransform(calcMapPos(e));
+    mapPosCurrent.current = calcMapPos(e);
+    if (!requestRef.current)
+      requestRef.current = requestAnimationFrame(callback);
   };
   const onMapStart = (e) => {
     setMapPosStart({ x: e.deltaX, y: e.deltaY });
