@@ -71,9 +71,16 @@ const LinkItem = ({ item, level, ...props }) => {
 };
 
 const OappPage = () => {
-  const [activeKey, setActiveKey] = useState([tree[0].id]);
-  const getKey = (l) => activeKey[l - 1];
-  const setKey = (l, key) => setActiveKey([...activeKey.slice(0, l - 1), key]);
+  const [selectedPath, setSelectedPath] = useState(
+    window.history.state?.path || [tree[0].id]
+  );
+  const getKey = (l) => selectedPath[l - 1];
+  const setKey = (l, key) => {
+    const path = [...selectedPath.slice(0, l - 1), key];
+    setSelectedPath(path);
+    // We can not use useHistory as it would rerender DOM.
+    window.history.replaceState({ path }, '');
+  };
 
   return (
     <PageFrame title="Orientierung">

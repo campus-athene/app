@@ -19,7 +19,15 @@ const OappArticlePage = () => {
           dangerouslySetInnerHTML={{ __html: a.section1 }}
         />
       ) : (
-        <Tabs defaultActiveKey="tab1">
+        <Tabs
+          defaultActiveKey="tab1"
+          style={{
+            marginLeft: '-15px',
+            marginRight: '-15px',
+            paddingLeft: '15px',
+            paddingRight: '15px',
+          }}
+        >
           <Tab title={a.tab1} eventKey="tab1">
             <div
               style={{ userSelect: 'text' }}
