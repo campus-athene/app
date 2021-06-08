@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useHistory } from 'react-router-dom';
-import { ListGroup, Row } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import PageFrame from '../common/PageFrame';
 import MessageDialog from './MessageDialog';
 import { markAllRead, selectAllMessages } from './messagesSlice';
@@ -44,7 +44,7 @@ const MessagesPage = () => {
                 color: '#000000',
               }}
             >
-              {
+              {unread && (
                 <div
                   style={{
                     width: '0.5em',
@@ -55,7 +55,7 @@ const MessagesPage = () => {
                     margin: '0 0.3em 0 -0.8em',
                   }}
                 />
-              }
+              )}
               <div style={{ flexGrow: 1, flexShrink: 1, fontSize: '1.1em' }}>
                 {from}
               </div>
