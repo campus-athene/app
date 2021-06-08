@@ -30,29 +30,61 @@ const MessagesPage = () => {
       more={ContextMenu()}
       syncState={useSelector(selectSyncState())}
     >
-      <Row>
-        <ListGroup variant="flush">
-          {messages.reverse().map(({ id, subject, from, date, unread }) => (
-            <ListGroup.Item
-              key={id}
-              action
-              onClick={() => history.push(`/messages/${id}`)}
+      <ListGroup variant="flush" style={{ margin: '0 -15px' }}>
+        {messages.reverse().map(({ id, subject, body, from, date, unread }) => (
+          <ListGroup.Item
+            key={id}
+            action
+            onClick={() => history.push(`/messages/${id}`)}
+          >
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                color: '#000000',
+              }}
             >
-              <div
-                style={{
-                  fontSize: '1.2em',
-                  fontWeight: unread ? 'bold' : 'normal',
-                }}
-              >
-                {subject}
+              {
+                <div
+                  style={{
+                    width: '0.5em',
+                    height: '0.5em',
+                    borderRadius: '1em',
+                    background: '#ffb800',
+                    alignSelf: 'center',
+                    margin: '0 0.3em 0 -0.8em',
+                  }}
+                />
+              }
+              <div style={{ flexGrow: 1, flexShrink: 1, fontSize: '1.1em' }}>
+                {from}
               </div>
-              <div>
-                {date}: {from}
-              </div>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      </Row>
+              <div>{date}</div>
+            </div>
+            <div
+              style={{
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                color: '#000000',
+              }}
+            >
+              {subject}
+            </div>
+            <div
+              style={{
+                WebkitLineClamp: 2,
+                overflow: 'hidden',
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                maxHeight: '3em',
+              }}
+            >
+              {body}
+            </div>
+          </ListGroup.Item>
+        ))}
+      </ListGroup>
       {selectedId && <MessageDialog messageId={selectedId} />}
     </PageFrame>
   );
