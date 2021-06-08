@@ -24,7 +24,10 @@ const PageFrame = ({
       <Navbar
         bg="dark"
         variant="dark"
-        style={{ paddingTop: 'calc(0.5rem + env(safe-area-inset-top))' }}
+        style={{
+          paddingTop: 'calc(0.5rem + env(safe-area-inset-top))',
+          width: '100vw',
+        }}
       >
         <Navbar.Brand
           onClick={() => history.goBack()}
@@ -43,6 +46,10 @@ const PageFrame = ({
         <Navbar.Brand
           style={{
             flexGrow: 1,
+            marginRight: 0,
+            textOverflow: 'ellipsis',
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
           }}
         >
           {title || <>&nbsp;</>}
@@ -50,7 +57,13 @@ const PageFrame = ({
         {more && (
           <Navbar.Brand
             style={{
-              marginRight: 0,
+              margin: '-0.5rem -1rem -0.5rem 0',
+              alignSelf: 'stretch',
+              display: noBack ? 'none' : 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingLeft: '1.25rem',
+              paddingRight: '1.25rem',
             }}
           >
             <OverlayTrigger placement="bottom" overlay={more}>
