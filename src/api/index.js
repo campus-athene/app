@@ -1,176 +1,65 @@
-import { NetworkError, ServerError } from "./errors";
-const base = process.env.NODE_ENV === 'development' ?
-  "http://localhost:3010" :
-  "https://dffblc0bqe.execute-api.eu-central-1.amazonaws.com/v2";
+import { NetworkError, ServerError } from './errors';
+const base =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:3010'
+    : 'https://dffblc0bqe.execute-api.eu-central-1.amazonaws.com/v2';
 
 export class session {
   constructor(creds) {
     this.token = creds.token;
   }
 
-  static login = (username, password) => new Promise((resolve, reject) => {
-    fetch(base + "/account/login2", {
-      method: "post",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    })
-    .then(response => response.json())
-    .then(body => {
-      if (body.success) {
-        resolve(body);
-      }
-      else {
-        reject(body.message ?? "Ein unbekannter Fehler ist aufgetreten.")
-      }
-    })
-    .catch(error => {
-      reject("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
-    });
-  });
-
-  subscribePNS = (registrationId, registrationType) => new Promise((resolve, reject) => {
-    fetch(base + '/account/subscribepns', {
-      method: "post",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `tucan ${this.token}`
-      },
-      body: JSON.stringify({ registrationId, registrationType })
-    })
-    .then(response => response.json())
-    .then(body => {
-    if (body.success) {
-      resolve(body);
-    }
-    else {
-      reject(body.message ?? "Ein unbekannter Fehler ist aufgetreten.");
-    }
-    })
-    .catch(error => {
-      console.log("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
-      reject("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
-    });
-  });
-
-  sync = () => new Promise((resolve, reject) => {
-    fetch(base + "/tucan/sync", {
-      headers: { 'Authorization': `tucan ${this.token}` }
-    })
-    .then(response => response.json())
-    .then(body => {
-      if (body.success) {
-        resolve(body);
-      }
-      else {
-        reject(new ServerError(body));
-      }
-    })
-    .catch(error => {
-      reject(new NetworkError());
-    });
-  });
-
-  getCourseOffers = () =>
-    new Promise((resolve, reject) => {
-      fetch(base + '/tucan/courseoffers', {
-        headers: { Authorization: `tucan ${this.token}` },
-      })
-        .then((response) => response.json())
-        .then((body) => {
-          if (body.success) resolve(body.result);
-          else reject(new ServerError(body));
-        })
-        .catch(() => reject(new NetworkError()));
-    });
-
-  markMsgRead = async (messageId) => new Promise((resolve, reject) => {
-    fetch(base + '/tucan/markmsgread', {
-      method: "post",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `tucan ${this.token}`
-      },
-      body: JSON.stringify({ messageId })
-    })
-    .then(response => response.json())
-    .then(body => {
-    if (body.success) {
-      resolve(body);
-    }
-    else {
-      reject(body.message ?? "Ein unbekannter Fehler ist aufgetreten.");
-    }
-    })
-    .catch(error => {
-      console.log("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
-      reject("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
-    });
-  });
-
-  markAllMsgsRead = async (messageId) => new Promise((resolve, reject) => {
-    fetch(base + '/tucan/markallmsgsread', {
-      method: "post",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `tucan ${this.token}`
-      },
-      body: JSON.stringify({ messageId })
-    })
-    .then(response => response.json())
-    .then(body => {
-    if (body.success) {
-      resolve(body);
-    }
-    else {
-      reject(body.message ?? "Ein unbekannter Fehler ist aufgetreten.");
-    }
-    })
-    .catch(error => {
-      console.log("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
-      reject("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
-    });
-  });
-
-  registerCourse = async (rgtrArgs)  => new Promise((resolve, reject) => {
-    fetch(base + '/tucan/registercourse', {
-      method: "post",
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `tucan ${this.token}`
-      },
-      body: JSON.stringify(rgtrArgs)
-    })
-      .then(response => response.json())
-      .then(body => {
-      if (body.success) {
-        resolve(body);
-      }
-      else {
-        reject(body.message ?? "Ein unbekannter Fehler ist aufgetreten.");
-      }
-    })
-    .catch(error => {
-      console.log("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
-      reject("Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?");
-    });
-  });
-
-  registerExam = async (id, semester, type) => {
+  static sendAdvanced = async (path, headers, body) => {
+    let httpResponse;
     try {
-      const response = await fetch(base + '/tucan/registerexam', {
+      httpResponse = await fetch(base + path, {
         method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `tucan ${this.token}`
-        },
-        body: JSON.stringify({ id, semester, type })
+        headers,
+        body: JSON.stringify(body || {}),
       });
-      const body = await response.json();
-      
-      return body;
+    } catch (error) {
+      throw new NetworkError('Keine Internetverbindung!');
     }
-    catch {
-      return { success: false, message: "Ein unbekannter Fehler ist aufgetreten. Besteht eine Internetverbindung?" };
-    }
+
+    const response = await httpResponse.json();
+    if (!response.success) throw new ServerError(response);
+    return response;
   };
+
+  send = (path, body = null) =>
+    session.sendAdvanced(
+      path,
+      {
+        Authorization: `tucan ${this.token}`,
+        'Content-Type': 'application/json',
+      },
+      body
+    );
+
+  static login = (username, password) =>
+    session.sendAdvanced(
+      '/account/login2',
+      {
+        'Content-Type': 'application/json',
+      },
+      { username, password }
+    );
+
+  subscribePNS = (registrationId, registrationType) =>
+    this.send('/account/subscribepns', { registrationId, registrationType });
+
+  sync = () => this.send('/tucan/sync');
+
+  getCourseOffers = () => this.send('/tucan/courseoffers');
+
+  markMsgRead = async (messageId) =>
+    this.send('/tucan/markmsgread', { messageId });
+
+  markAllMsgsRead = () => this.send('/tucan/markallmsgsread');
+
+  registerCourse = async (rgtrArgs) =>
+    this.send('/tucan/registercourse', rgtrArgs);
+
+  registerExam = async (id, semester, type) =>
+    this.send('/tucan/registerexam', { id, semester, type });
 }

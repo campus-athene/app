@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
+import { NetworkError, ServerError } from '../../api/errors';
 import { dispatchInstructions } from '../../redux/instructions';
 import { descriptions as semesterDescs } from '../common/semesters';
 
@@ -34,9 +35,13 @@ export const registerExam = (id, semester, type) => async (dispatch, getState) =
   try {
     const response = await new session(getState().auth.creds).registerExam(id, semester, type);
     dispatchInstructions(dispatch, response.instructions);
-    return response.success ? null : (response.message || "Ein unbekannter Fehler ist aufgetreten.");
+    return null;
   }
-  catch { return "Ein unbekannter Fehler ist aufgetreten." }
+  catch (error) { 
+    if (error instanceof ServerError || error instanceof NetworkError)
+      return error.message;
+    throw error;
+  }
 }
 
 export const selectExam = (id) => ({ exams }) => exams.items[Number.parseInt(id)];

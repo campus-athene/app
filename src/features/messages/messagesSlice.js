@@ -67,9 +67,6 @@ export const markRead = (messageId) => async (dispatch, getState) => {
     messageId
   );
   dispatchInstructions(dispatch, response.instructions);
-  return response.success
-    ? null
-    : response.message || 'Ein unbekannter Fehler ist aufgetreten.';
 };
 
 export const markAllRead = () => async (dispatch, getState) => {
