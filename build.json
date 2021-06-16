@@ -3,7 +3,7 @@
     "debug": {
       "codeSignIdentitiy": "iPhone Developer",
       "developmentTeam": "7MDBBP5CTL",
-      "packageType": "developer",
+      "packageType": "development",
       "iCloudContainerEnvironment": "Development"
     },
     "release": {
