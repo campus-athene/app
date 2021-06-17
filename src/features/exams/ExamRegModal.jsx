@@ -31,6 +31,29 @@ const ExamRegModal = ({ exam, closeCallback }) => {
     }
   }
 
+  const fingerprint = window.Fingerprint;
+  const authAndExecute = async () => {
+    if (fingerprint)
+      fingerprint.isAvailable(
+        () =>
+          fingerprint.show(
+            {
+              description: 'Anmeldung freigeben',
+            },
+            () => execute(),
+            (error) => {
+              console.log(error);
+              closeCallback();
+            }
+          ),
+        (error) => {
+          console.warn(error);
+          execute();
+        }
+      );
+    else execute();
+  };
+
   return (
     <Modal show={true} onHide={() => state !== 'EXECUTING' && closeCallback()} centered>
       <Modal.Header>
@@ -45,7 +68,14 @@ const ExamRegModal = ({ exam, closeCallback }) => {
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => closeCallback()}>Abbrechen</Button>
-            <Button variant={isReg ? 'success' : 'danger'} onClick={() => execute()}>{isReg ? "Anmelden" : "Abmelden"}</Button>
+            <Button
+              variant={isReg ? 'success' : 'danger'}
+              onClick={() =>
+                authAndExecute(`${isReg ? 'An' : 'Ab'}meldung freigeben`)
+              }
+            >
+              {isReg ? 'Anmelden' : 'Abmelden'}
+            </Button>
           </Modal.Footer>
         </> :
           state === 'EXECUTING' ? <>
