@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import Hammer from 'react-hammerjs';
@@ -11,6 +11,12 @@ import { selectStatusBarHeightCss } from '../common/commonSlice';
 
 const MapViewPage = () => {
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
+
+  useEffect(() => {
+    if (!window.StatusBar) return;
+    window.StatusBar.styleDefault();
+    return () => window.StatusBar.styleLightContent();
+  }, []);
 
   const { map: mapArg } = useParams();
   const [mapSource, initialPos] =
