@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter as ReactRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
+import { setStatusBarHeight } from './features/common/commonSlice';
 import reportWebVitals from './reportWebVitals';
 import rootReducer from './redux';
 import { update } from './redux/sync';
@@ -12,12 +13,24 @@ import './App.css';
 
 const initializeCordova = () => {
   // Initialize plugins etc. here
+
+  // This is already set in config.xml but that settings does not seem
+  // to take effect on Android. This line can be removed once the
+  // setting works on Android.
+  window.StatusBar.overlaysWebView(true);
 };
 
 const initializeReact = () => {
   const store = configureStore({
     reducer: rootReducer,
   });
+
+  window.StatusBarHeight &&
+    window.StatusBarHeight.getValue(
+      (value) => store.dispatch(setStatusBarHeight(value)),
+      (error) => console.log(error)
+    );
+
   // Check for outdated or missing state and fetch is asyncronously from the server.
   store.dispatch(update());
 

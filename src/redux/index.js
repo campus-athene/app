@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import auth from '../features/auth/authSlice';
+import common from '../features/common/commonSlice';
 import sync from './sync';
 import settings from '../features/settings/settingsSlice';
 import messages from '../features/messages/messagesSlice';
@@ -9,6 +10,7 @@ import exams from '../features/exams/examsSlice';
 
 const appReducer = combineReducers({
   auth,
+  common,
   sync,
   settings,
 

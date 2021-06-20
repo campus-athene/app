@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
 import Hammer from 'react-hammerjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,8 +7,11 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import stadtmitte from './data/stadtmitte.png';
 import lichtwiese from './data/lichtwiese.png';
 import windkanal from './data/windkanal.png';
+import { selectStatusBarHeightCss } from '../common/commonSlice';
 
 const MapViewPage = () => {
+  const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
+
   const { map: mapArg } = useParams();
   const [mapSource, initialPos] =
     mapArg === 'stadtmitte'
@@ -119,7 +123,7 @@ const MapViewPage = () => {
           display: 'grid',
           alignItems: 'center',
           justifyItems: 'center',
-          top: 'calc(1em + env(safe-area-inset-top))',
+          top: `calc(1em + ${statusBarHeightCss})`,
           left: 'calc(1em + env(safe-area-inset-left))',
           background: '#aaaa',
           width: '3em',

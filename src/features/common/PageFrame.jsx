@@ -1,8 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Navbar, Container, OverlayTrigger } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { selectStatusBarHeightCss } from './commonSlice';
 
 const PageFrame = ({
   children,
@@ -12,6 +14,8 @@ const PageFrame = ({
   syncState: { isLoading, isOffline } = { isLoading: false, isOffline: false },
 }) => {
   const history = useHistory();
+
+  const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
   return (
     <div
@@ -25,7 +29,7 @@ const PageFrame = ({
         bg="dark"
         variant="dark"
         style={{
-          paddingTop: 'calc(0.5rem + env(safe-area-inset-top))',
+          paddingTop: `calc(0.5rem + ${statusBarHeightCss}`,
           width: '100vw',
         }}
       >
