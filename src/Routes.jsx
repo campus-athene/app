@@ -1,10 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import { selectCreds } from './features/auth/authSlice';
-import { selectNeedsSetup } from './features/settings/settingsSlice';
-import LoginPage from './features/auth/LoginPage';
-import SetupPage from './features/settings/SetupPage';
+import { selectOnboardingComplete } from './features/settings/settingsSlice';
+import Onboarding from './features/onboarding/Onboarding';
 import HomePage from './features/home/HomePage';
 import MessagesPage from './features/messages/MessagesPage';
 import CoursListPage from './features/courses/CoursListPage';
@@ -17,10 +15,8 @@ import MapViewPage from './features/maps/MapViewPage';
 import MapListPage from './features/maps/MapListPage';
 
 const Routes = () => {
-  const creds = useSelector(selectCreds());
-  const needsSetup = useSelector(selectNeedsSetup());
-  if (!creds) return <LoginPage />;
-  if (needsSetup) return <SetupPage />;
+  const onboardingComplete = useSelector(selectOnboardingComplete());
+  if (!onboardingComplete) return <Onboarding />;
 
   return (
     <Switch>

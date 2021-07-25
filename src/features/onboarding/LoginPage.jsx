@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Alert, Button, Form, Spinner } from 'react-bootstrap';
+import { Alert, Form, Spinner } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import Logo from '../common/Logo';
-import { login } from './authSlice';
+import { login } from '../auth/authSlice';
+import { Button } from './Controls';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const LoginPage = () => {
     <div
       style={{
         height: '100vh',
-        background: '#463A54',
+        background: '#372649',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
@@ -43,7 +44,7 @@ const LoginPage = () => {
       >
         <p>Campus</p>
         <p>
-          Die App für Studenten
+          Die App für Studierende
           <br />
           der TU Darmstadt.
         </p>
@@ -96,12 +97,7 @@ const LoginPage = () => {
             style={{ margin: 'auto' }}
           />
         ) : (
-          <Button
-            type="submit"
-            variant="warning"
-            disabled={processing}
-            style={{ marginLeft: 'auto' }}
-          >
+          <Button type="submit" disabled={processing}>
             Anmelden
           </Button>
         )}
