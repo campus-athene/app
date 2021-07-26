@@ -1,10 +1,15 @@
-import React from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Navbar, Container, OverlayTrigger } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAngleLeft,
+  faBars,
+  faEllipsisH,
+} from '@fortawesome/free-solid-svg-icons';
 import { selectStatusBarHeightCss } from './commonSlice';
+import SideMenu from './SideMenu';
 
 const PageFrame = ({
   children,
@@ -16,6 +21,8 @@ const PageFrame = ({
   const history = useHistory();
 
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
+
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div
@@ -34,18 +41,22 @@ const PageFrame = ({
         }}
       >
         <Navbar.Brand
-          onClick={() => history.goBack()}
+          onClick={() => (noBack ? setMenuOpen(true) : history.goBack())}
           style={{
             margin: '-0.5rem 0 -0.5rem -1rem',
             alignSelf: 'stretch',
-            display: noBack ? 'none' : 'flex',
+            display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             paddingLeft: '1.25rem',
             paddingRight: '1.25rem',
           }}
         >
-          <FontAwesomeIcon icon={faAngleLeft} />
+          {noBack ? (
+            <FontAwesomeIcon icon={faBars} />
+          ) : (
+            <FontAwesomeIcon icon={faAngleLeft} />
+          )}
         </Navbar.Brand>
         <Navbar.Brand
           style={{
@@ -93,6 +104,7 @@ const PageFrame = ({
       >
         {children}
       </Container>
+      <SideMenu menuOpen={menuOpen} onClose={() => setMenuOpen(false)} />
     </div>
   );
 };

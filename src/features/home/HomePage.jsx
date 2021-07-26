@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { connect, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Badge, Button, Modal } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { logout } from '../auth/authSlice';
+import { selectStatusBarHeightCss } from '../common/commonSlice';
 import Logo from '../common/Logo';
+import SideMenu from '../common/SideMenu';
 import { selectUnreadCount } from '../messages/messagesSlice';
 import { Envelope, Exam, Lecture, Logout, Map, Orientation } from '../../icons';
 
@@ -11,6 +15,8 @@ const HomePage = ({ logout }) => {
   const [logoutModal, setLogoutModal] = useState();
   const history = useHistory();
   const unreadMsgs = useSelector(selectUnreadCount());
+  const [menuOpen, setMenuOpen] = useState(false);
+  const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
   const HomeButton = ({ target, onClick, icon: Icon, seperator, color, children }) =>
     <h4 style={{ marginTop: seperator ? '1.5em' : '0.5em', color }} onClick={onClick || (() => history.push(target))}>
@@ -25,6 +31,21 @@ const HomePage = ({ logout }) => {
         height: '30em',
         textAlign: 'center',
       }}>
+        <button
+          onClick={() => setMenuOpen(true)}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'white',
+            height: '3em',
+            inset: `${statusBarHeightCss} auto auto 0`,
+            padding: '0',
+            position: 'absolute',
+            width: '3em',
+          }}
+        >
+          <FontAwesomeIcon icon={faBars} />
+        </button>
         <Logo style={{ paddingTop: '2em', height: '10em' }} />
       </div>
       <div style={{
@@ -51,6 +72,7 @@ const HomePage = ({ logout }) => {
           <HomeButton onClick={() => setLogoutModal(true)} icon={Logout} seperator color="#dc3545">Abmelden</HomeButton>
         </div>
       </div>
+      <SideMenu menuOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <Modal show={logoutModal} centered>
         <Modal.Header>
           <Modal.Title>Abmelden</Modal.Title>
