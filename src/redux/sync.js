@@ -4,6 +4,7 @@ import { dispatchInstructions } from './instructions';
 import { NetworkError, ServerError } from '../api/errors';
 import { selectCreds } from '../features/auth/authSlice';
 import { getOffers } from '../features/courses/offersSlice';
+import dummyResponse from './dummyResponse';
 
 // Update used in useEffect must not be async.
 export const update = () => (dispatch) => {
@@ -18,7 +19,12 @@ const updateAsync = () => async (dispatch, getState) => {
   dispatch(setLoading());
 
   try {
-    const response = await new session(creds).sync();
+    const response = creds.dummy
+      ? await new Promise((resolve) =>
+          setTimeout(() => resolve(dummyResponse), 2000)
+        )
+      : await new session(creds).sync();
+
     dispatch(setLoaded(response.result));
     dispatchInstructions(dispatch, response.instructions);
     dispatch(getOffers());
@@ -52,16 +58,14 @@ const syncSlice = createSlice({
   },
 });
 
-export const {
-  setLoading,
-  setLoaded,
-  setOffline,
-  setError,
-} = syncSlice.actions;
+export const { setLoading, setLoaded, setOffline, setError } =
+  syncSlice.actions;
 
-export const selectSyncState = () => ({ sync: { type } }) => ({
-  isLoading: type === 'INITIALIZED' || type === 'LOADING',
-  isOffline: type === 'OFFLINE' || type === 'ERROR',
-});
+export const selectSyncState =
+  () =>
+  ({ sync: { type } }) => ({
+    isLoading: type === 'INITIALIZED' || type === 'LOADING',
+    isOffline: type === 'OFFLINE' || type === 'ERROR',
+  });
 
 export default syncSlice.reducer;

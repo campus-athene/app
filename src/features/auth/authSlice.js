@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { update } from '../../redux/sync';
-import dummyResponse from './dummyResponse';
 
 const loadState = (state) => {
   try {
@@ -33,12 +32,14 @@ export const login = (username, password) => async (dispatch) => {
   try {
     const dummy = username === 'dummy' && password === 'dummy';
 
-    const { result: creds } = dummy
-      ? await new Promise((resolve) =>
-          setTimeout(() => resolve(dummyResponse), 2000)
-        )
-      : await session.login(username, password);
+    if (dummy) {
+      await new Promise((resolve) => setTimeout(() => resolve(), 2000));
+      dispatch(updateCreds({ creds: { dummy: true } }));
+      dispatch(update());
+      return null;
+    }
 
+    const { result: creds } = await session.login(username, password);
     dispatch(updateCreds({ creds }));
     dispatch(update());
     return null;
@@ -54,9 +55,18 @@ export const logout = () => (dispatch) => {
   });
 };
 
-export const selectProcessing = () => ({ auth: { processing } }) => processing;
-export const selectError = () => ({ auth: { error } }) => error;
+export const selectProcessing =
+  () =>
+  ({ auth: { processing } }) =>
+    processing;
+export const selectError =
+  () =>
+  ({ auth: { error } }) =>
+    error;
 
-export const selectCreds = () => ({ auth: { creds } }) => creds;
+export const selectCreds =
+  () =>
+  ({ auth: { creds } }) =>
+    creds;
 
 export default authSlice.reducer;
