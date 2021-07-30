@@ -57,7 +57,7 @@ export const selectGroupedBySemester =
       })),
     ];
 
-export const getCourseColor = ({ code }) => {
+export const getCourseColor = ({ code }, s, bl) => {
   // https://www.30secondsofcode.org/js/s/hsb-to-rgb
   const HSBToRGB = (h, s, b) => {
     s /= 100;
@@ -70,7 +70,7 @@ export const getCourseColor = ({ code }) => {
   const hash =
     (new TextEncoder().encode(code).reduce((p, c) => (p + c) / p) * 39119) %
     360;
-  const [r, g, b] = HSBToRGB(hash, 50, 100).map((c) =>
+  const [r, g, b] = HSBToRGB(hash, s, bl).map((c) =>
     c.toString(16).padStart(2, '0')
   );
   return `#${r}${g}${b}`;

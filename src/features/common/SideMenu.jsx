@@ -137,9 +137,12 @@ const SideMenu = ({ menuOpen, onClose }) => {
 
         {courses.map((c, i) => (
           <HomeButton
-            color={getCourseColor(c)}
+            color={getCourseColor(c, 70, 100)}
+            key={c.code}
             seperator={i === 0}
-            target={`/courses/${encodeURIComponent(c.semester)}/${encodeURIComponent(c.code)}`}
+            target={`/courses/${encodeURIComponent(
+              c.semester
+            )}/${encodeURIComponent(c.code)}`}
           >
             {c.name}
           </HomeButton>
