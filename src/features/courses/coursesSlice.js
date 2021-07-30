@@ -5,7 +5,7 @@ const loadState = ({ items }) => {
   try {
     const local = JSON.parse(localStorage.getItem('courses'));
     if (!local) return;
-    local.forEach((e) => (items[e.code] = e));
+    local.forEach((e) => (items[e.semester][e.code] = e));
   } catch (e) {
     console.error(e);
   }
@@ -21,7 +21,9 @@ const coursesSlice = createSlice({
   reducers: {
     reset(state, { payload: { courses } }) {
       state.items = {};
-      Object.values(courses).forEach((c) => (state.items[c.code] = c));
+      courses.forEach((c) => {
+        (state.items[c.semester] || (state.items[c.semester] = {}))[c.code] = c;
+      });
       saveState(state);
     },
   },
@@ -32,42 +34,32 @@ const coursesSlice = createSlice({
 
 export const { reset } = coursesSlice.actions;
 
+export const selectBySemesterAndNumber =
+  (semester, number) =>
+  ({ courses }) =>
+    courses.items[semester][number];
+
 export const selectCurrentSemester =
   () =>
   ({ courses }) =>
-    Object.values(courses.items)
-      .filter((c) => c.semester === 15096000)
-      .sort((a, b) => (a.code < b.code ? -1 : a.code > b.code ? 1 : 0));
+    Object.values(courses.items[15086000] || {}).sort((a, b) =>
+      a.code < b.code ? -1 : a.code > b.code ? 1 : 0
+    );
 
 export const selectGroupedBySemester =
   () =>
   ({ courses }) =>
-    Object.values(
-      Object.values(courses.items).reduce(
-        (s, c) => {
-          (s[c.semester] = s[c.semester] || {
-            id: c.semester,
-            name: semesterDescs[c.semester] || 'Sonstige',
-            courses: [],
-          }).courses.push(c);
-          return s;
-        },
-        // Force add SoSe 2021 to ensure registration is offered on CourseListPage.
-        // Should be changed to current registration semester.
-        {
-          15096000: {
-            id: 15096000,
-            name: semesterDescs[15096000],
-            courses: [],
-          },
-        }
-      )
-    ).sort((a, b) => b.id - a.id);
+    [
+      ...Object.keys(courses.items).map((semester) => ({
+        id: semester,
+        name: semesterDescs[semester] || 'Sonstige',
+        courses: Object.values(courses.items[semester]),
+      })),
+    ];
 
 export const getCourseColor = ({ code }) => {
   // https://www.30secondsofcode.org/js/s/hsb-to-rgb
   const HSBToRGB = (h, s, b) => {
-    console.log({ h, s, b });
     s /= 100;
     b /= 100;
     const k = (n) => (n + h / 60) % 6;

@@ -139,7 +139,7 @@ const SideMenu = ({ menuOpen, onClose }) => {
           <HomeButton
             color={getCourseColor(c)}
             seperator={i === 0}
-            target={`/courses/${c.code}`}
+            target={`/courses/${encodeURIComponent(c.semester)}/${encodeURIComponent(c.code)}`}
           >
             {c.name}
           </HomeButton>
