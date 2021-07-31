@@ -107,7 +107,10 @@ const SideMenu = ({ menuOpen, onClose }) => {
         </button>
         <Logo style={{ margin: '2em 5em 2em 5em' }} />
 
-        <HomeButton target={'/messages'} icon={Envelope}>
+        <HomeButton target={'/'} icon={Lecture}>
+          Startseite
+        </HomeButton>
+        <HomeButton target={'/messages?hamburger'} icon={Envelope}>
           Nachrichten
           {unreadMsgs ? (
             <>
@@ -122,16 +125,16 @@ const SideMenu = ({ menuOpen, onClose }) => {
             </>
           ) : null}
         </HomeButton>
-        <HomeButton target={'/courses'} icon={Lecture}>
+        <HomeButton target={'/courses?hamburger'} icon={Lecture}>
           Veranstaltungen
         </HomeButton>
-        <HomeButton target={'/exams'} icon={Exam}>
+        <HomeButton target={'/exams?hamburger'} icon={Exam}>
           Prüfungen
         </HomeButton>
-        <HomeButton target={'/oapp'} icon={Orientation}>
+        <HomeButton target={'/oapp?hamburger'} icon={Orientation}>
           Orientierung
         </HomeButton>
-        <HomeButton target={'/maps'} icon={Map}>
+        <HomeButton target={'/maps?hamburger'} icon={Map}>
           Campuskarten
         </HomeButton>
 

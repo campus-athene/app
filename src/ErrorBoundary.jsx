@@ -40,7 +40,7 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       // You can render any custom fallback UI
       return (
-        <PageFrame noBack>
+        <PageFrame noMenu>
           <Inspection
             style={{ height: '10rem', marginTop: '6rem', marginBottom: '1rem' }}
           />

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { Navbar, Container, OverlayTrigger } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -14,11 +14,12 @@ import SideMenu from './SideMenu';
 const PageFrame = ({
   children,
   title,
-  noBack,
+  noMenu,
   more,
   syncState: { isLoading, isOffline } = { isLoading: false, isOffline: false },
 }) => {
   const history = useHistory();
+  const hamburger = useLocation().search.includes('hamburger');
 
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
@@ -41,18 +42,18 @@ const PageFrame = ({
         }}
       >
         <Navbar.Brand
-          onClick={() => (noBack ? setMenuOpen(true) : history.goBack())}
+          onClick={() => (hamburger ? setMenuOpen(true) : history.goBack())}
           style={{
             margin: '-0.5rem 0 -0.5rem -1rem',
             alignSelf: 'stretch',
-            display: 'flex',
+            display: noMenu ? 'none' : 'flex',
             flexDirection: 'row',
             alignItems: 'center',
             paddingLeft: '1.25rem',
             paddingRight: '1.25rem',
           }}
         >
-          {noBack ? (
+          {hamburger ? (
             <FontAwesomeIcon icon={faBars} />
           ) : (
             <FontAwesomeIcon icon={faAngleLeft} />
@@ -74,7 +75,7 @@ const PageFrame = ({
             style={{
               margin: '-0.5rem -1rem -0.5rem 0',
               alignSelf: 'stretch',
-              display: noBack ? 'none' : 'flex',
+              display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
               paddingLeft: '1.25rem',
