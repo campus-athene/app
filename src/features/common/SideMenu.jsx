@@ -126,7 +126,7 @@ const SideMenu = ({ menuOpen, onClose }) => {
           ) : null}
         </HomeButton>
         <HomeButton target={'/courses?hamburger'} icon={Lecture}>
-          Veranstaltungen
+          Mein Studium
         </HomeButton>
         <HomeButton target={'/exams?hamburger'} icon={Exam}>
           Prüfungen

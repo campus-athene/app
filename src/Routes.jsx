@@ -6,7 +6,7 @@ import Onboarding from './features/onboarding/Onboarding';
 import HomePage from './features/home/HomePage';
 import MessagesPage from './features/messages/MessagesPage';
 import CourseDetailsPage from './features/courses/DetailsPage';
-import CoursListPage from './features/courses/CoursListPage';
+import CoursListPage from './features/courses/ListPage';
 import CourseRegPage from './features/courses/CourseRegPage';
 import ExamListPage from './features/exams/ExamListPage';
 import ExamDetailsPage from './features/exams/ExamDetailsPage';
