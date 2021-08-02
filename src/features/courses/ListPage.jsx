@@ -10,10 +10,7 @@ const ListPage = () => {
   const history = useHistory();
   const semesters = useSelector(selectGroupedBySemester());
   return (
-    <PageFrame
-      title="Mein Studium"
-      syncState={useSelector(selectSyncState())}
-    >
+    <PageFrame title="Mein Studium" syncState={useSelector(selectSyncState())}>
       {semesters.map(
         ({ id: semesterId, name: semesterName, courses }, index) => (
           <ListGroup
@@ -35,8 +32,10 @@ const ListPage = () => {
                 <div
                   style={{
                     background: getCourseColor({ code }, 90, 70),
+                    bottom: '0',
+                    left: '-10em',
                     position: 'absolute',
-                    inset: '0 auto 0 -10em',
+                    top: '0',
                     width: '10.5em',
                   }}
                 />

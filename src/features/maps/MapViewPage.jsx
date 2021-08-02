@@ -107,7 +107,6 @@ const MapViewPage = () => {
         <div
           style={{
             position: 'absolute',
-            inset: 0,
             background: '#dad8c8',
           }}
         >

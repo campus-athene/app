@@ -38,9 +38,10 @@ const HomePage = ({ logout }) => {
             border: 'none',
             color: 'white',
             height: '3em',
-            inset: `${statusBarHeightCss} auto auto 0`,
+            left: '0',
             padding: '0',
             position: 'absolute',
+            top: statusBarHeightCss,
             width: '3em',
           }}
         >
@@ -50,9 +51,10 @@ const HomePage = ({ logout }) => {
       </div>
       <div style={{
         borderRadius: '2em 2em 0 0',
-        inset: '3em 0 0 0',
         overflowY: 'scroll',
         position: 'absolute',
+        top: '3em',
+        width: '100%',
       }}>
         <div style={{
           background: 'white',

@@ -72,21 +72,24 @@ const SideMenu = ({ menuOpen, onClose }) => {
         onClick={onClose}
         style={{
           background: '#0008',
+          bottom: '0',
           display: menuOpen ? null : 'none',
-          inset: '0',
           position: 'fixed',
+          top: '0',
+          width: '100%',
         }}
       />
       <div
         style={{
           background: '#372649',
+          bottom: '0',
           color: 'white',
           display: menuOpen ? null : 'none',
-          inset: '0 auto 0 0',
           overflowY: 'scroll',
           paddingBottom: '1.5em',
           paddingTop: statusBarHeightCss,
           position: 'fixed',
+          top: '0',
           width: '18em',
         }}
       >
@@ -97,9 +100,10 @@ const SideMenu = ({ menuOpen, onClose }) => {
             border: 'none',
             color: 'white',
             height: '3em',
-            inset: '0.5em 0.5em auto auto',
             padding: '0',
             position: 'absolute',
+            right: '0.5em',
+            top: '0.5em',
             width: '3em',
           }}
         >
