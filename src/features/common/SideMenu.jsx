@@ -131,6 +131,16 @@ const SideMenu = ({ menuOpen, onClose }) => {
         <HomeButton target={'/exams?hamburger'} icon={Exam}>
           Prüfungen
         </HomeButton>
+        <HomeButton
+          onClick={() => {
+            onClose();
+            window.location.href = 'https://hds.hebis.de/ulbdamobil/';
+          }}
+          target={'/library?hamburger'}
+          icon={Lecture}
+        >
+          Bibliothek
+        </HomeButton>
         <HomeButton target={'/oapp?hamburger'} icon={Orientation}>
           Orientierung
         </HomeButton>
