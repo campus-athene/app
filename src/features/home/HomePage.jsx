@@ -65,6 +65,7 @@ const HomePage = ({ logout }) => {
         style={{
           borderRadius: '2em 2em 0 0',
           overflowY: 'scroll',
+          pointerEvents: 'none',
           position: 'absolute',
           top: `calc(${statusBarHeightCss} + 0.8em)`,
           width: '100%',
@@ -76,6 +77,7 @@ const HomePage = ({ logout }) => {
             borderRadius: '2em 2em 0 0',
             marginTop: '10em',
             padding: '1em 1em 0 1em',
+            pointerEvents: 'initial',
           }}
         >
           {unreadMsgs && (
