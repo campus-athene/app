@@ -5,7 +5,9 @@ const loadState = ({ items }) => {
   try {
     const local = JSON.parse(localStorage.getItem('courses'));
     if (!local) return;
-    local.forEach((e) => (items[e.semester][e.code] = e));
+    local.forEach(
+      (e) => ((items[e.semester] || (items[e.semester] = {}))[e.code] = e)
+    );
   } catch (e) {
     console.error(e);
   }
