@@ -92,6 +92,28 @@ const DetailsPage = () => {
         </div>
       </div>
       {tab === 'overview' && <OverviewTab module={module} />}
+      {tab === 'material' && (
+        <button
+          onClick={() =>
+            (window.location.href = 'https://moodle.tu-darmstadt.de/my/')
+          }
+          style={{
+            background: '#f5a300',
+            border: 'none',
+            borderRadius: '0.5em',
+            color: 'white',
+            fontWeight: 'bold',
+            left: '0',
+            lineHeight: '2.5em',
+            margin: '2em auto 0 auto',
+            position: 'absolute',
+            right: '0',
+            width: '12em',
+          }}
+        >
+          Moodle öffnen
+        </button>
+      )}
     </>
   );
 };
