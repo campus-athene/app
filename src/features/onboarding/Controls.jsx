@@ -8,10 +8,10 @@ export const Button = (props) =>
     style: { margin: '0 auto', borderRadius: '2em', ...props.style },
   });
 
-export const Check = ({ children, label }) => (
+export const Radio = ({ children, checked, label, onChange }) => (
   <label style={{ color: 'lightgray' }}>
     <div>
-      <input type="checkbox" />
+      <input type="radio" checked={checked} onChange={onChange} />
       <span style={{ fontSize: '1.1em', marginLeft: '0.4em' }}>{label}</span>
     </div>
     <div style={{ fontSize: '0.9em' }}>{children}</div>

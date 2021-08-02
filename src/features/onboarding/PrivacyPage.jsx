@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPrivacy } from '../settings/settingsSlice';
-import { Button, Check, Frame, Heading, Subheading } from './Controls';
+import { Button, Frame, Heading, Radio, Subheading } from './Controls';
 
 const PrivacyPage = () => {
   const dispatch = useDispatch();
-  const onNext = () => dispatch(setPrivacy({ level: 'balanced' }));
+  const [selected, setSelected] = useState();
+
+  const onNext = () => dispatch(setPrivacy({ level: selected }));
+
   return (
     <Frame>
       <Heading>Privatsphäre</Heading>
@@ -16,17 +20,31 @@ const PrivacyPage = () => {
         Du mit uns teilen möchtest.
       </Subheading>
       <div style={{ margin: '0 15vw' }}>
-        <Check label="Vollständig">
+        <Radio
+          checked={selected === 'complete'}
+          label="Vollständig"
+          onChange={(e) => e.target.checked && setSelected('complete')}
+        >
           Unterstütze uns bei der Fehlersuche. Läuft was schief, werden
           Fehlerberichte automatisch gesendet. Zusätzlich dürfen
           Nutzungsstatistiken erhoben werden.
-        </Check>
-        <Check label="Ausgewogen">
+        </Radio>
+        <Radio
+          checked={selected === 'balanced'}
+          label="Ausgewogen"
+          onChange={(e) => e.target.checked && setSelected('balanced')}
+        >
           Fehlerbericht werden nur anonymisiert gesammelt.
-        </Check>
-        <Check label="Minimal" />
+        </Radio>
+        <Radio
+          checked={selected === 'minimal'}
+          label="Minimal"
+          onChange={(e) => e.target.checked && setSelected('minimal')}
+        />
       </div>
-      <Button onClick={onNext}>Weiter</Button>
+      <Button onClick={onNext} disabled={!selected}>
+        Weiter
+      </Button>
     </Frame>
   );
 };
