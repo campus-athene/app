@@ -44,7 +44,7 @@ export const selectBySemesterAndNumber =
 export const selectCurrentSemester =
   () =>
   ({ courses }) =>
-    Object.values(courses.items[15086000] || {}).sort((a, b) =>
+    Object.values(courses.items[15096000] || {}).sort((a, b) =>
       a.code < b.code ? -1 : a.code > b.code ? 1 : 0
     );
 
