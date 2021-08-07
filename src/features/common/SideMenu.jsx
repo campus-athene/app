@@ -44,24 +44,14 @@ const SideMenu = ({ menuOpen, onClose }) => {
         <div
           style={{
             background: color,
-            borderRadius: '50%',
             display: 'inline-block',
             verticalAlign: 'middle',
             height: '1.375em',
-            width: '1.375em',
-            margin: '0.25em 0.875em 0.25em 0.375em',
+            width: '1.5em',
+            margin: '0.25em 0.75em 0.25em -2.25em',
           }}
         />
-      ) : (
-        <Icon
-          style={{
-            display: 'inline-block',
-            width: '1.875em',
-            marginLeft: '0.125em',
-            marginRight: '0.625em',
-          }}
-        />
-      )}
+      ) : null}
       {children}
     </div>
   );
