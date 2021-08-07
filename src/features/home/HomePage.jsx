@@ -80,7 +80,7 @@ const HomePage = ({ logout }) => {
             padding: '1em 1em 0 1em',
           }}
         >
-          {unreadMsgs && (
+          {!!unreadMsgs && (
             <Widget onClick={() => history.push('/messages')}>
               <span style={{ fontSize: '1.2em' }}>
                 <Envelope
