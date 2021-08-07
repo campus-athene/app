@@ -32,6 +32,7 @@ const HomePage = ({ logout }) => {
     <div
       style={{
         height: '100vh',
+        position: 'relative',
       }}
     >
       <div
@@ -59,15 +60,15 @@ const HomePage = ({ logout }) => {
         >
           <FontAwesomeIcon icon={faBars} />
         </button>
-        <Logo style={{ paddingTop: '2em', height: '10em' }} />
+        <Logo style={{ paddingTop: '3em', height: '10em' }} />
       </div>
       <div
         style={{
           borderRadius: '2em 2em 0 0',
+          bottom: 0,
           overflowY: 'scroll',
-          pointerEvents: 'none',
           position: 'absolute',
-          top: `calc(${statusBarHeightCss} + 0.8em)`,
+          top: `calc(${statusBarHeightCss} + 3em)`,
           width: '100%',
         }}
       >
@@ -77,7 +78,6 @@ const HomePage = ({ logout }) => {
             borderRadius: '2em 2em 0 0',
             marginTop: '10em',
             padding: '1em 1em 0 1em',
-            pointerEvents: 'initial',
           }}
         >
           {unreadMsgs && (
