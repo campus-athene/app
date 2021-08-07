@@ -105,7 +105,9 @@ const PageFrame = ({
       >
         {children}
       </Container>
-      <SideMenu menuOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      {noMenu || (
+        <SideMenu menuOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      )}
     </div>
   );
 };
