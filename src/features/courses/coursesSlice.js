@@ -70,7 +70,8 @@ export const getCourseColor = ({ code }, s, bl) => {
   };
 
   const hash =
-    (new TextEncoder().encode(code).reduce((p, c) => (p + c) / p) * 39119) %
+    (new TextEncoder().encode(code).reduce((p, c) => (p + c) / p, 257) *
+      39119) %
     360;
   const [r, g, b] = HSBToRGB(hash, s, bl).map((c) =>
     c.toString(16).padStart(2, '0')
