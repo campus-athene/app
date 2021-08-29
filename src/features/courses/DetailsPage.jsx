@@ -44,6 +44,7 @@ const DetailsPage = () => {
         style={{
           background: getCourseColor(module, 90, 70),
           color: 'white',
+          minHeight: '8em',
           padding: `${statusBarHeightCss} 1em 0 1em`,
         }}
       >
@@ -81,7 +82,7 @@ const DetailsPage = () => {
         <div style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
           {module.name}
         </div>
-        <div
+        {/* <div
           style={{
             color: 'white',
             display: 'flex',
@@ -94,7 +95,7 @@ const DetailsPage = () => {
           <NavButton tab="overview">Übersicht</NavButton>
           <NavButton tab="messages">Nachrichten</NavButton>
           <NavButton tab="material">Material</NavButton>
-        </div>
+        </div> */}
       </div>
       {tab === 'overview' && <OverviewTab module={module} />}
       {tab === 'material' && (
