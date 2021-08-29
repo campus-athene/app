@@ -4,12 +4,17 @@ import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { selectStatusBarHeightCss } from '../common/commonSlice';
 import { getCourseColor, selectBySemesterAndNumber } from './coursesSlice';
+import { selectOffer } from './offersSlice';
 import OverviewTab from './OverviewTab';
 
 const DetailsPage = () => {
-  const { semester, number: numberEncoded } = useParams();
-  const number = decodeURIComponent(numberEncoded);
-  const module = useSelector(selectBySemesterAndNumber(semester, number));
+  const { semester, number: numberEncoded, listId, moduleId } = useParams();
+  const number = numberEncoded && decodeURIComponent(numberEncoded);
+  const module = useSelector(
+    listId
+      ? selectOffer(Number.parseInt(listId), Number.parseInt(moduleId))
+      : selectBySemesterAndNumber(semester, number)
+  );
 
   const history = useHistory();
 

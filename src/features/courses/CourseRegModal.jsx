@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, Form, Modal, Spinner } from 'react-bootstrap';
-import { register, selectOffer } from './offersSlice';
+import { register } from './offersSlice';
 
-const CourseRegModal = ({ listId, moduleId, onClose }) => {
-  const [offer] = useState(useSelector(selectOffer(listId, moduleId)));
+const CourseRegModal = ({ offer, onClose }) => {
   const [state, setState] = useState('CONFIRM');
   const [selection, _setSelection] = useState(offer && { ...Object.fromEntries(offer.courses.map(({ id, status }) => [id, offer.status === status || (offer.status === 'edit' && status === 'register')])) });
   const setSelection = (key, value) => _setSelection({ ...selection, [key]: value });

@@ -27,6 +27,9 @@ const Routes = () => {
       <Route path="/messages">
         <MessagesPage />
       </Route>
+      <Route path="/courses/register/:listId/:moduleId">
+        <CourseDetailsPage registration />
+      </Route>
       <Route path="/courses/:semester/:number">
         <CourseDetailsPage />
       </Route>

@@ -122,6 +122,9 @@ const SideMenu = ({ menuOpen, onClose }) => {
         <HomeButton target={'/courses?hamburger'} icon={Lecture}>
           Mein Studium
         </HomeButton>
+        <HomeButton target={'/coursereg?hamburger'} icon={Lecture}>
+          Anmeldung
+        </HomeButton>
         <HomeButton target={'/exams?hamburger'} icon={Exam}>
           Prüfungen
         </HomeButton>

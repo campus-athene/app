@@ -25,7 +25,7 @@ export const getOffers = () => async (dispatch, getState) => {
   const creds = selectCreds()(getState(), dispatch);
   try {
     const offers = await new session(creds).getCourseOffers();
-    dispatch(reset(offers));
+    dispatch(reset(offers.result));
   } catch (error) {
     dispatch(setError(String(error)));
     console.error(error);
