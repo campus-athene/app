@@ -23,14 +23,13 @@
         <allow-intent href="market:*" />
 
         <resource-file src="google-services.json" target="/app/google-services.json" />
-        <resource-file src="res/android/colors.xml" target="/app/src/main/res/values/colors.xml" />
+        <resource-file src="res/android/values/colors.xml" target="/app/src/main/res/values/colors.xml" />
 
-        <icon background="@color/background" density="ldpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_ldpi.png" />
-        <icon background="@color/background" density="mdpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_mdpi.png" />
-        <icon background="@color/background" density="hdpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_hdpi.png" />
-        <icon background="@color/background" density="xhdpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_xhdpi.png" />
-        <icon background="@color/background" density="xxhdpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_xxhdpi.png" />
-        <icon background="@color/background" density="xxxhdpi" foreground="res/android/icon/foreground.xml" src="res/android/icon/icon_xxxhdpi.png" />
+        <icon background="@color/background" density="mdpi" foreground="res/android/drawable/ic_launcher_foreground.xml" src="res/android/mipmap-mdpi/ic_launcher.png" />
+        <icon background="@color/background" density="hdpi" foreground="res/android/drawable/ic_launcher_foreground.xml" src="res/android/mipmap-hdpi/ic_launcher.png" />
+        <icon background="@color/background" density="xhdpi" foreground="res/android/drawable/ic_launcher_foreground.xml" src="res/android/mipmap-xhdpi/ic_launcher.png" />
+        <icon background="@color/background" density="xxhdpi" foreground="res/android/drawable/ic_launcher_foreground.xml" src="res/android/mipmap-xxhdpi/ic_launcher.png" />
+        <icon background="@color/background" density="xxxhdpi" foreground="res/android/drawable/ic_launcher_foreground.xml" src="res/android/mipmap-xxxhdpi/ic_launcher.png" />
     </platform>
 
     <platform name="ios">
