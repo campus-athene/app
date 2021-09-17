@@ -72,8 +72,8 @@ const DetailsPage = () => {
               <path
                 d="M1 1L11 11M1 11L11 1"
                 stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
+                strokeWidth="2"
+                strokeLinecap="round"
               />
             </svg>
           </button>

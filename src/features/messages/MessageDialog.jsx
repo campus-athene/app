@@ -37,7 +37,7 @@ const MessageDialog = ({ messageId }) => {
             style: {
               overflowWrap: 'break-word',
               userSelect: 'text',
-              '-webkit-user-select': 'text',
+              WebkitUserSelect: 'text',
             },
           },
           ...body
