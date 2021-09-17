@@ -11,8 +11,9 @@ const ListPage = () => {
   const semesters = useSelector(selectGroupedBySemester());
   return (
     <PageFrame title="Mein Studium" syncState={useSelector(selectSyncState())}>
-      {semesters.map(
-        ({ id: semesterId, name: semesterName, courses }, index) => (
+      {semesters
+        .sort((a, b) => b.id - a.id)
+        .map(({ id: semesterId, name: semesterName, courses }, index) => (
           <ListGroup
             key={semesterId}
             style={{ marginLeft: '-15px', marginRight: '-15px' }}
@@ -71,8 +72,7 @@ const ListPage = () => {
               </ListGroup.Item>
             )}
           </ListGroup>
-        )
-      )}
+        ))}
     </PageFrame>
   );
 };
