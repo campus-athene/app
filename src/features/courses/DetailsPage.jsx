@@ -8,11 +8,11 @@ import { selectOffer } from './offersSlice';
 import OverviewTab from './OverviewTab';
 
 const DetailsPage = () => {
-  const { semester, number: numberEncoded, listId, moduleId } = useParams();
+  const { semester, number: numberEncoded, major, area, list, module: moduleId } = useParams();
   const number = numberEncoded && decodeURIComponent(numberEncoded);
   const module = useSelector(
-    listId
-      ? selectOffer(Number.parseInt(listId), Number.parseInt(moduleId))
+    major
+      ? selectOffer(Number.parseInt(major), Number.parseInt(area), Number.parseInt(list), Number.parseInt(moduleId))
       : selectBySemesterAndNumber(semester, number)
   );
 

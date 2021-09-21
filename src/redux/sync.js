@@ -3,7 +3,7 @@ import { session } from '../api';
 import { dispatchInstructions } from './instructions';
 import { NetworkError, ServerError } from '../api/errors';
 import { selectCreds } from '../features/auth/authSlice';
-import { getOffers } from '../features/courses/offersSlice';
+import { loadArea } from '../features/courses/offersSlice';
 import dummyResponse from './dummyResponse';
 
 // Update used in useEffect must not be async.
@@ -27,7 +27,7 @@ const updateAsync = () => async (dispatch, getState) => {
 
     dispatch(setLoaded(response.result));
     dispatchInstructions(dispatch, response.instructions);
-    dispatch(getOffers());
+    dispatch(loadArea());
   } catch (err) {
     if (err instanceof NetworkError) dispatch(setOffline());
     else {

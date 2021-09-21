@@ -6,28 +6,58 @@ import { selectCreds } from '../auth/authSlice';
 
 const offersSlice = createSlice({
   name: 'offers',
-  initialState: { lists: [], hasLoaded: false, error: null },
+  initialState: { majors: {}, hasLoaded: false, error: null },
   reducers: {
-    reset(state, { payload }) {
-      state.lists = payload;
-      state.hasLoaded = true;
-      state.error = null;
+    reset(state, { payload: { major, area, lists } }) {
+      lists.forEach((l) => {
+        const majorObj =
+          state.majors[l.major] || (state.majors[l.major] = { areas: {} });
+        const areaObj =
+          majorObj.areas[l.area] || (majorObj.areas[l.area] = { lists: {} });
+        areaObj.lists[l.id] = l;
+      });
+
+      const stateObj = major ? state.majors[major]?.areas[area] || {} : state;
+      stateObj.hasLoaded = true;
+      stateObj.error = null;
     },
-    setError(state, { payload }) {
-      state.error = payload;
+    setIsLoading(state, { payload }) {
+      const { major, area } = payload || {};
+      if (major)
+        (state.majors[major] || (state.majors[major] = { areas: {} })).areas[
+          area
+        ] = { lists: {} };
+      else state.loadInvoked = true;
+    },
+    setError(state, { payload: { major, area, error } }) {
+      const areaObject = state.majors[major]?.areas[area];
+      if (areaObject) areaObject.error = error;
     },
   },
 });
 
+const { setIsLoading } = offersSlice.actions;
 export const { reset, setError } = offersSlice.actions;
 
-export const getOffers = () => async (dispatch, getState) => {
+export const loadArea = (major, area, list) => async (dispatch, getState) => {
+  const { offers } = getState();
+  if (!major) {
+    if (offers.loadInvoked) return;
+    dispatch(setIsLoading());
+  } else {
+    if (offers.majors[major]?.areas[area]) return;
+    dispatch(setIsLoading(major, area));
+  }
   const creds = selectCreds()(getState(), dispatch);
   try {
-    const offers = await new session(creds).getCourseOffers();
-    dispatch(reset(offers.result));
+    const { result: lists } = await new session(creds).getCourseOffers(
+      major,
+      area,
+      list
+    );
+    dispatch(reset({ major, area, lists }));
   } catch (error) {
-    dispatch(setError(String(error)));
+    dispatch(setError({ major, area, error: String(error) }));
     console.error(error);
   }
 };
@@ -47,8 +77,11 @@ export const register = (registration) => async (dispatch, getState) => {
   }
 };
 
-export const selectSyncState = () => (state) => {
-  const { hasLoaded, error } = state.offers;
+export const selectSyncState = (major, area) => (state) => {
+  const areaObj = major
+    ? state.offers.majors[major]?.areas[area] || {}
+    : state.offers;
+  const { hasLoaded, error } = areaObj;
   const { isOffline } = selectGlobalSyncState()(state);
   return {
     isLoading: !hasLoaded && !error && !isOffline,
@@ -56,10 +89,19 @@ export const selectSyncState = () => (state) => {
   };
 };
 
-export const selectLists = ({ offers }) => offers.lists;
-export const selectOffer = (listId, moduleId) => ({ offers }) =>
-  offers.lists
-    .find((l) => l.id === listId)
-    ?.modules.find((m) => m.id === moduleId);
+export const selectLists =
+  (major, area) =>
+  ({ offers }) =>
+    major
+      ? Object.values(offers.majors[major]?.areas[area || 0]?.lists || {})
+      : Object.values(offers.majors)
+          .map((m) => Object.values(m.areas[area || 0]?.lists || {}))
+          .flat();
+export const selectOffer =
+  (major, area, list, module) =>
+  ({ offers }) =>
+    offers.majors[major]?.areas[area]?.lists[list].modules.find(
+      (m) => m.id === module
+    ) || null;
 
 export default offersSlice.reducer;

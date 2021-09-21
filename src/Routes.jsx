@@ -27,7 +27,7 @@ const Routes = () => {
       <Route path="/messages">
         <MessagesPage />
       </Route>
-      <Route path="/courses/register/:listId/:moduleId">
+      <Route path="/courses/register/:major/:area/:list/:module">
         <CourseDetailsPage registration />
       </Route>
       <Route path="/courses/:semester/:number">
@@ -35,6 +35,9 @@ const Routes = () => {
       </Route>
       <Route path="/courses">
         <CoursListPage />
+      </Route>
+      <Route path="/coursereg/:major/:area/:rootList">
+        <CourseRegPage />
       </Route>
       <Route path="/coursereg">
         <CourseRegPage />

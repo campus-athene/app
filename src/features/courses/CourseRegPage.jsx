@@ -1,24 +1,42 @@
-import React, { useState } from 'react';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import PageFrame from '../common/PageFrame';
 import { getCourseColor } from './coursesSlice';
-import { selectLists, selectSyncState } from './offersSlice';
+import { loadArea, selectLists, selectSyncState } from './offersSlice';
 
 const CourseRegPage = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
+  const params = useParams();
 
-  const lists = useSelector(selectLists);
-  const [openedOffer, setOpenedOffer] = useState();
+  const major = Number.parseInt(params.major);
+  const area = Number.parseInt(params.area);
+  const list = Number.parseInt(params.rootList);
+
+  useEffect(
+    () => dispatch(loadArea(major, area, list)),
+    [major, area, list, dispatch]
+  );
+
+  const lists = useSelector(selectLists(major, area));
 
   return (
-    <PageFrame title="Anmeldung" syncState={useSelector(selectSyncState())}>
+    <PageFrame
+      title="Anmeldung"
+      syncState={useSelector(selectSyncState(major, area))}
+    >
       {lists
-        .filter(({ modules }) => modules.length)
-        .map(({ id: listId, title, modules }) => (
+        .filter(
+          ({ modules, areas }) => modules.length || (areas && areas.length)
+        )
+        .map(({ id, major, area, title, modules, areas }) => (
           <ListGroup
-            key={listId}
+            key={`${major}.${area}.${id}`}
             style={{ marginLeft: '-15px', marginRight: '-15px' }}
             variant="flush"
           >
@@ -28,7 +46,9 @@ const CourseRegPage = () => {
                 key={moduleId}
                 action
                 onClick={() =>
-                  history.push(`/courses/register/${listId}/${moduleId}`)
+                  history.push(
+                    `/courses/register/${major}/${area}/${id}/${moduleId}`
+                  )
                 }
               >
                 <div
@@ -61,6 +81,22 @@ const CourseRegPage = () => {
                   }}
                 >
                   {title}
+                </div>
+              </ListGroup.Item>
+            ))}
+            {(areas || []).map(({ id, major, rootList, title }) => (
+              <ListGroup.Item
+                key={`${major}.${id}.${rootList}`}
+                action
+                onClick={() =>
+                  history.push(`/coursereg/${major}/${id}/${rootList}`)
+                }
+              >
+                <div style={{ display: 'flex' }}>
+                  <div style={{ flexGrow: '1', flexShrink: '1' }}>{title}</div>
+                  <div style={{ alignSelf: 'center' }}>
+                    <FontAwesomeIcon icon={faAngleRight} />
+                  </div>
                 </div>
               </ListGroup.Item>
             ))}

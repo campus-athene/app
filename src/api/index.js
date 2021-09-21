@@ -50,7 +50,8 @@ export class session {
 
   sync = () => this.send('/tucan/sync');
 
-  getCourseOffers = () => this.send('/tucan/courseoffers');
+  getCourseOffers = (major, area, rootList) =>
+    this.send('/tucan/courseoffers', { major, area, rootList });
 
   markMsgRead = async (messageId) =>
     this.send('/tucan/markmsgread', { messageId });
