@@ -41,6 +41,10 @@
 
         <preference name="AllowBackForwardNavigationGestures" value="true" />
 
+        <edit-config target="UIUserInterfaceStyle" file="*-Info.plist" mode="overwrite">
+            <string>Light</string>
+        </edit-config>
+
         <edit-config target="CFBundleLocalizations" file="*-Info.plist" mode="overwrite">
             <array>
                 <string>de</string>
