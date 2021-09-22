@@ -39,6 +39,8 @@
         <preference name="hostname" value="localhost" />
         <preference name="target-device" value="handset" />
 
+        <preference name="AllowBackForwardNavigationGestures" value="true" />
+
         <edit-config target="CFBundleLocalizations" file="*-Info.plist" mode="overwrite">
             <array>
                 <string>de</string>
