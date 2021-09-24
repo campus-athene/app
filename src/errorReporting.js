@@ -5,6 +5,17 @@ import { selectPrivacy } from './features/settings/settingsSlice';
 
 export const log = (level, message, data) => {
   try {
+    const log =
+      level === 'error'
+        ? console.error
+        : level === 'info'
+        ? console.info
+        : console.log;
+    log(message);
+    log(data);
+
+    if (process.env.NODE_ENV === 'development') return;
+
     const state = storeRef.store.getState();
     const privacy = selectPrivacy()(state)?.level;
     const creds = selectCreds()(state);
