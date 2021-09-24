@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
+import { log } from '../../errorReporting';
 import { dispatchInstructions } from '../../redux/instructions';
 import { selectSyncState as selectGlobalSyncState } from '../../redux/sync';
 import { selectCreds } from '../auth/authSlice';
@@ -58,7 +59,11 @@ export const loadArea = (major, area, list) => async (dispatch, getState) => {
     dispatch(reset({ major, area, lists }));
   } catch (error) {
     dispatch(setError({ major, area, error: String(error) }));
-    console.error(error);
+    log('error', 'offersSlice.getOffers threw an error.', {
+      major,
+      area,
+      error,
+    });
   }
 };
 
@@ -71,7 +76,7 @@ export const register = (registration) => async (dispatch, getState) => {
     dispatchInstructions(dispatch, body.instructions);
     return null;
   } catch (error) {
-    console.log(`Register failed with '${JSON.stringify(error)}'.`);
+    log('warning', 'offersSlice.register threw an error.', error);
     // Error is a string with a user friendly error message.
     return error;
   }

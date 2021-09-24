@@ -63,4 +63,8 @@ export class session {
 
   registerExam = async (id, semester, type) =>
     this.send('/tucan/registerexam', { id, semester, type });
+
+  reportError = async (errorData) => {
+    this.send('/reporterror', errorData);
+  };
 }

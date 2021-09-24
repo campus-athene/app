@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
+import { log } from '../../errorReporting';
 import { update } from '../../redux/sync';
 
 const loadState = (state) => {
   try {
     state.creds = JSON.parse(localStorage.getItem('creds')) || null;
   } catch (e) {
-    console.error(e);
+    log('error', 'authSlice.loadState threw an error.', e);
   }
 };
 

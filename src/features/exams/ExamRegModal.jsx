@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
+import { log } from '../../errorReporting';
 import { registerExam } from './examsSlice';
 
 const ExamRegModal = ({ exam, closeCallback }) => {
@@ -42,12 +43,20 @@ const ExamRegModal = ({ exam, closeCallback }) => {
             },
             () => execute(),
             (error) => {
-              console.log(error);
+              log(
+                'warning',
+                'fingerprint.show in ExamRegModel.authAndExecute threw an error',
+                error
+              );
               closeCallback();
             }
           ),
         (error) => {
-          console.warn(error);
+          log(
+            'warning',
+            'fingerprint.isAvailable in ExamRegModel.authAndExecute threw an error.',
+            error
+          );
           execute();
         }
       );

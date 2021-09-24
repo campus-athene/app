@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
+import { log } from '../../errorReporting';
 import { dispatchInstructions } from '../../redux/instructions';
 
 const loadState = () => {
@@ -8,7 +9,7 @@ const loadState = () => {
     const stored = localStorage.getItem('messages');
     if (stored) JSON.parse(stored).forEach((m) => (items[m.id] = m));
   } catch (e) {
-    console.error(e);
+    log('error', 'messagesSlice.loadState threw an error.', e);
   }
   return { items };
 };
@@ -20,7 +21,7 @@ const updateBadge = (count) =>
   window.push &&
   window.push.setApplicationIconBadgeNumber(
     () => {},
-    (error) => console.error(`Error updating badge: ${error}`),
+    (error) => log('warning', 'Error updating badge.', error),
     count
   );
 

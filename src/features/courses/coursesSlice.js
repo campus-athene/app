@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { log } from '../../errorReporting';
 import { descriptions as semesterDescs } from '../common/semesters';
 
 const loadState = ({ items }) => {
@@ -9,7 +10,7 @@ const loadState = ({ items }) => {
       (e) => ((items[e.semester] || (items[e.semester] = {}))[e.code] = e)
     );
   } catch (e) {
-    console.error(e);
+    log('error', 'coursesSlice.loadState threw an error.', e);
   }
 };
 

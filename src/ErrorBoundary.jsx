@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, useLocation, withRouter } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { log } from './errorReporting';
 import { logout } from './features/auth/authSlice';
 import PageFrame from './features/common/PageFrame';
 import { Inspection } from './icons';
@@ -19,7 +20,7 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     // You can also log the error to an error reporting service
-    // logErrorToMyService(error, errorInfo);
+    log('error', 'ErrorBoundary caught an error.', { error, errorInfo });
   }
 
   render() {

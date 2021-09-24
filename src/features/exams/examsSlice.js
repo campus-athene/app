@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { NetworkError, ServerError } from '../../api/errors';
+import { log } from '../../errorReporting';
 import { dispatchInstructions } from '../../redux/instructions';
 import { descriptions as semesterDescs } from '../common/semesters';
 
@@ -9,8 +10,9 @@ const loadState = ({ items }) => {
     const local = JSON.parse(localStorage.getItem('exams'));
     if (!local) return;
     local.forEach(e => items[e.id] = e);
+  } catch (e) {
+    log('error', 'examsSlice.loadState threw an error.', e);
   }
-  catch (e) { console.error(e); }
 }
 
 const examsSlice = createSlice({

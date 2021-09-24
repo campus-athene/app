@@ -4,6 +4,7 @@ import { useHistory, useParams } from 'react-router';
 import Hammer from 'react-hammerjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { log } from '../../errorReporting';
 import stadtmitte from './data/stadtmitte.png';
 import lichtwiese from './data/lichtwiese.png';
 import windkanal from './data/windkanal.png';
@@ -30,10 +31,9 @@ const MapViewPage = () => {
       ? [lichtwiese, { x: 440, y: 960 }]
       : mapArg === 'windkanal'
       ? [windkanal, { x: 250, y: 500 }]
-      : console.warn(`Map four ${mapArg} could not be found.`) || [
-          stadtmitte,
-          { x: 935, y: 610 },
-        ];
+      : log('warning', `MapViewPage was parsed an invalid map parameter.`, {
+          map: mapArg,
+        }) || [stadtmitte, { x: 935, y: 610 }];
   const history = useHistory();
 
   const mapImg = useRef(null);

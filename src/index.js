@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter as ReactRouter } from 'react-router-dom';
 import { configureStore } from '@reduxjs/toolkit';
+import { log } from './errorReporting';
 import { setStatusBarHeight } from './features/common/commonSlice';
 import reportWebVitals from './reportWebVitals';
 import rootReducer from './redux';
@@ -10,6 +11,8 @@ import { update } from './redux/sync';
 import ErrorBoundary from './ErrorBoundary';
 import Routes from './Routes';
 import './App.css';
+
+export const storeRef = { store: null };
 
 const initializeCordova = () => {
   // Initialize plugins etc. here
@@ -25,10 +28,13 @@ const initializeReact = () => {
     reducer: rootReducer,
   });
 
+  storeRef.store = store;
+
   window.StatusBarHeight &&
     window.StatusBarHeight.getValue(
       (value) => store.dispatch(setStatusBarHeight(value)),
-      (error) => console.log(error)
+      (error) =>
+        log('warning', 'window.StatusBarHeight.getValue threw an error.', error)
     );
 
   // Check for outdated or missing state and fetch is asyncronously from the server.

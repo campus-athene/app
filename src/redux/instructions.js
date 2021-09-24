@@ -1,3 +1,4 @@
+import { log } from '../errorReporting';
 import { updateCreds, logout } from '../features/auth/authSlice';
 import { reset as resetMessages } from '../features/messages/messagesSlice';
 import { reset as resetCourses } from '../features/courses/coursesSlice';
@@ -9,7 +10,7 @@ export const dispatchInstructions = (dispatch, instructions) =>
     try {
       handlers[key] && handlers[key](dispatch, instructions[key]);
     } catch (e) {
-      console.error(e);
+      log('warning', 'Error handling instructions.', e);
     }
   });
 

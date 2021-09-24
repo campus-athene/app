@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
+import { log } from '../../errorReporting';
 
 const loadState = (state) => {
   try {
@@ -12,13 +13,16 @@ const loadState = (state) => {
     state.push = JSON.parse(localStorage.getItem('push')) || null;
     if (state.push && state.push.messages) setupPush();
   } catch (e) {
-    console.error(e);
+    log('error', 'settingsSlice.loadState threw an error.', e);
   }
 };
 
 const setupPush = () => {
   if (!window.PushNotification) {
-    console.warn('window.PushNotification is not defined.');
+    log(
+      'warning',
+      'window.PushNotification in settingsSlice.setupPush is not defined.'
+    );
     return;
   }
   try {
@@ -32,10 +36,10 @@ const setupPush = () => {
       new session(creds).subscribePNS(registrationId, registrationType);
     });
     window.push.on('error', (e) => {
-      console.error(e);
+      log('warning', 'window.push threw an error.', e);
     });
   } catch (error) {
-    console.error(error);
+    log('warning', 'settingsSlice.setupPush threw an error.', error);
   }
 };
 
@@ -80,5 +84,10 @@ export const selectNeedsPrivacySetup =
   () =>
   ({ settings: { privacy } }) =>
     !privacy;
+
+export const selectPrivacy =
+  () =>
+  ({ settings: { privacy } }) =>
+    privacy || null;
 
 export default settingsSlice.reducer;

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import { log } from '../../errorReporting';
 import PageFrame from '../common/PageFrame';
 import { selectExam } from './examsSlice';
 import convertGrade from './gradeConverter';
@@ -14,7 +15,7 @@ const ExamDetailsPage = () => {
   const [modalOpen, setModalOpen] = useState();
 
   if (!exam) {
-    console.warn(`The requested exam '${id}' does not exist.`);
+    log('warning', 'ExamDetailsPage received invalid id parameter.', { id });
     history.goBack();
     return null;
   }
