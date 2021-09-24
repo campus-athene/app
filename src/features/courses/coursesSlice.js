@@ -9,7 +9,11 @@ const loadState = ({ items }) => {
   try {
     const local = JSON.parse(localStorage.getItem('courses'));
     if (!local) return;
-    local.forEach(
+    // For downward compatibility, can be removed.
+    const flat = local
+      .map((g) => (typeof g.code === 'undefined' ? Object.values(g) : g))
+      .flat();
+    flat.forEach(
       (e) => ((items[e.semester] || (items[e.semester] = {}))[e.code] = e)
     );
   } catch (e) {
@@ -18,7 +22,14 @@ const loadState = ({ items }) => {
 };
 
 const saveState = ({ items }) => {
-  localStorage.setItem('courses', JSON.stringify(Object.values(items)));
+  localStorage.setItem(
+    'courses',
+    JSON.stringify(
+      Object.values(items)
+        .map((s) => Object.values(s))
+        .flat()
+    )
+  );
 };
 
 const coursesSlice = createSlice({
