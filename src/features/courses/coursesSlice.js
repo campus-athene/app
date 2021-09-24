@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { log } from '../../errorReporting';
 import {
   descriptions as semesterDescs,
+  getRegSemester,
   getSemester,
 } from '../common/semesters';
 
@@ -67,12 +68,14 @@ export const selectGroupedBySemester =
   () =>
   ({ courses }) =>
     [
-      ...Object.keys(courses.items).map((semester) => ({
-        id: semester,
-        name: semesterDescs[semester] || 'Sonstige',
-        courses: Object.values(courses.items[semester]),
-      })),
-    ];
+      ...Object.keys({ [getRegSemester()]: null, ...courses.items }).map(
+        (semester) => ({
+          id: Number.parseInt(semester),
+          name: semesterDescs[semester] || 'Sonstige',
+          courses: Object.values(courses.items[semester] || {}),
+        })
+      ),
+    ].sort((a, b) => b.id - a.id);
 
 export const getCourseColor = ({ code }, s, bl) => {
   // https://www.30secondsofcode.org/js/s/hsb-to-rgb
