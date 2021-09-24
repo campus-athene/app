@@ -19,7 +19,7 @@ const ExamDetailsPage = () => {
       log('warning', 'ExamDetailsPage received invalid id parameter.', { id });
       history.goBack();
     }
-  }, [id]);
+  }, [exam, history, id]);
   if (!exam) return null;
 
   return (
