@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { descriptions as semesterDescs } from '../common/semesters';
 import CourseRegModal from './CourseRegModal';
 
 const OverviewTab = ({ module }) => {
@@ -16,10 +17,10 @@ const OverviewTab = ({ module }) => {
         Modulname: {module.name}
         <br />
         Lehrende: {module.instructor}
-        {module.semester && (
+        {semesterDescs[module.semester] && (
           <>
             <br />
-            Semester: {module.semester}
+            Semester: {semesterDescs[module.semester]}
           </>
         )}
       </p>
