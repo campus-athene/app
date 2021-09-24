@@ -27,7 +27,7 @@ const CourseRegModal = ({ offer, onClose }) => {
       return;
     }
     setState('ERROR');
-    setError(JSON.stringify(error));
+    setError(error);
   };
 
   return (

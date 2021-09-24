@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
+import { NetworkError, ServerError } from '../../api/errors';
 import { log } from '../../errorReporting';
 import { dispatchInstructions } from '../../redux/instructions';
 import { selectSyncState as selectGlobalSyncState } from '../../redux/sync';
@@ -76,9 +77,13 @@ export const register = (registration) => async (dispatch, getState) => {
     dispatchInstructions(dispatch, body.instructions);
     return null;
   } catch (error) {
+    if (
+      (error instanceof NetworkError || error instanceof ServerError) &&
+      error.message
+    )
+      return error.message;
     log('warning', 'offersSlice.register threw an error.', error);
-    // Error is a string with a user friendly error message.
-    return error;
+    return 'Ein unbekannter Fehler ist aufgetreten.';
   }
 };
 
