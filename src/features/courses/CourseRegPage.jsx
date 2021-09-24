@@ -34,13 +34,16 @@ const CourseRegPage = () => {
         .filter(
           ({ modules, areas }) => modules.length || (areas && areas.length)
         )
-        .map(({ id, major, area, title, modules, areas }) => (
+        .map(({ id, major, area, title, modules, areas }, index) => (
           <ListGroup
             key={`${major}.${area}.${id}`}
             style={{ marginLeft: '-15px', marginRight: '-15px' }}
             variant="flush"
           >
-            <ListGroup.Item className="bg-light">{title}</ListGroup.Item>
+            {/* Mainly on sublists the first title can be empty. */}
+            {title || index ? (
+              <ListGroup.Item className="bg-light">{title}</ListGroup.Item>
+            ) : null}
             {modules.map(({ id: moduleId, code, title, lecturer }) => (
               <ListGroup.Item
                 key={moduleId}
