@@ -47,10 +47,9 @@ const PageFrame = ({
             margin: '-0.5rem 0 -0.5rem -1rem',
             alignSelf: 'stretch',
             display: noMenu ? 'none' : 'flex',
-            flexDirection: 'row',
+            justifyContent: 'center',
             alignItems: 'center',
-            paddingLeft: '1.25rem',
-            paddingRight: '1.25rem',
+            width: '3.5rem',
           }}
         >
           {hamburger ? (
@@ -76,10 +75,9 @@ const PageFrame = ({
               margin: '-0.5rem -1rem -0.5rem 0',
               alignSelf: 'stretch',
               display: 'flex',
-              flexDirection: 'row',
+              justifyContent: 'center',
               alignItems: 'center',
-              paddingLeft: '1.25rem',
-              paddingRight: '1.25rem',
+              width: '3.5rem',
             }}
           >
             <OverlayTrigger placement="bottom" overlay={more}>
