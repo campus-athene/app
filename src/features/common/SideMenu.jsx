@@ -131,7 +131,10 @@ const SideMenu = ({ menuOpen, onClose }) => {
         <HomeButton
           onClick={() => {
             onClose();
-            window.location.href = 'https://hds.hebis.de/ulbdamobil/';
+            window.open(
+              'https://hds.hebis.de/ulbdamobil/',
+              '_blank'
+            );
           }}
           target={'/library?hamburger'}
           icon={Lecture}

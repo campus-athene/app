@@ -101,7 +101,10 @@ const DetailsPage = () => {
       {tab === 'material' && (
         <button
           onClick={() =>
-            (window.location.href = 'https://moodle.tu-darmstadt.de/my/')
+            window.open(
+              'https://moodle.tu-darmstadt.de/my/',
+              '_blank'
+            )
           }
           style={{
             background: '#f5a300',

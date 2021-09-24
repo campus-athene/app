@@ -1,3 +1,5 @@
+/* global cordova */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -16,6 +18,8 @@ export const storeRef = { store: null };
 
 const initializeCordova = () => {
   // Initialize plugins etc. here
+
+  window.open = cordova.InAppBrowser.open;
 
   // This is already set in config.xml but that settings does not seem
   // to take effect on Android. This line can be removed once the
