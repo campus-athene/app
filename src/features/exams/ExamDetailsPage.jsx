@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Button } from 'react-bootstrap';
@@ -14,11 +14,13 @@ const ExamDetailsPage = () => {
   const exam = useSelector(selectExam(id));
   const [modalOpen, setModalOpen] = useState();
 
-  if (!exam) {
-    log('warning', 'ExamDetailsPage received invalid id parameter.', { id });
-    history.goBack();
-    return null;
-  }
+  useEffect(() => {
+    if (!exam) {
+      log('warning', 'ExamDetailsPage received invalid id parameter.', { id });
+      history.goBack();
+    }
+  }, [id]);
+  if (!exam) return null;
 
   return (
     <PageFrame title="Klausurdetails">
