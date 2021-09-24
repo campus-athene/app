@@ -1,6 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { log } from '../../errorReporting';
-import { descriptions as semesterDescs } from '../common/semesters';
+import {
+  descriptions as semesterDescs,
+  getSemester,
+} from '../common/semesters';
 
 const loadState = ({ items }) => {
   try {
@@ -45,7 +48,7 @@ export const selectBySemesterAndNumber =
 export const selectCurrentSemester =
   () =>
   ({ courses }) =>
-    Object.values(courses.items[15096000] || {}).sort((a, b) =>
+    Object.values(courses.items[getSemester()] || {}).sort((a, b) =>
       a.code < b.code ? -1 : a.code > b.code ? 1 : 0
     );
 

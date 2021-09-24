@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 import { selectSyncState } from '../../redux/sync';
 import PageFrame from '../common/PageFrame';
+import { getRegSemester } from '../common/semesters';
 import { getCourseColor, selectGroupedBySemester } from './coursesSlice';
 
 const ListPage = () => {
@@ -62,8 +63,7 @@ const ListPage = () => {
                 </div>
               </ListGroup.Item>
             ))}
-            {/* Hardcoded to WiSe 2021/22. */}
-            {semesterId === 15106000 && index === 0 && (
+            {Number.parseInt(semesterId) === getRegSemester() && index === 0 && (
               <ListGroup.Item action onClick={() => history.push('/coursereg')}>
                 <div style={{ display: 'flex', fontWeight: 'bold' }}>
                   <div style={{ flexGrow: '1' }}>Anmeldung</div>
