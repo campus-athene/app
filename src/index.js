@@ -1,4 +1,4 @@
-/* global cordova */
+/* global SafariViewController */
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -19,7 +19,14 @@ export const storeRef = { store: null };
 const initializeCordova = () => {
   // Initialize plugins etc. here
 
-  window.open = cordova.InAppBrowser.open;
+  SafariViewController?.isAvailable((isAvailable) => {
+    if (isAvailable)
+      window.open = (url, _target, options) =>
+        SafariViewController.show({
+          url,
+          ...options,
+        });
+  });
 
   // This is already set in config.xml but that settings does not seem
   // to take effect on Android. This line can be removed once the
