@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import { log } from '../../errorReporting';
 import { registerExam } from './examsSlice';
 
@@ -14,23 +14,26 @@ const ExamRegModal = ({ exam, closeCallback }) => {
   if (!isReg && exam.status !== 'unregister')
     throw Error(`Illegal regAction ${exam.status}.`);
 
-  const display =
+  const display = (
     <p>
-      {exam.courseName}<br />
+      {exam.courseName}
+      <br />
       <i>{exam.examName}</i>
-    </p>;
+    </p>
+  );
 
   const execute = async () => {
     setState('EXECUTING');
-    const result = await dispatch(registerExam(exam.id, exam.semester, exam.status));
+    const result = await dispatch(
+      registerExam(exam.id, exam.semester, exam.status)
+    );
     if (result) {
       setState('ERROR');
       setMessage(result);
-    }
-    else {
+    } else {
       setState('SUCCESS');
     }
-  }
+  };
 
   const fingerprint = window.Fingerprint;
   const authAndExecute = async () => {
@@ -64,19 +67,25 @@ const ExamRegModal = ({ exam, closeCallback }) => {
   };
 
   return (
-    <Modal show={true} onHide={() => state !== 'EXECUTING' && closeCallback()} centered>
+    <Modal
+      show={true}
+      onHide={() => state !== 'EXECUTING' && closeCallback()}
+      centered
+    >
       <Modal.Header>
-        <Modal.Title>{isReg ? "Anmelden" : "Abmelden"}</Modal.Title>
+        <Modal.Title>{isReg ? 'Anmelden' : 'Abmelden'}</Modal.Title>
       </Modal.Header>
-      {
-        state === 'CONFIRM' ? <>
+      {state === 'CONFIRM' ? (
+        <>
           <Modal.Body>
-            <p>Möchtest du dich {isReg ? "zu" : "von"}</p>
+            <p>Möchtest du dich {isReg ? 'zu' : 'von'}</p>
             {display}
-            <p>{isReg ? "anmelden" : "abmelden"}?</p>
+            <p>{isReg ? 'anmelden' : 'abmelden'}?</p>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={() => closeCallback()}>Abbrechen</Button>
+            <Button variant="secondary" onClick={() => closeCallback()}>
+              Abbrechen
+            </Button>
             <Button
               variant={isReg ? 'success' : 'danger'}
               onClick={() =>
@@ -86,38 +95,40 @@ const ExamRegModal = ({ exam, closeCallback }) => {
               {isReg ? 'Anmelden' : 'Abmelden'}
             </Button>
           </Modal.Footer>
-        </> :
-          state === 'EXECUTING' ? <>
-            <Modal.Body>
-              <p>Du wirst {isReg ? "zu" : "von"}</p>
-              {display}
-              <p>{isReg ? "angemeldet" : "abgemeldet"}...</p>
-              <p>Dies kann ein paar Sekunden dauern.</p>
-            </Modal.Body>
-          </> :
-            state === 'SUCCESS' ? <>
-              <Modal.Body>
-                <p>{isReg ? "Anmeldung zu" : "Abmeldung von"}</p>
-                {display}
-                <p>erfolgreich.</p>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button onClick={() => closeCallback()}>Schließen</Button>
-              </Modal.Footer>
-            </> :
-              state === 'ERROR' ? <>
-                <Modal.Body>
-                  <p>{isReg ? "Anmeldung zu" : "Abmeldung von"}</p>
-                  {display}
-                  <p className="text-danger">fehlgeschlagen.</p>
-                  <p style={{ fontStyle: 'italic' }}>{message}</p>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button onClick={() => closeCallback()}>Schließen</Button>
-                </Modal.Footer>
-              </> :
-                null
-      }
+        </>
+      ) : state === 'EXECUTING' ? (
+        <>
+          <Modal.Body>
+            <p>Du wirst {isReg ? 'zu' : 'von'}</p>
+            {display}
+            <p>{isReg ? 'angemeldet' : 'abgemeldet'}...</p>
+            <p>Dies kann ein paar Sekunden dauern.</p>
+          </Modal.Body>
+        </>
+      ) : state === 'SUCCESS' ? (
+        <>
+          <Modal.Body>
+            <p>{isReg ? 'Anmeldung zu' : 'Abmeldung von'}</p>
+            {display}
+            <p>erfolgreich.</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => closeCallback()}>Schließen</Button>
+          </Modal.Footer>
+        </>
+      ) : state === 'ERROR' ? (
+        <>
+          <Modal.Body>
+            <p>{isReg ? 'Anmeldung zu' : 'Abmeldung von'}</p>
+            {display}
+            <p className="text-danger">fehlgeschlagen.</p>
+            <p style={{ fontStyle: 'italic' }}>{message}</p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => closeCallback()}>Schließen</Button>
+          </Modal.Footer>
+        </>
+      ) : null}
     </Modal>
   );
 };

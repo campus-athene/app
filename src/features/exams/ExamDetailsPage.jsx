@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { useParams, useHistory } from 'react-router-dom';
 import { log } from '../../errorReporting';
 import PageFrame from '../common/PageFrame';
+import ExamRegModal from './ExamRegModal';
 import { selectExam } from './examsSlice';
 import convertGrade from './gradeConverter';
-import ExamRegModal from './ExamRegModal';
 
 const ExamDetailsPage = () => {
   const { id } = useParams(); // This will return a string
@@ -27,23 +27,29 @@ const ExamDetailsPage = () => {
       <h3 style={{ marginTop: '1rem' }}>{exam.courseName}</h3>
       <h4>{exam.examName}</h4>
       <p>
-        K&uuml;rzel: {exam.code}<br />
-        Datum: {exam.date}<br />
-        {exam.grade && <span>Bewertung: {convertGrade(exam.grade).desc} ({exam.grade})</span>}
+        K&uuml;rzel: {exam.code}
+        <br />
+        Datum: {exam.date}
+        <br />
+        {exam.grade && (
+          <span>
+            Bewertung: {convertGrade(exam.grade).desc} ({exam.grade})
+          </span>
+        )}
       </p>
-      {exam.status === 'register' &&
+      {exam.status === 'register' && (
         <Button variant="outline-success" onClick={() => setModalOpen(true)}>
           Anmelden
         </Button>
-      }
-      {exam.status === 'unregister' &&
+      )}
+      {exam.status === 'unregister' && (
         <Button variant="outline-danger" onClick={() => setModalOpen(true)}>
           Abmelden
         </Button>
-      }
-      {modalOpen ?
-        <ExamRegModal exam={exam} closeCallback={() => setModalOpen(false)} /> :
-        null}
+      )}
+      {modalOpen ? (
+        <ExamRegModal exam={exam} closeCallback={() => setModalOpen(false)} />
+      ) : null}
     </PageFrame>
   );
 };
