@@ -10,8 +10,6 @@ import CoursListPage from './features/courses/ListPage';
 import CourseRegPage from './features/courses/CourseRegPage';
 import ExamListPage from './features/exams/ExamListPage';
 import ExamDetailsPage from './features/exams/ExamDetailsPage';
-import OappPage from './features/oapp/OappPage';
-import OappArticlePage from './features/oapp/OappArticlePage';
 import MapViewPage from './features/maps/MapViewPage';
 import MapListPage from './features/maps/MapListPage';
 
@@ -47,15 +45,6 @@ const Routes = () => {
       </Route>
       <Route path="/exams">
         <ExamListPage />
-      </Route>
-      <Route path="/oapp/:l1/:l2/:l3">
-        <OappArticlePage />
-      </Route>
-      <Route path="/oapp/:l1/:l2">
-        <OappArticlePage />
-      </Route>
-      <Route path="/oapp">
-        <OappPage />
       </Route>
       <Route path="/maps/:map">
         <MapViewPage />
