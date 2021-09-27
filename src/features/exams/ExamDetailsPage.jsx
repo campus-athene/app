@@ -1,3 +1,4 @@
+import { ResponsivePie } from '@nivo/pie';
 import { useEffect, useState } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,22 +45,29 @@ const ExamDetailsPage = () => {
         )}
       </p>
       {exam.gradeDist && (
-        <Table bordered>
-          <thead>
-            <tr>
-              <td>Note</td>
-              <td>Anzahl</td>
-            </tr>
-          </thead>
-          <tbody>
-            {exam.gradeDist.map(([name, value]) => (
-              <tr key={name}>
-                <td>{name}</td>
-                <td>{value}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <ResponsivePie
+          height={250}
+          data={exam.gradeDist.map(([grade, value]) => ({
+            id: grade,
+            label: grade,
+            value,
+            color: convertGrade(grade).hexColor,
+          }))}
+          margin={{ top: 20, right: 60, bottom: 20, left: 60 }}
+          innerRadius={0.6}
+          activeOuterRadiusOffset={8}
+          colors={{ datum: 'data.color' }}
+          borderWidth={1}
+          borderColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+          arcLinkLabelsSkipAngle={10}
+          arcLinkLabelsThickness={2}
+          arcLinkLabelsDiagonalLength={8}
+          arcLinkLabelsStraightLength={12}
+          arcLinkLabelsColor={{ from: 'color', modifiers: [['darker', 0.2]] }}
+          arcLabelsSkipAngle={10}
+          arcLabelsTextColor={{ from: 'color', modifiers: [['darker', 2]] }}
+          isInteractive={false}
+        />
       )}
       {exam.status === 'register' && (
         <Button variant="outline-success" onClick={() => setModalOpen(true)}>
