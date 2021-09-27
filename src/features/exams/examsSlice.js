@@ -17,12 +17,15 @@ const loadState = ({ items }) => {
 
 const examsSlice = createSlice({
   name: 'exams',
-  initialState: { items: {} },
+  initialState: { items: {}, details: {} },
   reducers: {
     reset(state, action) {
       state.items = {};
       Object.values(action.payload).forEach((e) => (state.items[e.id] = e));
       localStorage.setItem('exams', JSON.stringify(Object.values(state.items)));
+    },
+    setDetails(state, { payload, payload: { id } }) {
+      state.details[id] = payload;
     },
   },
   extraReducers: (builder) => {
@@ -30,7 +33,22 @@ const examsSlice = createSlice({
   },
 });
 
+const { setDetails } = examsSlice.actions;
 export const { reset } = examsSlice.actions;
+
+export const getExamDetails = (id) => async (dispatch, getState) => {
+  try {
+    if (getState().exams.details[id] && !getState().exams.details[id].isOffline)
+      return;
+    dispatch(setDetails({ id, isLoading: true }));
+    const response = await new session(getState().auth.creds).getExamGrades(id);
+    dispatch(setDetails({ id, details: response.result }));
+  } catch (error) {
+    if (error instanceof NetworkError || error instanceof ServerError)
+      dispatch(setDetails({ id, isOffline: true }));
+    else throw error;
+  }
+};
 
 export const registerExam =
   (id, semester, type) => async (dispatch, getState) => {
@@ -51,8 +69,25 @@ export const registerExam =
 
 export const selectExam =
   (id) =>
-  ({ exams }) =>
-    exams.items[Number.parseInt(id)];
+  ({ exams }) => {
+    const exam = exams.items[Number.parseInt(id)];
+    if (!exam) return null;
+    return {
+      ...exams.details[id]?.details,
+      ...exam,
+    };
+  };
+
+export const selectExamSyncState =
+  (id) =>
+  ({ exams }) => {
+    const exam = exams.items[id];
+    if (!exam) return null;
+    const details = exams.details[id];
+    // We expect the calling component to call getExamsDetails so we already return isLoading.
+    if (!details) return { isLoading: true, isOffline: false };
+    return details;
+  };
 
 export const selectExamsGroupedBySemester = ({ exams }) =>
   Object.values(
