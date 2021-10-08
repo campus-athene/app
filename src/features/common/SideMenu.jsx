@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Badge, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Envelope, Lecture, Logout, Map } from '../../icons';
+import { Envelope, Lecture, Logout, Map, Orientation } from '../../icons';
 import { logout } from '../auth/authSlice';
 import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
 import { selectUnreadCount } from '../messages/messagesSlice';
@@ -125,15 +125,15 @@ const SideMenu = ({ menuOpen, onClose }) => {
         <HomeButton
           onClick={() => {
             onClose();
-            window.open(
-              'https://hds.hebis.de/ulbdamobil/',
-              '_blank'
-            );
+            window.open('https://hds.hebis.de/ulbdamobil/', '_blank');
           }}
           target={'/library?hamburger'}
           icon={Lecture}
         >
           Bibliothek
+        </HomeButton>
+        <HomeButton target={'/oapp?hamburger'} icon={Orientation}>
+          Orientierung
         </HomeButton>
         <HomeButton target={'/maps?hamburger'} icon={Map}>
           Campuskarten

@@ -8,6 +8,7 @@ import MessagesPage from './features/messages/MessagesPage';
 import CourseDetailsPage from './features/courses/DetailsPage';
 import CoursListPage from './features/courses/ListPage';
 import CourseRegPage from './features/courses/CourseRegPage';
+import OappPage from './features/wiki/WikiPage';
 import MapViewPage from './features/maps/MapViewPage';
 import MapListPage from './features/maps/MapListPage';
 
@@ -37,6 +38,9 @@ const Routes = () => {
       </Route>
       <Route path="/coursereg">
         <CourseRegPage />
+      </Route>
+      <Route path="/oapp">
+        <OappPage />
       </Route>
       <Route path="/maps/:map">
         <MapViewPage />
