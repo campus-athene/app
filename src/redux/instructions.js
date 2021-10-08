@@ -3,7 +3,6 @@ import { updateCreds, logout } from '../features/auth/authSlice';
 import { reset as resetMessages } from '../features/messages/messagesSlice';
 import { reset as resetCourses } from '../features/courses/coursesSlice';
 import { reset as resetOffers } from '../features/courses/offersSlice';
-import { reset as resetExams } from '../features/exams/examsSlice';
 
 export const dispatchInstructions = (dispatch, instructions) =>
   Object.keys(instructions || {}).forEach((key) => {
@@ -31,6 +30,6 @@ const handlers = {
     dispatch(resetOffers(offers));
   },
   updateExams: (dispatch, { exams }) => {
-    dispatch(resetExams(exams));
+    // The exams area has been temporarily removed.
   },
 };

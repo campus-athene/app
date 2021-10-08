@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Badge, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Envelope, Exam, Lecture, Logout, Map } from '../../icons';
+import { Envelope, Lecture, Logout, Map } from '../../icons';
 import { logout } from '../auth/authSlice';
 import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
 import { selectUnreadCount } from '../messages/messagesSlice';
@@ -121,9 +121,6 @@ const SideMenu = ({ menuOpen, onClose }) => {
         </HomeButton>
         <HomeButton target={'/courses?hamburger'} icon={Lecture}>
           Mein Studium
-        </HomeButton>
-        <HomeButton target={'/exams?hamburger'} icon={Exam}>
-          Prüfungen
         </HomeButton>
         <HomeButton
           onClick={() => {

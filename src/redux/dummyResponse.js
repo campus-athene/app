@@ -83,57 +83,6 @@ const dummyResponse = {
     updateCourseOffers: {
       offers: [],
     },
-    updateExams: {
-      exams: [
-        {
-          id: 372364159383991,
-          code: '04-00-0119',
-          courseName: 'Mathematik II für Informatik und Wirtschaftsinformatik',
-          examName: 'Fachprüfung  1. Termin',
-          date: 'Do, 3. Sep. 2020 16:00-17:30',
-          semester: 15086000,
-          status: 'register',
-          regArgs: [15076000, 375771926178058],
-        },
-        {
-          id: 373675105627843,
-          code: '20-00-0015-iv',
-          courseName: 'Informationsmanagement',
-          examName: 'mündliche / schriftliche Prüfung (Fachprüfung)  1. Termin',
-          date: 'Mo, 7. Sep. 2020 10:00-12:30',
-          semester: 15086000,
-          status: 'register',
-          regArgs: [15076000, 375771926178176],
-        },
-        {
-          id: 365024374120533,
-          code: '04-10-0119/de',
-          courseName: 'Mathematik II für Informatiker',
-          examName: 'Studienleistung',
-          date: 'Donnerstag, 1. Januar',
-          semester: '15036000',
-          grade: 'b',
-        },
-        {
-          id: 365775488004215,
-          code: '18-hi-3002',
-          courseName: 'Was steckt dahinter?',
-          examName: 'Kolloquium',
-          date: 'Donnerstag, 1. Januar',
-          semester: '15036000',
-          grade: 'b',
-        },
-        {
-          id: 364304652583216,
-          code: '20-00-0000-tt',
-          courseName: 'Mentorensystem',
-          examName: 'mündliche / schriftliche Prüfung (Studienleistung)',
-          date: 'Freitag, 9. Februar',
-          semester: '15026000',
-          grade: 'b',
-        },
-      ],
-    },
   },
 };
 

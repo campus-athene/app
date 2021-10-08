@@ -8,8 +8,6 @@ import MessagesPage from './features/messages/MessagesPage';
 import CourseDetailsPage from './features/courses/DetailsPage';
 import CoursListPage from './features/courses/ListPage';
 import CourseRegPage from './features/courses/CourseRegPage';
-import ExamListPage from './features/exams/ExamListPage';
-import ExamDetailsPage from './features/exams/ExamDetailsPage';
 import MapViewPage from './features/maps/MapViewPage';
 import MapListPage from './features/maps/MapListPage';
 
@@ -39,12 +37,6 @@ const Routes = () => {
       </Route>
       <Route path="/coursereg">
         <CourseRegPage />
-      </Route>
-      <Route path="/exams/:id">
-        <ExamDetailsPage />
-      </Route>
-      <Route path="/exams">
-        <ExamListPage />
       </Route>
       <Route path="/maps/:map">
         <MapViewPage />
