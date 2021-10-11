@@ -4,7 +4,15 @@ import { useState } from 'react';
 import { Badge, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { Envelope, Lecture, Logout, Map, Orientation } from '../../icons';
+import {
+  Envelope,
+  Home,
+  Lecture,
+  Library,
+  Logout,
+  Map,
+  Orientation,
+} from '../../icons';
 import { logout } from '../auth/authSlice';
 import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
 import { selectUnreadCount } from '../messages/messagesSlice';
@@ -110,7 +118,7 @@ const SideMenu = ({ menuOpen, onClose }) => {
         </button>
         <Logo style={{ margin: '2em 5em 2em 5em' }} />
 
-        <HomeButton target={'/'} icon={Lecture}>
+        <HomeButton target={'/'} icon={Home}>
           Startseite
         </HomeButton>
         <HomeButton target={'/messages?hamburger'} icon={Envelope}>
@@ -137,7 +145,7 @@ const SideMenu = ({ menuOpen, onClose }) => {
             window.open('https://hds.hebis.de/ulbdamobil/', '_blank');
           }}
           target={'/library?hamburger'}
-          icon={Lecture}
+          icon={Library}
         >
           Bibliothek
         </HomeButton>
