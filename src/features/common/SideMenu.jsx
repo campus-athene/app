@@ -12,6 +12,7 @@ import {
   Logout,
   Map,
   Orientation,
+  Sport,
 } from '../../icons';
 import { logout } from '../auth/authSlice';
 import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
@@ -148,6 +149,18 @@ const SideMenu = ({ menuOpen, onClose }) => {
           icon={Library}
         >
           Bibliothek
+        </HomeButton>
+        <HomeButton
+          onClick={() => {
+            onClose();
+            window.open(
+              'https://online-anmeldung.usz.tu-darmstadt.de/angebote/aktueller_zeitraum/m.html',
+              '_blank'
+            );
+          }}
+          icon={Sport}
+        >
+          Sport
         </HomeButton>
         <HomeButton target={'/oapp?hamburger'} icon={Orientation}>
           Orientierung
