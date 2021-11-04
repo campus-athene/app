@@ -63,6 +63,7 @@ const HomePage = ({ logout }) => {
         <Logo style={{ paddingTop: '3em', height: '10em' }} />
       </div>
       <div
+        className="no-scrollbar"
         style={{
           borderRadius: '2em 2em 0 0',
           bottom: 0,

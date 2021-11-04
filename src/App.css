@@ -2,3 +2,8 @@ body {
   overflow: hidden;
   user-select: none;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  background: red;
+}
