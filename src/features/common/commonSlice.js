@@ -4,13 +4,20 @@ const commonSlice = createSlice({
   name: 'common',
   initialState: {},
   reducers: {
+    setSideMenuOpen: (state, { payload }) => {
+      state.sideMenuOpen = payload;
+    },
     setStatusBarHeight: (state, { payload }) => {
       state.statusBarHeight = payload;
+    },
+    toggleSideMenu: (state) => {
+      state.statusBarHeight = !state.statusBarHeight;
     },
   },
 });
 
-export const { setStatusBarHeight } = commonSlice.actions;
+export const { setSideMenuOpen, setStatusBarHeight, toggleSideMenu } =
+  commonSlice.actions;
 
 export const selectStatusBarHeightCss =
   () =>
@@ -18,5 +25,10 @@ export const selectStatusBarHeightCss =
     typeof statusBarHeight === 'number'
       ? `${statusBarHeight}px`
       : 'env(safe-area-inset-top)';
+
+export const selectSideMenuOpen =
+  () =>
+  ({ common: { sideMenuOpen } }) =>
+    sideMenuOpen;
 
 export default commonSlice.reducer;

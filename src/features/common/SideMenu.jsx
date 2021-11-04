@@ -18,14 +18,19 @@ import {
 import { logout } from '../auth/authSlice';
 import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
 import { selectUnreadCount } from '../messages/messagesSlice';
-import { selectStatusBarHeightCss } from './commonSlice';
+import {
+  selectSideMenuOpen,
+  selectStatusBarHeightCss,
+  setSideMenuOpen,
+} from './commonSlice';
 import Logo from './Logo';
 
-const SideMenu = ({ menuOpen, onClose }) => {
+const SideMenu = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
   const courses = useSelector(selectCurrentSemester());
+  const menuOpen = useSelector(selectSideMenuOpen());
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
   const unreadMsgs = useSelector(selectUnreadCount());
 
@@ -48,7 +53,11 @@ const SideMenu = ({ menuOpen, onClose }) => {
         padding: '0 1em',
         whiteSpace: 'nowrap',
       }}
-      onClick={onClick || (() => history.push(target))}
+      onClick={() => {
+        dispatch(setSideMenuOpen(false));
+        onClick && onClick();
+        history.push(target);
+      }}
     >
       {color ? (
         <div
@@ -80,7 +89,7 @@ const SideMenu = ({ menuOpen, onClose }) => {
       <Transition in={menuOpen} timeout={300}>
         {(transitionState) => (
           <div
-            onClick={onClose}
+            onClick={() => dispatch(setSideMenuOpen(false))}
             style={{
               background: '#0008',
               bottom: '0',
@@ -133,7 +142,7 @@ const SideMenu = ({ menuOpen, onClose }) => {
             }}
           >
             <button
-              onClick={onClose}
+              onClick={() => dispatch(setSideMenuOpen(false))}
               style={{
                 background: 'none',
                 border: 'none',
@@ -172,23 +181,20 @@ const SideMenu = ({ menuOpen, onClose }) => {
               Mein Studium
             </HomeButton>
             <HomeButton
-              onClick={() => {
-                onClose();
-                window.open('https://hds.hebis.de/ulbdamobil/', '_blank');
-              }}
-              target={'/library?hamburger'}
+              onClick={() =>
+                window.open('https://hds.hebis.de/ulbdamobil/', '_blank')
+              }
               icon={Library}
             >
               Bibliothek
             </HomeButton>
             <HomeButton
-              onClick={() => {
-                onClose();
+              onClick={() =>
                 window.open(
                   'https://online-anmeldung.usz.tu-darmstadt.de/angebote/aktueller_zeitraum/m.html',
                   '_blank'
-                );
-              }}
+                )
+              }
               icon={Sport}
             >
               Sport

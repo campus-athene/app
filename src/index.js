@@ -13,6 +13,7 @@ import { update } from './redux/sync';
 import ErrorBoundary from './ErrorBoundary';
 import Routes from './Routes';
 import './App.css';
+import SideMenu from './features/common/SideMenu';
 
 export const storeRef = { store: null };
 
@@ -57,6 +58,7 @@ const initializeReact = () => {
         <ReactRouter>
           <ErrorBoundary>
             <Routes />
+            <SideMenu />
           </ErrorBoundary>
         </ReactRouter>
       </Provider>

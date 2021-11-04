@@ -1,19 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { selectStatusBarHeightCss } from '../common/commonSlice';
+import {
+  selectStatusBarHeightCss,
+  setSideMenuOpen,
+} from '../common/commonSlice';
 import Logo from '../common/Logo';
-import SideMenu from '../common/SideMenu';
 import { selectUnreadCount } from '../messages/messagesSlice';
 import { Envelope } from '../../icons';
 import groupYoungPeoplePosingPhoto from './group-young-people-posing-photo.svg';
+import { useDispatch } from 'react-redux';
 
-const HomePage = ({ logout }) => {
+const HomePage = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const unreadMsgs = useSelector(selectUnreadCount());
-  const [menuOpen, setMenuOpen] = useState(false);
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
   const Widget = (props) =>
@@ -45,7 +48,7 @@ const HomePage = ({ logout }) => {
         }}
       >
         <button
-          onClick={() => setMenuOpen(true)}
+          onClick={() => dispatch(setSideMenuOpen(true))}
           style={{
             background: 'none',
             border: 'none',
@@ -120,7 +123,6 @@ const HomePage = ({ logout }) => {
           </Widget>
         </div>
       </div>
-      <SideMenu menuOpen={menuOpen} onClose={() => setMenuOpen(false)} />
     </div>
   );
 };

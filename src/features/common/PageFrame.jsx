@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Navbar, Container, OverlayTrigger } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,8 +7,7 @@ import {
   faBars,
   faEllipsisH,
 } from '@fortawesome/free-solid-svg-icons';
-import { selectStatusBarHeightCss } from './commonSlice';
-import SideMenu from './SideMenu';
+import { selectStatusBarHeightCss, setSideMenuOpen } from './commonSlice';
 
 const PageFrame = ({
   children,
@@ -18,12 +16,11 @@ const PageFrame = ({
   more,
   syncState: { isLoading, isOffline } = { isLoading: false, isOffline: false },
 }) => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const hamburger = useLocation().search.includes('hamburger');
 
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
-
-  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div
@@ -42,7 +39,9 @@ const PageFrame = ({
         }}
       >
         <Navbar.Brand
-          onClick={() => (hamburger ? setMenuOpen(true) : history.goBack())}
+          onClick={() =>
+            hamburger ? dispatch(setSideMenuOpen(true)) : history.goBack()
+          }
           style={{
             margin: '-0.5rem 0 -0.5rem -1rem',
             alignSelf: 'stretch',
@@ -103,9 +102,6 @@ const PageFrame = ({
       >
         {children}
       </Container>
-      {noMenu || (
-        <SideMenu menuOpen={menuOpen} onClose={() => setMenuOpen(false)} />
-      )}
     </div>
   );
 };
