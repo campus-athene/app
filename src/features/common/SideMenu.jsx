@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Badge, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { Transition } from 'react-transition-group';
 import {
   Envelope,
   Home,
@@ -76,120 +77,152 @@ const SideMenu = ({ menuOpen, onClose }) => {
 
   return (
     <>
-      <div
-        onClick={onClose}
-        style={{
-          background: '#0008',
-          bottom: '0',
-          display: menuOpen ? null : 'none',
-          position: 'fixed',
-          top: '0',
-          width: '100%',
-        }}
-      />
-      <div
-        style={{
-          background: '#372649',
-          bottom: '0',
-          color: 'white',
-          display: menuOpen ? null : 'none',
-          overflowY: 'scroll',
-          paddingBottom: '1.5em',
-          paddingTop: statusBarHeightCss,
-          position: 'fixed',
-          top: '0',
-          width: '18em',
-        }}
-      >
-        <button
-          onClick={onClose}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'white',
-            height: '3em',
-            padding: '0',
-            position: 'absolute',
-            right: '0.5em',
-            top: '0.5em',
-            width: '3em',
-          }}
-        >
-          <FontAwesomeIcon icon={faTimes} />
-        </button>
-        <Logo style={{ margin: '2em 5em 2em 5em' }} />
-
-        <HomeButton target={'/'} icon={Home}>
-          Startseite
-        </HomeButton>
-        <HomeButton target={'/messages?hamburger'} icon={Envelope}>
-          Nachrichten
-          {unreadMsgs ? (
-            <>
-              {' '}
-              <Badge
-                style={{ fontSize: '0.75rem', verticalAlign: 'middle' }}
-                pill
-                variant="warning"
-              >
-                {unreadMsgs}
-              </Badge>
-            </>
-          ) : null}
-        </HomeButton>
-        <HomeButton target={'/courses?hamburger'} icon={Lecture}>
-          Mein Studium
-        </HomeButton>
-        <HomeButton
-          onClick={() => {
-            onClose();
-            window.open('https://hds.hebis.de/ulbdamobil/', '_blank');
-          }}
-          target={'/library?hamburger'}
-          icon={Library}
-        >
-          Bibliothek
-        </HomeButton>
-        <HomeButton
-          onClick={() => {
-            onClose();
-            window.open(
-              'https://online-anmeldung.usz.tu-darmstadt.de/angebote/aktueller_zeitraum/m.html',
-              '_blank'
-            );
-          }}
-          icon={Sport}
-        >
-          Sport
-        </HomeButton>
-        <HomeButton target={'/oapp?hamburger'} icon={Orientation}>
-          Orientierung
-        </HomeButton>
-        <HomeButton target={'/maps?hamburger'} icon={Map}>
-          Campuskarten
-        </HomeButton>
-
-        {courses.map((c, i) => (
-          <HomeButton
-            color={getCourseColor(c, 70, 100)}
-            key={c.code}
-            seperator={i === 0}
-            target={`/courses/${encodeURIComponent(
-              c.semester
-            )}/${encodeURIComponent(c.code)}`}
+      <Transition in={menuOpen} timeout={300}>
+        {(transitionState) => (
+          <div
+            onClick={onClose}
+            style={{
+              background: '#0008',
+              bottom: '0',
+              position: 'fixed',
+              top: '0',
+              transition: 'opacity 300ms linear',
+              width: '100%',
+              ...{
+                entering: { opacity: 1 },
+                entered: { opacity: 1 },
+                exiting: { opacity: 0 },
+                exited: { opacity: 0, visibility: 'collapse' },
+              }[transitionState],
+            }}
+          />
+        )}
+      </Transition>
+      <Transition in={menuOpen} timeout={300}>
+        {(transitionState) => (
+          <div
+            style={{
+              background: '#372649',
+              bottom: '0',
+              boxShadow: '-0.4em 0 0.4em 0.5em #000',
+              color: 'white',
+              overflowY: 'scroll',
+              paddingBottom: '1.5em',
+              paddingTop: statusBarHeightCss,
+              position: 'fixed',
+              top: '0',
+              transitionDuration: '300ms',
+              transitionProperty: 'transform',
+              width: '18em',
+              ...{
+                entering: {
+                  transform: 'translateX(0)',
+                  transitionTimingFunction: 'ease-out',
+                },
+                entered: {
+                  transform: 'translateX(0)',
+                },
+                exiting: {
+                  transform: 'translateX(-19em)',
+                  transitionTimingFunction: 'ease-in',
+                },
+                exited: {
+                  transform: 'translateX(-19em)',
+                },
+              }[transitionState],
+            }}
           >
-            {c.name}
-          </HomeButton>
-        ))}
+            <button
+              onClick={onClose}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'white',
+                height: '3em',
+                padding: '0',
+                position: 'absolute',
+                right: '0.5em',
+                top: '0.5em',
+                width: '3em',
+              }}
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+            <Logo style={{ margin: '2em 5em 2em 5em' }} />
 
-        <HomeButton
-          onClick={() => setLogoutModal(true)}
-          icon={Logout}
-          seperator
-        >
-          Abmelden
-        </HomeButton>
-      </div>
+            <HomeButton target={'/'} icon={Home}>
+              Startseite
+            </HomeButton>
+            <HomeButton target={'/messages?hamburger'} icon={Envelope}>
+              Nachrichten
+              {unreadMsgs ? (
+                <>
+                  {' '}
+                  <Badge
+                    style={{ fontSize: '0.75rem', verticalAlign: 'middle' }}
+                    pill
+                    variant="warning"
+                  >
+                    {unreadMsgs}
+                  </Badge>
+                </>
+              ) : null}
+            </HomeButton>
+            <HomeButton target={'/courses?hamburger'} icon={Lecture}>
+              Mein Studium
+            </HomeButton>
+            <HomeButton
+              onClick={() => {
+                onClose();
+                window.open('https://hds.hebis.de/ulbdamobil/', '_blank');
+              }}
+              target={'/library?hamburger'}
+              icon={Library}
+            >
+              Bibliothek
+            </HomeButton>
+            <HomeButton
+              onClick={() => {
+                onClose();
+                window.open(
+                  'https://online-anmeldung.usz.tu-darmstadt.de/angebote/aktueller_zeitraum/m.html',
+                  '_blank'
+                );
+              }}
+              icon={Sport}
+            >
+              Sport
+            </HomeButton>
+            <HomeButton target={'/oapp?hamburger'} icon={Orientation}>
+              Orientierung
+            </HomeButton>
+            <HomeButton target={'/maps?hamburger'} icon={Map}>
+              Campuskarten
+            </HomeButton>
+
+            {courses.map((c, i) => (
+              <HomeButton
+                color={getCourseColor(c, 70, 100)}
+                key={c.code}
+                seperator={i === 0}
+                target={`/courses/${encodeURIComponent(
+                  c.semester
+                )}/${encodeURIComponent(c.code)}`}
+              >
+                {c.name}
+              </HomeButton>
+            ))}
+
+            <HomeButton
+              onClick={() => setLogoutModal(true)}
+              icon={Logout}
+              seperator
+            >
+              Abmelden
+            </HomeButton>
+          </div>
+        )}
+      </Transition>
       <Modal show={logoutModal} centered>
         <Modal.Header>
           <Modal.Title>Abmelden</Modal.Title>
