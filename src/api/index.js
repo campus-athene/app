@@ -21,16 +21,14 @@ export class session {
       throw new NetworkError('Keine Internetverbindung!');
     }
 
-    const response = await httpResponse.json();
-    if (!response.success) throw new ServerError(response);
-    return response;
+    return await httpResponse.json();
   };
 
   send = (path, body = null) =>
     session.sendAdvanced(
       path,
       {
-        Authorization: `tucan ${this.token}`,
+        Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
       },
       body
@@ -38,7 +36,7 @@ export class session {
 
   static login = (username, password) =>
     session.sendAdvanced(
-      '/account/login2',
+      '/account/login',
       {
         'Content-Type': 'application/json',
       },

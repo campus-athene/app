@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { NetworkError, ServerError } from '../../api/errors';
 import { log } from '../../errorReporting';
-import { dispatchInstructions } from '../../redux/instructions';
 import { selectSyncState as selectGlobalSyncState } from '../../redux/sync';
 import { selectCreds } from '../auth/authSlice';
 
@@ -52,7 +51,7 @@ export const loadArea = (major, area, list) => async (dispatch, getState) => {
   }
   const creds = selectCreds()(getState(), dispatch);
   try {
-    const { result: lists } = await new session(creds).getCourseOffers(
+    const { offers: lists } = await new session(creds).getCourseOffers(
       major,
       area,
       list
@@ -74,7 +73,6 @@ export const register = (registration) => async (dispatch, getState) => {
     const body = await new session(state.auth.creds).registerCourse(
       registration
     );
-    dispatchInstructions(dispatch, body.instructions);
     return null;
   } catch (error) {
     if (

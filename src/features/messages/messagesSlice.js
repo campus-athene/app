@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { log } from '../../errorReporting';
-import { dispatchInstructions } from '../../redux/instructions';
 
 const loadState = () => {
   const items = {};
@@ -54,26 +53,31 @@ const messagesSlice = createSlice({
 
 export const { reset } = messagesSlice.actions;
 
-export const selectMessageById = (id) => ({ messages }) => messages.items[id];
+export const selectMessageById =
+  (id) =>
+  ({ messages }) =>
+    messages.items[id];
 
-export const selectAllMessages = () => ({ messages }) =>
-  Object.values(messages.items);
+export const selectAllMessages =
+  () =>
+  ({ messages }) =>
+    Object.values(messages.items);
 
-export const selectUnreadCount = () => ({ messages }) =>
-  Object.values(messages.items).filter((m) => m.unread).length;
+export const selectUnreadCount =
+  () =>
+  ({ messages }) =>
+    Object.values(messages.items).filter((m) => m.unread).length;
 
 export const markRead = (messageId) => async (dispatch, getState) => {
   dispatch(messagesSlice.actions.markRead({ messageId }));
   const response = await new session(getState().auth.creds).markMsgRead(
     messageId
   );
-  dispatchInstructions(dispatch, response.instructions);
 };
 
 export const markAllRead = () => async (dispatch, getState) => {
   dispatch(messagesSlice.actions.markAllRead());
   const response = await new session(getState().auth.creds).markAllMsgsRead();
-  dispatchInstructions(dispatch, response.instructions);
 };
 
 export default messagesSlice.reducer;

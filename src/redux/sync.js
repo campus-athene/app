@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../api';
-import { dispatchInstructions } from './instructions';
 import { NetworkError, ServerError } from '../api/errors';
+import { log } from '../errorReporting';
 import { selectCreds } from '../features/auth/authSlice';
+import { reset as resetCourses } from '../features/courses/coursesSlice';
 import { loadArea } from '../features/courses/offersSlice';
+import { reset as resetMessages } from '../features/messages/messagesSlice';
 import dummyResponse from './dummyResponse';
 
 // Update used in useEffect must not be async.
@@ -25,14 +27,16 @@ const updateAsync = () => async (dispatch, getState) => {
         )
       : await new session(creds).sync();
 
-    dispatch(setLoaded(response.result));
-    dispatchInstructions(dispatch, response.instructions);
+    dispatch(setLoaded());
+    dispatch(resetMessages({ messages: response.messages }));
+    dispatch(resetCourses({ courses: response.courses }));
+
+    // Request course offers from server. They are not included in sync.
     dispatch(loadArea());
   } catch (err) {
     if (err instanceof NetworkError) dispatch(setOffline());
     else {
-      if (err instanceof ServerError)
-        dispatchInstructions(dispatch, err.response.instructions);
+      log('error', 'An error occured in updateAsync.', err);
       dispatch(
         setError(
           err instanceof ServerError
