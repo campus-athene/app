@@ -34,17 +34,17 @@ const CourseRegPage = () => {
         .filter(
           ({ modules, areas }) => modules.length || (areas && areas.length)
         )
-        .map(({ id, major, area, title, modules, areas }, index) => (
+        .map(({ id, major, area, name, modules, areas }, index) => (
           <ListGroup
             key={`${major}.${area}.${id}`}
             style={{ marginLeft: '-15px', marginRight: '-15px' }}
             variant="flush"
           >
             {/* Mainly on sublists the first title can be empty. */}
-            {title || index ? (
-              <ListGroup.Item className="bg-light">{title}</ListGroup.Item>
+            {name || index ? (
+              <ListGroup.Item className="bg-light">{name}</ListGroup.Item>
             ) : null}
-            {modules.map(({ id: moduleId, code, title, lecturer }) => (
+            {modules.map(({ id: moduleId, code, name, instructor }) => (
               <ListGroup.Item
                 key={moduleId}
                 action
@@ -73,7 +73,7 @@ const CourseRegPage = () => {
                 >
                   <span style={{ fontFamily: 'monospace' }}>{code}</span>
                   &ensp;
-                  {lecturer}
+                  {instructor}
                 </div>
                 <div
                   style={{
@@ -83,11 +83,11 @@ const CourseRegPage = () => {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  {title}
+                  {name}
                 </div>
               </ListGroup.Item>
             ))}
-            {(areas || []).map(({ id, major, rootList, title }) => (
+            {(areas || []).map(({ id, major, rootList, name }) => (
               <ListGroup.Item
                 key={`${major}.${id}.${rootList}`}
                 action
@@ -96,7 +96,7 @@ const CourseRegPage = () => {
                 }
               >
                 <div style={{ display: 'flex' }}>
-                  <div style={{ flexGrow: '1', flexShrink: '1' }}>{title}</div>
+                  <div style={{ flexGrow: '1', flexShrink: '1' }}>{name}</div>
                   <div style={{ alignSelf: 'center' }}>
                     <FontAwesomeIcon icon={faAngleRight} />
                   </div>

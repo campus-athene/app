@@ -44,13 +44,13 @@ const CourseRegModal = ({ offer, onClose }) => {
         {offer.courses.length === 1 ?
           <>
             <div style={{ marginBottom: '1em' }}>Möchtest du dich {offer.status === 'register' ? "zu" : "von"}</div>
-            <div style={{ marginBottom: '1em' }}>{offer.title}</div>
+            <div style={{ marginBottom: '1em' }}>{offer.name}</div>
             <div>{offer.status === 'register' ? "anmelden" : "abmelden"}?</div>
           </> : <>
             <div style={{ marginBottom: '1em' }}>{offer.status !== 'unregister' ? "Zu" : "Von"} welchen Veranstaltungen möchtest du {offer.status === 'register' ? "dich anmelden" : offer.status === 'unregister' ? "dich abmelden" : "angemeldet sein"}?</div>
             <div style={{ marginBottom: '1em' }}>
               {offer.courses.map(c =>
-                <Form.Check id={`uglyworkaroundcheckboxid${c.id}`} key={c.id} checked={selection[c.id]} type="checkbox" custom disabled={state !== 'CONFIRM'} label={`${c.code} ${c.title}`} onChange={e => setSelection(c.id, e.target.checked)} />)}
+                <Form.Check id={`uglyworkaroundcheckboxid${c.id}`} key={c.id} checked={selection[c.id]} type="checkbox" custom disabled={state !== 'CONFIRM'} label={`${c.code} ${c.name}`} onChange={e => setSelection(c.id, e.target.checked)} />)}
             </div>
             <div>{offer.status === 'register' ? "anmelden" : "abmelden"}?</div>
           </>}
