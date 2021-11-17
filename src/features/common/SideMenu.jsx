@@ -39,6 +39,7 @@ const SideMenu = () => {
   const HomeButton = ({
     target,
     onClick,
+    dontAutoClose,
     icon: Icon,
     seperator,
     color,
@@ -54,9 +55,9 @@ const SideMenu = () => {
         whiteSpace: 'nowrap',
       }}
       onClick={() => {
-        dispatch(setSideMenuOpen(false));
+        dontAutoClose || dispatch(setSideMenuOpen(false));
         onClick && onClick();
-        history.push(target);
+        target && history.replace(target);
       }}
     >
       {color ? (
@@ -221,6 +222,7 @@ const SideMenu = () => {
 
             <HomeButton
               onClick={() => setLogoutModal(true)}
+              dontAutoClose={true}
               icon={Logout}
               seperator
             >
@@ -238,7 +240,13 @@ const SideMenu = () => {
           <Button variant="secondary" onClick={() => setLogoutModal(false)}>
             Abbrechen
           </Button>
-          <Button variant="danger" onClick={() => dispatch(logout())}>
+          <Button
+            variant="danger"
+            onClick={() => {
+              setLogoutModal(false);
+              dispatch(logout());
+            }}
+          >
             Abmelden
           </Button>
         </Modal.Footer>
