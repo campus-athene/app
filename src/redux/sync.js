@@ -29,7 +29,7 @@ const updateAsync = () => async (dispatch, getState) => {
 
     dispatch(setLoaded());
     dispatch(resetMessages({ messages: response.messages }));
-    dispatch(resetCourses({ courses: response.courses }));
+    dispatch(resetCourses({ courses: response.modules }));
 
     // Request course offers from server. They are not included in sync.
     dispatch(loadArea());

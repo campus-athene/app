@@ -41,13 +41,12 @@ export const login = (username, password) => async (dispatch) => {
       return null;
     }
 
-    const { result: creds } = await session.login(username, password);
-    dispatch(updateCreds({ creds }));
+    const { token } = await session.login(username, password);
+    dispatch(updateCreds({ creds: { token } }));
     dispatch(update());
     return null;
   } catch (error) {
-    dispatch(logout());
-    return error.toString();
+    return error instanceof Error ? error.message : String(error);
   }
 };
 
