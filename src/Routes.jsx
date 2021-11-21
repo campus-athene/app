@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import { Route, Switch } from 'react-router-dom';
 import { selectOnboardingComplete } from './features/settings/settingsSlice';
 import Onboarding from './features/onboarding/Onboarding';
@@ -12,7 +13,11 @@ import OappPage from './features/wiki/WikiPage';
 import MapViewPage from './features/maps/MapViewPage';
 import MapListPage from './features/maps/MapListPage';
 
+export const historyRef = { history: null };
+
 const Routes = () => {
+  historyRef.history = useHistory();
+
   const onboardingComplete = useSelector(selectOnboardingComplete());
   if (!onboardingComplete) return <Onboarding />;
 
