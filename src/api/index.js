@@ -52,8 +52,8 @@ export class session {
 
   sync = () => this.send('/tucan/sync');
 
-  getCourseOffers = (major, area, rootList) =>
-    this.send('/tucan/courseoffers', { major, area, rootList });
+  // args is either { major, area, rootList } or null.
+  getCourseOffers = (args = null) => this.send('/tucan/courseoffers', args);
 
   getExamGrades = (examId) => this.send('/tucan/examgrades', { exam: examId });
 

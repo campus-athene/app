@@ -51,11 +51,8 @@ export const loadArea = (major, area, list) => async (dispatch, getState) => {
   }
   const creds = selectCreds()(getState(), dispatch);
   try {
-    const { offers: lists } = await new session(creds).getCourseOffers(
-      major,
-      area,
-      list
-    );
+    const args = major ? { major, area, list } : null;
+    const { offers: lists } = await new session(creds).getCourseOffers(args);
     dispatch(reset({ major, area, lists }));
   } catch (error) {
     dispatch(setError({ major, area, error: String(error) }));
