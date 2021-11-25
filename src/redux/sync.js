@@ -6,7 +6,6 @@ import { selectCreds } from '../features/auth/authSlice';
 import { reset as resetCourses } from '../features/courses/coursesSlice';
 import { loadArea } from '../features/courses/offersSlice';
 import { reset as resetMessages } from '../features/messages/messagesSlice';
-import dummyResponse from './dummyResponse';
 
 // Update used in useEffect must not be async.
 export const update = () => (dispatch) => {
@@ -21,11 +20,7 @@ const updateAsync = () => async (dispatch, getState) => {
   dispatch(setLoading());
 
   try {
-    const response = creds.dummy
-      ? await new Promise((resolve) =>
-          setTimeout(() => resolve(dummyResponse), 2000)
-        )
-      : await new session(creds).sync();
+    const response = await new session(creds).sync();
 
     dispatch(setLoaded());
     dispatch(resetMessages({ messages: response.messages }));

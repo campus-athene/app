@@ -499,4 +499,14 @@ const dummyResponse = {
   ],
 };
 
-export default dummyResponse;
+export default async (path, body) => {
+  await new Promise((r) => setTimeout(() => r(), 2000));
+  switch (path) {
+    case '/tucan/sync':
+      return dummyResponse;
+    case '/tucan/courseoffers':
+      throw new Error('Not implemented.');
+    default:
+      throw new Error(`No dummy response for "${path}" implemented.`);
+  }
+};

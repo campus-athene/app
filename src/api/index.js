@@ -1,4 +1,5 @@
-import { NetworkError, ServerError } from './errors';
+import dummyResponse from './dummyResponse';
+import { NetworkError } from './errors';
 const base =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3010'
@@ -6,6 +7,7 @@ const base =
 
 export class session {
   constructor(creds) {
+    this.dummy = creds.dummy;
     this.token = creds.token;
   }
 
@@ -25,14 +27,16 @@ export class session {
   };
 
   send = (path, body = null) =>
-    session.sendAdvanced(
-      path,
-      {
-        Authorization: `Bearer ${this.token}`,
-        'Content-Type': 'application/json',
-      },
-      body
-    );
+    this.dummy
+      ? dummyResponse(path, body)
+      : session.sendAdvanced(
+          path,
+          {
+            Authorization: `Bearer ${this.token}`,
+            'Content-Type': 'application/json',
+          },
+          body
+        );
 
   static login = (username, password) =>
     session.sendAdvanced(

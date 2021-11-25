@@ -29,20 +29,18 @@ const authSlice = createSlice({
 export const { updateCreds } = authSlice.actions;
 
 export const login = (username, password) => async (dispatch) => {
-  if (!username || !password) return 'Bitte vervollständige deine Eingaben.';
+  const dummy = username === 'demomode';
+  if (!dummy && !(username && password))
+    return 'Bitte vervollständige Deine Eingaben.';
 
   try {
-    const dummy = username === 'dummy' && password === 'dummy';
-
     if (dummy) {
-      await new Promise((resolve) => setTimeout(() => resolve(), 2000));
       dispatch(updateCreds({ creds: { dummy: true } }));
-      dispatch(update());
-      return null;
+    } else {
+      const { token } = await session.login(username, password);
+      dispatch(updateCreds({ creds: { token } }));
     }
 
-    const { token } = await session.login(username, password);
-    dispatch(updateCreds({ creds: { token } }));
     dispatch(update());
     return null;
   } catch (error) {
