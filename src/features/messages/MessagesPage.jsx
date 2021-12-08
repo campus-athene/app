@@ -30,7 +30,7 @@ const MessagesPage = () => {
       more={ContextMenu()}
       syncState={useSelector(selectSyncState())}
     >
-      <ListGroup variant="flush" style={{ margin: '0 -15px' }}>
+      <ListGroup variant="flush">
         {messages.reverse().map(({ id, subject, body, from, date, unread }) => (
           <ListGroup.Item
             key={id}

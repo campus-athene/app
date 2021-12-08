@@ -37,7 +37,6 @@ const CourseRegPage = () => {
         .map(({ id, major, area, name, modules, areas }, index) => (
           <ListGroup
             key={`${major}.${area}.${id}`}
-            style={{ marginLeft: '-15px', marginRight: '-15px' }}
             variant="flush"
           >
             {/* Mainly on sublists the first title can be empty. */}

@@ -20,7 +20,7 @@ const Entry = ({ children, link, level }) => (
 const WikiPage = () => {
   return (
     <PageFrame title="Orientierung">
-      <ListGroup style={{ marginLeft: '-15px', marginRight: '-15px' }}>
+      <ListGroup>
         {articles
           .map(({ title, link, seealso }) => {
             return [

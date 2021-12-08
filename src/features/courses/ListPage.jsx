@@ -17,7 +17,6 @@ const ListPage = () => {
       {semesters.map(({ id: semesterId, name: semesterName, courses }) => (
         <ListGroup
           key={semesterId}
-          style={{ marginLeft: '-15px', marginRight: '-15px' }}
           variant="flush"
         >
           <ListGroup.Item className="bg-light">{semesterName}</ListGroup.Item>

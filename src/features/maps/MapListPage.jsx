@@ -8,7 +8,7 @@ import windkanal from './data/windkanal.png';
 const MapPreview = ({ title, abbrev, onClick, map, viewBox }) => (
   <div
     style={{
-      marginBottom: '1em',
+      margin: '0 1em 1em 1em',
       position: 'relative',
     }}
     onClick={onClick}

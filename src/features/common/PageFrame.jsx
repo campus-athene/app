@@ -97,11 +97,9 @@ const PageFrame = ({
           {isLoading ? 'Lädt...' : 'Offline'}
         </div>
       )}
-      <Container
-        style={{ overflowX: 'hidden', overflowY: 'scroll', gridRow: '3' }}
-      >
+      <div style={{ overflowX: 'hidden', overflowY: 'scroll', gridRow: '3' }}>
         {children}
-      </Container>
+      </div>
     </div>
   );
 };
