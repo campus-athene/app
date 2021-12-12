@@ -3,7 +3,7 @@ import { NetworkError } from './errors';
 const base =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3010'
-    : 'https://dffblc0bqe.execute-api.eu-central-1.amazonaws.com/20000';
+    : 'https://campus.akamu.de';
 
 export class session {
   constructor(creds) {
