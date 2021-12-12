@@ -35,10 +35,7 @@ const CourseRegPage = () => {
           ({ modules, areas }) => modules.length || (areas && areas.length)
         )
         .map(({ id, major, area, name, modules, areas }, index) => (
-          <ListGroup
-            key={`${major}.${area}.${id}`}
-            variant="flush"
-          >
+          <ListGroup key={`${major}.${area}.${id}`} variant="flush">
             {/* Mainly on sublists the first title can be empty. */}
             {name || index ? (
               <ListGroup.Item className="bg-light">{name}</ListGroup.Item>

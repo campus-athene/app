@@ -8,11 +8,23 @@ import { selectOffer } from './offersSlice';
 import OverviewTab from './OverviewTab';
 
 const DetailsPage = () => {
-  const { semester, number: numberEncoded, major, area, list, module: moduleId } = useParams();
+  const {
+    semester,
+    number: numberEncoded,
+    major,
+    area,
+    list,
+    module: moduleId,
+  } = useParams();
   const number = numberEncoded && decodeURIComponent(numberEncoded);
   const module = useSelector(
     major
-      ? selectOffer(Number.parseInt(major), Number.parseInt(area), Number.parseInt(list), Number.parseInt(moduleId))
+      ? selectOffer(
+          Number.parseInt(major),
+          Number.parseInt(area),
+          Number.parseInt(list),
+          Number.parseInt(moduleId)
+        )
       : selectBySemesterAndNumber(semester, number)
   );
 
@@ -101,10 +113,7 @@ const DetailsPage = () => {
       {tab === 'material' && (
         <button
           onClick={() =>
-            window.open(
-              'https://moodle.tu-darmstadt.de/my/',
-              '_blank'
-            )
+            window.open('https://moodle.tu-darmstadt.de/my/', '_blank')
           }
           style={{
             background: '#f5a300',

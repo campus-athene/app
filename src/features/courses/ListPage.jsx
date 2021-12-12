@@ -15,10 +15,7 @@ const ListPage = () => {
   return (
     <PageFrame title="Mein Studium" syncState={useSelector(selectSyncState())}>
       {semesters.map(({ id: semesterId, name: semesterName, courses }) => (
-        <ListGroup
-          key={semesterId}
-          variant="flush"
-        >
+        <ListGroup key={semesterId} variant="flush">
           <ListGroup.Item className="bg-light">{semesterName}</ListGroup.Item>
           {courses.map(({ code, name, instructor }) => (
             <ListGroup.Item
