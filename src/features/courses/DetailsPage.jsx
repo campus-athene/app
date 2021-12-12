@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { selectStatusBarHeightCss } from '../common/commonSlice';
+import NavButton from '../common/NavButton';
 import { getCourseColor, selectBySemesterAndNumber } from './coursesSlice';
 import { selectOffer } from './offersSlice';
 import OverviewTab from './OverviewTab';
@@ -35,7 +36,7 @@ const DetailsPage = () => {
   const [tab, setTab] = useState('overview');
   const selectedTab = tab;
 
-  const NavButton = ({ children, tab }) => (
+  const TabButton = ({ children, tab }) => (
     <button
       onClick={() => setTab(tab)}
       style={{
@@ -60,36 +61,7 @@ const DetailsPage = () => {
           padding: `${statusBarHeightCss} 1em 0 1em`,
         }}
       >
-        <div>
-          <button
-            onClick={() => history.goBack()}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: 'white',
-              height: '3em',
-              marginLeft: '-0.9em',
-              marginTop: '-0.4em',
-              padding: '0',
-              width: '3em',
-            }}
-          >
-            <svg
-              width="1em"
-              height="1em"
-              viewBox="0 0 12 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M1 1L11 11M1 11L11 1"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </button>
-        </div>
+        <NavButton style={{ height: '3em', width: '3em' }} />
         <div>{module.instructor}</div>
         <div style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
           {module.name}
@@ -104,9 +76,9 @@ const DetailsPage = () => {
             padding: '0 0.25em',
           }}
         >
-          <NavButton tab="overview">Übersicht</NavButton>
-          <NavButton tab="messages">Nachrichten</NavButton>
-          <NavButton tab="material">Material</NavButton>
+          <TabButton tab="overview">Übersicht</TabButton>
+          <TabButton tab="messages">Nachrichten</TabButton>
+          <TabButton tab="material">Material</TabButton>
         </div> */}
       </div>
       {tab === 'overview' && <OverviewTab module={module} />}

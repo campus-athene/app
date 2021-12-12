@@ -1,13 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
-import { Navbar, Container, OverlayTrigger } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { Navbar, OverlayTrigger } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faAngleLeft,
-  faBars,
-  faEllipsisH,
-} from '@fortawesome/free-solid-svg-icons';
-import { selectStatusBarHeightCss, setSideMenuOpen } from './commonSlice';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { selectStatusBarHeightCss } from './commonSlice';
+import NavButton from './NavButton';
 
 const PageFrame = ({
   children,
@@ -16,10 +12,6 @@ const PageFrame = ({
   more,
   syncState: { isLoading, isOffline } = { isLoading: false, isOffline: false },
 }) => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const hamburger = useLocation().search.includes('hamburger');
-
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
   return (
@@ -38,25 +30,15 @@ const PageFrame = ({
           width: '100vw',
         }}
       >
-        <Navbar.Brand
-          onClick={() =>
-            hamburger ? dispatch(setSideMenuOpen(true)) : history.goBack()
-          }
+        <NavButton
+          as={Navbar.Brand}
           style={{
-            margin: '-0.5rem 0 -0.5rem -1rem',
+            alignItems: 'center',
             alignSelf: 'stretch',
             display: noMenu ? 'none' : 'flex',
             justifyContent: 'center',
-            alignItems: 'center',
-            width: '3.5rem',
           }}
-        >
-          {hamburger ? (
-            <FontAwesomeIcon icon={faBars} />
-          ) : (
-            <FontAwesomeIcon icon={faAngleLeft} />
-          )}
-        </Navbar.Brand>
+        />
         <Navbar.Brand
           style={{
             flexGrow: 1,
