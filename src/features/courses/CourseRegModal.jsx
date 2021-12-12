@@ -13,6 +13,11 @@ const CourseRegModal = ({ offer, onClose }) => {
   if (!offer)
     return null;
 
+    if (offer.status === 'edit' && state === 'CONFIRM') {
+      setState('ERROR');
+      setError('Nutzte bitte TUCaN um Dich umzumelden.');
+    }
+
   const execute = async () => {
     setState('EXECUTING');
 

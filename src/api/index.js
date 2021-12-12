@@ -23,6 +23,17 @@ export class session {
       throw new NetworkError('Keine Internetverbindung!');
     }
 
+    if (!httpResponse.ok) {
+      console.error(`Server returned error code ${httpResponse.status}.`);
+      try {
+        const body = await httpResponse.json();
+        if (typeof body.message === 'string') {
+          throw new ServerError(body);
+        }
+      } catch (_) {}
+      throw new ServerError();
+    }
+
     return await httpResponse.json();
   };
 

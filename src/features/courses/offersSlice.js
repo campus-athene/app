@@ -40,29 +40,30 @@ const offersSlice = createSlice({
 const { setIsLoading } = offersSlice.actions;
 export const { reset, setError } = offersSlice.actions;
 
-export const loadArea = (major, area, list) => async (dispatch, getState) => {
-  const { offers } = getState();
-  if (!major) {
-    if (offers.loadInvoked) return;
-    dispatch(setIsLoading());
-  } else {
-    if (offers.majors[major]?.areas[area]) return;
-    dispatch(setIsLoading(major, area));
-  }
-  const creds = selectCreds()(getState(), dispatch);
-  try {
-    const args = major ? { major, area, list } : null;
-    const { offers: lists } = await new session(creds).getCourseOffers(args);
-    dispatch(reset({ major, area, lists }));
-  } catch (error) {
-    dispatch(setError({ major, area, error: String(error) }));
-    log('error', 'offersSlice.getOffers threw an error.', {
-      major,
-      area,
-      error,
-    });
-  }
-};
+export const loadArea =
+  (major, area, rootList) => async (dispatch, getState) => {
+    const { offers } = getState();
+    if (!major) {
+      if (offers.loadInvoked) return;
+      dispatch(setIsLoading());
+    } else {
+      if (offers.majors[major]?.areas[area]) return;
+      dispatch(setIsLoading(major, area));
+    }
+    const creds = selectCreds()(getState(), dispatch);
+    try {
+      const args = major ? { major, area, rootList } : null;
+      const { offers: lists } = await new session(creds).getCourseOffers(args);
+      dispatch(reset({ major, area, lists }));
+    } catch (error) {
+      dispatch(setError({ major, area, error: String(error) }));
+      log('error', 'offersSlice.getOffers threw an error.', {
+        major,
+        area,
+        error,
+      });
+    }
+  };
 
 export const register = (registration) => async (dispatch, getState) => {
   const state = getState();
