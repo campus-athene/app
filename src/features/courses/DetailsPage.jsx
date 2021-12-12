@@ -52,7 +52,7 @@ const DetailsPage = () => {
   );
 
   return (
-    <>
+    <div style={{ height: '100vh' }}>
       <div
         style={{
           background: getCourseColor(module, 90, 70),
@@ -104,7 +104,7 @@ const DetailsPage = () => {
           Moodle öffnen
         </button>
       )}
-    </>
+    </div>
   );
 };
 

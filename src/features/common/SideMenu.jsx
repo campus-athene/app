@@ -214,7 +214,7 @@ const SideMenu = () => {
                 seperator={i === 0}
                 target={`/courses/${encodeURIComponent(
                   c.semester
-                )}/${encodeURIComponent(c.code)}`}
+                )}/${encodeURIComponent(c.code)}?hamburger`}
               >
                 {c.name}
               </HomeButton>
