@@ -1,5 +1,5 @@
 import dummyResponse from './dummyResponse';
-import { NetworkError } from './errors';
+import { NetworkError, ServerError } from './errors';
 const base =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:3010'
