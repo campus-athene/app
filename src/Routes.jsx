@@ -1,69 +1,47 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
-import { Route, Switch } from 'react-router-dom';
-import { selectOnboardingComplete } from './features/settings/settingsSlice';
-import Onboarding from './features/onboarding/Onboarding';
-import HomePage from './features/home/HomePage';
-import MessagesPage from './features/messages/MessagesPage';
-import CourseDetailsPage from './features/courses/DetailsPage';
-import CoursListPage from './features/courses/ListPage';
+import { Route, Routes as RR_Routes } from 'react-router-dom';
 import CourseRegPage from './features/courses/CourseRegPage';
-import OappPage from './features/wiki/WikiPage';
-import MapViewPage from './features/maps/MapViewPage';
+import CourseDetailsPage from './features/courses/DetailsPage';
+import CourseListPage from './features/courses/ListPage';
+import HomePage from './features/home/HomePage';
 import MapListPage from './features/maps/MapListPage';
+import MapViewPage from './features/maps/MapViewPage';
+import MessagesPage from './features/messages/MessagesPage';
 import BrowseNewsPage from './features/news/BrowseNewsPage';
-
-export const historyRef = { history: null };
+import Onboarding from './features/onboarding/Onboarding';
+import { selectOnboardingComplete } from './features/settings/settingsSlice';
+import OappPage from './features/wiki/WikiPage';
 
 const Routes = () => {
-  historyRef.history = useHistory();
-
   const onboardingComplete = useSelector(selectOnboardingComplete());
   if (!onboardingComplete) return <Onboarding />;
 
   return (
-    <Switch>
-      <Route path="/news">
-        <BrowseNewsPage />
-      </Route>
-      <Route path="/messages/:id">
-        <MessagesPage />
-      </Route>
-      <Route path="/messages">
-        <MessagesPage />
-      </Route>
-      <Route path="/courses/register/:major/:area/:list/:module">
-        <CourseDetailsPage registration />
-      </Route>
-      <Route path="/courses/:semester/:number">
-        <CourseDetailsPage />
-      </Route>
-      <Route path="/courses">
-        <CoursListPage />
-      </Route>
-      <Route path="/coursereg/:major/:area/:rootList">
-        <CourseRegPage />
-      </Route>
-      <Route path="/coursereg">
-        <CourseRegPage />
-      </Route>
-      <Route path="/oapp">
-        <OappPage />
-      </Route>
-      <Route path="/maps/:map">
-        <MapViewPage />
-      </Route>
-      <Route path="/maps">
-        <MapListPage />
-      </Route>
-      <Route path="/" exact>
-        <HomePage />
-      </Route>
-      <Route path="*">
-        <NoMatch />
-      </Route>
-    </Switch>
+    // Usually just called <Routes> but the component we are exporting is also called Routes.
+    <RR_Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/coursereg" element={<CourseRegPage />} />
+      <Route
+        path="/coursereg/:major/:area/:rootList"
+        element={<CourseRegPage />}
+      />
+      <Route path="/courses" element={<CourseListPage />} />
+      <Route
+        path="/courses/:semester/:number"
+        element={<CourseDetailsPage />}
+      />
+      <Route
+        path="/courses/register/:major/:area/:list/:module"
+        element={<CourseDetailsPage registration />}
+      />
+      <Route path="/maps" element={<MapListPage />} />
+      <Route path="/maps/:map" element={<MapViewPage />} />
+      <Route path="/messages" element={<MessagesPage />} />
+      <Route path="/messages/:id" element={<MessagesPage />} />
+      <Route path="/news" element={<BrowseNewsPage />} />
+      <Route path="/oapp" element={<OappPage />} />
+      <Route path="*" element={<NoMatch />} />
+    </RR_Routes>
   );
 };
 

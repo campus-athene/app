@@ -4,14 +4,14 @@ import React, { useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import PageFrame from '../common/PageFrame';
 import { getCourseColor } from './coursesSlice';
 import { loadArea, selectLists, selectSyncState } from './offersSlice';
 
 const CourseRegPage = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const params = useParams();
 
   const major = Number.parseInt(params.major);
@@ -45,7 +45,7 @@ const CourseRegPage = () => {
                 key={moduleId}
                 action
                 onClick={() =>
-                  history.push(
+                  navigate(
                     `/courses/register/${major}/${area}/${id}/${moduleId}`
                   )
                 }
@@ -88,7 +88,7 @@ const CourseRegPage = () => {
                 key={`${major}.${id}.${rootList}`}
                 action
                 onClick={() =>
-                  history.push(`/coursereg/${major}/${id}/${rootList}`)
+                  navigate(`/coursereg/${major}/${id}/${rootList}`)
                 }
               >
                 <div style={{ display: 'flex' }}>

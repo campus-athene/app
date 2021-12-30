@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const unreadMsgs = useSelector(selectUnreadCount());
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
@@ -85,7 +85,7 @@ const HomePage = () => {
           }}
         >
           {!!unreadMsgs && (
-            <Widget onClick={() => history.push('/messages')}>
+            <Widget onClick={() => navigate('/messages')}>
               <span style={{ fontSize: '1.2em' }}>
                 <Envelope
                   style={{

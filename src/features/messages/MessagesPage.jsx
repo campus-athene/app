@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useHistory } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ListGroup } from 'react-bootstrap';
 import PageFrame from '../common/PageFrame';
 import MessageDialog from './MessageDialog';
@@ -20,7 +20,7 @@ const ContextMenu = () => {
 };
 
 const MessagesPage = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const messages = useSelector(selectAllMessages());
   const selectedId = useParams().id;
 
@@ -35,7 +35,7 @@ const MessagesPage = () => {
           <ListGroup.Item
             key={id}
             action
-            onClick={() => history.push(`/messages/${id}`)}
+            onClick={() => navigate(`/messages/${id}`)}
           >
             <div
               style={{

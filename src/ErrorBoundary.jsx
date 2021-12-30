@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, useLocation, withRouter } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { log } from './errorReporting';
 import { logout } from './features/auth/authSlice';
@@ -24,8 +24,7 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    const { history, logout } = this.props;
-    // const history = useHistory();
+    const { logout, navigate } = this.props;
 
     const toMessage = (error) => {
       if (typeof error?.toString !== 'function')
@@ -56,16 +55,18 @@ class ErrorBoundary extends React.Component {
             <br />
             was schief gegangen!
           </p>
-          <p>
-            <Link onClick={() => alert(toMessage(this.state.error))}>
-              Technische Details anzeigen
-            </Link>
-          </p>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <Button
+              style={{ margin: '0.25rem 0 1.25rem' }}
+              variant="outline-secondary"
+              onClick={() => alert(toMessage(this.state.error))}
+            >
+              Technische Details anzeigen
+            </Button>
             <Button
               style={{ margin: '0.25rem 0' }}
               variant="primary"
-              onClick={() => history.goBack()}
+              onClick={() => navigate(-1)}
             >
               Zurück
             </Button>
@@ -95,10 +96,14 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-const ErrorBoundaryWrapper = ({ children }) =>
-  React.createElement(connect(null, { logout })(withRouter(ErrorBoundary)), {
-    key: useLocation().pathname,
+const ErrorBoundaryWrapper = ({ children }) => {
+  const navigate = useNavigate();
+
+  return React.createElement(connect(null, { logout })(ErrorBoundary), {
     children,
+    key: useLocation().pathname,
+    navigate,
   });
+};
 
 export default ErrorBoundaryWrapper;

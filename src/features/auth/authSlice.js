@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { log } from '../../errorReporting';
 import { update } from '../../redux/sync';
-import { historyRef } from '../../Routes';
 
 const loadState = (state) => {
   try {
@@ -49,9 +48,9 @@ export const login = (username, password) => async (dispatch) => {
 };
 
 export const logout = () => (dispatch) => {
-  const { history } = historyRef;
+  const { history } = window;
   history.go(1 - history.length);
-  history.replace('/');
+  history.replaceState(null, null, '/');
 
   dispatch({
     type: 'LOGOUT',

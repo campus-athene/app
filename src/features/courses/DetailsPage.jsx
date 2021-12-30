@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { useHistory } from 'react-router-dom';
 import { selectStatusBarHeightCss } from '../common/commonSlice';
 import NavButton from '../common/NavButton';
 import { getCourseColor, selectBySemesterAndNumber } from './coursesSlice';
@@ -28,8 +27,6 @@ const DetailsPage = () => {
         )
       : selectBySemesterAndNumber(semester, number)
   );
-
-  const history = useHistory();
 
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 

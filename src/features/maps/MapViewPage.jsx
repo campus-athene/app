@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import Hammer from 'react-hammerjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
@@ -34,7 +34,7 @@ const MapViewPage = () => {
       : log('warning', `MapViewPage was parsed an invalid map parameter.`, {
           map: mapArg,
         }) || [stadtmitte, { x: 935, y: 610 }];
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const mapImg = useRef(null);
   const requestRef = useRef();
@@ -136,7 +136,7 @@ const MapViewPage = () => {
           borderRadius: '1.5em',
           cursor: 'pointer',
         }}
-        onClick={() => history.goBack()}
+        onClick={() => navigate(-1)}
       >
         <FontAwesomeIcon icon={faAngleLeft} color="white" />
       </div>

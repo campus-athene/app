@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Badge, Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
 import {
   Envelope,
@@ -28,7 +28,7 @@ import Logo from './Logo';
 
 const SideMenu = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const courses = useSelector(selectCurrentSemester());
   const menuOpen = useSelector(selectSideMenuOpen());
@@ -58,7 +58,7 @@ const SideMenu = () => {
       onClick={() => {
         dontAutoClose || dispatch(setSideMenuOpen(false));
         onClick && onClick();
-        target && history.replace(target);
+        target && navigate(target, { replace: true });
       }}
     >
       {color ? (

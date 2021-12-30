@@ -3,14 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { selectSyncState } from '../../redux/sync';
 import PageFrame from '../common/PageFrame';
 import { getRegSemester } from '../common/semesters';
 import { getCourseColor, selectGroupedBySemester } from './coursesSlice';
 
 const ListPage = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const semesters = useSelector(selectGroupedBySemester());
   return (
     <PageFrame title="Mein Studium" syncState={useSelector(selectSyncState())}>
@@ -22,9 +22,7 @@ const ListPage = () => {
               key={code}
               action
               onClick={() =>
-                history.push(
-                  `/courses/${semesterId}/${encodeURIComponent(code)}`
-                )
+                navigate(`/courses/${semesterId}/${encodeURIComponent(code)}`)
               }
             >
               <div
@@ -60,7 +58,7 @@ const ListPage = () => {
             </ListGroup.Item>
           ))}
           {Number.parseInt(semesterId) === getRegSemester() && (
-            <ListGroup.Item action onClick={() => history.push('/coursereg')}>
+            <ListGroup.Item action onClick={() => navigate('/coursereg')}>
               <div style={{ display: 'flex', fontWeight: 'bold' }}>
                 <div style={{ flexGrow: '1' }}>Anmeldung</div>
                 <FontAwesomeIcon icon={faAngleRight} />

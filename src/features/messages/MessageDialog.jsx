@@ -1,12 +1,12 @@
 import React, { createElement, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { markRead, selectMessageById } from './messagesSlice';
 
 const MessageDialog = ({ messageId }) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const selected = useSelector(selectMessageById(messageId));
   const { subject, from, date, time, body } = selected;
 
@@ -46,7 +46,7 @@ const MessageDialog = ({ messageId }) => {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={() => history.goBack()}>Schließen</Button>
+        <Button onClick={() => navigate(-1)}>Schließen</Button>
       </Modal.Footer>
     </Modal>
   );
