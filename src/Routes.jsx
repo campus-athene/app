@@ -12,6 +12,7 @@ import CourseRegPage from './features/courses/CourseRegPage';
 import OappPage from './features/wiki/WikiPage';
 import MapViewPage from './features/maps/MapViewPage';
 import MapListPage from './features/maps/MapListPage';
+import BrowseNewsPage from './features/news/BrowseNewsPage';
 
 export const historyRef = { history: null };
 
@@ -23,6 +24,9 @@ const Routes = () => {
 
   return (
     <Switch>
+      <Route path="/news">
+        <BrowseNewsPage />
+      </Route>
       <Route path="/messages/:id">
         <MessagesPage />
       </Route>

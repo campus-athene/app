@@ -12,6 +12,7 @@ import {
   Library,
   Logout,
   Map,
+  Newspaper,
   Orientation,
   Sport,
 } from '../../icons';
@@ -162,6 +163,9 @@ const SideMenu = () => {
 
             <HomeButton target={'/'} icon={Home}>
               Startseite
+            </HomeButton>
+            <HomeButton target={'/news?hamburger'} icon={Newspaper}>
+              Aktuelles
             </HomeButton>
             <HomeButton target={'/messages?hamburger'} icon={Envelope}>
               Nachrichten

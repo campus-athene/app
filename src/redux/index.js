@@ -4,6 +4,7 @@ import auth from '../features/auth/authSlice';
 import common from '../features/common/commonSlice';
 import sync from './sync';
 import settings from '../features/settings/settingsSlice';
+import news from '../features/news/newsSlice';
 import messages from '../features/messages/messagesSlice';
 import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
@@ -13,6 +14,8 @@ const appReducer = combineReducers({
   common,
   sync,
   settings,
+
+  news,
 
   // data
   messages,
