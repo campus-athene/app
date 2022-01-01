@@ -12,24 +12,14 @@ import { selectUnreadCount } from '../messages/messagesSlice';
 import { Envelope } from '../../icons';
 import groupYoungPeoplePosingPhoto from './group-young-people-posing-photo.svg';
 import { useDispatch } from 'react-redux';
+import Widget from '../common/Widget';
+import NewsWidget from '../news/NewsWidget';
 
 const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const unreadMsgs = useSelector(selectUnreadCount());
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
-
-  const Widget = (props) =>
-    React.createElement('div', {
-      ...props,
-      style: {
-        border: '1px solid lightgray',
-        borderRadius: '1em',
-        marginBottom: '1em',
-        padding: '1em',
-        ...props.style,
-      },
-    });
 
   return (
     <div
@@ -98,6 +88,7 @@ const HomePage = () => {
               </span>
             </Widget>
           )}
+          <NewsWidget />
           <Widget style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '1.4em' }}>
               Zusammen macht’s

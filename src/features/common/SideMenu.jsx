@@ -95,6 +95,7 @@ const SideMenu = () => {
               top: '0',
               transition: 'opacity 300ms linear',
               width: '100%',
+              zIndex: '10',
               ...{
                 entering: { opacity: 1 },
                 entered: { opacity: 1 },
@@ -121,6 +122,7 @@ const SideMenu = () => {
               transitionDuration: '300ms',
               transitionProperty: 'transform',
               width: '18em',
+              zIndex: '10',
               ...{
                 entering: {
                   transform: 'translateX(0)',
