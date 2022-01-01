@@ -10,7 +10,7 @@
     "@fortawesome/react-fontawesome": "^0.1.8",
     "@reduxjs/toolkit": "^1.5.0",
     "react": "^17.0.1",
-    "react-bootstrap": "^1.5.2",
+    "react-bootstrap": "^2.1.0",
     "react-dom": "^17.0.1",
     "react-hammerjs": "https://github.com/JedWatson/react-hammerjs/tarball/af966b2aaeab028946b56b457ef308f75e911fda",
     "react-redux": "^7.2.2",
