@@ -8,6 +8,7 @@ import NavButton from './NavButton';
 const PageFrame = ({
   children,
   title,
+  style,
   noMenu,
   more,
   syncState: { isLoading, isOffline } = { isLoading: false, isOffline: false },
@@ -20,6 +21,7 @@ const PageFrame = ({
         display: 'grid',
         gridTemplateRows: 'auto auto 1fr',
         height: '100vh',
+        ...style,
       }}
     >
       <Navbar

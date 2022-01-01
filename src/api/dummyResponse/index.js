@@ -4,6 +4,8 @@ import courseoffers from './courseoffers';
 export default async (path, body) => {
   await new Promise((r) => setTimeout(() => r(), 2000));
   switch (path) {
+    case '/account/settings':
+      return null;
     case '/tucan/sync':
       return sync;
     case '/tucan/courseoffers':

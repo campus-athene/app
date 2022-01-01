@@ -57,6 +57,11 @@ const settingsSlice = createSlice({
     },
     setPushNotif: (settings, { payload: { messages } }) => {
       if (!settings.push) settings.push = {};
+
+      // This is only a temoprary workaround and should be improved in the future.
+      const creds = JSON.parse(localStorage.getItem('creds'));
+      new session(creds).syncSettings({ push: { messages } });
+
       if (messages && !window.push) setupPush();
       settings.push.messages = messages;
       localStorage.setItem('push', JSON.stringify(settings.push));
@@ -84,6 +89,11 @@ export const selectNeedsPrivacySetup =
   () =>
   ({ settings: { privacy } }) =>
     !privacy;
+
+export const selectPushEnabled =
+  (topic) =>
+  ({ settings: { push } }) =>
+    push[topic];
 
 export const selectPrivacy =
   () =>

@@ -58,6 +58,10 @@ export class session {
       { username, password }
     );
 
+  syncSettings = (settings) => {
+    this.send('/account/settings', { settings });
+  };
+
   subscribePNS = (registrationId, registrationType) =>
     this.send('/account/subscribepns', { registrationId, registrationType });
 

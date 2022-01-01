@@ -9,6 +9,7 @@ import MapViewPage from './features/maps/MapViewPage';
 import MessagesPage from './features/messages/MessagesPage';
 import BrowseNewsPage from './features/news/BrowseNewsPage';
 import Onboarding from './features/onboarding/Onboarding';
+import SettingsPage from './features/settings/SettingsPage';
 import { selectOnboardingComplete } from './features/settings/settingsSlice';
 import OappPage from './features/wiki/WikiPage';
 
@@ -40,6 +41,7 @@ const Routes = () => {
       <Route path="/messages/:id" element={<MessagesPage />} />
       <Route path="/news" element={<BrowseNewsPage />} />
       <Route path="/oapp" element={<OappPage />} />
+      <Route path="/settings" element={<SettingsPage />} />
       <Route path="*" element={<NoMatch />} />
     </RR_Routes>
   );

@@ -1,7 +1,6 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
-import { Badge, Button, Modal } from 'react-bootstrap';
+import { Badge } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
@@ -10,13 +9,12 @@ import {
   Home,
   Lecture,
   Library,
-  Logout,
   Map,
   Newspaper,
   Orientation,
+  Settings,
   Sport,
 } from '../../icons';
-import { logout } from '../auth/authSlice';
 import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
 import { selectUnreadCount } from '../messages/messagesSlice';
 import {
@@ -34,8 +32,6 @@ const SideMenu = () => {
   const menuOpen = useSelector(selectSideMenuOpen());
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
   const unreadMsgs = useSelector(selectUnreadCount());
-
-  const [logoutModal, setLogoutModal] = useState();
 
   const HomeButton = ({
     target,
@@ -224,37 +220,12 @@ const SideMenu = () => {
               </HomeButton>
             ))}
 
-            <HomeButton
-              onClick={() => setLogoutModal(true)}
-              dontAutoClose={true}
-              icon={Logout}
-              seperator
-            >
-              Abmelden
+            <HomeButton icon={Settings} seperator target="/settings?hamburger">
+              Einstellungen
             </HomeButton>
           </div>
         )}
       </Transition>
-      <Modal show={logoutModal} centered>
-        <Modal.Header>
-          <Modal.Title>Abmelden</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Möchtest du dich wirklich abmelden?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setLogoutModal(false)}>
-            Abbrechen
-          </Button>
-          <Button
-            variant="danger"
-            onClick={() => {
-              setLogoutModal(false);
-              dispatch(logout());
-            }}
-          >
-            Abmelden
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </>
   );
 };
