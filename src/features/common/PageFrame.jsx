@@ -28,7 +28,7 @@ const PageFrame = ({
         bg="dark"
         variant="dark"
         style={{
-          paddingTop: `calc(0.5rem + ${statusBarHeightCss}`,
+          paddingTop: `calc(0.5rem + ${statusBarHeightCss})`,
           width: '100vw',
         }}
       >
@@ -37,6 +37,7 @@ const PageFrame = ({
           style={{
             alignItems: 'center',
             alignSelf: 'stretch',
+            margin: '-0.5rem 0',
             display: noMenu ? 'none' : 'flex',
             justifyContent: 'center',
           }}
@@ -55,7 +56,7 @@ const PageFrame = ({
         {more && (
           <Navbar.Brand
             style={{
-              margin: '-0.5rem -1rem -0.5rem 0',
+              marginRight: '0',
               alignSelf: 'stretch',
               display: 'flex',
               justifyContent: 'center',

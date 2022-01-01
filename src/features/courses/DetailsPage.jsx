@@ -58,7 +58,7 @@ const DetailsPage = () => {
           padding: `${statusBarHeightCss} 1em 0 1em`,
         }}
       >
-        <NavButton style={{ height: '3em', width: '3em' }} />
+        <NavButton style={{ marginLeft: '-1rem' }} />
         <div>{module.instructor}</div>
         <div style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
           {module.name}

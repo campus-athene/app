@@ -20,7 +20,8 @@ const NavButton = ({ as, style, type }) => {
       style={{
         background: 'none',
         border: 'none',
-        margin: '-0.5rem 0 -0.5rem -1rem',
+        fontSize: '1.25rem',
+        height: '3.5rem',
         width: '3.5rem',
         ...style,
       }}
