@@ -151,7 +151,7 @@ const SideMenu = () => {
                 padding: '0',
                 position: 'absolute',
                 right: '0.5em',
-                top: '0.5em',
+                top: `calc(0.5em + ${statusBarHeightCss})`,
                 width: '3em',
               }}
             >
@@ -173,7 +173,8 @@ const SideMenu = () => {
                   <Badge
                     style={{ fontSize: '0.75rem', verticalAlign: 'middle' }}
                     pill
-                    variant="warning"
+                    bg="warning"
+                    text="dark"
                   >
                     {unreadMsgs}
                   </Badge>

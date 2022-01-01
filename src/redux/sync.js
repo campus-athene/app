@@ -6,6 +6,7 @@ import { selectCreds } from '../features/auth/authSlice';
 import { reset as resetCourses } from '../features/courses/coursesSlice';
 import { loadArea } from '../features/courses/offersSlice';
 import { reset as resetMessages } from '../features/messages/messagesSlice';
+import { update as updateNews } from '../features/news/newsSlice';
 
 // Update used in useEffect must not be async.
 export const update = () => (dispatch) => {
@@ -18,6 +19,8 @@ const updateAsync = () => async (dispatch, getState) => {
   if (!creds) return;
 
   dispatch(setLoading());
+
+  dispatch(updateNews());
 
   try {
     const response = await new session(creds).sync();

@@ -52,7 +52,7 @@ const HomePage = () => {
             background: 'white',
             borderRadius: '2em 2em 0 0',
             marginTop: '10em',
-            padding: '1em 1em 0 1em',
+            paddingTop: '1em',
           }}
         >
           <MessagesWidget />

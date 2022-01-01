@@ -6,7 +6,7 @@ const Widget = (props) =>
     style: {
       border: '1px solid lightgray',
       borderRadius: '1em',
-      marginBottom: '1em',
+      margin: '0 1em 1em 1em',
       padding: '1em',
       ...props.style,
     },

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Navbar, OverlayTrigger } from 'react-bootstrap';
+import { Navbar, OverlayTrigger, Popover } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { selectStatusBarHeightCss } from './commonSlice';
@@ -21,13 +21,12 @@ const PageFrame = ({
         display: 'grid',
         gridTemplateRows: 'auto auto 1fr',
         height: '100vh',
-        ...style,
       }}
     >
       <Navbar
-        bg="dark"
         variant="dark"
         style={{
+          backgroundColor: '#372649',
           paddingTop: `calc(0.5rem + ${statusBarHeightCss})`,
           width: '100vw',
         }}
@@ -54,20 +53,28 @@ const PageFrame = ({
           {title || <>&nbsp;</>}
         </Navbar.Brand>
         {more && (
-          <Navbar.Brand
-            style={{
-              marginRight: '0',
-              alignSelf: 'stretch',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '3.5rem',
-            }}
+          <OverlayTrigger
+            placement="bottom"
+            overlay={(props) => (
+              <Popover {...props}>
+                <Popover.Body style={{ padding: '0' }}>{more}</Popover.Body>
+              </Popover>
+            )}
+            trigger={['click']}
           >
-            <OverlayTrigger placement="bottom" overlay={more}>
+            <Navbar.Brand
+              style={{
+                marginRight: '0',
+                alignSelf: 'stretch',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '3.5rem',
+              }}
+            >
               <FontAwesomeIcon icon={faEllipsisH} />
-            </OverlayTrigger>
-          </Navbar.Brand>
+            </Navbar.Brand>
+          </OverlayTrigger>
         )}
       </Navbar>
       {(isLoading || isOffline) && (
@@ -82,7 +89,14 @@ const PageFrame = ({
           {isLoading ? 'Lädt...' : 'Offline'}
         </div>
       )}
-      <div style={{ overflowX: 'hidden', overflowY: 'scroll', gridRow: '3' }}>
+      <div
+        style={{
+          overflowX: 'hidden',
+          overflowY: 'scroll',
+          gridRow: '3',
+          ...style,
+        }}
+      >
         {children}
       </div>
     </div>

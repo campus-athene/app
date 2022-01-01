@@ -119,7 +119,10 @@ const SettingsPage = ({}) => {
 
   return (
     <>
-      <PageFrame title="Einstellungen" style={{ background: '#F4F4F4' }}>
+      <PageFrame
+        title="Einstellungen"
+        style={{ background: '#F4F4F4', paddingBottom: '2em' }}
+      >
         <Header>Benachrichtigungen</Header>
         <Setting checked={pushMessages} onClick={setMessagePushHandler(true)}>
           Aktiviert
