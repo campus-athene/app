@@ -8,8 +8,9 @@ import { setSideMenuOpen } from './commonSlice';
 const NavButton = ({ as, style, type }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const hamburger = useLocation().search.includes('hamburger');
+  const hamburgerInUrl = useLocation().search.includes('hamburger');
 
+  const hamburger = type === 'hamburger' || (type !== 'back' && hamburgerInUrl);
   const As = as || Button;
 
   return (
@@ -26,7 +27,7 @@ const NavButton = ({ as, style, type }) => {
         ...style,
       }}
     >
-      {type === 'hambuger' || (type !== 'back' && hamburger) ? (
+      {hamburger ? (
         <FontAwesomeIcon icon={faBars} />
       ) : (
         <FontAwesomeIcon icon={faAngleLeft} />

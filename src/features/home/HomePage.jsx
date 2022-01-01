@@ -1,24 +1,13 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import {
-  selectStatusBarHeightCss,
-  setSideMenuOpen,
-} from '../common/commonSlice';
+import { selectStatusBarHeightCss } from '../common/commonSlice';
 import Logo from '../common/Logo';
-import { selectUnreadCount } from '../messages/messagesSlice';
-import { Envelope } from '../../icons';
-import groupYoungPeoplePosingPhoto from './group-young-people-posing-photo.svg';
-import { useDispatch } from 'react-redux';
+import NavButton from '../common/NavButton';
 import Widget from '../common/Widget';
+import MessagesWidget from '../messages/MessagesWidget';
 import NewsWidget from '../news/NewsWidget';
+import groupYoungPeoplePosingPhoto from './group-young-people-posing-photo.svg';
 
 const HomePage = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const unreadMsgs = useSelector(selectUnreadCount());
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
   return (
@@ -32,27 +21,19 @@ const HomePage = () => {
         style={{
           background: '#372649',
           height: '30em',
+          paddingTop: statusBarHeightCss,
           position: 'fixed',
           textAlign: 'center',
           width: '100%',
         }}
       >
-        <button
-          onClick={() => dispatch(setSideMenuOpen(true))}
+        <NavButton
           style={{
-            background: 'none',
-            border: 'none',
-            color: 'white',
-            height: '3em',
             left: '0',
-            padding: '0',
             position: 'absolute',
-            top: statusBarHeightCss,
-            width: '3em',
           }}
-        >
-          <FontAwesomeIcon icon={faBars} />
-        </button>
+          type="hamburger"
+        />
         <Logo style={{ paddingTop: '3em', height: '10em' }} />
       </div>
       <div
@@ -74,20 +55,7 @@ const HomePage = () => {
             padding: '1em 1em 0 1em',
           }}
         >
-          {!!unreadMsgs && (
-            <Widget onClick={() => navigate('/messages')}>
-              <span style={{ fontSize: '1.2em' }}>
-                <Envelope
-                  style={{
-                    display: 'inline-block',
-                    marginRight: '0.5em',
-                    width: '2em',
-                  }}
-                />
-                {unreadMsgs} neue Nachrichten
-              </span>
-            </Widget>
-          )}
+          <MessagesWidget />
           <NewsWidget />
           <Widget style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '1.4em' }}>
