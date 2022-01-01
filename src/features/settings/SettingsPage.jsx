@@ -106,7 +106,7 @@ const Hint = ({ children }) => (
   </div>
 );
 
-const SettingsPage = ({}) => {
+const SettingsPage = () => {
   const dispatch = useDispatch();
   const [logoutModal, setLogoutModal] = useState();
 

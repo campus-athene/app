@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Route, Routes as RR_Routes } from 'react-router-dom';
+import { Route, Routes as RoutesCollection } from 'react-router-dom';
 import CourseRegPage from './features/courses/CourseRegPage';
 import CourseDetailsPage from './features/courses/DetailsPage';
 import CourseListPage from './features/courses/ListPage';
@@ -19,7 +19,7 @@ const Routes = () => {
 
   return (
     // Usually just called <Routes> but the component we are exporting is also called Routes.
-    <RR_Routes>
+    <RoutesCollection>
       <Route path="/" element={<HomePage />} />
       <Route path="/coursereg" element={<CourseRegPage />} />
       <Route
@@ -43,7 +43,7 @@ const Routes = () => {
       <Route path="/oapp" element={<OappPage />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="*" element={<NoMatch />} />
-    </RR_Routes>
+    </RoutesCollection>
   );
 };
 

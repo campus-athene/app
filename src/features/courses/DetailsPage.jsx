@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { selectStatusBarHeightCss } from '../common/commonSlice';
@@ -30,23 +29,23 @@ const DetailsPage = () => {
 
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
-  const [tab, setTab] = useState('overview');
-  const selectedTab = tab;
-
-  const TabButton = ({ children, tab }) => (
-    <button
-      onClick={() => setTab(tab)}
-      style={{
-        background: 'none',
-        border: 'none',
-        color: selectedTab === tab ? 'white' : '#fffa',
-        fontWeight: 'bold',
-        padding: '2em 0.75em 0.5em',
-      }}
-    >
-      {children}
-    </button>
-  );
+  // const [tab, setTab] = useState('overview');
+  // const selectedTab = tab;
+  //
+  // const TabButton = ({ children, tab }) => (
+  //   <button
+  //     onClick={() => setTab(tab)}
+  //     style={{
+  //       background: 'none',
+  //       border: 'none',
+  //       color: selectedTab === tab ? 'white' : '#fffa',
+  //       fontWeight: 'bold',
+  //       padding: '2em 0.75em 0.5em',
+  //     }}
+  //   >
+  //     {children}
+  //   </button>
+  // );
 
   return (
     <div style={{ height: '100vh' }}>
@@ -78,8 +77,11 @@ const DetailsPage = () => {
           <TabButton tab="material">Material</TabButton>
         </div> */}
       </div>
-      {tab === 'overview' && <OverviewTab module={module} />}
-      {tab === 'material' && (
+      {
+        //tab === 'overview' &&
+        <OverviewTab module={module} />
+      }
+      {/* {tab === 'material' && (
         <button
           onClick={() =>
             window.open('https://moodle.tu-darmstadt.de/my/', '_blank')
@@ -100,7 +102,7 @@ const DetailsPage = () => {
         >
           Moodle öffnen
         </button>
-      )}
+      )} */}
     </div>
   );
 };

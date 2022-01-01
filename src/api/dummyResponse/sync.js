@@ -1,4 +1,4 @@
-export default {
+const sync = {
   messages: [
     {
       id: 366193643338062,
@@ -498,3 +498,5 @@ export default {
     },
   ],
 };
+
+export default sync;

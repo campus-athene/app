@@ -9,7 +9,7 @@ const NewsWidget = () => {
     !!news && (
       <Carousel controls={false} interval={10000} variant="dark">
         {news.slice(0, 5).map((a) => (
-          <Carousel.Item>
+          <Carousel.Item key={a.guid}>
             <Widget
               onClick={() => window.open(a.link, '_blank')}
               style={{ height: '10.75em' }}

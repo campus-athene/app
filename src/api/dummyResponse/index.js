@@ -1,7 +1,7 @@
 import sync from './sync';
 import courseoffers from './courseoffers';
 
-export default async (path, body) => {
+const dummyResponse = async (path, body) => {
   await new Promise((r) => setTimeout(() => r(), 2000));
   switch (path) {
     case '/account/settings':
@@ -18,3 +18,5 @@ export default async (path, body) => {
       throw new Error(`No dummy response for "${path}" implemented.`);
   }
 };
+
+export default dummyResponse;

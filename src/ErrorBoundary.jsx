@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { log } from './errorReporting';
 import { logout } from './features/auth/authSlice';

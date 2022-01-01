@@ -24,9 +24,11 @@ const WikiPage = () => {
         {articles
           .map(({ title, link, seealso }) => {
             return [
-              <Entry link={link}>{title}</Entry>,
+              <Entry key={link || title} link={link}>
+                {title}
+              </Entry>,
               ...(seealso || []).map((sa) => (
-                <Entry link={sa.link} level={1}>
+                <Entry key={`${title}#${sa.link}`} link={sa.link} level={1}>
                   {sa.title}
                 </Entry>
               )),

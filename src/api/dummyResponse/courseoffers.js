@@ -1,4 +1,4 @@
-export default {
+const courseoffers = {
   0: {
     offers: [
       {
@@ -511,3 +511,5 @@ export default {
     ],
   },
 };
+
+export default courseoffers;

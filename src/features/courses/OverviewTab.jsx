@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { descriptions as semesterDescs } from '../common/semesters';
 import CourseRegModal from './CourseRegModal';
@@ -36,7 +36,7 @@ const OverviewTab = ({ module }) => {
           }}
         >
           {module.courses.map((course) => (
-            <>
+            <Fragment key={course.code}>
               <div>
                 <span style={{ fontFamily: 'monospace' }}>{course.code}</span>{' '}
               </div>
@@ -49,7 +49,7 @@ const OverviewTab = ({ module }) => {
                   )
                 }
               </div>
-            </>
+            </Fragment>
           ))}
         </div>
       </p>

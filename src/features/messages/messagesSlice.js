@@ -70,14 +70,12 @@ export const selectUnreadCount =
 
 export const markRead = (messageId) => async (dispatch, getState) => {
   dispatch(messagesSlice.actions.markRead({ messageId }));
-  const response = await new session(getState().auth.creds).markMsgRead(
-    messageId
-  );
+  await new session(getState().auth.creds).markMsgRead(messageId);
 };
 
 export const markAllRead = () => async (dispatch, getState) => {
   dispatch(messagesSlice.actions.markAllRead());
-  const response = await new session(getState().auth.creds).markAllMsgsRead();
+  await new session(getState().auth.creds).markAllMsgsRead();
 };
 
 export default messagesSlice.reducer;

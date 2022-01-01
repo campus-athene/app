@@ -1,5 +1,6 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRef } from 'react';
 import { Badge } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +28,9 @@ import Logo from './Logo';
 const SideMenu = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const inTransRef = useRef();
+  const outTransRef = useRef();
 
   const courses = useSelector(selectCurrentSemester());
   const menuOpen = useSelector(selectSideMenuOpen());
@@ -84,10 +88,11 @@ const SideMenu = () => {
 
   return (
     <>
-      <Transition in={menuOpen} timeout={300}>
+      <Transition in={menuOpen} nodeRef={inTransRef} timeout={300}>
         {(transitionState) => (
           <div
             onClick={() => dispatch(setSideMenuOpen(false))}
+            ref={inTransRef}
             style={{
               background: '#0008',
               bottom: '0',
@@ -106,9 +111,10 @@ const SideMenu = () => {
           />
         )}
       </Transition>
-      <Transition in={menuOpen} timeout={300}>
+      <Transition in={menuOpen} nodeRef={outTransRef} timeout={300}>
         {(transitionState) => (
           <div
+            ref={outTransRef}
             style={{
               background: '#372649',
               bottom: '0',

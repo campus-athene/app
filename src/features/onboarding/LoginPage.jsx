@@ -22,6 +22,11 @@ const LoginPage = () => {
 
     const error = await dispatch(login(username, password));
 
+    if (!error)
+      // No need to do anything here as successful login will move the onboarding process to the next page.
+      // Updating state now would mean updating state of an unmounted component which is not allowed.
+      return;
+
     setProcessing(false);
     setError(error);
   };

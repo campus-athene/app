@@ -65,12 +65,10 @@ export const loadArea =
     }
   };
 
-export const register = (registration) => async (dispatch, getState) => {
+export const register = (registration) => async (_dispatch, getState) => {
   const state = getState();
   try {
-    const body = await new session(state.auth.creds).registerCourse(
-      registration
-    );
+    await new session(state.auth.creds).registerCourse(registration);
     return null;
   } catch (error) {
     if (
