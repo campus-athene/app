@@ -43,7 +43,7 @@
   "devDependencies": {
     "@havesource/cordova-plugin-push": "^3.0.0",
     "aws-sdk": "^2.657.0",
-    "cordova": "^10.0.0",
+    "cordova": "^11.0.0",
     "cordova-android": "^10.1.1",
     "cordova-ios": "^6.2.0",
     "cordova-plugin-fingerprint-aio": "^4.0.2",
