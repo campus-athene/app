@@ -1,0 +1,6 @@
+{
+	"appId": "com.oliverrm.campus",
+	"appName": "campus",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}

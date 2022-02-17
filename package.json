@@ -5,6 +5,7 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
+    "@capacitor/android": "^3.4.1",
     "@capacitor/core": "^3.4.1",
     "@capacitor/ios": "^3.4.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
