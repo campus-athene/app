@@ -5,6 +5,7 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
+    "@capacitor/core": "^3.4.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.8",
@@ -41,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "@capacitor/cli": "^3.4.1",
     "@havesource/cordova-plugin-push": "^3.0.0",
     "aws-sdk": "^2.657.0",
     "cordova": "^11.0.0",
