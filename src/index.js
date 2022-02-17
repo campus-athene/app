@@ -20,7 +20,7 @@ export const storeRef = { store: null };
 const initializeCordova = () => {
   // Initialize plugins etc. here
 
-  SafariViewController?.isAvailable((isAvailable) => {
+  window.SafariViewController?.isAvailable((isAvailable) => {
     if (isAvailable)
       window.open = (url, _target, options) =>
         SafariViewController.show({
@@ -32,7 +32,7 @@ const initializeCordova = () => {
   // This is already set in config.xml but that settings does not seem
   // to take effect on Android. This line can be removed once the
   // setting works on Android.
-  window.StatusBar.overlaysWebView(true);
+  window.StatusBar?.overlaysWebView(true);
 };
 
 const initializeReact = () => {
