@@ -10,6 +10,14 @@ const loadState = (state) => {
         level: localStorage.getItem('privacy'),
       }) ||
       null;
+    let deviceId = localStorage.getItem('deviceId');
+    if (!deviceId) {
+      deviceId = Buffer.from(
+        crypto.getRandomValues(new Uint8Array(8))
+      ).toString('hex');
+      localStorage.setItem('deviceId', deviceId);
+    }
+    state.deviceId = deviceId;
     state.push = JSON.parse(localStorage.getItem('push')) || null;
     if (state.push && state.push.messages) setupPush();
   } catch (e) {
@@ -58,9 +66,7 @@ const settingsSlice = createSlice({
     setPushNotif: (settings, { payload: { messages } }) => {
       if (!settings.push) settings.push = {};
 
-      // This is only a temoprary workaround and should be improved in the future.
-      const creds = JSON.parse(localStorage.getItem('creds'));
-      new session(creds).syncSettings({ push: { messages } });
+      // Todo: Send updated notification settings to server.
 
       if (messages && !window.push) setupPush();
       settings.push.messages = messages;
@@ -74,6 +80,22 @@ const settingsSlice = createSlice({
 
 export const { setOnboardingComplete, setPrivacy, setPushNotif } =
   settingsSlice.actions;
+
+export const syncSettings = () => (_dispatch, getState) => {
+  const state = getState();
+  const creds = state.auth.creds;
+  new session(creds).syncSettings(selectDeviceId()(state), {
+    privacy: selectPrivacy()(state).level,
+    push: {
+      messages: selectPushEnabled('messages')(state),
+    },
+  });
+};
+
+export const selectDeviceId =
+  () =>
+  ({ settings: { deviceId } }) =>
+    deviceId;
 
 export const selectOnboardingComplete =
   () =>

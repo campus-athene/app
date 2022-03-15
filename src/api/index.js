@@ -58,8 +58,8 @@ export class session {
       { username, password }
     );
 
-  syncSettings = (settings) => {
-    this.send('/account/settings', { settings });
+  syncSettings = (deviceId, settings) => {
+    this.send('/account/settings', { deviceId, settings });
   };
 
   subscribePNS = (registrationId, registrationType) =>
