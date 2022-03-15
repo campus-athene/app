@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { session } from '../../api';
 import { log } from '../../errorReporting';
+import { selectCreds } from '../auth/authSlice';
 import {
   descriptions as semesterDescs,
   getRegSemester,
@@ -35,8 +37,11 @@ const saveState = ({ items }) => {
 
 const coursesSlice = createSlice({
   name: 'courses',
-  initialState: { items: {} },
+  initialState: { items: {}, status: 'initial' },
   reducers: {
+    setStatus(state, { payload }) {
+      state.status = payload;
+    },
     reset(state, { payload: { courses } }) {
       state.items = {};
       courses.forEach((c) => {
@@ -50,7 +55,32 @@ const coursesSlice = createSlice({
   },
 });
 
+const { setStatus } = coursesSlice.actions;
 export const { reset } = coursesSlice.actions;
+
+export const update = () => async (dispatch, getState) => {
+  const creds = selectCreds()(getState(), dispatch);
+  if (!creds) {
+    log('warn', 'coursesSlice.update was called without creds being set.');
+    return;
+  }
+  dispatch(setStatus('loading'));
+  try {
+    const response = await new session(creds).getCourses();
+    dispatch(reset({ courses: response.modules }));
+    dispatch(setStatus('loaded'));
+  } catch (e) {
+    log('error', 'coursesSlice.update raised an error.', e);
+    dispatch(setStatus('error'));
+  }
+};
+
+export const selectSyncState =
+  () =>
+  ({ courses: { status } }) => ({
+    isLoading: status === 'loading',
+    isOffline: status === 'error',
+  });
 
 export const selectBySemesterAndNumber =
   (semester, number) =>

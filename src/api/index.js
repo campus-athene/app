@@ -67,6 +67,14 @@ export class session {
 
   sync = () => this.send('/tucan/sync');
 
+  getMessages = () => this.send('/tucan/messages');
+
+  // getAppointments = () => this.send('/tucan/appointments');
+
+  getCourses = () => this.send('/tucan/courses');
+
+  // getExams = () => this.send('/tucan/exams');
+
   // args is either { major, area, rootList } or null.
   getCourseOffers = (args = null) => this.send('/tucan/courseoffers', args);
 

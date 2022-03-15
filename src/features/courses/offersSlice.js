@@ -86,10 +86,9 @@ export const selectSyncState = (major, area) => (state) => {
     ? state.offers.majors[major]?.areas[area] || {}
     : state.offers;
   const { hasLoaded, error } = areaObj;
-  const { isOffline } = selectGlobalSyncState()(state);
   return {
-    isLoading: !hasLoaded && !error && !isOffline,
-    isOffline: !!error || isOffline,
+    isLoading: !hasLoaded && !error,
+    isOffline: !!error,
   };
 };
 

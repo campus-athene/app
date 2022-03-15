@@ -4,10 +4,13 @@ import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { selectSyncState } from '../../redux/sync';
 import PageFrame from '../common/PageFrame';
 import { getRegSemester } from '../common/semesters';
-import { getCourseColor, selectGroupedBySemester } from './coursesSlice';
+import {
+  getCourseColor,
+  selectGroupedBySemester,
+  selectSyncState,
+} from './coursesSlice';
 
 const ListPage = () => {
   const navigate = useNavigate();

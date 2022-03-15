@@ -4,8 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ListGroup } from 'react-bootstrap';
 import PageFrame from '../common/PageFrame';
 import MessageDialog from './MessageDialog';
-import { markAllRead, selectAllMessages } from './messagesSlice';
-import { selectSyncState } from '../../redux/sync';
+import {
+  markAllRead,
+  selectAllMessages,
+  selectSyncState,
+} from './messagesSlice';
 
 // Must start with a capital letter as it is a React component.
 const ContextMenu = () => {

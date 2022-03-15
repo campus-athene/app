@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { log } from '../../errorReporting';
+import { selectCreds } from '../auth/authSlice';
 
 const loadState = () => {
   const items = {};
@@ -26,8 +27,11 @@ const updateBadge = (count) =>
 
 const messagesSlice = createSlice({
   name: 'messages',
-  initialState: { items: {} },
+  initialState: { items: {}, status: 'initial' },
   reducers: {
+    setStatus(state, { payload }) {
+      state.status = payload;
+    },
     reset(state, { payload }) {
       state.items = {};
       payload.messages.forEach((m) => (state.items[m.id] = m));
@@ -51,7 +55,32 @@ const messagesSlice = createSlice({
   },
 });
 
+const { setStatus } = messagesSlice.actions;
 export const { reset } = messagesSlice.actions;
+
+export const update = () => async (dispatch, getState) => {
+  const creds = selectCreds()(getState(), dispatch);
+  if (!creds) {
+    log('warn', 'messagesSlice.update was called without creds being set.');
+    return;
+  }
+  dispatch(setStatus('loading'));
+  try {
+    const response = await new session(creds).getMessages();
+    dispatch(reset({ messages: response.messages }));
+    dispatch(setStatus('loaded'));
+  } catch (e) {
+    log('error', 'messagesSlice.update raised an error.', e);
+    dispatch(setStatus('error'));
+  }
+};
+
+export const selectSyncState =
+  () =>
+  ({ messages: { status } }) => ({
+    isLoading: status === 'loading',
+    isOffline: status === 'error',
+  });
 
 export const selectMessageById =
   (id) =>
