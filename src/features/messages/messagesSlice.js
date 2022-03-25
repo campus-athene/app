@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { Badge } from '@robingenz/capacitor-badge';
 import { session } from '../../api';
 import { log } from '../../errorReporting';
 
@@ -16,13 +17,13 @@ const loadState = () => {
 const saveState = (state) =>
   localStorage.setItem('messages', JSON.stringify(Object.values(state.items)));
 
-const updateBadge = (count) =>
-  window.push &&
-  window.push.setApplicationIconBadgeNumber(
-    () => {},
-    (error) => log('warning', 'Error updating badge.', error),
-    count
-  );
+const updateBadge = async (count) => {
+  try {
+    await Badge.set({ count });
+  } catch (error) {
+    log('warning', 'Error updating badge.', error);
+  }
+};
 
 const messagesSlice = createSlice({
   name: 'messages',

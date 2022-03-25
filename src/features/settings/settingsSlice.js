@@ -37,7 +37,7 @@ const settingsSlice = createSlice({
       const creds = JSON.parse(localStorage.getItem('creds'));
       new session(creds).syncSettings({ push: { messages } });
 
-      if (messages && !window.push) setupPush();
+      if (messages) setupPush();
       settings.push.messages = messages;
       localStorage.setItem('push', JSON.stringify(settings.push));
     },
