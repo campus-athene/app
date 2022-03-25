@@ -9,10 +9,7 @@ android {
 
 apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
-
-    implementation "androidx.core:core:1.6.+"
-    implementation "me.leolin:ShortcutBadger:1.1.22@aar"
-    implementation "com.google.firebase:firebase-messaging:18.+"
+    implementation project(':capacitor-push-notifications')
     implementation "androidx.browser:browser:1.3.0"
 }
 apply from: "../../node_modules/cordova-plugin-fingerprint-aio/src/android/build.gradle"
