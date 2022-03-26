@@ -6,6 +6,9 @@ const config: CapacitorConfig = {
   webDir: 'build',
   bundledWebRuntime: false,
   plugins: {
+    Keyboard: {
+      resizeOnFullScreen: true,
+    },
     PushNotifications: {
       presentationOptions: ['badge', 'sound', 'alert'],
     },
