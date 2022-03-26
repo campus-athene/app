@@ -26,6 +26,7 @@ const initializeCordova = () => {
     if (isAvailable)
       window.open = (url, _target, options) =>
         SafariViewController.show({
+          toolbarColor: '#372649',
           url,
           ...options,
         });

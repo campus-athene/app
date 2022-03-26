@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">campus</string>
-    <string name="title_activity_main">campus</string>
+    <string name="app_name">Campus</string>
+    <string name="title_activity_main">Campus</string>
     <string name="package_name">com.oliverrm.campus</string>
     <string name="custom_url_scheme">com.oliverrm.campus</string>
 </resources>

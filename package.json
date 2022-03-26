@@ -53,20 +53,5 @@
     "cordova-plugin-safariviewcontroller": "^2.0.0",
     "dfocus-fm-cordova-plugin-statusbar-height": "^1.0.0",
     "mime": "^2.4.4"
-  },
-  "cordova": {
-    "plugins": {
-      "@havesource/cordova-plugin-push": {},
-      "cordova-plugin-fingerprint-aio": {
-        "FACEID_USAGE_DESCRIPTION": " "
-      },
-      "cordova-plugin-safariviewcontroller": {},
-      "cordova-plugin-statusbar": {},
-      "dfocus-fm-cordova-plugin-statusbar-height": {}
-    },
-    "platforms": [
-      "ios",
-      "android"
-    ]
   }
 }
