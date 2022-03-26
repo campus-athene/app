@@ -9,6 +9,7 @@
     "@capacitor/core": "^3.4.1",
     "@capacitor/ios": "^3.4.1",
     "@capacitor/push-notifications": "^1.0.9",
+    "@capacitor/status-bar": "^1.0.8",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.8",
@@ -50,7 +51,6 @@
     "aws-sdk": "^2.657.0",
     "cordova-plugin-fingerprint-aio": "^4.0.2",
     "cordova-plugin-safariviewcontroller": "^2.0.0",
-    "cordova-plugin-statusbar": "^2.4.3",
     "dfocus-fm-cordova-plugin-statusbar-height": "^1.0.0",
     "mime": "^2.4.4"
   },

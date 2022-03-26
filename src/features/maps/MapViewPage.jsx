@@ -1,3 +1,5 @@
+import { Capacitor } from '@capacitor/core';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
@@ -14,9 +16,9 @@ const MapViewPage = () => {
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
   useEffect(() => {
-    if (!window.StatusBar) return;
-    window.StatusBar.styleDefault();
-    return () => window.StatusBar.styleLightContent();
+    if (!['android', 'ios'].includes(Capacitor.getPlatform())) return;
+    const promise = StatusBar.setStyle({ style: Style.Light });
+    return () => promise.then(() => StatusBar.setStyle({ style: Style.Dark }));
   }, []);
 
   const { map: mapArg } = useParams();
