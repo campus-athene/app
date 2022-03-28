@@ -5,10 +5,17 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
+    "@capacitor/android": "^3.4.1",
+    "@capacitor/core": "^3.4.1",
+    "@capacitor/ios": "^3.4.1",
+    "@capacitor/keyboard": "^1.2.2",
+    "@capacitor/push-notifications": "^1.0.9",
+    "@capacitor/status-bar": "^1.0.8",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.8",
     "@reduxjs/toolkit": "^1.5.0",
+    "@robingenz/capacitor-badge": "^1.2.1",
     "react": "^17.0.1",
     "react-bootstrap": "^2.1.0",
     "react-dom": "^17.0.1",
@@ -41,30 +48,11 @@
     ]
   },
   "devDependencies": {
-    "@havesource/cordova-plugin-push": "^3.0.0",
+    "@capacitor/cli": "^3.4.1",
     "aws-sdk": "^2.657.0",
-    "cordova": "^11.0.0",
-    "cordova-android": "^10.1.1",
-    "cordova-ios": "^6.2.0",
     "cordova-plugin-fingerprint-aio": "^4.0.2",
     "cordova-plugin-safariviewcontroller": "^2.0.0",
-    "cordova-plugin-statusbar": "^2.4.3",
     "dfocus-fm-cordova-plugin-statusbar-height": "^1.0.0",
     "mime": "^2.4.4"
-  },
-  "cordova": {
-    "plugins": {
-      "@havesource/cordova-plugin-push": {},
-      "cordova-plugin-fingerprint-aio": {
-        "FACEID_USAGE_DESCRIPTION": " "
-      },
-      "cordova-plugin-safariviewcontroller": {},
-      "cordova-plugin-statusbar": {},
-      "dfocus-fm-cordova-plugin-statusbar-height": {}
-    },
-    "platforms": [
-      "ios",
-      "android"
-    ]
   }
 }

@@ -1,5 +1,7 @@
 /* global SafariViewController */
 
+import { Capacitor } from '@capacitor/core';
+import { StatusBar } from '@capacitor/status-bar';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -20,38 +22,51 @@ export const storeRef = { store: null };
 const initializeCordova = () => {
   // Initialize plugins etc. here
 
-  SafariViewController?.isAvailable((isAvailable) => {
+  window.SafariViewController?.isAvailable((isAvailable) => {
     if (isAvailable)
       window.open = (url, _target, options) =>
         SafariViewController.show({
+          toolbarColor: '#372649',
           url,
           ...options,
         });
   });
 
-  // This is already set in config.xml but that settings does not seem
-  // to take effect on Android. This line can be removed once the
-  // setting works on Android.
-  window.StatusBar.overlaysWebView(true);
+  // For ios this is set in Info.plist
+  if (Capacitor.getPlatform() === 'android')
+    StatusBar.setOverlaysWebView({ overlay: true });
 };
 
-const initializeReact = () => {
+const initializeReact = async () => {
   const store = configureStore({
     reducer: rootReducer,
   });
 
   storeRef.store = store;
 
-  window.StatusBarHeight &&
-    window.StatusBarHeight.getValue(
-      (value) => store.dispatch(setStatusBarHeight(value)),
-      (error) =>
-        log('warning', 'window.StatusBarHeight.getValue threw an error.', error)
+  const statusBarPromise =
+    window.StatusBarHeight &&
+    new Promise((res, rej) =>
+      window.StatusBarHeight.getValue(
+        (value) => {
+          store.dispatch(setStatusBarHeight(value));
+          res(value);
+        },
+        (error) => {
+          log(
+            'error',
+            'window.StatusBarHeight.getValue threw an error.',
+            error
+          );
+          rej(error);
+        }
+      )
     );
 
   // Check for outdated or missing state and fetch is asyncronously from the server.
   store.dispatch(update());
 
+  await statusBarPromise;
   ReactDOM.render(
     <React.StrictMode>
       <Provider store={store}>

@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { log } from '../../errorReporting';
+import { setupPush } from './pushNotifications';
 
 const loadState = (state) => {
   try {
@@ -25,32 +26,6 @@ const loadState = (state) => {
   }
 };
 
-const setupPush = () => {
-  if (!window.PushNotification) {
-    log(
-      'warning',
-      'window.PushNotification in settingsSlice.setupPush is not defined.'
-    );
-    return;
-  }
-  try {
-    window.push = window.PushNotification.init({
-      android: {},
-      ios: { alert: true, badge: true, sound: true },
-    });
-    window.push.on('registration', ({ registrationId, registrationType }) => {
-      // This is only a temoprary workaround and should be improved in the future.
-      const creds = JSON.parse(localStorage.getItem('creds'));
-      new session(creds).subscribePNS(registrationId, registrationType);
-    });
-    window.push.on('error', (e) => {
-      log('warning', 'window.push threw an error.', e);
-    });
-  } catch (error) {
-    log('warning', 'settingsSlice.setupPush threw an error.', error);
-  }
-};
-
 const settingsSlice = createSlice({
   name: 'settings',
   initialState: { push: null },
@@ -68,7 +43,7 @@ const settingsSlice = createSlice({
 
       // Todo: Send updated notification settings to server.
 
-      if (messages && !window.push) setupPush();
+      if (messages) setupPush();
       settings.push.messages = messages;
       localStorage.setItem('push', JSON.stringify(settings.push));
     },
