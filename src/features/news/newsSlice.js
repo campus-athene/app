@@ -1,15 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import Parser from 'rss-parser';
 import { log } from '../../errorReporting';
 
-const feedSources = {
-  general: 'https://4k4rerdgw7.execute-api.eu-central-1.amazonaws.com/general',
-  ulb: 'https://4k4rerdgw7.execute-api.eu-central-1.amazonaws.com/ulb',
-};
+const baseUrl =
+  'https://4k4rerdgw7.execute-api.eu-central-1.amazonaws.com/json/';
 
 const loadState = () => {
   const defaultState = {
-    subscribedTopics: ['general', 'ulb'],
+    subscribedTopics: ['general', 'ulb', 'asta', 'corona'],
     topics: {},
   };
   try {
@@ -61,7 +58,7 @@ export const update = () => async (dispatch, getState) => {
 
   await Promise.allSettled(
     subscribedTopics.map((t) =>
-      pullNews(feedSources[t])
+      pullNews(t)
         .then((r) => dispatch(resetTopics({ topics: { [t]: r } })))
         .catch((error) =>
           log('warn', `Error while pulling news.`, { error, topic: t })
@@ -83,14 +80,14 @@ export const selectSubscribedArticles =
       .flatMap((t) => topics[t]?.articles || [])
       .sort((a, b) => -('' + a.isoDate).localeCompare(b.isoDate));
 
-const pullNews = async (url) => {
-  const parser = new Parser();
+const pullNews = async (topic) => {
+  const response = await fetch(baseUrl + topic);
+  if (!response.ok) {
+    log('warn', 'Pulling news failed', [topic, response]);
+    throw new Error('Pulling news failed');
+  }
 
-  let feed = await parser.parseURL(url);
-
-  return {
-    articles: feed.items,
-  };
+  return await response.json();
 };
 
 export default newsSlice.reducer;
