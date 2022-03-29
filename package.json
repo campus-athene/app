@@ -22,7 +22,7 @@
     "react-hammerjs": "https://github.com/JedWatson/react-hammerjs/tarball/af966b2aaeab028946b56b457ef308f75e911fda",
     "react-redux": "^7.2.2",
     "react-router-dom": "^6.2.1",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.0",
     "react-transition-group": "^4.4.2",
     "redux": "^4.0.5",
     "web-vitals": "^2.0.1"
