@@ -13,9 +13,9 @@ const loadState = (state) => {
       null;
     let deviceId = localStorage.getItem('deviceId');
     if (!deviceId) {
-      deviceId = Buffer.from(
-        crypto.getRandomValues(new Uint8Array(8))
-      ).toString('hex');
+      deviceId = Array.from(crypto.getRandomValues(new Uint8Array(8)))
+        .map((n) => n.toString(16).padStart(2, 'X'))
+        .join('');
       localStorage.setItem('deviceId', deviceId);
     }
     state.deviceId = deviceId;
