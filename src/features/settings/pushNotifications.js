@@ -4,12 +4,14 @@ import { session } from '../../api';
 import { log } from '../../errorReporting';
 
 const platform = Capacitor.getPlatform();
-const registrationListenerPromise = ['android', 'ios'].includes(platform)
+const registrationType = { android: 'FCM', ios: 'APNS' }[platform];
+
+const registrationListenerPromise = registrationType
   ? Promise.all([
       PushNotifications.addListener('registration', (token) => {
         // This is only a temoprary workaround and should be improved in the future.
         const creds = JSON.parse(localStorage.getItem('creds'));
-        new session(creds).subscribePNS(token.value, Capacitor.getPlatform());
+        new session(creds).subscribePNS(token.value, registrationType);
       }),
       PushNotifications.addListener('registrationError', (err) => {
         log('warning', 'registrationError was raised.', err);
