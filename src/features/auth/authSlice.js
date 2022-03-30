@@ -34,6 +34,7 @@ export const login = (username, password) => async (dispatch) => {
 
   try {
     if (dummy) {
+      await new Promise((r) => setTimeout(r, 4000));
       dispatch(updateCreds({ creds: { dummy: true } }));
     } else {
       const { token } = await session.login(username, password);

@@ -1,13 +1,16 @@
-import sync from './sync';
 import courseoffers from './courseoffers';
+import modules from './courses';
+import messages from './messages';
 
 const dummyResponse = async (path, body) => {
-  await new Promise((r) => setTimeout(() => r(), 2000));
+  await new Promise((r) => setTimeout(() => r(), 8000));
   switch (path) {
     case '/account/settings':
       return null;
-    case '/tucan/sync':
-      return sync;
+    case '/tucan/messages':
+      return messages;
+    case '/tucan/courses':
+      return modules;
     case '/tucan/courseoffers':
       if (!body?.area) return courseoffers[0];
       if (body.area === 356174056985552) return courseoffers[356174056985552];
