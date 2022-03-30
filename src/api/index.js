@@ -25,12 +25,13 @@ export class session {
 
     if (!httpResponse.ok) {
       console.error(`Server returned error code ${httpResponse.status}.`);
+      let body;
       try {
-        const body = await httpResponse.json();
-        if (typeof body.message === 'string') {
-          throw new ServerError(body);
-        }
+        body = await httpResponse.json();
       } catch (_) {}
+      if (typeof body.message === 'string') {
+        throw new ServerError(body);
+      }
       throw new ServerError();
     }
 

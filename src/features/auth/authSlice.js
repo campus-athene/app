@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
+import { ServerError } from '../../api/errors';
 import { log } from '../../errorReporting';
 import { update } from '../../redux/sync';
 
@@ -44,7 +45,10 @@ export const login = (username, password) => async (dispatch) => {
     dispatch(update());
     return null;
   } catch (error) {
-    return error instanceof Error ? error.message : String(error);
+    log('warn', 'An error occured in authSlice.login', error);
+    return error instanceof ServerError
+      ? error.message
+      : 'Ein Fehler ist aufgetreten.';
   }
 };
 
