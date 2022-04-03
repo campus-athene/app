@@ -29,7 +29,7 @@ export class session {
       try {
         body = await httpResponse.json();
       } catch (_) {}
-      if (typeof body.message === 'string') {
+      if (typeof body?.message === 'string') {
         throw new ServerError(body);
       }
       throw new ServerError();

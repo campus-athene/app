@@ -60,7 +60,7 @@ export const syncSettings = () => (_dispatch, getState) => {
   const state = getState();
   const creds = state.auth.creds;
   new session(creds).syncSettings(selectDeviceId()(state), {
-    privacy: selectPrivacy()(state).level,
+    privacy: selectPrivacy()(state)?.level,
     push: {
       messages: selectPushEnabled('messages')(state),
     },
@@ -90,7 +90,7 @@ export const selectNeedsPrivacySetup =
 export const selectPushEnabled =
   (topic) =>
   ({ settings: { push } }) =>
-    push[topic];
+    push && push[topic];
 
 export const selectPrivacy =
   () =>
