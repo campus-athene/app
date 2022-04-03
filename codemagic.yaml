@@ -32,7 +32,7 @@ workflows:
       - name: Set up keystore
         script: |
           echo $CM_KEYSTORE | base64 --decode > /tmp/keystore.keystore
-          cat >> "$CM_BUILD_DIR/android/key.properties" <<EOF
+          cat >> "$CM_BUILD_DIR/android/keystore.properties" <<EOF
           storePassword=$CM_KEYSTORE_PASSWORD
           keyPassword=$CM_KEY_PASSWORD
           keyAlias=$CM_KEY_ALIAS
