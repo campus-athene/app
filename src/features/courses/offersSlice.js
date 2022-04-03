@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { NetworkError, ServerError } from '../../api/errors';
 import { log } from '../../errorReporting';
-import { selectSyncState as selectGlobalSyncState } from '../../redux/sync';
 import { selectCreds } from '../auth/authSlice';
 
 const offersSlice = createSlice({
