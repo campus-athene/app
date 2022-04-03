@@ -1,5 +1,5 @@
 workflows:
-  ionic-capacitor-android-workflow:
+  release-android:
     name: Build for Google Play
     max_build_duration: 10
     instance_type: mac_mini
@@ -58,7 +58,7 @@ workflows:
         notify:
           success: true     # To not receive a notification when a build succeeds
           failure: true     # To not receive a notification when a build fails
-  build-ios:
+  release-ios:
     name: Build for App Store Connect
     max_build_duration: 10
     instance_type: mac_mini
@@ -90,13 +90,13 @@ workflows:
       - name: Build React app
         script: |
                     npm run build
-      - name: Cocoapods installation
-        script: |
-                    cd ios/App && pod install
       - name: Update dependencies and copy web assets to native project
         script: |
-          # npx cap copy # <- use this is you don't need to update native dependencies
-          npx cap sync # <- update native dependencies and copy web assets to native project          
+                    # npx cap copy # <- use this is you don't need to update native dependencies
+                    npx cap sync # <- update native dependencies and copy web assets to native project     
+      - name: Cocoapods installation
+        script: |
+                    cd ios/App && pod install     
       - name: Set up keychain to be used for code signing using Codemagic CLI 'keychain' command
         script: |
                     keychain initialize
@@ -144,4 +144,3 @@ workflows:
         notify:
           success: true     # To not receive a notification when a build succeeds
           failure: true     # To not receive a notification when a build fails
-
