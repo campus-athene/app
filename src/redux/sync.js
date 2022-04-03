@@ -12,17 +12,20 @@ export const update = () => (dispatch, getState) => {
   if (!creds) return;
 
   const tasks = [
-    updateNews(),
-    syncSettings(),
-    updateMessages(),
-    updateCourses(),
-    loadArea(), // Request course offers from server. They are not included in loadData.
+    updateNews,
+    syncSettings,
+    updateMessages,
+    updateCourses,
+    loadArea, // Request course offers from server. They are not included in loadData.
   ];
-  Promise.allSettled(tasks.map((t) => dispatch(t))).then((r) =>
-    r
-      .filter(({ status }) => status !== 'fulfilled')
-      .forEach(({ reason }) =>
-        log('warn', 'A task in updateAsync was rejected,', reason)
-      )
+
+  Promise.allSettled(
+    tasks.map(async (t) => {
+      try {
+        return await dispatch(t());
+      } catch (e) {
+        log('warn', 'A task in updateAsync was rejected.', e);
+      }
+    })
   );
 };
