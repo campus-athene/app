@@ -30,7 +30,7 @@ const settingsSlice = createSlice({
   name: 'settings',
   initialState: { push: null },
   reducers: {
-    setOnboardingComplete: (settings, { payload }) => {
+    setOnboardingCompleteValue: (settings, { payload }) => {
       settings.onboardingComplete = !payload || payload.isComplete !== false;
       localStorage.setItem('onboardingComplete', settings.onboardingComplete);
     },
@@ -53,11 +53,21 @@ const settingsSlice = createSlice({
   },
 });
 
-export const { setOnboardingComplete, setPrivacy, setPushNotif } =
-  settingsSlice.actions;
+const { setOnboardingCompleteValue } = settingsSlice.actions;
+export const { setPrivacy, setPushNotif } = settingsSlice.actions;
+
+export const setOnboardingComplete = () => (dispatch) => {
+  dispatch(setOnboardingCompleteValue({ isComplete: true }));
+  dispatch(syncSettings());
+};
 
 export const syncSettings = () => (_dispatch, getState) => {
   const state = getState();
+
+  // Do not send settings to server until onboarding has been completed.
+  // setOnboardingComplete will sync settings once called.
+  if (!selectOnboardingComplete()(state)) return;
+
   const creds = state.auth.creds;
   new session(creds).syncSettings(selectDeviceId()(state), {
     privacy: selectPrivacy()(state)?.level,
