@@ -71,7 +71,7 @@ workflows:
       # Add the group environment variables in Codemagic UI (either in Application/Team variables) - https://docs.codemagic.io/variables/environment-variable-groups/
       vars:
         # Ionic Capacitor Xcode worskspace and scheme
-        XCODE_WORKSPACE: "platforms/ios/App.xcworkspace" # <- Update with your workspace name
+        XCODE_WORKSPACE: "ios/App/App.xcworkspace" # <- Update with your workspace name
         XCODE_SCHEME: "App" # <- Update with your workspace scheme
       node: latest
       xcode: latest
