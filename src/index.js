@@ -10,7 +10,7 @@ import { log } from './errorReporting';
 import { setStatusBarHeight } from './features/common/commonSlice';
 import reportWebVitals from './reportWebVitals';
 import store from './redux';
-import { update } from './redux/sync';
+import { UpdateEffect } from './redux/sync';
 import ErrorBoundary from './ErrorBoundary';
 import Routes from './Routes';
 import './App.css';
@@ -58,13 +58,12 @@ const initializeReact = async () => {
       )
     );
 
-  // Check for outdated or missing state and fetch is asyncronously from the server.
-  store.dispatch(update());
-
   await statusBarPromise;
   ReactDOM.render(
     <React.StrictMode>
       <Provider store={store}>
+        {/* Check for outdated or missing state and fetch is asyncronously from the server. */}
+        <UpdateEffect />
         <ReactRouter>
           <ErrorBoundary>
             <Routes />
