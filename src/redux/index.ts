@@ -22,7 +22,8 @@ const appReducer = combineReducers({
   offers,
 });
 
-const rootReducer = (state, action) => {
+// Can not use RootState or AppDispatch here as it would be a circular reference.
+const rootReducer = (state: any, action: any) => {
   if (action.type === 'LOGOUT') {
     localStorage.clear();
     state = undefined;
@@ -43,9 +44,14 @@ const rootReducer = (state, action) => {
   return appReducer(state, action);
 };
 
-const rootStore = configureStore({
+const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });
 
-export default rootStore;
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;
+
+export default store;

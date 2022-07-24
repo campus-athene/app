@@ -5,13 +5,18 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { setSideMenuOpen } from './commonSlice';
 
-const NavButton = ({ as, style, type }) => {
+const NavButton = (props: {
+  as?: React.ElementType;
+  style?: React.CSSProperties;
+  type?: 'hamburger' | 'back';
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const hamburgerInUrl = useLocation().search.includes('hamburger');
 
-  const hamburger = type === 'hamburger' || (type !== 'back' && hamburgerInUrl);
-  const As = as || Button;
+  const hamburger =
+    props.type === 'hamburger' || (props.type !== 'back' && hamburgerInUrl);
+  const As = props.as || Button;
 
   return (
     <As
@@ -24,7 +29,7 @@ const NavButton = ({ as, style, type }) => {
         fontSize: '1.25rem',
         height: '3.5rem',
         width: '3.5rem',
-        ...style,
+        ...props.style,
       }}
     >
       {hamburger ? (

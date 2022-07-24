@@ -9,7 +9,7 @@ import { HashRouter as ReactRouter } from 'react-router-dom';
 import { log } from './errorReporting';
 import { setStatusBarHeight } from './features/common/commonSlice';
 import reportWebVitals from './reportWebVitals';
-import rootStore from './redux';
+import store from './redux';
 import { update } from './redux/sync';
 import ErrorBoundary from './ErrorBoundary';
 import Routes from './Routes';
@@ -37,8 +37,6 @@ const initializeCordova = () => {
 };
 
 const initializeReact = async () => {
-  const store = rootStore;
-
   storeRef.store = store;
 
   const statusBarPromise =
