@@ -7,6 +7,7 @@ import news from '../features/news/newsSlice';
 import messages from '../features/messages/messagesSlice';
 import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
+import { configureStore } from '@reduxjs/toolkit';
 
 const appReducer = combineReducers({
   auth,
@@ -42,4 +43,9 @@ const rootReducer = (state, action) => {
   return appReducer(state, action);
 };
 
-export default rootReducer;
+const rootStore = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+});
+
+export default rootStore;

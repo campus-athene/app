@@ -6,11 +6,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter as ReactRouter } from 'react-router-dom';
-import { configureStore } from '@reduxjs/toolkit';
 import { log } from './errorReporting';
 import { setStatusBarHeight } from './features/common/commonSlice';
 import reportWebVitals from './reportWebVitals';
-import rootReducer from './redux';
+import rootStore from './redux';
 import { update } from './redux/sync';
 import ErrorBoundary from './ErrorBoundary';
 import Routes from './Routes';
@@ -38,9 +37,7 @@ const initializeCordova = () => {
 };
 
 const initializeReact = async () => {
-  const store = configureStore({
-    reducer: rootReducer,
-  });
+  const store = rootStore;
 
   storeRef.store = store;
 
