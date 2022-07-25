@@ -3,16 +3,20 @@ import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment-timezone';
 import { MouseEventHandler, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import PageFrame from '../common/PageFrame';
 import DayView from './DayView';
 
 const CalendarPage = () => {
+  const dayFromUrlStr = useSearchParams()[0].get('day');
+  const dayFromUrl = (dayFromUrlStr && Number.parseInt(dayFromUrlStr)) || null;
+
   const today = moment(Date.now())
     .tz('Europe/Berlin')
     .startOf('day')
     .utcOffset(0, true)
     .diff(0);
-  const [selection, setSelection] = useState(today);
+  const [selection, setSelection] = useState(dayFromUrl || today);
 
   const getDateString = (date: number) => {
     const offset = moment(date).diff(today, 'd');
