@@ -1,5 +1,6 @@
 import moment from 'moment';
 import mainApi from '../../api/mainApi';
+import { Appointment } from '../../api/mainApiTypes';
 import { RootState } from '../../redux';
 
 export const selectAppointmentsOnDay = (day: number) => (state: any) => {
@@ -26,13 +27,11 @@ export const selectNextDayWithAppointments = () => (state: RootState) => {
 
 export const selectNextAppointment = () => (state: RootState) => {
   const now = Date.now();
-  return (
-    mainApi.useAppointmentsQuery(null).data?.reduce((p, c) => {
-      if (new Date(c.timeEnd).getTime() < now) return p;
-      if (!p) return c;
-      return new Date(c.timeStart).getTime() < new Date(p.timeStart).getTime()
-        ? c
-        : p;
-    }) || null
-  );
+  return mainApi.useAppointmentsQuery(null).data?.reduce((p, c) => {
+    if (new Date(c.timeEnd).getTime() < now) return p;
+    if (!p) return c;
+    return new Date(c.timeStart).getTime() < new Date(p.timeStart).getTime()
+      ? c
+      : p;
+  }, null as Appointment | null);
 };

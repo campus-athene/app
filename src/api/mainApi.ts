@@ -47,7 +47,6 @@ Object.keys(mainApi.endpoints).forEach((key) => {
     let data: any[];
     try {
       data = JSON.parse(cached);
-      data.forEach((a) => (a.name = 'Cached: ' + a.name));
     } catch (_) {
       return query;
     }
