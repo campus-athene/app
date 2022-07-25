@@ -1,4 +1,6 @@
+import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from 'redux';
+import mainApi from '../api/mainApi';
 import { log } from '../errorReporting';
 import auth from '../features/auth/authSlice';
 import common from '../features/common/commonSlice';
@@ -7,12 +9,13 @@ import news from '../features/news/newsSlice';
 import messages from '../features/messages/messagesSlice';
 import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
-import { configureStore } from '@reduxjs/toolkit';
 
 const appReducer = combineReducers({
   auth,
   common,
   settings,
+
+  [mainApi.reducerPath]: mainApi.reducer,
 
   news,
 
@@ -46,7 +49,8 @@ const rootReducer = (state: any, action: any) => {
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(mainApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
