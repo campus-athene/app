@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { AppDispatch, RootState } from '.';
+import { AppThunkAction } from '.';
 import { log } from '../errorReporting';
 import { selectCreds } from '../features/auth/authSlice';
 import { update as updateCourses } from '../features/courses/coursesSlice';
@@ -9,16 +9,13 @@ import { update as updateMessages } from '../features/messages/messagesSlice';
 import { update as updateNews } from '../features/news/newsSlice';
 import { syncSettings } from '../features/settings/settingsSlice';
 
-export const update =
-  () => (dispatch: AppDispatch, getState: () => RootState) => {
+export const update: () => AppThunkAction<void> =
+  () => (dispatch, getState) => {
     const creds = selectCreds()(getState());
 
     if (!creds) return;
 
-    const tasks: (() => (
-      dispatch: AppDispatch,
-      getState: () => RootState
-    ) => Promise<unknown> | unknown)[] = [
+    const tasks: (() => AppThunkAction<Promise<unknown> | unknown>)[] = [
       updateNews,
       syncSettings,
       updateMessages,
@@ -31,7 +28,7 @@ export const update =
         try {
           return await dispatch(t());
         } catch (e) {
-          log('warn', 'A task in updateAsync was rejected.', e);
+          log('warning', 'A task in updateAsync was rejected.', e);
         }
       })
     );

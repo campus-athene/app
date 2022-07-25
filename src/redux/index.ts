@@ -1,5 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { combineReducers } from 'redux';
+import { configureStore, ThunkAction } from '@reduxjs/toolkit';
+import { AnyAction, combineReducers } from 'redux';
 import mainApi from '../api/mainApi';
 import { log } from '../errorReporting';
 import auth from '../features/auth/authSlice';
@@ -57,5 +57,10 @@ const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
+
+export type AppThunkAction<
+  ReturnType = void,
+  ExtraThunkArg = unknown
+> = ThunkAction<ReturnType, RootState, ExtraThunkArg, AnyAction>;
 
 export default store;

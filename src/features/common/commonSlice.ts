@@ -1,8 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../redux';
 
 const commonSlice = createSlice({
   name: 'common',
-  initialState: {},
+  initialState: {
+    sideMenuOpen: false,
+    statusBarHeight: null as number | null,
+  },
   reducers: {
     setSideMenuOpen: (state, { payload }) => {
       state.sideMenuOpen = payload;
@@ -11,7 +15,7 @@ const commonSlice = createSlice({
       state.statusBarHeight = payload;
     },
     toggleSideMenu: (state) => {
-      state.statusBarHeight = !state.statusBarHeight;
+      state.sideMenuOpen = !state.sideMenuOpen;
     },
   },
 });
@@ -21,14 +25,14 @@ export const { setSideMenuOpen, setStatusBarHeight, toggleSideMenu } =
 
 export const selectStatusBarHeightCss =
   () =>
-  ({ common: { statusBarHeight } }) =>
+  ({ common: { statusBarHeight } }: RootState) =>
     typeof statusBarHeight === 'number'
       ? `${statusBarHeight}px`
       : 'env(safe-area-inset-top)';
 
 export const selectSideMenuOpen =
   () =>
-  ({ common: { sideMenuOpen } }) =>
+  ({ common: { sideMenuOpen } }: RootState) =>
     sideMenuOpen;
 
 export default commonSlice.reducer;

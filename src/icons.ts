@@ -1,6 +1,6 @@
-import { createElement } from 'react';
+import { createElement, HTMLAttributes } from 'react';
 
-const createIcon = (svg) => (props) =>
+const createIcon = (svg: string) => (props: HTMLAttributes<HTMLDivElement>) =>
   createElement('div', {
     ...props,
     dangerouslySetInnerHTML: { __html: svg },

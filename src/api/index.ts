@@ -15,11 +15,13 @@ const base =
     ? 'http://localhost:3010'
     : 'https://campus.akamu.de';
 
-export class session {
-  dummy: boolean;
-  token: string;
+export type AppCredentials = { dummy: boolean; token: string };
 
-  constructor(creds: { dummy: boolean; token: string }) {
+export class session {
+  dummy: AppCredentials['dummy'];
+  token: AppCredentials['token'];
+
+  constructor(creds: AppCredentials) {
     this.dummy = creds.dummy;
     this.token = creds.token;
   }
@@ -120,6 +122,15 @@ export class session {
   // ): Promise<ExamsResult> =>
   //   this.send('/tucan/registerexam', { id, semester, type });
 
+  static reportError = async (errorData: ReportErrorRequest): Promise<void> => {
+    this.sendAdvanced(
+      '/reporterror',
+      {
+        'Content-Type': 'application/json',
+      },
+      errorData
+    );
+  };
   reportError = async (errorData: ReportErrorRequest): Promise<void> => {
     this.send('/reporterror', errorData);
   };

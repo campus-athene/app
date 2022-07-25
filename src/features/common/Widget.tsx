@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 
-const Widget = (props) =>
+const Widget = (props: HTMLAttributes<HTMLDivElement>) =>
   React.createElement('div', {
     ...props,
     style: {
