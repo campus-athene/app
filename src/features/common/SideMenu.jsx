@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
 import {
+  Calendar,
   Envelope,
   Home,
   Lecture,
@@ -186,6 +187,9 @@ const SideMenu = () => {
                   </Badge>
                 </>
               ) : null}
+            </HomeButton>
+            <HomeButton target={'/calendar?hamburger'} icon={Calendar}>
+              Kalender
             </HomeButton>
             <HomeButton target={'/courses?hamburger'} icon={Lecture}>
               Mein Studium

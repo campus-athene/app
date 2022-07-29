@@ -5,13 +5,13 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { selectStatusBarHeightCss } from './commonSlice';
 import NavButton from './NavButton';
 
-const PageFrame = ({
-  children,
-  title,
-  style,
-  noMenu,
-  more,
-  syncState: { isLoading, isOffline } = { isLoading: false, isOffline: false },
+const PageFrame = (props: {
+  children?: React.ReactNode;
+  title?: string;
+  style?: React.CSSProperties;
+  noMenu?: boolean;
+  more?: React.ReactNode;
+  syncState?: { isLoading: boolean; isOffline: boolean };
 }) => {
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
@@ -37,7 +37,7 @@ const PageFrame = ({
             alignItems: 'center',
             alignSelf: 'stretch',
             margin: '-0.5rem 0',
-            display: noMenu ? 'none' : 'flex',
+            display: props.noMenu ? 'none' : 'flex',
             justifyContent: 'center',
           }}
         />
@@ -50,14 +50,16 @@ const PageFrame = ({
             whiteSpace: 'nowrap',
           }}
         >
-          {title || <>&nbsp;</>}
+          {props.title || <>&nbsp;</>}
         </Navbar.Brand>
-        {more && (
+        {props.more && (
           <OverlayTrigger
             placement="bottom"
             overlay={(props) => (
               <Popover {...props}>
-                <Popover.Body style={{ padding: '0' }}>{more}</Popover.Body>
+                <Popover.Body style={{ padding: '0' }}>
+                  {props.more}
+                </Popover.Body>
               </Popover>
             )}
             trigger={['click']}
@@ -77,7 +79,7 @@ const PageFrame = ({
           </OverlayTrigger>
         )}
       </Navbar>
-      {(isLoading || isOffline) && (
+      {(props.syncState?.isLoading || props.syncState?.isOffline) && (
         <div
           style={{
             background: '#777',
@@ -86,7 +88,7 @@ const PageFrame = ({
             letterSpacing: '0.05em',
           }}
         >
-          {isLoading ? 'Lädt...' : 'Offline'}
+          {props.syncState?.isLoading ? 'Lädt...' : 'Offline'}
         </div>
       )}
       <div
@@ -94,10 +96,10 @@ const PageFrame = ({
           overflowX: 'hidden',
           overflowY: 'scroll',
           gridRow: '3',
-          ...style,
+          ...props.style,
         }}
       >
-        {children}
+        {props.children}
       </div>
     </div>
   );

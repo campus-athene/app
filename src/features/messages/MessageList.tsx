@@ -1,40 +1,17 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
 import { ListGroup } from 'react-bootstrap';
-import PageFrame from '../common/PageFrame';
-import MessageDialog from './MessageDialog';
-import {
-  markAllRead,
-  selectAllMessages,
-  selectSyncState,
-} from './messagesSlice';
+import { useNavigate } from 'react-router-dom';
+import { Message } from './messagesSlice';
 
-// Must start with a capital letter as it is a React component.
-const ContextMenu = () => {
-  const dispatch = useDispatch();
-  return (
-    <ListGroup>
-      <ListGroup.Item action onClick={() => dispatch(markAllRead())}>
-        Alle als gelesen markieren
-      </ListGroup.Item>
-    </ListGroup>
-  );
-};
-
-const MessagesPage = () => {
+const MessageList = (props: {
+  messages: Message[];
+  unreadIndicators?: boolean;
+}) => {
   const navigate = useNavigate();
-  const messages = useSelector(selectAllMessages());
-  const selectedId = useParams().id;
-
   return (
-    <PageFrame
-      title="Nachrichten"
-      more={ContextMenu()}
-      syncState={useSelector(selectSyncState())}
-    >
-      <ListGroup variant="flush">
-        {messages.reverse().map(({ id, subject, body, from, date, unread }) => (
+    <ListGroup variant="flush">
+      {props.messages
+        .reverse()
+        .map(({ id, subject, body, from, date, unread }) => (
           <ListGroup.Item
             key={id}
             action
@@ -47,7 +24,7 @@ const MessagesPage = () => {
                 color: '#000000',
               }}
             >
-              {unread && (
+              {unread && props.unreadIndicators !== false && (
                 <div
                   style={{
                     width: '0.5em',
@@ -87,10 +64,8 @@ const MessagesPage = () => {
             </div>
           </ListGroup.Item>
         ))}
-      </ListGroup>
-      {selectedId && <MessageDialog messageId={selectedId} />}
-    </PageFrame>
+    </ListGroup>
   );
 };
 
-export default MessagesPage;
+export default MessageList;

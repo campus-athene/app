@@ -1,4 +1,6 @@
-import { combineReducers } from 'redux';
+import { configureStore, ThunkAction } from '@reduxjs/toolkit';
+import { AnyAction, combineReducers } from 'redux';
+import mainApi from '../api/mainApi';
 import { log } from '../errorReporting';
 import auth from '../features/auth/authSlice';
 import common from '../features/common/commonSlice';
@@ -13,6 +15,8 @@ const appReducer = combineReducers({
   common,
   settings,
 
+  [mainApi.reducerPath]: mainApi.reducer,
+
   news,
 
   // data
@@ -21,7 +25,8 @@ const appReducer = combineReducers({
   offers,
 });
 
-const rootReducer = (state, action) => {
+// Can not use RootState or AppDispatch here as it would be a circular reference.
+const rootReducer = (state: any, action: any) => {
   if (action.type === 'LOGOUT') {
     localStorage.clear();
     state = undefined;
@@ -42,4 +47,20 @@ const rootReducer = (state, action) => {
   return appReducer(state, action);
 };
 
-export default rootReducer;
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(mainApi.middleware),
+});
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;
+
+export type AppThunkAction<
+  ReturnType = void,
+  ExtraThunkArg = unknown
+> = ThunkAction<ReturnType, RootState, ExtraThunkArg, AnyAction>;
+
+export default store;

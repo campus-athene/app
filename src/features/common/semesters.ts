@@ -1,8 +1,4 @@
-const allSemesters = [
-  15024000, 15025000, 15026000, 15036000, 15046000, 15056000, 15066000,
-  15076000, 15086000, 15096000, 15106000, 15116000, 15126000, 15136000,
-  15146000, 15156000,
-];
+export type Semester = keyof typeof descriptions;
 
 export const descriptions = {
   // Yes, the first two are irregular.
@@ -24,9 +20,13 @@ export const descriptions = {
   15156000: 'Sommersemester 2024',
 };
 
+const allSemesters = Object.keys(descriptions).map((s) =>
+  Number.parseInt(s)
+) as Semester[];
+
 // Currently we are ignoring timezones assuming semester changes with UTC.
 
-export const getSemester = (date) => {
+export const getSemester = (date: ConstructorParameters<typeof Date>[0]) => {
   const d = date ? new Date(date) : new Date();
   return allSemesters[
     Math.floor((d.getFullYear() - 2017) * 2 + (d.getMonth() + 3) / 6)
@@ -34,7 +34,7 @@ export const getSemester = (date) => {
 };
 
 // Registration starts one month early.
-export const getRegSemester = (date) => {
+export const getRegSemester = (date: ConstructorParameters<typeof Date>[0]) => {
   const d = date ? new Date(date) : new Date();
   return allSemesters[
     Math.floor((d.getFullYear() - 2017) * 2 + (d.getMonth() + 4) / 6)

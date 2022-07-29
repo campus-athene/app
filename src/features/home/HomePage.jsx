@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import CalendarWidget from '../calendar/CalendarWidget';
 import { selectStatusBarHeightCss } from '../common/commonSlice';
 import Logo from '../common/Logo';
 import NavButton from '../common/NavButton';
@@ -56,6 +57,7 @@ const HomePage = () => {
           }}
         >
           <MessagesWidget />
+          <CalendarWidget />
           <NewsWidget />
           <Widget style={{ textAlign: 'center' }}>
             <div style={{ fontSize: '1.4em' }}>

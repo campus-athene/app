@@ -2,8 +2,13 @@ import { storeRef } from '.';
 import { session } from './api';
 import { selectCreds } from './features/auth/authSlice';
 import { selectPrivacy } from './features/settings/settingsSlice';
+import { RootState } from './redux';
 
-export const log = (level, message, data) => {
+export const log = (
+  level: 'error' | 'warning' | 'info',
+  message: string,
+  data?: unknown
+) => {
   try {
     const log =
       level === 'error'
@@ -16,11 +21,11 @@ export const log = (level, message, data) => {
 
     if (process.env.NODE_ENV === 'development') return;
 
-    const state = storeRef.store.getState();
+    const state = (storeRef.store as any).getState() as RootState;
     const privacy = selectPrivacy()(state)?.level;
     const creds = selectCreds()(state);
 
-    if (privacy === 'minimal') return;
+    if (privacy !== 'complete' && privacy !== 'balanced') return;
 
     let serializedData;
 
@@ -30,12 +35,16 @@ export const log = (level, message, data) => {
       serializedData = String(data);
     }
 
-    new session(creds).reportError({
+    const report = {
       level,
       timestamp: Date.now(),
       privacy,
       message,
       data: serializedData,
-    });
+    };
+
+    creds
+      ? new session(creds).reportError(report)
+      : session.reportError(report);
   } catch (e) {}
 };
