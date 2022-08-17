@@ -74,7 +74,13 @@ const DetailsPage = () => {
     );
 
   return (
-    <div style={{ height: '100vh' }}>
+    <div
+      style={{
+        height: '100vh',
+        display: 'grid',
+        gridTemplateRows: 'auto 1fr',
+      }}
+    >
       <div
         style={{
           background: getCourseColor(module, 90, 70),

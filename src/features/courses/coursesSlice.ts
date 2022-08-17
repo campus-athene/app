@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { session } from '../../api';
-import { Module } from '../../api/apiTypes';
+import { CourseDetailsResult, Module } from '../../api/apiTypes';
 import { log } from '../../errorReporting';
 import { AppThunkAction, RootState } from '../../redux';
 import { selectCreds } from '../auth/authSlice';
@@ -42,11 +44,15 @@ const coursesSlice = createSlice({
   name: 'courses',
   initialState: {
     items: {} as CourseItems,
+    details: {} as { [id: number]: CourseDetailsResult },
     status: 'initial',
   },
   reducers: {
     setStatus(state, { payload }) {
       state.status = payload;
+    },
+    setDetails(state, { payload }: { payload: CourseDetailsResult }) {
+      state.details[payload.id] = payload;
     },
     reset(state, { payload: { courses } }: { payload: { courses: Module[] } }) {
       state.items = {};
@@ -61,7 +67,7 @@ const coursesSlice = createSlice({
   },
 });
 
-const { setStatus } = coursesSlice.actions;
+const { setStatus, setDetails } = coursesSlice.actions;
 export const { reset } = coursesSlice.actions;
 
 export const update: () => AppThunkAction<Promise<void>> =
@@ -81,6 +87,31 @@ export const update: () => AppThunkAction<Promise<void>> =
       dispatch(setStatus('error'));
     }
   };
+
+export const useDetails: (
+  id: number
+) =>
+  | { loading: true; result: null; error: null }
+  | { loading: false; result: CourseDetailsResult; error: null }
+  | { loading: false; result: null; error: string } = (id) => {
+  const cache = useSelector((state: RootState) => state.courses.details[id]);
+  const creds = useSelector(selectCreds());
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (creds)
+      new session(creds)
+        .getCourseDetails({ id })
+        .then((r) => dispatch(setDetails(r)));
+  }, [creds, dispatch, id]);
+
+  if (!creds)
+    return { loading: false, result: null, error: 'Not authenticated' };
+
+  return cache
+    ? { loading: false, result: cache, error: null }
+    : { loading: true, result: null, error: null };
+};
 
 export const selectSyncState =
   () =>

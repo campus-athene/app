@@ -1,8 +1,41 @@
-import { Fragment, useState } from 'react';
-import { Button } from 'react-bootstrap';
-import { Module, ModuleOffer } from '../../api/apiTypes';
+import { useState } from 'react';
+import { Button, Placeholder } from 'react-bootstrap';
+import { Course, CourseOffer, Module, ModuleOffer } from '../../api/apiTypes';
 import { descriptions as semesterDescs } from '../common/semesters';
 import CourseRegModal from './CourseRegModal';
+import { useDetails } from './coursesSlice';
+
+const CourseDetails = (params: { course: Course | CourseOffer }) => {
+  const course = params.course;
+  const details = useDetails(params.course.id);
+
+  return (
+    <>
+      <p style={{ marginBottom: 0, marginTop: '3em' }}>
+        <code>{course.code}</code>
+      </p>
+      <p style={{ marginBottom: 0 }}>
+        <b>{course.name}</b>
+      </p>
+      <p style={{ marginBottom: '1em' }}>{course.instructor}</p>
+      {details.loading ? (
+        <Placeholder animation="glow">
+          <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={8} />{' '}
+          <Placeholder xs={4} /> <Placeholder xs={5} /> <Placeholder xs={5} />
+        </Placeholder>
+      ) : null}
+      {!details.loading &&
+        details.result?.details
+          .filter((d) => d.value)
+          .map((d) => (
+            <p key={d.title} style={{ marginBottom: '0.5em' }}>
+              <span style={{ color: 'gray' }}>{d.title}: </span>
+              {d.value}
+            </p>
+          ))}
+    </>
+  );
+};
 
 const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
   const registration = 'status' in module;
@@ -10,7 +43,9 @@ const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
   const [regDlgOpen, setRegDlgOpen] = useState(false);
 
   return (
-    <div style={{ padding: '0.8em 1em' }}>
+    <div
+      style={{ fontSize: '0.8em', padding: '0.8em 1em', overflowY: 'scroll' }}
+    >
       <p>
         Modulnummer:{' '}
         <span style={{ fontFamily: 'monospace' }}>{module.code}</span>
@@ -24,27 +59,6 @@ const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
             Semester: {semesterDescs[module.semester]}
           </>
         )}
-      </p>
-      <p>
-        <div>
-          <u>Bestehend aus:</u>
-        </div>
-        <div
-          style={{
-            columnGap: '0.25em',
-            display: 'grid',
-            gridTemplateColumns: 'auto 1fr',
-          }}
-        >
-          {module.courses.map((course) => (
-            <Fragment key={course.code}>
-              <div>
-                <span style={{ fontFamily: 'monospace' }}>{course.code}</span>{' '}
-              </div>
-              <div>{course.name}</div>
-            </Fragment>
-          ))}
-        </div>
       </p>
       {registration && (
         <>
@@ -65,13 +79,13 @@ const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
               </Button>
             )}
           </p>
-          {regDlgOpen && (
-            <CourseRegModal
-              offer={module}
-              onClose={() => setRegDlgOpen(false)}
-            />
-          )}
         </>
+      )}
+      {module.courses.map((c) => (
+        <CourseDetails key={c.id} course={c} />
+      ))}
+      {registration && regDlgOpen && (
+        <CourseRegModal offer={module} onClose={() => setRegDlgOpen(false)} />
       )}
     </div>
   );

@@ -68,6 +68,11 @@ export type CoursesResult = {
   modules: Module[];
 };
 
+export type CourseDetailsResult = {
+  id: number;
+  details: { title: string; value: string }[];
+};
+
 // export type ExamsResult = {
 //   exams: ({
 //     id: number;
