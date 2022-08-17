@@ -55,8 +55,8 @@ const PageFrame = (props: {
         {props.more && (
           <OverlayTrigger
             placement="bottom"
-            overlay={(props) => (
-              <Popover {...props}>
+            overlay={(overlayProps) => (
+              <Popover {...overlayProps}>
                 <Popover.Body style={{ padding: '0' }}>
                   {props.more}
                 </Popover.Body>
