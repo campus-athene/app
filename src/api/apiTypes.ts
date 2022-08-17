@@ -1,3 +1,5 @@
+import { Semester } from '../features/common/semesters';
+
 declare type CourseRegArgs = [
   number,
   string,
@@ -46,20 +48,24 @@ export type AppointmentsResult = {
   }[];
 };
 
+export type Course = {
+  id: number;
+  groupId: number;
+  code: string;
+  name: string;
+  instructor: string;
+};
+
+export type Module = {
+  code: string;
+  name: string;
+  instructor: string;
+  semester: Semester;
+  courses: Course[];
+};
+
 export type CoursesResult = {
-  modules: {
-    code: string;
-    name: string;
-    instructor: string;
-    semester: number;
-    courses: {
-      id: number;
-      groupId: number;
-      code: string;
-      name: string;
-      instructor: string;
-    }[];
-  }[];
+  modules: Module[];
 };
 
 // export type ExamsResult = {
@@ -83,29 +89,33 @@ export type CoursesResult = {
 //   ))[];
 // };
 
+export type CourseOffer = {
+  id: number;
+  code: string;
+  name: string;
+  instructor: string;
+  status: 'register' | 'unregister' | 'special' | 'none';
+  regArgs: CourseRegArgs | null;
+  regHint: CourseRegHint | null;
+};
+
+export type ModuleOffer = {
+  id: number;
+  code: string;
+  name: string;
+  instructor: string;
+  courses: CourseOffer[];
+  status: 'register' | 'unregister' | 'ignore' | 'edit';
+  regArgs: CourseRegArgs | null;
+};
+
 export type CourseOffersResult = {
   offers: {
     id: number;
     major: number;
     area: number;
     name: string;
-    modules: {
-      id: number;
-      code: string;
-      name: string;
-      instructor: string;
-      courses: {
-        id: number;
-        code: string;
-        name: string;
-        instructor: string;
-        status: 'register' | 'unregister' | 'special' | 'none';
-        regArgs: CourseRegArgs | null;
-        regHint: CourseRegHint | null;
-      }[];
-      status: 'register' | 'unregister' | 'ignore' | 'edit';
-      regArgs: CourseRegArgs | null;
-    }[];
+    modules: ModuleOffer[];
     areas: {
       id: number;
       major: number;

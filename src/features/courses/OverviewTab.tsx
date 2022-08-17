@@ -1,12 +1,13 @@
 import { Fragment, useState } from 'react';
 import { Button } from 'react-bootstrap';
+import { Module, ModuleOffer } from '../../api/apiTypes';
 import { descriptions as semesterDescs } from '../common/semesters';
 import CourseRegModal from './CourseRegModal';
 
-const OverviewTab = ({ module }) => {
-  const registration = module.status;
+const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
+  const registration = 'status' in module;
 
-  const [regDlgOpen, setRegDlgOpen] = useState();
+  const [regDlgOpen, setRegDlgOpen] = useState(false);
 
   return (
     <div style={{ padding: '0.8em 1em' }}>
@@ -17,7 +18,7 @@ const OverviewTab = ({ module }) => {
         Modulname: {module.name}
         <br />
         Lehrende: {module.instructor}
-        {semesterDescs[module.semester] && (
+        {'semester' in module && (
           <>
             <br />
             Semester: {semesterDescs[module.semester]}
@@ -40,15 +41,7 @@ const OverviewTab = ({ module }) => {
               <div>
                 <span style={{ fontFamily: 'monospace' }}>{course.code}</span>{' '}
               </div>
-              <div>
-                {course.name}{' '}
-                {
-                  /* category is not provided for course offers. */
-                  course.category && (
-                    <span style={{ color: 'gray' }}>({course.category})</span>
-                  )
-                }
-              </div>
+              <div>{course.name}</div>
             </Fragment>
           ))}
         </div>

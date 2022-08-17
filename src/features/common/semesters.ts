@@ -26,7 +26,7 @@ const allSemesters = Object.keys(descriptions).map((s) =>
 
 // Currently we are ignoring timezones assuming semester changes with UTC.
 
-export const getSemester = (date: ConstructorParameters<typeof Date>[0]) => {
+export const getSemester = (date?: ConstructorParameters<typeof Date>[0]) => {
   const d = date ? new Date(date) : new Date();
   return allSemesters[
     Math.floor((d.getFullYear() - 2017) * 2 + (d.getMonth() + 3) / 6)
@@ -34,7 +34,9 @@ export const getSemester = (date: ConstructorParameters<typeof Date>[0]) => {
 };
 
 // Registration starts one month early.
-export const getRegSemester = (date: ConstructorParameters<typeof Date>[0]) => {
+export const getRegSemester = (
+  date?: ConstructorParameters<typeof Date>[0]
+) => {
   const d = date ? new Date(date) : new Date();
   return allSemesters[
     Math.floor((d.getFullYear() - 2017) * 2 + (d.getMonth() + 4) / 6)

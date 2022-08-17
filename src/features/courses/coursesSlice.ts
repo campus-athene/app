@@ -1,30 +1,33 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
+import { Module } from '../../api/apiTypes';
 import { log } from '../../errorReporting';
+import { AppThunkAction, RootState } from '../../redux';
 import { selectCreds } from '../auth/authSlice';
 import {
   descriptions as semesterDescs,
   getRegSemester,
   getSemester,
+  Semester,
 } from '../common/semesters';
 
-const loadState = ({ items }) => {
+type CourseItems = { [semester: number]: { [code: string]: Module } };
+
+const loadState = ({ items }: { items: CourseItems }) => {
   try {
-    const local = JSON.parse(localStorage.getItem('courses'));
+    const local = localStorage.getItem('courses');
     if (!local) return;
-    // For downward compatibility, can be removed.
-    const flat = local
-      .map((g) => (typeof g.code === 'undefined' ? Object.values(g) : g))
-      .flat();
-    flat.forEach(
-      (e) => ((items[e.semester] || (items[e.semester] = {}))[e.code] = e)
+
+    JSON.parse(local).forEach(
+      (e: Module) =>
+        ((items[e.semester] || (items[e.semester] = {}))[e.code] = e)
     );
   } catch (e) {
     log('error', 'coursesSlice.loadState threw an error.', e);
   }
 };
 
-const saveState = ({ items }) => {
+const saveState = ({ items }: { items: CourseItems }) => {
   localStorage.setItem(
     'courses',
     JSON.stringify(
@@ -37,12 +40,15 @@ const saveState = ({ items }) => {
 
 const coursesSlice = createSlice({
   name: 'courses',
-  initialState: { items: {}, status: 'initial' },
+  initialState: {
+    items: {} as CourseItems,
+    status: 'initial',
+  },
   reducers: {
     setStatus(state, { payload }) {
       state.status = payload;
     },
-    reset(state, { payload: { courses } }) {
+    reset(state, { payload: { courses } }: { payload: { courses: Module[] } }) {
       state.items = {};
       courses.forEach((c) => {
         (state.items[c.semester] || (state.items[c.semester] = {}))[c.code] = c;
@@ -58,62 +64,67 @@ const coursesSlice = createSlice({
 const { setStatus } = coursesSlice.actions;
 export const { reset } = coursesSlice.actions;
 
-export const update = () => async (dispatch, getState) => {
-  const creds = selectCreds()(getState(), dispatch);
-  if (!creds) {
-    log('warn', 'coursesSlice.update was called without creds being set.');
-    return;
-  }
-  dispatch(setStatus('loading'));
-  try {
-    const response = await new session(creds).getCourses();
-    dispatch(reset({ courses: response.modules }));
-    dispatch(setStatus('loaded'));
-  } catch (e) {
-    log('error', 'coursesSlice.update raised an error.', e);
-    dispatch(setStatus('error'));
-  }
-};
+export const update: () => AppThunkAction<Promise<void>> =
+  () => async (dispatch, getState) => {
+    const creds = selectCreds()(getState());
+    if (!creds) {
+      log('warning', 'coursesSlice.update was called without creds being set.');
+      return;
+    }
+    dispatch(setStatus('loading'));
+    try {
+      const response = await new session(creds).getCourses();
+      dispatch(reset({ courses: response.modules }));
+      dispatch(setStatus('loaded'));
+    } catch (e) {
+      log('error', 'coursesSlice.update raised an error.', e);
+      dispatch(setStatus('error'));
+    }
+  };
 
 export const selectSyncState =
   () =>
-  ({ courses: { status } }) => ({
+  ({ courses: { status } }: RootState) => ({
     isLoading: status === 'loading',
     isOffline: status === 'error',
   });
 
 export const selectBySemesterAndNumber =
-  (semester, number) =>
-  ({ courses }) =>
-    courses.items[semester][number];
+  (semester: number, code: string) =>
+  ({ courses }: RootState) =>
+    courses.items[semester][code];
 
 export const selectCurrentSemester =
   () =>
-  ({ courses }) =>
+  ({ courses }: RootState) =>
     Object.values(courses.items[getSemester()] || {}).sort((a, b) =>
       a.code < b.code ? -1 : a.code > b.code ? 1 : 0
     );
 
 export const selectGroupedBySemester =
   () =>
-  ({ courses }) =>
+  ({ courses }: RootState) =>
     [
       ...Object.keys({ [getRegSemester()]: null, ...courses.items }).map(
-        (semester) => ({
-          id: Number.parseInt(semester),
-          name: semesterDescs[semester] || 'Sonstige',
-          courses: Object.values(courses.items[semester] || {}),
-        })
+        (key) => {
+          const semester = Number.parseInt(key) as Semester;
+          return {
+            id: semester,
+            name: semesterDescs[semester] || 'Sonstige',
+            courses: Object.values(courses.items[semester] || {}),
+          };
+        }
       ),
     ].sort((a, b) => b.id - a.id);
 
-export const getCourseColor = ({ code }, s, bl) => {
+export const getCourseColor = ({ code }: Module, s: number, bl: number) => {
   // https://www.30secondsofcode.org/js/s/hsb-to-rgb
-  const HSBToRGB = (h, s, b) => {
+  const HSBToRGB = (h: number, s: number, b: number) => {
     s /= 100;
     b /= 100;
-    const k = (n) => (n + h / 60) % 6;
-    const f = (n) => b * (1 - s * Math.max(0, Math.min(k(n), 4 - k(n), 1)));
+    const k = (n: number) => (n + h / 60) % 6;
+    const f = (n: number) =>
+      b * (1 - s * Math.max(0, Math.min(k(n), 4 - k(n), 1)));
     return [255 * f(5), 255 * f(3), 255 * f(1)].map((n) => Math.floor(n));
   };
 
