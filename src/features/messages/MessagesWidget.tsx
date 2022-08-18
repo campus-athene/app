@@ -18,7 +18,7 @@ const MessagesWidget = () => {
   return (
     <Widget style={{ overflow: 'hidden', padding: 0 }}>
       <MessageList
-        messages={unreadMsgs.slice(0, numberMsgsShow).reverse()}
+        messages={unreadMsgs.slice(-numberMsgsShow).reverse()}
         unreadIndicators={false}
       />
       {moreMsgs && (

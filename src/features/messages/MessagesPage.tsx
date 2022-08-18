@@ -32,7 +32,8 @@ const MessagesPage = () => {
       more={<ContextMenu />}
       syncState={useSelector(selectSyncState())}
     >
-      <MessageList messages={messages.reverse()} />
+      {/* reverse() is in place, use slice() to make a copy */}
+      <MessageList messages={messages.slice().reverse()} />
       {selectedId && <MessageDialog messageId={selectedId} />}
     </PageFrame>
   );
