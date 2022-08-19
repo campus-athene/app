@@ -13,7 +13,7 @@ const BrowseNewsPage = () => {
   }, [dispatch]);
 
   return (
-    <PageFrame title="Aktuelles" syncState={{ isLoading }}>
+    <PageFrame title="Aktuelles" syncState={{ isLoading, isOffline: false }}>
       {articles.map((a) => (
         <div
           key={a.guid}
