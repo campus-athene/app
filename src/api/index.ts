@@ -1,5 +1,6 @@
 import {
   AppointmentsResult,
+  CourseDetailsResult,
   CourseOffersResult,
   CourseRegistrationRequest,
   CoursesResult,
@@ -95,6 +96,9 @@ export class session {
     this.send('/tucan/appointments');
 
   getCourses = (): Promise<CoursesResult> => this.send('/tucan/courses');
+
+  getCourseDetails = (args: { id: number }): Promise<CourseDetailsResult> =>
+    this.send('/tucan/coursedetails', args);
 
   // getExams = (): Promise<ExamsResult> => this.send('/tucan/exams');
 

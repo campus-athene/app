@@ -1,7 +1,11 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
+import { Module } from '../../api/apiTypes';
+import { log } from '../../errorReporting';
 import { selectStatusBarHeightCss } from '../common/commonSlice';
 import NavButton from '../common/NavButton';
+import PageFrame from '../common/PageFrame';
 import { getCourseColor, selectBySemesterAndNumber } from './coursesSlice';
 import { selectOffer } from './offersSlice';
 import OverviewTab from './OverviewTab';
@@ -16,18 +20,33 @@ const DetailsPage = () => {
     module: moduleId,
   } = useParams();
   const number = numberEncoded && decodeURIComponent(numberEncoded);
-  const module = useSelector(
-    major
+  const module: Module | null = useSelector(
+    major && area && list && moduleId
       ? selectOffer(
           Number.parseInt(major),
           Number.parseInt(area),
           Number.parseInt(list),
           Number.parseInt(moduleId)
         )
-      : selectBySemesterAndNumber(semester, number)
+      : semester && number
+      ? selectBySemesterAndNumber(Number.parseInt(semester), number)
+      : () => null
   );
 
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
+
+  useEffect(() => {
+    if (!module)
+      log('warning', 'Could not find course.', {
+        semester,
+        numberEncoded,
+        number,
+        major,
+        area,
+        list,
+        moduleId,
+      });
+  });
 
   // const [tab, setTab] = useState('overview');
   // const selectedTab = tab;
@@ -47,8 +66,21 @@ const DetailsPage = () => {
   //   </button>
   // );
 
+  if (!module)
+    return (
+      <PageFrame title="Kursdetails">
+        Dieser Kurs konnte nicht gefunden werden.
+      </PageFrame>
+    );
+
   return (
-    <div style={{ height: '100vh' }}>
+    <div
+      style={{
+        height: '100vh',
+        display: 'grid',
+        gridTemplateRows: 'auto 1fr',
+      }}
+    >
       <div
         style={{
           background: getCourseColor(module, 90, 70),
