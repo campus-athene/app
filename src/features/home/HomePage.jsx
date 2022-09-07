@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import CalendarWidget from '../calendar/CalendarWidget';
+import CanteenWidget from '../canteen/CanteenWidget';
 import { selectStatusBarHeightCss } from '../common/commonSlice';
 import Logo from '../common/Logo';
 import NavButton from '../common/NavButton';
@@ -56,6 +57,7 @@ const HomePage = () => {
             paddingTop: '1em',
           }}
         >
+          <CanteenWidget />
           <MessagesWidget />
           <CalendarWidget />
           <NewsWidget />

@@ -3,6 +3,7 @@ import { AnyAction, combineReducers } from 'redux';
 import mainApi from '../api/mainApi';
 import { log } from '../errorReporting';
 import auth from '../features/auth/authSlice';
+import canteenData from '../features/canteen/canteenData';
 import common from '../features/common/commonSlice';
 import settings from '../features/settings/settingsSlice';
 import news from '../features/news/newsSlice';
@@ -16,6 +17,7 @@ const appReducer = combineReducers({
   settings,
 
   [mainApi.reducerPath]: mainApi.reducer,
+  [canteenData.reducerPath]: canteenData.reducer,
 
   news,
 
@@ -50,7 +52,9 @@ const rootReducer = (state: any, action: any) => {
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(mainApi.middleware),
+    getDefaultMiddleware()
+      .concat(mainApi.middleware)
+      .concat(canteenData.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

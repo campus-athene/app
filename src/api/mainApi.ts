@@ -3,6 +3,7 @@ import { session } from '../api';
 import { Appointment } from './mainApiTypes';
 
 const mainApi = createApi({
+  reducerPath: 'mainApi',
   async baseQuery(arg, api) {
     try {
       return {
