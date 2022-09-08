@@ -102,22 +102,23 @@ const canteenData = createApi({
     }
   },
   endpoints: (build) => ({
-    menuItems: build.query<{ menuItems: MenuItem[] }, { canteenId: '1' | '2' }>(
-      {
-        query: ({ canteenId }) => ({
-          query: menuItemsQuery,
-          variables: {
-            minDate: new Date().toISOString().substring(0, 10),
-            maxDate: new Date(Date.now() + 13 * 24 * 60 * 60 * 1000)
-              .toISOString()
-              .substring(0, 10),
-            status: 'STUDENT',
-            lang: 'DE',
-            canteenId,
-          },
-        }),
-      }
-    ),
+    menuItems: build.query<
+      { menuItems: MenuItem[] },
+      { canteenId: '1' | '2'; days: number }
+    >({
+      query: ({ canteenId, days }) => ({
+        query: menuItemsQuery,
+        variables: {
+          minDate: new Date().toISOString().substring(0, 10),
+          maxDate: new Date(Date.now() + (days - 1) * 24 * 60 * 60 * 1000)
+            .toISOString()
+            .substring(0, 10),
+          status: 'STUDENT',
+          lang: 'DE',
+          canteenId,
+        },
+      }),
+    }),
   }),
 });
 
