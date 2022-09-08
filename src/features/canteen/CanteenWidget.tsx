@@ -1,17 +1,11 @@
 import moment from 'moment-timezone';
+import { useSelector } from 'react-redux';
 import Widget from '../common/Widget';
 import canteenData from './canteenData';
+import { selectCanteen } from './canteenSettings';
 import DishTypeImage from './DishTypeImage';
 import foodPlaceholder from './foodPlaceholder.svg';
-
-const Star = (props: { shine: boolean }) => (
-  <svg style={{ height: '0.8em' }} viewBox="0 0 91.8 87.3">
-    <path
-      fill={props.shine ? '#FFD800' : '#CCCCCC'}
-      d="M45.9,0l10.8,33.4h35.1L63.5,54l10.8,33.4L45.9,66.7L17.5,87.3 L28.4,54L0,33.4h35.1L45.9,0z"
-    />
-  </svg>
-);
+import Star from './Star';
 
 const CanteenWidget = () => {
   const now = moment().tz('Europe/Berlin');
@@ -21,7 +15,8 @@ const CanteenWidget = () => {
 };
 
 const CanteenWidgetContent = () => {
-  const { data } = canteenData.useMenuItemsQuery({ canteenId: '1', days: 1 });
+  const canteenId = useSelector(selectCanteen());
+  const { data } = canteenData.useMenuItemsQuery({ canteenId, days: 1 });
 
   if (!data) return null;
 
@@ -36,6 +31,7 @@ const CanteenWidgetContent = () => {
           }}
         >
           <img
+            alt=""
             className="absolute inset-0 top-auto w-full object-cover"
             src={m.dish.image?.thumbUrl}
             style={{

@@ -1,0 +1,203 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import {
+  faAngleLeft,
+  faAngleRight,
+  faCheck,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import moment from 'moment-timezone';
+import { MouseEventHandler, useState } from 'react';
+import { ListGroup } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
+import PageFrame from '../common/PageFrame';
+import canteenData from './canteenData';
+import { selectCanteen, setCanteen } from './canteenSettings';
+import DishTypeImage from './DishTypeImage';
+import foodPlaceholderSq from './foodPlaceholderSq.svg';
+import Star from './Star';
+
+const CanteenPage = () => {
+  const canteenId = useSelector(selectCanteen());
+
+  const dayFromUrlStr = useSearchParams()[0].get('day');
+  const dayFromUrl = (dayFromUrlStr && Number.parseInt(dayFromUrlStr)) || null;
+
+  const today = moment(Date.now())
+    .tz('Europe/Berlin')
+    .startOf('day')
+    .utcOffset(0, true)
+    .diff(0);
+  const [selection, setSelection] = useState(dayFromUrl || today);
+
+  const offset = moment(selection).diff(today, 'd');
+
+  const selectionString =
+    offset === 0
+      ? 'Heute'
+      : offset === 1
+      ? 'Morgen'
+      : offset > 0 && offset <= 6
+      ? moment(selection).format('dddd')
+      : moment(selection).format('dddd, D. MMM');
+
+  const { data } = canteenData.useMenuItemsQuery({ canteenId, days: 14 });
+
+  const ContextMenu = () => {
+    const dispatch = useDispatch();
+    return (
+      <ListGroup>
+        <ListGroup.Item action onClick={() => dispatch(setCanteen('1'))}>
+          <FontAwesomeIcon
+            icon={faCheck}
+            style={{
+              marginRight: '0.5em',
+              visibility: canteenId === '1' ? 'visible' : 'hidden',
+            }}
+          />
+          Stadtmitte
+        </ListGroup.Item>
+        <ListGroup.Item action onClick={() => dispatch(setCanteen('2'))}>
+          <FontAwesomeIcon
+            icon={faCheck}
+            style={{
+              marginRight: '0.5em',
+              visibility: canteenId === '2' ? 'visible' : 'hidden',
+            }}
+          />
+          Lichtwiese
+        </ListGroup.Item>
+      </ListGroup>
+    );
+  };
+
+  const NavButton = (props: {
+    onClick?: MouseEventHandler;
+    icon: IconProp;
+    offset: number;
+  }) => {
+    var newDate = moment(selection).add(props.offset, 'd');
+    if (newDate.weekday() === 0) newDate.add(-2, 'd');
+    if (newDate.weekday() === 6) newDate.add(2, 'd');
+
+    const relToToday = newDate.diff(today, 'd');
+    const enabled =
+      !(props.offset < 0 && relToToday < 0) &&
+      !(props.offset > 0 && relToToday > 13);
+
+    return (
+      <button
+        onClick={
+          enabled
+            ? () => {
+                setSelection(newDate.diff(0));
+              }
+            : undefined
+        }
+        style={{
+          background: 'none',
+          border: 'none',
+          color: '#FFF',
+          fontSize: '1.25rem',
+          height: '2.5rem',
+          opacity: enabled ? undefined : '0.5',
+          width: '2.5rem',
+        }}
+      >
+        <FontAwesomeIcon icon={props.icon} />
+      </button>
+    );
+  };
+
+  return (
+    <PageFrame
+      title={canteenId === '1' ? 'Stadtmitte' : 'Lichtwiese'}
+      more={<ContextMenu />}
+      style={{ display: 'flex', flexDirection: 'column' }}
+    >
+      <div
+        style={{
+          backgroundColor: '#372649',
+          color: '#FFF',
+          display: 'flex',
+          marginTop: '-0.5em',
+        }}
+      >
+        <NavButton icon={faAngleLeft} offset={-1} />
+        <div
+          style={{
+            flexGrow: 1,
+            flexShrink: 1,
+            lineHeight: '1',
+            overflow: 'hidden',
+            padding: '0.75em 0',
+            textAlign: 'center',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          {selectionString}
+        </div>
+        <NavButton icon={faAngleRight} offset={1} />
+      </div>
+      <div style={{ flexShrink: 1, overflow: 'scroll' }}>
+        {data?.menuItems
+          .filter((m) => m.date === selection / 1000)
+          .map((m) => (
+            <div
+              className="flex h-24"
+              key={m.id}
+              style={{
+                borderBottom: '1px solid lightgray',
+              }}
+            >
+              <div className="flex-shrink-0 relative w-24">
+                <img
+                  alt=""
+                  className="absolute h-auto object-cover w-24"
+                  src={foodPlaceholderSq}
+                />
+                <img
+                  alt=""
+                  className="absolute h-full object-cover w-24"
+                  src={m.dish.image?.thumbUrl}
+                />
+              </div>
+              <div className="flex flex-col flex-grow  px-2.5 py-2 text-sm">
+                <div className="flex items-baseline justify-between">
+                  <div className="flex flex-shrink-0 gap-0.5">
+                    <Star shine={true} />
+                    <Star shine={m.dish.rating > 1} />
+                    <Star shine={m.dish.rating > 2} />
+                    <Star shine={m.dish.rating > 3} />
+                    <Star shine={m.dish.rating > 4} />
+                  </div>
+                  <span className="font-semibold text-xs">
+                    {[...m.dish.additionals, ...m.dish.allergics].join(' ')}
+                  </span>
+                  <DishTypeImage
+                    style={{
+                      height: '1.25em',
+                      alignSelf: 'start',
+                      marginRight: '0.25em',
+                    }}
+                    type={m.dish.type}
+                  />
+                  <div>
+                    {new Intl.NumberFormat('de-DE', {
+                      style: 'currency',
+                      currency: 'EUR',
+                    }).format(m.dish.price)}
+                  </div>
+                </div>
+                <span>{m.issuingOffice.name}</span>
+                <span className="font-medium line-clamp-2">{m.dish.name}</span>
+              </div>
+            </div>
+          ))}
+      </div>
+    </PageFrame>
+  );
+};
+
+export default CanteenPage;

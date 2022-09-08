@@ -17,7 +17,7 @@ interface Dish {
   dispositionPriority: number;
   name: string;
   price: number;
-  image: Image;
+  image: Image | null;
   allergics: string[];
   additionals: string[];
   feedback?: any;
@@ -94,7 +94,7 @@ const menuItemsQuery = gql`
 
 const canteenData = createApi({
   reducerPath: 'canteenData',
-  async baseQuery({ query, variables }, {}) {
+  async baseQuery({ query, variables }) {
     try {
       return { data: await client.request(query, variables) };
     } catch (e) {

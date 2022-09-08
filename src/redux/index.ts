@@ -7,6 +7,7 @@ import canteenData from '../features/canteen/canteenData';
 import common from '../features/common/commonSlice';
 import settings from '../features/settings/settingsSlice';
 import news from '../features/news/newsSlice';
+import canteenSettings from '../features/canteen/canteenSettings';
 import messages from '../features/messages/messagesSlice';
 import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
@@ -20,6 +21,7 @@ const appReducer = combineReducers({
   [canteenData.reducerPath]: canteenData.reducer,
 
   news,
+  canteenSettings,
 
   // data
   messages,
