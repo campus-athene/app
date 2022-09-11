@@ -12,7 +12,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import PageFrame from '../common/PageFrame';
 import canteenData from './canteenData';
-import { selectCanteen, setCanteen } from './canteenSettings';
+import {
+  canteenFriendlyName,
+  selectCanteen,
+  setCanteen,
+} from './canteenSettings';
 import DishTypeImage from './DishTypeImage';
 import foodPlaceholderSq from './foodPlaceholderSq.svg';
 import Star from './Star';
@@ -121,7 +125,7 @@ const CanteenPage = () => {
 
   return (
     <PageFrame
-      title={canteenId === '1' ? 'Stadtmitte' : 'Lichtwiese'}
+      title={canteenFriendlyName[canteenId]}
       more={<ContextMenu />}
       style={{ display: 'flex', flexDirection: 'column' }}
     >

@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../redux';
 
+export const canteenFriendlyName = { 1: 'Stadtmitte', 2: 'Lichtwiese' };
+
 type State = {
   canteenId: '1' | '2';
   additives: string[];

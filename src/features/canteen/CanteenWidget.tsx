@@ -1,8 +1,9 @@
 import moment from 'moment-timezone';
 import { useSelector } from 'react-redux';
-import Widget from '../common/Widget';
+import { useNavigate } from 'react-router-dom';
+import { ScrollWidget, WidgetBox } from '../home/Widget';
 import canteenData from './canteenData';
-import { selectCanteen } from './canteenSettings';
+import { canteenFriendlyName, selectCanteen } from './canteenSettings';
 import DishTypeImage from './DishTypeImage';
 import foodPlaceholder from './foodPlaceholder.svg';
 import Star from './Star';
@@ -16,17 +17,22 @@ const CanteenWidget = () => {
 };
 
 const CanteenWidgetContent = () => {
+  const navigate = useNavigate();
   const canteenId = useSelector(selectCanteen());
   const { data } = canteenData.useMenuItemsQuery({ canteenId, days: 1 });
 
   if (!data) return null;
 
   return (
-    <div className="flex no-scrollbar overflow-x-scroll px-3 gap-2">
+    <ScrollWidget
+      onClick={() => navigate('/canteen')}
+      title={canteenFriendlyName[canteenId]}
+    >
       {data.menuItems.map((m) => (
-        <Widget
-          className="bg-center bg-cover bg-no-repeat flex-shrink-0 h-32 mx-0 overflow-hidden relative w-48"
+        <WidgetBox
+          className="bg-center bg-cover bg-no-repeat flex-shrink-0 h-32 overflow-hidden relative w-48"
           key={m.id}
+          onClick={() => navigate('/canteen')}
           style={{
             backgroundImage: `url('${foodPlaceholder}')`,
           }}
@@ -75,9 +81,9 @@ const CanteenWidgetContent = () => {
             </div>
             <div className="line-clamp-2">{m.dish.name}</div>
           </div>
-        </Widget>
+        </WidgetBox>
       ))}
-    </div>
+    </ScrollWidget>
   );
 };
 

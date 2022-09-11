@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Message } from './messagesSlice';
 
 const MessageList = (props: {
+  itemStyle?: React.CSSProperties;
   messages: Message[];
   unreadIndicators?: boolean;
 }) => {
@@ -14,6 +15,7 @@ const MessageList = (props: {
           key={id}
           action
           onClick={() => navigate(`/messages/${id}`)}
+          style={props.itemStyle}
         >
           <div
             style={{
