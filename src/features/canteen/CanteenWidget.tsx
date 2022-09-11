@@ -11,6 +11,7 @@ const CanteenWidget = () => {
   const now = moment().tz('Europe/Berlin');
   const tod = now.hour() + now.minute() / 60;
   if (tod < 4 || tod > 14.5) return null;
+  if ([0, 6].includes(now.weekday())) return null;
   return <CanteenWidgetContent />;
 };
 

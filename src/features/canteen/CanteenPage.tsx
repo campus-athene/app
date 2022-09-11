@@ -26,9 +26,19 @@ const CanteenPage = () => {
   const today = moment(Date.now())
     .tz('Europe/Berlin')
     .startOf('day')
-    .utcOffset(0, true)
-    .diff(0);
-  const [selection, setSelection] = useState(dayFromUrl || today);
+    .utcOffset(0, true);
+
+  const [selection, setSelection] = useState(
+    () =>
+      dayFromUrl ||
+      // If it is weekend today select next Monday by default
+      (today.weekday() === 0
+        ? today.add('1', 'd')
+        : today.weekday() === 6
+        ? today.add('2', 'd')
+        : today
+      ).diff(0)
+  );
 
   const offset = moment(selection).diff(today, 'd');
 
@@ -164,7 +174,7 @@ const CanteenPage = () => {
                 />
               </div>
               <div className="flex flex-col flex-grow  px-2.5 py-2 text-sm">
-                <div className="flex items-baseline justify-between">
+                <div className="flex items-baseline">
                   <div className="flex flex-shrink-0 gap-0.5">
                     <Star shine={true} />
                     <Star shine={m.dish.rating > 1} />
@@ -172,18 +182,19 @@ const CanteenPage = () => {
                     <Star shine={m.dish.rating > 3} />
                     <Star shine={m.dish.rating > 4} />
                   </div>
-                  <span className="font-semibold text-xs">
+                  <span className="flex-grow font-semibold text-center text-xs">
                     {[...m.dish.additionals, ...m.dish.allergics].join(' ')}
                   </span>
-                  <DishTypeImage
+                  <div
                     style={{
-                      height: '1.25em',
                       alignSelf: 'start',
-                      marginRight: '0.25em',
+                      height: '1.25em',
+                      width: '1.25em',
                     }}
-                    type={m.dish.type}
-                  />
-                  <div>
+                  >
+                    <DishTypeImage type={m.dish.type} />
+                  </div>
+                  <div style={{ minWidth: '3em', textAlign: 'right' }}>
                     {new Intl.NumberFormat('de-DE', {
                       style: 'currency',
                       currency: 'EUR',
