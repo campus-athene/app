@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import PageFrame from '../common/PageFrame';
 import { selectIsLoading, selectSubscribedArticles, update } from './newsSlice';
 
 const BrowseNewsPage = () => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading());
-  const articles = useSelector(selectSubscribedArticles());
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(selectIsLoading());
+  const articles = useAppSelector(selectSubscribedArticles());
 
   useEffect(() => {
     dispatch(update());

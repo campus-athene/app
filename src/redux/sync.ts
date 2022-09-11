@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { AppThunkAction } from '.';
 import { log } from '../errorReporting';
 import { selectCreds } from '../features/auth/authSlice';
@@ -8,6 +7,7 @@ import { loadArea } from '../features/courses/offersSlice';
 import { update as updateMessages } from '../features/messages/messagesSlice';
 import { update as updateNews } from '../features/news/newsSlice';
 import { syncSettings } from '../features/settings/settingsSlice';
+import { useAppDispatch } from './hooks';
 
 export const update: () => AppThunkAction<void> =
   () => (dispatch, getState) => {
@@ -35,7 +35,7 @@ export const update: () => AppThunkAction<void> =
   };
 
 export const UpdateEffect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(update());

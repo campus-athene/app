@@ -1,5 +1,5 @@
 import { configureStore, ThunkAction } from '@reduxjs/toolkit';
-import { AnyAction, combineReducers } from 'redux';
+import { Action, combineReducers } from 'redux';
 import mainApi from '../api/mainApi';
 import { log } from '../errorReporting';
 import auth from '../features/auth/authSlice';
@@ -67,6 +67,6 @@ export type AppDispatch = typeof store.dispatch;
 export type AppThunkAction<
   ReturnType = void,
   ExtraThunkArg = unknown
-> = ThunkAction<ReturnType, RootState, ExtraThunkArg, AnyAction>;
+> = ThunkAction<ReturnType, RootState, ExtraThunkArg, Action<string>>;
 
 export default store;
