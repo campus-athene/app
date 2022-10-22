@@ -1,6 +1,6 @@
 import { ListGroup } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import PageFrame from '../common/PageFrame';
 import MessageDialog from './MessageDialog';
 import MessageList from './MessageList';
@@ -12,7 +12,7 @@ import {
 
 // Must start with a capital letter as it is a React component.
 const ContextMenu = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   return (
     <ListGroup>
       <ListGroup.Item action onClick={() => dispatch(markAllRead())}>
@@ -23,14 +23,14 @@ const ContextMenu = () => {
 };
 
 const MessagesPage = () => {
-  const messages = useSelector(selectAllMessages());
+  const messages = useAppSelector(selectAllMessages());
   const selectedId = useParams().id;
 
   return (
     <PageFrame
       title="Nachrichten"
       more={<ContextMenu />}
-      syncState={useSelector(selectSyncState())}
+      syncState={useAppSelector(selectSyncState())}
     >
       {/* reverse() is in place, use slice() to make a copy */}
       <MessageList messages={messages.slice().reverse()} />

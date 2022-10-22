@@ -11,5 +11,5 @@ project(':capacitor-push-notifications').projectDir = new File('../node_modules/
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
 
-include ':robingenz-capacitor-badge'
-project(':robingenz-capacitor-badge').projectDir = new File('../node_modules/@robingenz/capacitor-badge/android')
+include ':capawesome-capacitor-badge'
+project(':capawesome-capacitor-badge').projectDir = new File('../node_modules/@capawesome/capacitor-badge/android')

@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Route, Routes as RoutesCollection } from 'react-router-dom';
 import CalendarPage from './features/calendar/CalendarPage';
+import CanteenPage from './features/canteen/CanteenPage';
 import CourseRegPage from './features/courses/CourseRegPage';
 import CourseDetailsPage from './features/courses/DetailsPage';
 import CourseListPage from './features/courses/ListPage';
@@ -23,6 +24,7 @@ const Routes = () => {
     <RoutesCollection>
       <Route path="/" element={<HomePage />} />
       <Route path="/calendar" element={<CalendarPage />} />
+      <Route path="/canteen" element={<CanteenPage />} />
       <Route path="/coursereg" element={<CourseRegPage />} />
       <Route
         path="/coursereg/:major/:area/:rootList"

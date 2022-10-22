@@ -1,14 +1,17 @@
 import { configureStore, ThunkAction } from '@reduxjs/toolkit';
-import { AnyAction, combineReducers } from 'redux';
+import { Action, combineReducers } from 'redux';
 import mainApi from '../api/mainApi';
 import { log } from '../errorReporting';
 import auth from '../features/auth/authSlice';
+import canteenData from '../features/canteen/canteenData';
 import common from '../features/common/commonSlice';
 import settings from '../features/settings/settingsSlice';
 import news from '../features/news/newsSlice';
+import canteenSettings from '../features/canteen/canteenSettings';
 import messages from '../features/messages/messagesSlice';
 import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
+import eventApi from '../features/events/eventApi';
 
 const appReducer = combineReducers({
   auth,
@@ -16,8 +19,11 @@ const appReducer = combineReducers({
   settings,
 
   [mainApi.reducerPath]: mainApi.reducer,
+  [eventApi.reducerPath]: eventApi.reducer,
+  [canteenData.reducerPath]: canteenData.reducer,
 
   news,
+  canteenSettings,
 
   // data
   messages,
@@ -50,7 +56,10 @@ const rootReducer = (state: any, action: any) => {
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(mainApi.middleware),
+    getDefaultMiddleware()
+      .concat(mainApi.middleware)
+      .concat(eventApi.middleware)
+      .concat(canteenData.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
@@ -61,6 +70,6 @@ export type AppDispatch = typeof store.dispatch;
 export type AppThunkAction<
   ReturnType = void,
   ExtraThunkArg = unknown
-> = ThunkAction<ReturnType, RootState, ExtraThunkArg, AnyAction>;
+> = ThunkAction<ReturnType, RootState, ExtraThunkArg, Action<string>>;
 
 export default store;

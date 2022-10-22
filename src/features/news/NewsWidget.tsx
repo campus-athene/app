@@ -1,24 +1,26 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import PageFrame from '../common/PageFrame';
-import { selectIsLoading, selectSubscribedArticles, update } from './newsSlice';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { ScrollWidget, WidgetBox } from '../home/Widget';
+import { selectSubscribedArticles } from './newsSlice';
 
-const BrowseNewsPage = () => {
-  const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading());
-  const articles = useSelector(selectSubscribedArticles());
+const NewsWidget = () => {
+  const navigate = useNavigate();
+  const news = useSelector(selectSubscribedArticles());
 
-  useEffect(() => {
-    dispatch(update());
-  }, [dispatch]);
+  if (!news) return null;
 
   return (
-    <PageFrame title="Aktuelles" syncState={{ isLoading }}>
-      {articles.map((a) => (
-        <div
+    <ScrollWidget onClick={() => navigate('/news')} title="Aktuelles">
+      {news.slice(0, 5).map((a) => (
+        <WidgetBox
           key={a.guid}
           onClick={() => window.open(a.link, '_blank')}
-          style={{ borderBottom: '1px solid lightgray', padding: '0.5em 1em' }}
+          style={{
+            flexShrink: 0,
+            height: '9.75em',
+            padding: '0.5rem',
+            width: 'min(18rem, 100vw - 4rem)',
+          }}
         >
           <div style={{ fontSize: '0.75em' }}>
             {new Date(a.isoDate).toLocaleDateString('de-DE', {
@@ -48,10 +50,10 @@ const BrowseNewsPage = () => {
           >
             {a.content}
           </div>
-        </div>
+        </WidgetBox>
       ))}
-    </PageFrame>
+    </ScrollWidget>
   );
 };
 
-export default BrowseNewsPage;
+export default NewsWidget;

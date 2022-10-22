@@ -1,10 +1,10 @@
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../redux/hooks';
 import { setOnboardingComplete } from '../settings/settingsSlice';
 import { Button, Frame, Heading, Subheading } from './Controls';
 import focusedPeopleStudying from './focused-people-studying-online-school.svg';
 
 const WelcomePage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const onClose = () => dispatch(setOnboardingComplete());
 
   return (

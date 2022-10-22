@@ -1,12 +1,14 @@
 import { useSelector } from 'react-redux';
 import CalendarWidget from '../calendar/CalendarWidget';
+import CanteenWidget from '../canteen/CanteenWidget';
 import { selectStatusBarHeightCss } from '../common/commonSlice';
 import Logo from '../common/Logo';
 import NavButton from '../common/NavButton';
-import Widget from '../common/Widget';
+import EventWidget from '../events/EventWidget';
 import MessagesWidget from '../messages/MessagesWidget';
 import NewsWidget from '../news/NewsWidget';
 import groupYoungPeoplePosingPhoto from './group-young-people-posing-photo.svg';
+import Widget from './Widget';
 
 const HomePage = () => {
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
@@ -42,6 +44,8 @@ const HomePage = () => {
         style={{
           borderRadius: '2em 2em 0 0',
           bottom: 0,
+          // Fix Safari not cropping in rounded corners
+          WebkitMaskImage: '-webkit-radial-gradient(white, black)',
           overflowY: 'scroll',
           position: 'absolute',
           top: `calc(${statusBarHeightCss} + 3em)`,
@@ -53,13 +57,22 @@ const HomePage = () => {
             background: 'white',
             borderRadius: '2em 2em 0 0',
             marginTop: '10em',
-            paddingTop: '1em',
+            paddingBottom: 'env(safe-area-inset-bottom)',
+            paddingTop: '2rem',
           }}
         >
-          <MessagesWidget />
           <CalendarWidget />
+          <MessagesWidget />
+          <CanteenWidget />
           <NewsWidget />
-          <Widget style={{ textAlign: 'center' }}>
+          <EventWidget />
+          <Widget
+            style={{
+              textAlign: 'center',
+              paddingBottom: '1.5rem',
+              paddingTop: '2rem',
+            }}
+          >
             <div style={{ fontSize: '1.4em' }}>
               Zusammen macht’s
               <br />
@@ -78,6 +91,7 @@ const HomePage = () => {
           </Widget>
           <Widget
             onClick={() => (window.location.href = 'mailto:campus@oliverrm.de')}
+            style={{ padding: '0.5rem' }}
           >
             Gefällt Dir Campus? Hast Du Vorschläge für Verbesserungen? Wir
             freuen uns über Dein Feedback.

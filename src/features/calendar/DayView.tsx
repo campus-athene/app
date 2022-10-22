@@ -7,6 +7,7 @@ const DayView = (props: {
   cropToContent?: boolean;
   day: number;
   hourHeight?: number;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
 }) => {
   const apps = useSelector(selectAppointmentsOnDay(props.day));
@@ -63,6 +64,7 @@ const DayView = (props: {
 
   return (
     <div
+      onClick={props.onClick}
       ref={containerRef}
       style={{
         height: `${viewHeight}em`,

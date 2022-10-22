@@ -1,26 +1,31 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { AppThunkAction } from '.';
 import { log } from '../errorReporting';
 import { selectCreds } from '../features/auth/authSlice';
+import canteenData from '../features/canteen/canteenData';
+import { selectCanteen } from '../features/canteen/canteenSettings';
 import { update as updateCourses } from '../features/courses/coursesSlice';
 import { loadArea } from '../features/courses/offersSlice';
 import { update as updateMessages } from '../features/messages/messagesSlice';
 import { update as updateNews } from '../features/news/newsSlice';
 import { syncSettings } from '../features/settings/settingsSlice';
+import { useAppDispatch } from './hooks';
 
 export const update: () => AppThunkAction<void> =
   () => (dispatch, getState) => {
     const creds = selectCreds()(getState());
 
-    if (!creds) return;
-
     const tasks: (() => AppThunkAction<Promise<unknown> | unknown>)[] = [
       updateNews,
-      syncSettings,
-      updateMessages,
-      updateCourses,
-      loadArea, // Request course offers from server. They are not included in loadData.
+      ...(creds
+        ? [
+            syncSettings,
+            updateMessages,
+            updateCourses,
+            loadArea, // Request course offers from server. They are not included in loadData.
+          ]
+        : []),
     ];
 
     Promise.allSettled(
@@ -35,11 +40,14 @@ export const update: () => AppThunkAction<void> =
   };
 
 export const UpdateEffect = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(update());
   }, [dispatch]);
+
+  const canteenId = useSelector(selectCanteen());
+  canteenData.useMenuItemsQuery({ canteenId, days: 1 });
 
   return null;
 };

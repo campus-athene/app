@@ -3,7 +3,7 @@
 import { Capacitor } from '@capacitor/core';
 import { StatusBar } from '@capacitor/status-bar';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { HashRouter as ReactRouter } from 'react-router-dom';
 import { log } from './errorReporting';
@@ -59,7 +59,9 @@ const initializeReact = async () => {
     );
 
   await statusBarPromise;
-  ReactDOM.render(
+
+  const root = createRoot(document.getElementById('root'));
+  root.render(
     <React.StrictMode>
       <Provider store={store}>
         {/* Check for outdated or missing state and fetch is asyncronously from the server. */}
@@ -71,8 +73,7 @@ const initializeReact = async () => {
           </ErrorBoundary>
         </ReactRouter>
       </Provider>
-    </React.StrictMode>,
-    document.getElementById('root')
+    </React.StrictMode>
   );
 };
 

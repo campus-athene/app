@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { Envelope } from '../../icons';
-import Widget from '../common/Widget';
+import Widget from '../home/Widget';
 import MessageList from './MessageList';
 import { selectUnreadMessages } from './messagesSlice';
 
@@ -16,8 +16,17 @@ const MessagesWidget = () => {
   if (numberMsgsShow === 0) return null;
 
   return (
-    <Widget style={{ overflow: 'hidden', padding: 0 }}>
+    <Widget
+      onClick={() => navigate('/messages')}
+      style={{ overflow: 'hidden', padding: 0 }}
+      title={
+        unreadMsgCount === 1
+          ? 'Eine ungelesene Nachricht'
+          : `${unreadMsgCount} ungelesene Nachrichten`
+      }
+    >
       <MessageList
+        itemStyle={{ padding: '0.5rem' }}
         messages={unreadMsgs.slice(-numberMsgsShow).reverse()}
         unreadIndicators={false}
       />
@@ -26,7 +35,7 @@ const MessagesWidget = () => {
           onClick={() => navigate('/messages')}
           style={{
             fontSize: '1.2em',
-            padding: '1em',
+            padding: '0.5rem',
             borderTop: '1px solid rgba(0,0,0,.125)',
           }}
         >
