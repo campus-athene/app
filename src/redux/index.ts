@@ -11,6 +11,7 @@ import canteenSettings from '../features/canteen/canteenSettings';
 import messages from '../features/messages/messagesSlice';
 import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
+import eventApi from '../features/events/eventApi';
 
 const appReducer = combineReducers({
   auth,
@@ -18,6 +19,7 @@ const appReducer = combineReducers({
   settings,
 
   [mainApi.reducerPath]: mainApi.reducer,
+  [eventApi.reducerPath]: eventApi.reducer,
   [canteenData.reducerPath]: canteenData.reducer,
 
   news,
@@ -56,6 +58,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(mainApi.middleware)
+      .concat(eventApi.middleware)
       .concat(canteenData.middleware),
 });
 

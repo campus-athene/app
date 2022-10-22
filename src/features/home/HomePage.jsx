@@ -4,6 +4,7 @@ import CanteenWidget from '../canteen/CanteenWidget';
 import { selectStatusBarHeightCss } from '../common/commonSlice';
 import Logo from '../common/Logo';
 import NavButton from '../common/NavButton';
+import EventWidget from '../events/EventWidget';
 import MessagesWidget from '../messages/MessagesWidget';
 import NewsWidget from '../news/NewsWidget';
 import groupYoungPeoplePosingPhoto from './group-young-people-posing-photo.svg';
@@ -64,6 +65,7 @@ const HomePage = () => {
           <MessagesWidget />
           <CanteenWidget />
           <NewsWidget />
+          <EventWidget />
           <Widget
             style={{
               textAlign: 'center',
