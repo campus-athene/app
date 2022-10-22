@@ -12,7 +12,7 @@ const CanteenWidget = () => {
   const now = moment().tz('Europe/Berlin');
   const tod = now.hour() + now.minute() / 60;
   if (tod < 4 || tod > 14.5) return null;
-  if ([0, 6].includes(now.weekday())) return null;
+  if ([6, 7].includes(now.isoWeekday())) return null;
   return <CanteenWidgetContent />;
 };
 
@@ -21,7 +21,7 @@ const CanteenWidgetContent = () => {
   const canteenId = useSelector(selectCanteen());
   const { data } = canteenData.useMenuItemsQuery({ canteenId, days: 1 });
 
-  if (!data) return null;
+  if (!data || !data.menuItems.length) return null;
 
   return (
     <ScrollWidget

@@ -36,10 +36,10 @@ const CanteenPage = () => {
     () =>
       dayFromUrl ||
       // If it is weekend today select next Monday by default
-      (today.weekday() === 0
-        ? today.add('1', 'd')
-        : today.weekday() === 6
+      (today.isoWeekday() === 6
         ? today.add('2', 'd')
+        : today.isoWeekday() === 7
+        ? today.add('1', 'd')
         : today
       ).diff(0)
   );
@@ -91,8 +91,8 @@ const CanteenPage = () => {
     offset: number;
   }) => {
     var newDate = moment(selection).add(props.offset, 'd');
-    if (newDate.weekday() === 0) newDate.add(-2, 'd');
-    if (newDate.weekday() === 6) newDate.add(2, 'd');
+    if (newDate.isoWeekday() === 6) newDate.add(2, 'd');
+    if (newDate.isoWeekday() === 7) newDate.add(-2, 'd');
 
     const relToToday = newDate.diff(today, 'd');
     const enabled =
