@@ -12,7 +12,7 @@
 		"classpath": "com.capacitorjs.plugins.statusbar.StatusBarPlugin"
 	},
 	{
-		"pkg": "@robingenz/capacitor-badge",
-		"classpath": "dev.robingenz.capacitor.badge.BadgePlugin"
+		"pkg": "@capawesome/capacitor-badge",
+		"classpath": "io.capawesome.capacitorjs.plugins.badge.BadgePlugin"
 	}
 ]
