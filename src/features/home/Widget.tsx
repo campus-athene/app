@@ -12,6 +12,7 @@ export const WidgetTitle = (props: HTMLAttributes<HTMLHeadingElement>) =>
 export const WidgetBox = (props: HTMLAttributes<HTMLDivElement>) =>
   React.createElement('div', {
     ...props,
+    className: ['snap-start', props.className].join(' '),
     style: {
       border: '1px solid lightgray',
       borderRadius: '1rem',
@@ -37,6 +38,7 @@ const Widget = (props: {
 
 export const ScrollWidget = (props: {
   children?: ReactNode;
+  className?: string;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   title: ReactNode;
 }) => (
@@ -47,7 +49,12 @@ export const ScrollWidget = (props: {
     >
       {props.title}
     </WidgetTitle>
-    <div className="flex no-scrollbar overflow-x-scroll px-3 gap-2">
+    <div
+      className={[
+        'flex gap-2 no-scrollbar overflow-x-scroll px-3 scroll-p-4 snap-mandatory snap-x',
+        props.className,
+      ].join(' ')}
+    >
       {props.children}
     </div>
   </div>
