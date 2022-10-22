@@ -1,4 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
+import { UseQuery } from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import { session } from '../api';
 import { Appointment } from './mainApiTypes';
 
@@ -37,8 +38,8 @@ Object.keys(mainApi.endpoints).forEach((key) => {
   const capitalized = (endpoint[0].toUpperCase() +
     endpoint.substring(1)) as Capitalize<keyof typeof mainApi.endpoints>;
 
-  mainApi[`use${capitalized}Query`] = (arg, options) => {
-    const query = mainApi.endpoints[endpoint].useQuery(arg, options);
+  mainApi[`use${capitalized}Query`] = ((arg, options) => {
+    const query = mainApi.endpoints[endpoint].useQuery(arg as any, options);
 
     if (query.data) return query;
 
@@ -57,7 +58,7 @@ Object.keys(mainApi.endpoints).forEach((key) => {
       data,
       refetch() {},
     };
-  };
+  }) as UseQuery<any>;
 });
 
 export const usePreload = () => {
