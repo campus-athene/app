@@ -24,7 +24,7 @@ const ContextMenu = () => {
 
 const MessagesPage = () => {
   const messages = useAppSelector(selectAllMessages());
-  const selectedId = useParams().id;
+  const selectedId = Number.parseInt(useParams().id || '');
 
   return (
     <PageFrame

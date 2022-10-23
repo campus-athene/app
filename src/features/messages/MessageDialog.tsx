@@ -1,11 +1,12 @@
-import React, { createElement, useEffect } from 'react';
+import { createElement, ReactNode, useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../redux/hooks';
 import { markRead, selectMessageById } from './messagesSlice';
 
-const MessageDialog = ({ messageId }) => {
-  const dispatch = useDispatch();
+const MessageDialog = ({ messageId }: { messageId: number }) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const selected = useSelector(selectMessageById(messageId));
   const { subject, from, date, time, body } = selected;
@@ -42,7 +43,10 @@ const MessageDialog = ({ messageId }) => {
           },
           ...body
             .split(/\r?\n/)
-            .reduce((a, p, i) => [...a, ...(i ? [<br />] : []), p])
+            .reduce<ReactNode[]>(
+              (a, p, i) => [...a, ...(i ? [<br />] : []), p],
+              []
+            )
         )}
       </Modal.Body>
       <Modal.Footer>
