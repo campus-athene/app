@@ -1,9 +1,11 @@
-import { createElement, ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import sanitizeHtml from 'sanitize-html';
 import { useAppDispatch } from '../../redux/hooks';
 import { markRead, selectMessageById } from './messagesSlice';
+import Sanitize from './Sanitize';
 
 const MessageDialog = ({ messageId }: { messageId: number }) => {
   const dispatch = useAppDispatch();
@@ -19,35 +21,34 @@ const MessageDialog = ({ messageId }: { messageId: number }) => {
   return (
     <Modal show centered scrollable>
       <Modal.Header style={{ display: 'block' }}>
-        <div
+        <Sanitize
           style={{
             fontSize: '1.2em',
             fontWeight: 'bold',
           }}
         >
           {subject}
-        </div>
+        </Sanitize>
         <div>
           {date} {time} - {from}
         </div>
       </Modal.Header>
       <Modal.Body>
-        {createElement(
-          'p',
-          {
-            style: {
-              overflowWrap: 'break-word',
-              userSelect: 'text',
-              WebkitUserSelect: 'text',
-            },
-          },
-          ...body
-            .split(/\r?\n/)
-            .reduce<ReactNode[]>(
-              (a, p, i) => [...a, ...(i ? [<br />] : []), p],
-              []
-            )
-        )}
+        {body
+          .replaceAll(/(?<!\r?\n\s*)\r?\n(?!\s*\r?\n)/g, '<br />')
+          .split(/\r?\n(?:\s*\r?\n)+/)
+          .map((v, i) => (
+            <p
+              key={i}
+              className="mb-2"
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(v) }}
+              style={{
+                overflowWrap: 'break-word',
+                userSelect: 'text',
+                WebkitUserSelect: 'text',
+              }}
+            />
+          ))}
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={() => navigate(-1)}>Schließen</Button>

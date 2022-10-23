@@ -1,6 +1,7 @@
 import { ListGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Message } from './messagesSlice';
+import Sanitize from './Sanitize';
 
 const MessageList = (props: {
   itemStyle?: React.CSSProperties;
@@ -41,7 +42,7 @@ const MessageList = (props: {
             </div>
             <div>{date}</div>
           </div>
-          <div
+          <Sanitize
             style={{
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -50,8 +51,8 @@ const MessageList = (props: {
             }}
           >
             {subject}
-          </div>
-          <div
+          </Sanitize>
+          <Sanitize
             style={{
               WebkitLineClamp: 2,
               overflow: 'hidden',
@@ -61,7 +62,7 @@ const MessageList = (props: {
             }}
           >
             {body}
-          </div>
+          </Sanitize>
         </ListGroup.Item>
       ))}
     </ListGroup>
