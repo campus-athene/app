@@ -2,7 +2,7 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Navbar, OverlayTrigger, Popover } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import { selectStatusBarHeightCss } from './commonSlice';
+import { selectStatusBarHeightCss } from '../redux/globalSlice';
 import NavButton from './NavButton';
 
 const PageFrame = (props: {

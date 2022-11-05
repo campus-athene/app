@@ -1,19 +1,19 @@
 import { useSelector } from 'react-redux';
 import { Route, Routes as RoutesCollection } from 'react-router-dom';
-import CalendarPage from './features/calendar/CalendarPage';
-import CanteenPage from './features/canteen/CanteenPage';
-import CourseRegPage from './features/courses/CourseRegPage';
-import CourseDetailsPage from './features/courses/DetailsPage';
-import CourseListPage from './features/courses/ListPage';
-import HomePage from './features/home/HomePage';
-import MapListPage from './features/maps/MapListPage';
-import MapViewPage from './features/maps/MapViewPage';
-import MessagesPage from './features/messages/MessagesPage';
-import BrowseNewsPage from './features/news/BrowseNewsPage';
-import Onboarding from './features/onboarding/Onboarding';
-import SettingsPage from './features/settings/SettingsPage';
-import { selectOnboardingComplete } from './features/settings/settingsSlice';
-import OappPage from './features/wiki/WikiPage';
+import CalendarPage from '../features/calendar/CalendarPage';
+import CanteenPage from '../features/canteen/CanteenPage';
+import CourseRegPage from '../features/courses/CourseRegPage';
+import CourseDetailsPage from '../features/courses/DetailsPage';
+import CourseListPage from '../features/courses/ListPage';
+import HomePage from '../features/home/HomePage';
+import MapListPage from '../features/maps/MapListPage';
+import MapViewPage from '../features/maps/MapViewPage';
+import MessagesPage from '../features/messages/MessagesPage';
+import BrowseNewsPage from '../features/news/BrowseNewsPage';
+import Onboarding from '../features/onboarding/Onboarding';
+import SettingsPage from '../features/settings/SettingsPage';
+import { selectOnboardingComplete } from '../features/settings/settingsSlice';
+import OappPage from '../features/wiki/WikiPage';
 
 const Routes = () => {
   const onboardingComplete = useSelector(selectOnboardingComplete());

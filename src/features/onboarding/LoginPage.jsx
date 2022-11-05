@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Form, Spinner } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
+import Logo from '../../components/Logo';
 import { login } from '../auth/authSlice';
-import Logo from '../common/Logo';
 import { Button } from './Controls';
 
 const LoginPage = () => {

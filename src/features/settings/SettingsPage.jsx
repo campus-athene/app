@@ -3,8 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import PageFrame from '../../components/PageFrame';
 import { logout } from '../auth/authSlice';
-import PageFrame from '../common/PageFrame';
 import {
   selectPrivacy,
   selectPushEnabled,

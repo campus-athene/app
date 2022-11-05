@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
+import PageFrame from '../../components/PageFrame';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import PageFrame from '../common/PageFrame';
 import { selectIsLoading, selectSubscribedArticles, update } from './newsSlice';
 
 const BrowseNewsPage = () => {

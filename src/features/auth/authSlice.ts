@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { AppCredentials, session } from '../../api';
-import { ServerError } from '../../api/errors';
-import { log } from '../../errorReporting';
+import { log } from '../../app/errorReporting';
+import { AppCredentials, session } from '../../provider/tucan';
+import { ServerError } from '../../provider/tucan/errors';
 import { AppThunkAction, RootState } from '../../redux';
 import { update } from '../../redux/sync';
 

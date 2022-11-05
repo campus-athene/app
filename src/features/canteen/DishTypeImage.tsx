@@ -1,5 +1,5 @@
 import { SVGProps } from 'react';
-import { log } from '../../errorReporting';
+import { log } from '../../app/errorReporting';
 
 const DishTypeImage = (props: SVGProps<SVGSVGElement> & { type: string }) => {
   switch (props.type) {

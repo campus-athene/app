@@ -1,7 +1,7 @@
 import { ListGroup } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import PageFrame from '../../components/PageFrame';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import PageFrame from '../common/PageFrame';
 import MessageDialog from './MessageDialog';
 import MessageList from './MessageList';
 import {

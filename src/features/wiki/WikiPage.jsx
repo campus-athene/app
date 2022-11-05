@@ -1,7 +1,7 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
-import PageFrame from '../common/PageFrame';
+import PageFrame from '../../components/PageFrame';
 import articles from './articles.json';
 
 const Entry = ({ children, link, level }) => (

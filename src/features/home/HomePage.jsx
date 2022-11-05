@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
+import Logo from '../../components/Logo';
+import NavButton from '../../components/NavButton';
+import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import CalendarWidget from '../calendar/CalendarWidget';
 import CanteenWidget from '../canteen/CanteenWidget';
-import { selectStatusBarHeightCss } from '../common/commonSlice';
-import Logo from '../common/Logo';
-import NavButton from '../common/NavButton';
 import EventWidget from '../events/EventWidget';
 import MessagesWidget from '../messages/MessagesWidget';
 import NewsWidget from '../news/NewsWidget';

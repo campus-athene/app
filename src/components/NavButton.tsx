@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
-import { setSideMenuOpen } from './commonSlice';
+import { setSideMenuOpen } from '../features/sideMenu/sideMenuSlice';
 
 const NavButton = (props: {
   as?: React.ElementType;

@@ -1,4 +1,4 @@
-import { Semester } from '../features/common/semesters';
+import { Semester } from './semesters';
 
 declare type CourseRegArgs = [
   number,

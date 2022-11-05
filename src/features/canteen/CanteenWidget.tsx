@@ -30,7 +30,7 @@ const CanteenWidgetContent = () => {
     >
       {data.menuItems.map((m) => (
         <WidgetBox
-          className="bg-center bg-cover bg-no-repeat flex-shrink-0 h-32 overflow-hidden relative w-48"
+          className="relative h-32 w-48 flex-shrink-0 overflow-hidden bg-cover bg-center bg-no-repeat"
           key={m.id}
           onClick={() => navigate('/canteen')}
           style={{
@@ -47,7 +47,7 @@ const CanteenWidgetContent = () => {
             }}
           />
           <div
-            className="absolute bg-black bg-opacity-50 bottom-0 flex flex-col left-0 overflow-hidden p-2 right-0 rounded-b-2xl text-xs text-white"
+            className="absolute bottom-0 left-0 right-0 flex flex-col overflow-hidden rounded-b-2xl bg-black bg-opacity-50 p-2 text-xs text-white"
             style={
               {
                 '--bs-bg-opacity': '0.5',
@@ -56,7 +56,7 @@ const CanteenWidgetContent = () => {
               } as any
             }
           >
-            <div className="flex gap-0.5 items-baseline">
+            <div className="flex items-baseline gap-0.5">
               <Star shine={true} />
               <Star shine={m.dish.rating > 1} />
               <Star shine={m.dish.rating > 2} />

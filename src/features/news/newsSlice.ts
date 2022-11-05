@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { log } from '../../errorReporting';
+import { log } from '../../app/errorReporting';
 import { AppThunkAction, RootState } from '../../redux';
 
 type TopicName = 'general' | 'ulb' | 'asta' | 'corona';

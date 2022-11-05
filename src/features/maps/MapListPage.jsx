@@ -1,5 +1,6 @@
+import React from 'react';
 import { useNavigate } from 'react-router';
-import PageFrame from '../common/PageFrame';
+import PageFrame from '../../components/PageFrame';
 import lichtwiese from './data/lichtwiese.png';
 import stadtmitte from './data/stadtmitte.png';
 import windkanal from './data/windkanal.png';

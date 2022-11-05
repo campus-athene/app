@@ -1,6 +1,6 @@
 import moment from 'moment';
-import mainApi from '../../api/mainApi';
-import { Appointment } from '../../api/mainApiTypes';
+import mainApi from '../../provider/tucan/tucanApi';
+import { Appointment } from '../../provider/tucan/tucanApiTypes';
 import { RootState } from '../../redux';
 
 export const selectAppointmentsOnDay = (day: number) => (state: any) => {

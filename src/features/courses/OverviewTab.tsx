@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { Button, Placeholder } from 'react-bootstrap';
-import { Course, CourseOffer, Module, ModuleOffer } from '../../api/apiTypes';
-import { descriptions as semesterDescs } from '../common/semesters';
+import {
+  Course,
+  CourseOffer,
+  Module,
+  ModuleOffer,
+} from '../../provider/tucan/apiTypes';
+import { descriptions as semesterDescs } from '../../provider/tucan/semesters';
 import CourseRegModal from './CourseRegModal';
 import { useDetails } from './coursesSlice';
 

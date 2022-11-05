@@ -5,6 +5,10 @@ import { Badge } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
+import Logo from '../../components/Logo';
+import { selectStatusBarHeightCss } from '../../redux/globalSlice';
+import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
+import { selectUnreadCount } from '../messages/messagesSlice';
 import {
   Burger,
   Calendar,
@@ -17,15 +21,8 @@ import {
   Orientation,
   Settings,
   Sport,
-} from '../../icons';
-import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
-import { selectUnreadCount } from '../messages/messagesSlice';
-import {
-  selectSideMenuOpen,
-  selectStatusBarHeightCss,
-  setSideMenuOpen,
-} from './commonSlice';
-import Logo from './Logo';
+} from './icons';
+import { selectSideMenuOpen, setSideMenuOpen } from './sideMenuSlice';
 
 const SideMenu = () => {
   const dispatch = useDispatch();

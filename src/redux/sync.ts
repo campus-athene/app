@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { AppThunkAction } from '.';
-import { log } from '../errorReporting';
+import { log } from '../app/errorReporting';
 import { selectCreds } from '../features/auth/authSlice';
 import canteenData from '../features/canteen/canteenData';
 import { selectCanteen } from '../features/canteen/canteenSettings';
