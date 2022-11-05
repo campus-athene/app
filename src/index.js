@@ -6,15 +6,15 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { HashRouter as ReactRouter } from 'react-router-dom';
+import './App.css';
+import ErrorBoundary from './ErrorBoundary';
 import { log } from './errorReporting';
 import { setStatusBarHeight } from './features/common/commonSlice';
-import reportWebVitals from './reportWebVitals';
+import SideMenu from './features/common/SideMenu';
 import store from './redux';
 import { UpdateEffect } from './redux/sync';
-import ErrorBoundary from './ErrorBoundary';
+import reportWebVitals from './reportWebVitals';
 import Routes from './Routes';
-import './App.css';
-import SideMenu from './features/common/SideMenu';
 
 export const storeRef = { store: null };
 

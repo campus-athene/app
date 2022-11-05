@@ -1,9 +1,8 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PageFrame from '../common/PageFrame';
 import { getCourseColor } from './coursesSlice';

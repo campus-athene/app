@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import { Button, Form, Modal, Spinner } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
 import { register } from './offersSlice';
 
 const CourseRegModal = ({ offer, onClose }) => {

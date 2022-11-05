@@ -4,14 +4,14 @@ import mainApi from '../api/mainApi';
 import { log } from '../errorReporting';
 import auth from '../features/auth/authSlice';
 import canteenData from '../features/canteen/canteenData';
-import common from '../features/common/commonSlice';
-import settings from '../features/settings/settingsSlice';
-import news from '../features/news/newsSlice';
 import canteenSettings from '../features/canteen/canteenSettings';
-import messages from '../features/messages/messagesSlice';
+import common from '../features/common/commonSlice';
 import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
 import eventApi from '../features/events/eventApi';
+import messages from '../features/messages/messagesSlice';
+import news from '../features/news/newsSlice';
+import settings from '../features/settings/settingsSlice';
 
 const appReducer = combineReducers({
   auth,

@@ -1,8 +1,7 @@
-import React from 'react';
-import PageFrame from '../common/PageFrame';
 import { useNavigate } from 'react-router';
-import stadtmitte from './data/stadtmitte.png';
+import PageFrame from '../common/PageFrame';
 import lichtwiese from './data/lichtwiese.png';
+import stadtmitte from './data/stadtmitte.png';
 import windkanal from './data/windkanal.png';
 
 const MapPreview = ({ title, abbrev, onClick, map, viewBox }) => (

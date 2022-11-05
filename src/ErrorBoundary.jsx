@@ -1,7 +1,7 @@
 import React from 'react';
+import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
 import { log } from './errorReporting';
 import { logout } from './features/auth/authSlice';
 import PageFrame from './features/common/PageFrame';

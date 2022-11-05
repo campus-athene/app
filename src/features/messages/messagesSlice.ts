@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
 import { Badge } from '@capawesome/capacitor-badge';
+import { createSlice } from '@reduxjs/toolkit';
 import { session } from '../../api';
 import { log } from '../../errorReporting';
 import { AppThunkAction, RootState } from '../../redux';

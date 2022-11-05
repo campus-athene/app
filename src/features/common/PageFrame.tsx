@@ -1,7 +1,7 @@
-import { useSelector } from 'react-redux';
-import { Navbar, OverlayTrigger, Popover } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Navbar, OverlayTrigger, Popover } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 import { selectStatusBarHeightCss } from './commonSlice';
 import NavButton from './NavButton';
 
