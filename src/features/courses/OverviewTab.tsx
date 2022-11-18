@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, Placeholder } from 'react-bootstrap';
+import sanitizeHtml from 'sanitize-html';
 import {
   Course,
   CourseOffer,
@@ -7,6 +8,7 @@ import {
   ModuleOffer,
 } from '../../provider/tucan/apiTypes';
 import { descriptions as semesterDescs } from '../../provider/tucan/semesters';
+import './CourseDetail.css';
 import CourseRegModal from './CourseRegModal';
 import { useDetails } from './coursesSlice';
 
@@ -28,16 +30,34 @@ const CourseDetails = (params: { course: Course | CourseOffer }) => {
           <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={8} />{' '}
           <Placeholder xs={4} /> <Placeholder xs={5} /> <Placeholder xs={5} />
         </Placeholder>
-      ) : null}
-      {!details.loading &&
+      ) : (
         details.result?.details
           .filter((d) => d.value)
           .map((d) => (
-            <p key={d.title} style={{ marginBottom: '0.5em' }}>
+            <div
+              className="courseDetail"
+              key={d.title}
+              style={{ marginBottom: '0.5em' }}
+            >
               <span style={{ color: 'gray' }}>{d.title}: </span>
-              {d.value}
-            </p>
-          ))}
+              {d.value
+                .replaceAll(/<br\s*\/>(?!\s*<br \s*\/>)/g, '')
+                .split(/\r?\n(?:\s*\r?\n)+/)
+                .map((v, i) => (
+                  <p
+                    key={i}
+                    className="mb-2 inline-block"
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(v) }}
+                    style={{
+                      overflowWrap: 'break-word',
+                      userSelect: 'text',
+                      WebkitUserSelect: 'text',
+                    }}
+                  />
+                ))}
+            </div>
+          ))
+      )}
     </>
   );
 };
