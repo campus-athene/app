@@ -1,5 +1,5 @@
+import { Modal, Slide } from '@mui/material';
 import { useEffect } from 'react';
-import { Button, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import sanitizeHtml from 'sanitize-html';
@@ -19,40 +19,49 @@ const MessageDialog = ({ messageId }: { messageId: number }) => {
   }, [messageId, dispatch]);
 
   return (
-    <Modal show centered scrollable>
-      <Modal.Header style={{ display: 'block' }}>
-        <Sanitize
+    <Modal open={true} onClose={() => navigate(-1)}>
+      <Slide in={true} direction="up">
+        <div
+          className="bg-white px-4 py-6 overflow-y-scroll max-h-[80%] absolute inset-0 top-auto rounded-t-3xl"
           style={{
-            fontSize: '1.2em',
-            fontWeight: 'bold',
+            boxShadow: '0 0 0.5rem 0.25rem #0002',
+            paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom))',
           }}
         >
-          {subject}
-        </Sanitize>
-        <div>
-          {date} {time} - {from}
+          <Sanitize
+            style={{
+              fontSize: '1.2em',
+              fontWeight: 'bold',
+            }}
+          >
+            {subject}
+          </Sanitize>
+          <div className="mb-4">
+            {date} {time} - {from}
+          </div>
+          {body
+            .replaceAll(/(?<!\r?\n\s*)\r?\n(?!\s*\r?\n)/g, '<br />')
+            .split(/\r?\n(?:\s*\r?\n)+/)
+            .map((v, i) => (
+              <p
+                key={i}
+                className="mb-2"
+                dangerouslySetInnerHTML={{ __html: sanitizeHtml(v) }}
+                style={{
+                  overflowWrap: 'break-word',
+                  userSelect: 'text',
+                  WebkitUserSelect: 'text',
+                }}
+              />
+            ))}
+          <button
+            className="bg-amber-500 text-white font-bold rounded-lg px-4 py-2 mt-2"
+            onClick={() => navigate(-1)}
+          >
+            Schließen
+          </button>
         </div>
-      </Modal.Header>
-      <Modal.Body>
-        {body
-          .replaceAll(/(?<!\r?\n\s*)\r?\n(?!\s*\r?\n)/g, '<br />')
-          .split(/\r?\n(?:\s*\r?\n)+/)
-          .map((v, i) => (
-            <p
-              key={i}
-              className="mb-2"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(v) }}
-              style={{
-                overflowWrap: 'break-word',
-                userSelect: 'text',
-                WebkitUserSelect: 'text',
-              }}
-            />
-          ))}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={() => navigate(-1)}>Schließen</Button>
-      </Modal.Footer>
+      </Slide>
     </Modal>
   );
 };
