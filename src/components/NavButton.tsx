@@ -1,6 +1,5 @@
 import { faAngleLeft, faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router';
 import { setSideMenuOpen } from '../features/sideMenu/sideMenuSlice';
@@ -16,7 +15,7 @@ const NavButton = (props: {
 
   const hamburger =
     props.type === 'hamburger' || (props.type !== 'back' && hamburgerInUrl);
-  const As = props.as || Button;
+  const As = props.as || 'button';
 
   return (
     <As
@@ -26,6 +25,7 @@ const NavButton = (props: {
       style={{
         background: 'none',
         border: 'none',
+        color: 'white',
         fontSize: '1.25rem',
         height: '3.5rem',
         width: '3.5rem',

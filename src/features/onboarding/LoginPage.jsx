@@ -1,9 +1,9 @@
+import { CircularProgress } from '@mui/material';
 import React, { useState } from 'react';
-import { Alert, Form, Spinner } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import Logo from '../../components/Logo';
 import { login } from '../auth/authSlice';
-import { Button } from './Controls';
+import { Button, Input } from './Controls';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -65,8 +65,8 @@ const LoginPage = () => {
           marginLeft: 'calc(1rem + env(safe-area-inset-left))',
         }}
       >
-        <Alert
-          variant="warning"
+        <div
+          className="bg-yellow-100 border border-yellow-800 text-yellow-800 rounded-2xl"
           style={{
             visibility: error ? null : 'hidden',
             marginBottom: '0',
@@ -77,8 +77,8 @@ const LoginPage = () => {
           }}
         >
           {error}
-        </Alert>
-        <Form.Control
+        </div>
+        <Input
           type="text"
           placeholder="TU-Id"
           autoCapitalize="off"
@@ -87,7 +87,7 @@ const LoginPage = () => {
           onChange={(event) => setUsername(event.target.value)}
           style={{ height: 'auto' }}
         />
-        <Form.Control
+        <Input
           type="password"
           placeholder="Passwort"
           autoComplete="current-password"
@@ -96,11 +96,7 @@ const LoginPage = () => {
           style={{ height: 'auto' }}
         />
         {processing ? (
-          <Spinner
-            animation="grow"
-            variant="light"
-            style={{ margin: 'auto' }}
-          />
+          <CircularProgress style={{ margin: 'auto' }} color="warning" />
         ) : (
           <Button type="submit" disabled={processing}>
             Anmelden

@@ -1,8 +1,9 @@
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import Button from '../../components/Button';
+import CardModal, { Header as ModalHeader } from '../../components/CardModal';
 import PageFrame from '../../components/PageFrame';
 import { logout } from '../auth/authSlice';
 import {
@@ -184,17 +185,15 @@ const SettingsPage = () => {
           Impressum
         </SettingButton>
       </PageFrame>
-      <Modal show={logoutModal} centered>
-        <Modal.Header>
-          <Modal.Title>Abmelden</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Möchtest Du Dich wirklich abmelden?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setLogoutModal(false)}>
+      <CardModal open={logoutModal} onClose={() => setLogoutModal(false)}>
+        <ModalHeader>Abmelden</ModalHeader>
+        <p>Möchtest Du Dich wirklich abmelden?</p>
+        <div className="flex gap-2 mt-4">
+          <Button className="bg-gray-400" onClick={() => setLogoutModal(false)}>
             Abbrechen
           </Button>
           <Button
-            variant="danger"
+            className="bg-red-500"
             onClick={() => {
               setLogoutModal(false);
               dispatch(logout());
@@ -202,8 +201,8 @@ const SettingsPage = () => {
           >
             Abmelden
           </Button>
-        </Modal.Footer>
-      </Modal>
+        </div>
+      </CardModal>
     </>
   );
 };

@@ -22,7 +22,9 @@ const WelcomePage = () => {
         style={{ height: '8em' }}
         alt="focused people studying"
       />
-      <Button onClick={onClose}>Los geht’s</Button>
+      <Button className="mx-auto" onClick={onClose}>
+        Los geht’s
+      </Button>
     </Frame>
   );
 };

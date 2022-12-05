@@ -1,12 +1,8 @@
-import {
-  Checkbox,
-  CircularProgress,
-  FormControlLabel,
-  SwipeableDrawer,
-} from '@mui/material';
+import { Checkbox, CircularProgress, FormControlLabel } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Button from '../../components/Button';
+import CardModal, { Header } from '../../components/CardModal';
 import { register } from './offersSlice';
 
 const CourseRegModal = ({ offer, onClose }) => {
@@ -60,13 +56,12 @@ const CourseRegModal = ({ offer, onClose }) => {
   };
 
   return (
-    <SwipeableDrawer
-      anchor="bottom"
+    <CardModal
+      canClose={state !== 'EXECUTING'}
       open={true}
-      onClose={onClose}
-      PaperProps={{ className: 'rounded-t-3xl p-4' }}
+      onClose={() => state !== 'EXECUTING' && onClose()}
     >
-      <h1 className="text-lg font-semibold mb-4">
+      <Header>
         {offer.status === 'register'
           ? 'Anmeldung bestätigen'
           : offer.status === 'edit'
@@ -74,7 +69,7 @@ const CourseRegModal = ({ offer, onClose }) => {
           : offer.status === 'unregister'
           ? 'Abmeldung bestätigen'
           : 'Anmeldung bestätigen'}
-      </h1>
+      </Header>
       {offer.courses.length === 1 ? (
         <>
           <div style={{ marginBottom: '1em' }}>
@@ -168,7 +163,7 @@ const CourseRegModal = ({ offer, onClose }) => {
           </svg>
         ) : null}
       </div>
-    </SwipeableDrawer>
+    </CardModal>
   );
 };
 

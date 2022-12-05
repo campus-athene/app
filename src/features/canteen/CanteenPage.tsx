@@ -7,7 +7,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment-timezone';
 import { MouseEventHandler, useState } from 'react';
-import { ListGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import PageFrame from '../../components/PageFrame';
@@ -60,8 +59,8 @@ const CanteenPage = () => {
   const ContextMenu = () => {
     const dispatch = useDispatch();
     return (
-      <ListGroup>
-        <ListGroup.Item action onClick={() => dispatch(setCanteen('1'))}>
+      <div className="divide-y">
+        <div onClick={() => dispatch(setCanteen('1'))}>
           <FontAwesomeIcon
             icon={faCheck}
             style={{
@@ -70,8 +69,8 @@ const CanteenPage = () => {
             }}
           />
           Stadtmitte
-        </ListGroup.Item>
-        <ListGroup.Item action onClick={() => dispatch(setCanteen('2'))}>
+        </div>
+        <div onClick={() => dispatch(setCanteen('2'))}>
           <FontAwesomeIcon
             icon={faCheck}
             style={{
@@ -80,8 +79,8 @@ const CanteenPage = () => {
             }}
           />
           Lichtwiese
-        </ListGroup.Item>
-      </ListGroup>
+        </div>
+      </div>
     );
   };
 

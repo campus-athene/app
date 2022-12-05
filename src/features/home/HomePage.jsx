@@ -26,7 +26,6 @@ const HomePage = () => {
           height: '30em',
           paddingTop: statusBarHeightCss,
           position: 'fixed',
-          textAlign: 'center',
           width: '100%',
         }}
       >
@@ -37,7 +36,10 @@ const HomePage = () => {
           }}
           type="hamburger"
         />
-        <Logo style={{ paddingTop: '3em', height: '10em' }} />
+        <Logo
+          className="mx-auto"
+          style={{ paddingTop: '3em', height: '10em' }}
+        />
       </div>
       <div
         className="no-scrollbar"

@@ -28,7 +28,6 @@
     "graphql-request": "^5.0.0",
     "moment-timezone": "^0.5.34",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.1.0",
     "react-dom": "^18.2.0",
     "react-hammerjs": "https://github.com/OliverRM/react-hammerjs/tarball/aa7000d5e93459b012be281a3936022d4ff43c87",
     "react-redux": "^8.0.2",
