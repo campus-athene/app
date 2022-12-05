@@ -1,6 +1,12 @@
+import {
+  Skeleton as MuiSkeleton,
+  SkeletonProps,
+  SkeletonTypeMap,
+} from '@mui/material';
+import { OverridableComponent } from '@mui/types';
 import { useState } from 'react';
-import { Button, Placeholder } from 'react-bootstrap';
 import sanitizeHtml from 'sanitize-html';
+import Button from '../../components/Button';
 import {
   Course,
   CourseOffer,
@@ -11,6 +17,16 @@ import { descriptions as semesterDescs } from '../../provider/tucan/semesters';
 import './CourseDetail.css';
 import CourseRegModal from './CourseRegModal';
 import { useDetails } from './coursesSlice';
+
+const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
+  props: SkeletonProps
+) => (
+  <MuiSkeleton
+    animation="wave"
+    {...props}
+    style={{ display: 'inline-block', ...props.style }}
+  />
+);
 
 const CourseDetails = (params: { course: Course | CourseOffer }) => {
   const course = params.course;
@@ -26,10 +42,11 @@ const CourseDetails = (params: { course: Course | CourseOffer }) => {
       </p>
       <p style={{ marginBottom: '1em' }}>{course.instructor}</p>
       {details.loading ? (
-        <Placeholder animation="glow">
-          <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={8} />{' '}
-          <Placeholder xs={4} /> <Placeholder xs={5} /> <Placeholder xs={5} />
-        </Placeholder>
+        <p>
+          <Skeleton width={210} /> <Skeleton width={120} />{' '}
+          <Skeleton width={240} /> <Skeleton width={120} />{' '}
+          <Skeleton width={150} /> <Skeleton width={150} />
+        </p>
       ) : (
         details.result?.details
           .filter((d) => d.value)
@@ -89,19 +106,13 @@ const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
         <>
           <p>
             {module.status === 'register' && (
-              <Button variant="warning" onClick={() => setRegDlgOpen(true)}>
-                Anmelden
-              </Button>
+              <Button onClick={() => setRegDlgOpen(true)}>Anmelden</Button>
             )}
             {module.status === 'edit' && (
-              <Button variant="primary" onClick={() => setRegDlgOpen(true)}>
-                Ummelden
-              </Button>
+              <Button onClick={() => setRegDlgOpen(true)}>Ummelden</Button>
             )}
             {module.status === 'unregister' && (
-              <Button variant="danger" onClick={() => setRegDlgOpen(true)}>
-                Abmelden
-              </Button>
+              <Button onClick={() => setRegDlgOpen(true)}>Abmelden</Button>
             )}
           </p>
         </>

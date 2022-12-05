@@ -1,7 +1,6 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect } from 'react';
-import { ListGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import PageFrame from '../../components/PageFrame';
@@ -17,15 +16,15 @@ const CourseRegPage = () => {
   const area = Number.parseInt(params.area);
   const list = Number.parseInt(params.rootList);
 
-  useEffect(
-    () => dispatch(loadArea(major, area, list)),
-    [major, area, list, dispatch]
-  );
+  useEffect(() => {
+    dispatch(loadArea(major, area, list));
+  }, [major, area, list, dispatch]);
 
   const lists = useSelector(selectLists(major, area));
 
   return (
     <PageFrame
+      className="divide-y"
       title="Anmeldung"
       syncState={useSelector(selectSyncState(major, area))}
     >
@@ -34,15 +33,15 @@ const CourseRegPage = () => {
           ({ modules, areas }) => modules.length || (areas && areas.length)
         )
         .map(({ id, major, area, name, modules, areas }, index) => (
-          <ListGroup key={`${major}.${area}.${id}`} variant="flush">
+          <React.Fragment key={`${major}.${area}.${id}`}>
             {/* Mainly on sublists the first title can be empty. */}
             {name || index ? (
-              <ListGroup.Item className="bg-light">{name}</ListGroup.Item>
+              <div className="bg-neutral-100 px-4 py-2">{name}</div>
             ) : null}
             {modules.map(({ id: moduleId, code, name, instructor }) => (
-              <ListGroup.Item
+              <div
                 key={moduleId}
-                action
+                className="px-4 relative py-2"
                 onClick={() =>
                   navigate(
                     `/courses/register/${major}/${area}/${id}/${moduleId}`
@@ -80,25 +79,23 @@ const CourseRegPage = () => {
                 >
                   {name}
                 </div>
-              </ListGroup.Item>
+              </div>
             ))}
             {(areas || []).map(({ id, major, rootList, name }) => (
-              <ListGroup.Item
+              <div
                 key={`${major}.${id}.${rootList}`}
-                action
+                className="flex gap-2 px-4 py-2"
                 onClick={() =>
                   navigate(`/coursereg/${major}/${id}/${rootList}`)
                 }
               >
-                <div style={{ display: 'flex' }}>
-                  <div style={{ flexGrow: '1', flexShrink: '1' }}>{name}</div>
-                  <div style={{ alignSelf: 'center' }}>
-                    <FontAwesomeIcon icon={faAngleRight} />
-                  </div>
+                <div style={{ flexGrow: '1', flexShrink: '1' }}>{name}</div>
+                <div style={{ alignSelf: 'center' }}>
+                  <FontAwesomeIcon icon={faAngleRight} />
                 </div>
-              </ListGroup.Item>
+              </div>
             ))}
-          </ListGroup>
+          </React.Fragment>
         ))}
     </PageFrame>
   );

@@ -1,7 +1,6 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { ListGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import PageFrame from '../../components/PageFrame';
@@ -16,14 +15,20 @@ const ListPage = () => {
   const navigate = useNavigate();
   const semesters = useSelector(selectGroupedBySemester());
   return (
-    <PageFrame title="Mein Studium" syncState={useSelector(selectSyncState())}>
+    <PageFrame
+      className="divide-y"
+      title="Mein Studium"
+      syncState={useSelector(selectSyncState())}
+    >
       {semesters.map(({ id: semesterId, name: semesterName, courses }) => (
-        <ListGroup key={semesterId} variant="flush">
-          <ListGroup.Item className="bg-light">{semesterName}</ListGroup.Item>
+        <React.Fragment key={semesterId}>
+          <div className="bg-neutral-100 px-4 py-1 text-sm font-medium">
+            {semesterName}
+          </div>
           {courses.map(({ code, name, instructor }) => (
-            <ListGroup.Item
+            <div
+              className="relative px-4 py-2"
               key={code}
-              action
               onClick={() =>
                 navigate(`/courses/${semesterId}/${encodeURIComponent(code)}`)
               }
@@ -58,17 +63,18 @@ const ListPage = () => {
               >
                 {name}
               </div>
-            </ListGroup.Item>
+            </div>
           ))}
           {Number.parseInt(semesterId) === getRegSemester() && (
-            <ListGroup.Item action onClick={() => navigate('/coursereg')}>
-              <div style={{ display: 'flex', fontWeight: 'bold' }}>
-                <div style={{ flexGrow: '1' }}>Anmeldung</div>
-                <FontAwesomeIcon icon={faAngleRight} />
-              </div>
-            </ListGroup.Item>
+            <div
+              className="flex px-4 py-2 font-semibold"
+              onClick={() => navigate('/coursereg')}
+            >
+              <div style={{ flexGrow: '1' }}>Anmeldung</div>
+              <FontAwesomeIcon className="self-center" icon={faAngleRight} />
+            </div>
           )}
-        </ListGroup>
+        </React.Fragment>
       ))}
     </PageFrame>
   );
