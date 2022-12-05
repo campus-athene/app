@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import sanitizeHtml from 'sanitize-html';
+import Button from '../../components/Button';
 import { useAppDispatch } from '../../redux/hooks';
 import { markRead, selectMessageById } from './messagesSlice';
 import Sanitize from './Sanitize';
@@ -54,12 +55,7 @@ const MessageDialog = ({ messageId }: { messageId: number }) => {
                 }}
               />
             ))}
-          <button
-            className="bg-amber-500 text-white font-bold rounded-lg px-4 py-2 mt-2"
-            onClick={() => navigate(-1)}
-          >
-            Schließen
-          </button>
+          <Button onClick={() => navigate(-1)}>Schließen</Button>
         </div>
       </Slide>
     </Modal>
