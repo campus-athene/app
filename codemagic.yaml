@@ -20,7 +20,7 @@ workflows:
     scripts:
       - name: Install npm dependencies
         script: |
-          npm install
+          npm ci
       - name: Build React app
         script: |
           npm run build
@@ -43,7 +43,7 @@ workflows:
       - name: Build Android release
         script: |
           cd android
-          LATEST_GOOGLE_PLAY_BUILD_NUMBER=$(google-play get-latest-build-number --package-name 'io.codemagic.androidhelloworldapp')
+          LATEST_GOOGLE_PLAY_BUILD_NUMBER=$(google-play get-latest-build-number --package-name 'com.oliverrm.campus')
           if [ -z LATEST_BUILD_NUMBER ]; then
             # fallback in case no build number was found from google play. Alternatively, you can `exit 1` to fail the build
             # UPDATED_BUILD_NUMBER=$BUILD_NUMBER
@@ -93,7 +93,7 @@ workflows:
     scripts:
       - name: Install npm dependencies for Ionic project
         script: |
-          npm install
+          npm ci
       - name: Build React app
         script: |
           npm run build
