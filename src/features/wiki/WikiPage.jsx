@@ -1,26 +1,25 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ListGroup, ListGroupItem } from 'react-bootstrap';
-import PageFrame from '../common/PageFrame';
+import PageFrame from '../../components/PageFrame';
 import articles from './articles.json';
 
 const Entry = ({ children, link, level }) => (
-  <ListGroupItem
-    action={!!link}
+  <div
     onClick={link && (() => window.open(link, '_blank'))}
+    className="px-4 py-2"
     style={{ alignItems: 'center', color: '#495057', display: 'flex' }}
   >
     <div style={{ flexGrow: '1', marginLeft: `${level || 0}em` }}>
       {children}
     </div>
     {link && <FontAwesomeIcon icon={faAngleRight} />}
-  </ListGroupItem>
+  </div>
 );
 
 const WikiPage = () => {
   return (
     <PageFrame title="Orientierung">
-      <ListGroup>
+      <div className="divide-y">
         {articles
           .map(({ title, link, seealso }) => {
             return [
@@ -35,7 +34,7 @@ const WikiPage = () => {
             ];
           })
           .flat()}
-      </ListGroup>
+      </div>
     </PageFrame>
   );
 };

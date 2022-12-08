@@ -1,11 +1,12 @@
-import { useSelector } from 'react-redux';
-import { Navbar, OverlayTrigger, Popover } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
-import { selectStatusBarHeightCss } from './commonSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectStatusBarHeightCss } from '../redux/globalSlice';
 import NavButton from './NavButton';
 
 const PageFrame = (props: {
+  className?: string;
   children?: React.ReactNode;
   title?: string;
   style?: React.CSSProperties;
@@ -14,6 +15,7 @@ const PageFrame = (props: {
   syncState?: { isLoading: boolean; isOffline: boolean };
 }) => {
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div
@@ -23,25 +25,24 @@ const PageFrame = (props: {
         height: '100vh',
       }}
     >
-      <Navbar
-        variant="dark"
+      <nav
+        className="flex h-14 items-center text-white"
         style={{
           backgroundColor: '#372649',
-          paddingTop: `calc(0.5rem + ${statusBarHeightCss})`,
+          paddingTop: statusBarHeightCss,
           width: '100vw',
         }}
       >
         <NavButton
-          as={Navbar.Brand}
           style={{
             alignItems: 'center',
             alignSelf: 'stretch',
-            margin: '-0.5rem 0',
             display: props.noMenu ? 'none' : 'flex',
             justifyContent: 'center',
           }}
         />
-        <Navbar.Brand
+        <div
+          className="text-lg"
           style={{
             flexGrow: 1,
             marginRight: 0,
@@ -51,34 +52,23 @@ const PageFrame = (props: {
           }}
         >
           {props.title || <>&nbsp;</>}
-        </Navbar.Brand>
+        </div>
         {props.more && (
-          <OverlayTrigger
-            placement="bottom"
-            overlay={(overlayProps) => (
-              <Popover {...overlayProps}>
-                <Popover.Body style={{ padding: '0' }}>
-                  {props.more}
-                </Popover.Body>
-              </Popover>
-            )}
-            trigger={['click']}
+          <div
+            onClick={() => setMenuOpen(!menuOpen)}
+            style={{
+              marginRight: '0',
+              alignSelf: 'stretch',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '3.5rem',
+            }}
           >
-            <Navbar.Brand
-              style={{
-                marginRight: '0',
-                alignSelf: 'stretch',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '3.5rem',
-              }}
-            >
-              <FontAwesomeIcon icon={faEllipsisH} />
-            </Navbar.Brand>
-          </OverlayTrigger>
+            <FontAwesomeIcon icon={faEllipsisH} />
+          </div>
         )}
-      </Navbar>
+      </nav>
       {(props.syncState?.isLoading || props.syncState?.isOffline) && (
         <div
           style={{
@@ -92,6 +82,7 @@ const PageFrame = (props: {
         </div>
       )}
       <div
+        className={props.className}
         style={{
           overflowX: 'hidden',
           overflowY: 'scroll',
@@ -101,6 +92,18 @@ const PageFrame = (props: {
       >
         {props.children}
       </div>
+      {props.more && menuOpen && (
+        <div
+          className="absolute inset-0 bg-black bg-opacity-70"
+          onClick={(e) => {
+            e.stopPropagation();
+            setMenuOpen(false);
+          }}
+          style={{ paddingTop: `calc(${statusBarHeightCss} + 3.5rem)` }}
+        >
+          <div className="divide-y bg-white ">{props.more}</div>
+        </div>
+      )}
     </div>
   );
 };

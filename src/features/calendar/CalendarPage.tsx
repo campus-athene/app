@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment-timezone';
 import { MouseEventHandler, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import PageFrame from '../common/PageFrame';
+import PageFrame from '../../components/PageFrame';
 import DayView from './DayView';
 
 const CalendarPage = () => {

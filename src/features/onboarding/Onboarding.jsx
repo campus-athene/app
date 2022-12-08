@@ -15,7 +15,7 @@ const Onboarding = () => {
   const needsSetup = useSelector(selectNeedsNotificationSetup());
   const needsPrivacySetup = useSelector(selectNeedsPrivacySetup());
   const needsWelcome = !useSelector(selectOnboardingComplete());
-  
+
   if (needsLogin) return <LoginPage />;
   if (needsSetup) return <NotificationsPage />;
   if (needsPrivacySetup) return <PrivacyPage />;

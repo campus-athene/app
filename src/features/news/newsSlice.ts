@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { log } from '../../errorReporting';
+import { log } from '../../app/errorReporting';
 import { AppThunkAction, RootState } from '../../redux';
 
 type TopicName = 'general' | 'ulb' | 'asta' | 'corona';
@@ -22,7 +22,7 @@ const baseUrl =
 
 const loadState = () => {
   const defaultState = {
-    subscribedTopics: ['general', 'ulb', 'asta', 'corona'],
+    subscribedTopics: ['general', 'ulb', 'asta'],
     topics: {},
   };
   try {
@@ -74,13 +74,16 @@ export const update: () => AppThunkAction<Promise<void>> =
     } = getState();
 
     await Promise.allSettled(
-      subscribedTopics.map((t) =>
-        pullNews(t)
-          .then((r) => dispatch(resetTopics({ topics: { [t]: r } })))
-          .catch((error) =>
-            log('warning', `Error while pulling news.`, { error, topic: t })
-          )
-      )
+      subscribedTopics
+        // Corona is not available anymore. Therefor, skip it.
+        .filter((t) => t !== 'corona')
+        .map((t) =>
+          pullNews(t)
+            .then((r) => dispatch(resetTopics({ topics: { [t]: r } })))
+            .catch((error) =>
+              log('warning', `Error while pulling news.`, { error, topic: t })
+            )
+        )
     );
     dispatch(hasLoaded());
   };

@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
-import { Module } from '../../api/apiTypes';
-import { log } from '../../errorReporting';
-import { selectStatusBarHeightCss } from '../common/commonSlice';
-import NavButton from '../common/NavButton';
-import PageFrame from '../common/PageFrame';
+import { log } from '../../app/errorReporting';
+import NavButton from '../../components/NavButton';
+import PageFrame from '../../components/PageFrame';
+import { Module } from '../../provider/tucan/apiTypes';
+import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import { getCourseColor, selectBySemesterAndNumber } from './coursesSlice';
 import { selectOffer } from './offersSlice';
 import OverviewTab from './OverviewTab';

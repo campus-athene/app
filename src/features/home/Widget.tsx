@@ -51,7 +51,7 @@ export const ScrollWidget = (props: {
     </WidgetTitle>
     <div
       className={[
-        'flex gap-2 no-scrollbar overflow-x-scroll px-3 scroll-p-4 snap-mandatory snap-x',
+        'no-scrollbar flex snap-x snap-mandatory scroll-p-4 gap-2 overflow-x-scroll px-3',
         props.className,
       ].join(' ')}
     >

@@ -1,6 +1,11 @@
 import React from 'react';
 
-const Logo = (props) => React.createElement('svg', { viewBox: "0 0 509.3 509.3", ...props, dangerouslySetInnerHTML: { __html: svg } });
+const Logo = (props) =>
+  React.createElement('svg', {
+    viewBox: '0 0 509.3 509.3',
+    ...props,
+    dangerouslySetInnerHTML: { __html: svg },
+  });
 const svg = `
 <path style="fill:#4C5C72;" d="M398.5,210.6c0-2.3-1-4.5-2.7-6c-1.7-1.5-4-2.2-6.2-2l-271.8,32c-4,0.5-7.1,3.9-7.1,7.9v72 c0,31.6,90.5,40,144,40s144-8.4,144-40c0,0,0,0,0,0L398.5,210.6z"/>
 <path style="fill:#5F728E;" d="M398.5,234.7h-144v120c0.1,0,0.1,0,0.2,0c52.1,0,139.3-8,143.8-37.6V234.7z"/>

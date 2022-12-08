@@ -1,9 +1,32 @@
+import {
+  Skeleton as MuiSkeleton,
+  SkeletonProps,
+  SkeletonTypeMap,
+} from '@mui/material';
+import { OverridableComponent } from '@mui/types';
 import { useState } from 'react';
-import { Button, Placeholder } from 'react-bootstrap';
-import { Course, CourseOffer, Module, ModuleOffer } from '../../api/apiTypes';
-import { descriptions as semesterDescs } from '../common/semesters';
+import sanitizeHtml from 'sanitize-html';
+import Button from '../../components/Button';
+import {
+  Course,
+  CourseOffer,
+  Module,
+  ModuleOffer,
+} from '../../provider/tucan/apiTypes';
+import { descriptions as semesterDescs } from '../../provider/tucan/semesters';
+import './CourseDetail.css';
 import CourseRegModal from './CourseRegModal';
 import { useDetails } from './coursesSlice';
+
+const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
+  props: SkeletonProps
+) => (
+  <MuiSkeleton
+    animation="wave"
+    {...props}
+    style={{ display: 'inline-block', ...props.style }}
+  />
+);
 
 const CourseDetails = (params: { course: Course | CourseOffer }) => {
   const course = params.course;
@@ -19,20 +42,39 @@ const CourseDetails = (params: { course: Course | CourseOffer }) => {
       </p>
       <p style={{ marginBottom: '1em' }}>{course.instructor}</p>
       {details.loading ? (
-        <Placeholder animation="glow">
-          <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={8} />{' '}
-          <Placeholder xs={4} /> <Placeholder xs={5} /> <Placeholder xs={5} />
-        </Placeholder>
-      ) : null}
-      {!details.loading &&
+        <p>
+          <Skeleton width={210} /> <Skeleton width={120} />{' '}
+          <Skeleton width={240} /> <Skeleton width={120} />{' '}
+          <Skeleton width={150} /> <Skeleton width={150} />
+        </p>
+      ) : (
         details.result?.details
           .filter((d) => d.value)
           .map((d) => (
-            <p key={d.title} style={{ marginBottom: '0.5em' }}>
+            <div
+              className="courseDetail"
+              key={d.title}
+              style={{ marginBottom: '0.5em' }}
+            >
               <span style={{ color: 'gray' }}>{d.title}: </span>
-              {d.value}
-            </p>
-          ))}
+              {d.value
+                .replaceAll(/<br\s*\/>(?!\s*<br \s*\/>)/g, '')
+                .split(/\r?\n(?:\s*\r?\n)+/)
+                .map((v, i) => (
+                  <p
+                    key={i}
+                    className="mb-2 inline-block"
+                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(v) }}
+                    style={{
+                      overflowWrap: 'break-word',
+                      userSelect: 'text',
+                      WebkitUserSelect: 'text',
+                    }}
+                  />
+                ))}
+            </div>
+          ))
+      )}
     </>
   );
 };
@@ -64,19 +106,13 @@ const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
         <>
           <p>
             {module.status === 'register' && (
-              <Button variant="warning" onClick={() => setRegDlgOpen(true)}>
-                Anmelden
-              </Button>
+              <Button onClick={() => setRegDlgOpen(true)}>Anmelden</Button>
             )}
             {module.status === 'edit' && (
-              <Button variant="primary" onClick={() => setRegDlgOpen(true)}>
-                Ummelden
-              </Button>
+              <Button onClick={() => setRegDlgOpen(true)}>Ummelden</Button>
             )}
             {module.status === 'unregister' && (
-              <Button variant="danger" onClick={() => setRegDlgOpen(true)}>
-                Abmelden
-              </Button>
+              <Button onClick={() => setRegDlgOpen(true)}>Abmelden</Button>
             )}
           </p>
         </>

@@ -1,7 +1,6 @@
-import { ListGroup } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import PageFrame from '../../components/PageFrame';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import PageFrame from '../common/PageFrame';
 import MessageDialog from './MessageDialog';
 import MessageList from './MessageList';
 import {
@@ -14,17 +13,20 @@ import {
 const ContextMenu = () => {
   const dispatch = useAppDispatch();
   return (
-    <ListGroup>
-      <ListGroup.Item action onClick={() => dispatch(markAllRead())}>
+    <div className="divide-y">
+      <div
+        className="px-4 py-3 text-lg"
+        onClick={() => dispatch(markAllRead())}
+      >
         Alle als gelesen markieren
-      </ListGroup.Item>
-    </ListGroup>
+      </div>
+    </div>
   );
 };
 
 const MessagesPage = () => {
   const messages = useAppSelector(selectAllMessages());
-  const selectedId = useParams().id;
+  const selectedId = Number.parseInt(useParams().id || '');
 
   return (
     <PageFrame

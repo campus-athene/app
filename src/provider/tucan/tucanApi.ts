@@ -1,10 +1,10 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
 import { UseQuery } from '@reduxjs/toolkit/dist/query/react/buildHooks';
-import { session } from '../api';
-import { Appointment } from './mainApiTypes';
+import { session } from '.';
+import { Appointment } from './tucanApiTypes';
 
 const mainApi = createApi({
-  reducerPath: 'mainApi',
+  reducerPath: 'tucanApi',
   async baseQuery(arg, api) {
     try {
       return {

@@ -1,11 +1,20 @@
 import React from 'react';
-import { Button as BSButton } from 'react-bootstrap';
+import BaseButton from '../../components/Button';
 
 export const Button = (props) =>
-  React.createElement(BSButton, {
-    variant: 'warning',
+  React.createElement(BaseButton, {
     ...props,
-    style: { margin: '0 auto', borderRadius: '2em', ...props.style },
+    className: ['rounded-full', props.className].join(' '),
+  });
+
+export const Input = (props) =>
+  React.createElement('input', {
+    type: 'text',
+    ...props,
+    className: [
+      'rounded-full px-6 bg-white bg-opacity-80 focus-visible:bg-opacity-100',
+      props.className,
+    ].join(' '),
   });
 
 export const Radio = ({ children, checked, label, onChange }) => (

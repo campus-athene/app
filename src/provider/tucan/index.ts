@@ -11,10 +11,12 @@ import {
 } from './apiTypes';
 import dummyResponse from './dummyResponse';
 import { NetworkError, ServerError } from './errors';
+
 const base =
-  process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3010'
-    : 'https://campus.akamu.de';
+  process.env.REACT_APP_API_BASE_URL ||
+  (process.env.NODE_ENV === 'development'
+    ? 'http://dev.api.study-campus.de'
+    : 'https://campus.akamu.de');
 
 export type AppCredentials = { dummy: boolean; token: string };
 

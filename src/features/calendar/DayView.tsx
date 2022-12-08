@@ -1,3 +1,4 @@
+import moment, { MomentInput } from 'moment';
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAppointmentsOnDay } from './calendarApi';
@@ -16,10 +17,10 @@ const DayView = (props: {
   const padding = 0.9;
   const hourSize = props.hourHeight || 3;
 
-  const getTimeOfDay = (date: string | number | Date) => {
-    const dateObj = new Date(date);
-    // 24 * 60 * 60 * 1000 = 86400000 ms per day
-    return (dateObj.getTime() - dateObj.getTimezoneOffset() * 60000) % 86400000;
+  /** Returns amount of milliseconds parsed since start of day in German timezone. */
+  const getTimeOfDay = (date: MomentInput) => {
+    const m = moment(date).tz('Europe/Berlin');
+    return m.hours() * 60 * 60 * 1000;
   };
 
   const firstAppointmentOffset =

@@ -1,6 +1,6 @@
-import { ListGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Message } from './messagesSlice';
+import Sanitize from './Sanitize';
 
 const MessageList = (props: {
   itemStyle?: React.CSSProperties;
@@ -9,21 +9,15 @@ const MessageList = (props: {
 }) => {
   const navigate = useNavigate();
   return (
-    <ListGroup variant="flush">
+    <div className="divide-y">
       {props.messages.map(({ id, subject, body, from, date, unread }) => (
-        <ListGroup.Item
+        <div
+          className="px-4 py-2"
           key={id}
-          action
           onClick={() => navigate(`/messages/${id}`)}
           style={props.itemStyle}
         >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'baseline',
-              color: '#000000',
-            }}
-          >
+          <div className="flex items-baseline">
             {unread && props.unreadIndicators !== false && (
               <div
                 style={{
@@ -41,7 +35,7 @@ const MessageList = (props: {
             </div>
             <div>{date}</div>
           </div>
-          <div
+          <Sanitize
             style={{
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -50,8 +44,8 @@ const MessageList = (props: {
             }}
           >
             {subject}
-          </div>
-          <div
+          </Sanitize>
+          <Sanitize
             style={{
               WebkitLineClamp: 2,
               overflow: 'hidden',
@@ -61,10 +55,10 @@ const MessageList = (props: {
             }}
           >
             {body}
-          </div>
-        </ListGroup.Item>
+          </Sanitize>
+        </div>
       ))}
-    </ListGroup>
+    </div>
   );
 };
 

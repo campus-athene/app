@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import { Checkbox, CircularProgress, FormControlLabel } from '@mui/material';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Button, Form, Modal, Spinner } from 'react-bootstrap';
+import Button from '../../components/Button';
+import CardModal, { Header } from '../../components/CardModal';
 import { register } from './offersSlice';
 
 const CourseRegModal = ({ offer, onClose }) => {
@@ -54,74 +56,79 @@ const CourseRegModal = ({ offer, onClose }) => {
   };
 
   return (
-    <Modal show={true} centered onHide={onClose}>
-      <Modal.Header>
-        <Modal.Title>
-          {offer.status === 'register'
-            ? 'Anmeldung bestätigen'
-            : offer.status === 'edit'
-            ? 'Anmeldung bearbeiten'
-            : offer.status === 'unregister'
-            ? 'Abmeldung bestätigen'
-            : 'Anmeldung bestätigen'}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {offer.courses.length === 1 ? (
-          <>
-            <div style={{ marginBottom: '1em' }}>
-              Möchtest du dich {offer.status === 'register' ? 'zu' : 'von'}
-            </div>
-            <div style={{ marginBottom: '1em' }}>{offer.name}</div>
-            <div>{offer.status === 'register' ? 'anmelden' : 'abmelden'}?</div>
-          </>
-        ) : (
-          <>
-            <div style={{ marginBottom: '1em' }}>
-              {offer.status !== 'unregister' ? 'Zu' : 'Von'} welchen
-              Veranstaltungen möchtest du{' '}
-              {offer.status === 'register'
-                ? 'dich anmelden'
-                : offer.status === 'unregister'
-                ? 'dich abmelden'
-                : 'angemeldet sein'}
-              ?
-            </div>
-            <div style={{ marginBottom: '1em' }}>
-              {offer.courses.map((c) => (
-                <Form.Check
-                  id={`uglyworkaroundcheckboxid${c.id}`}
-                  key={c.id}
-                  checked={selection[c.id]}
-                  type="checkbox"
-                  custom
-                  disabled={state !== 'CONFIRM'}
-                  label={`${c.code} ${c.name}`}
-                  onChange={(e) => setSelection(c.id, e.target.checked)}
-                />
-              ))}
-            </div>
-            <div>{offer.status === 'register' ? 'anmelden' : 'abmelden'}?</div>
-          </>
-        )}
-        {error && (
-          <div style={{ marginTop: '1em' }} className="text-danger">
-            {error}
+    <CardModal
+      canClose={state !== 'EXECUTING'}
+      open={true}
+      onClose={() => state !== 'EXECUTING' && onClose()}
+    >
+      <Header>
+        {offer.status === 'register'
+          ? 'Anmeldung bestätigen'
+          : offer.status === 'edit'
+          ? 'Anmeldung bearbeiten'
+          : offer.status === 'unregister'
+          ? 'Abmeldung bestätigen'
+          : 'Anmeldung bestätigen'}
+      </Header>
+      {offer.courses.length === 1 ? (
+        <>
+          <div style={{ marginBottom: '1em' }}>
+            Möchtest du dich {offer.status === 'register' ? 'zu' : 'von'}
           </div>
-        )}
-      </Modal.Body>
-      <Modal.Footer
+          <div style={{ marginBottom: '1em' }}>{offer.name}</div>
+          <div>{offer.status === 'register' ? 'anmelden' : 'abmelden'}?</div>
+        </>
+      ) : (
+        <>
+          <div style={{ marginBottom: '1em' }}>
+            {offer.status !== 'unregister' ? 'Zu' : 'Von'} welchen
+            Veranstaltungen möchtest du{' '}
+            {offer.status === 'register'
+              ? 'dich anmelden'
+              : offer.status === 'unregister'
+              ? 'dich abmelden'
+              : 'angemeldet sein'}
+            ?
+          </div>
+          <div style={{ marginBottom: '1em' }}>
+            {offer.courses.map((c) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id={`uglyworkaroundcheckboxid${c.id}`}
+                    key={c.id}
+                    checked={selection[c.id]}
+                    onChange={(e) => setSelection(c.id, e.target.checked)}
+                  />
+                }
+                label={`${c.code} ${c.name}`}
+                disabled={state !== 'CONFIRM'}
+              />
+            ))}
+          </div>
+          <div>{offer.status === 'register' ? 'anmelden' : 'abmelden'}?</div>
+        </>
+      )}
+      {error && (
+        <div style={{ marginTop: '1em' }} className="text-danger">
+          {error}
+        </div>
+      )}
+      <div
+        className="mt-8 flex items-center"
         style={{ height: '4.5rem' }}
         onClick={() => (state === 'SUCCESS' || state === 'ERROR') && onClose()}
       >
         {state === 'CONFIRM' ? (
           <>
-            <Button variant="secondary" onClick={onClose}>
+            <Button className="bg-neutral-400 mr-2" onClick={onClose}>
               Abbrechen
             </Button>
             <Button
               onClick={execute}
-              disabled={!Object.values(selection).some((s) => s)}
+              className={
+                Object.values(selection).some((s) => s) ? null : 'bg-amber-200'
+              }
             >
               {offer.status === 'register'
                 ? 'Anmelden'
@@ -131,7 +138,7 @@ const CourseRegModal = ({ offer, onClose }) => {
             </Button>
           </>
         ) : state === 'EXECUTING' ? (
-          <Spinner style={{ margin: 'auto' }} animation="grow" variant="dark" />
+          <CircularProgress style={{ margin: 'auto' }} />
         ) : state === 'SUCCESS' ? (
           <svg style={{ height: '2rem', margin: 'auto' }} viewBox="0 0 512 512">
             <path
@@ -155,8 +162,8 @@ const CourseRegModal = ({ offer, onClose }) => {
             />
           </svg>
         ) : null}
-      </Modal.Footer>
-    </Modal>
+      </div>
+    </CardModal>
   );
 };
 

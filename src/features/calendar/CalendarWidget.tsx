@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment, { utc } from 'moment';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Widget from '../home/Widget';
@@ -7,15 +7,16 @@ import DayView from './DayView';
 
 const CalendarWidget = () => {
   const navigate = useNavigate();
-  const nextApp = useSelector(selectNextAppointment());
 
-  const nextDay = moment(nextApp?.timeStart).startOf('day');
+  const nextApp = useSelector(selectNextAppointment());
   if (!nextApp) return null;
 
-  const diff = nextDay.diff(
-    moment().tz('Europe/Berlin').startOf('day'),
-    'days'
-  );
+  /** Next day on which there is an appointment. */
+  const nextDay = moment(nextApp.timeStart).utcOffset(0, true).startOf('day');
+
+  /** Amount of days nextDay is away from today. */
+  const diff = nextDay.diff(utc().startOf('day'), 'days');
+
   const dayString = diff === 0 ? 'Heute' : diff === 1 ? 'Morgen' : null;
   if (dayString === null) return null;
 

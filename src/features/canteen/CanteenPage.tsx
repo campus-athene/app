@@ -7,10 +7,9 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment-timezone';
 import { MouseEventHandler, useState } from 'react';
-import { ListGroup } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import PageFrame from '../common/PageFrame';
+import PageFrame from '../../components/PageFrame';
 import canteenData from './canteenData';
 import {
   canteenFriendlyName,
@@ -60,8 +59,8 @@ const CanteenPage = () => {
   const ContextMenu = () => {
     const dispatch = useDispatch();
     return (
-      <ListGroup>
-        <ListGroup.Item action onClick={() => dispatch(setCanteen('1'))}>
+      <div className="divide-y">
+        <div onClick={() => dispatch(setCanteen('1'))}>
           <FontAwesomeIcon
             icon={faCheck}
             style={{
@@ -70,8 +69,8 @@ const CanteenPage = () => {
             }}
           />
           Stadtmitte
-        </ListGroup.Item>
-        <ListGroup.Item action onClick={() => dispatch(setCanteen('2'))}>
+        </div>
+        <div onClick={() => dispatch(setCanteen('2'))}>
           <FontAwesomeIcon
             icon={faCheck}
             style={{
@@ -80,8 +79,8 @@ const CanteenPage = () => {
             }}
           />
           Lichtwiese
-        </ListGroup.Item>
-      </ListGroup>
+        </div>
+      </div>
     );
   };
 
@@ -165,19 +164,19 @@ const CanteenPage = () => {
                 borderBottom: '1px solid lightgray',
               }}
             >
-              <div className="flex-shrink-0 relative w-24">
+              <div className="relative w-24 flex-shrink-0">
                 <img
                   alt=""
-                  className="absolute h-auto object-cover w-24"
+                  className="absolute h-auto w-24 object-cover"
                   src={foodPlaceholderSq}
                 />
                 <img
                   alt=""
-                  className="absolute h-full object-cover w-24"
+                  className="absolute h-full w-24 object-cover"
                   src={m.dish.image?.thumbUrl}
                 />
               </div>
-              <div className="flex flex-col flex-grow  px-2.5 py-2 text-sm">
+              <div className="flex flex-grow flex-col  px-2.5 py-2 text-sm">
                 <div className="flex items-baseline">
                   <div className="flex flex-shrink-0 gap-0.5">
                     <Star shine={true} />
@@ -186,7 +185,7 @@ const CanteenPage = () => {
                     <Star shine={m.dish.rating > 3} />
                     <Star shine={m.dish.rating > 4} />
                   </div>
-                  <span className="flex-grow font-semibold text-center text-xs">
+                  <span className="flex-grow text-center text-xs font-semibold">
                     {[...m.dish.additionals, ...m.dish.allergics].join(' ')}
                   </span>
                   <div

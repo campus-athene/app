@@ -1,8 +1,8 @@
-import { storeRef } from '.';
-import { session } from './api';
-import { selectCreds } from './features/auth/authSlice';
-import { selectPrivacy } from './features/settings/settingsSlice';
-import { RootState } from './redux';
+import { storeRef } from '..';
+import { selectCreds } from '../features/auth/authSlice';
+import { selectPrivacy } from '../features/settings/settingsSlice';
+import { session } from '../provider/tucan';
+import { RootState } from '../redux';
 
 export const log = (
   level: 'error' | 'warning' | 'info',

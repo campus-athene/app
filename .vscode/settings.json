@@ -1,3 +1,5 @@
 {
-  "npm.exclude": "**/plugins/**"
+  "npm.exclude": "**/plugins/**",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

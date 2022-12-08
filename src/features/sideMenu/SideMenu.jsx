@@ -1,10 +1,13 @@
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRef } from 'react';
-import { Badge } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
+import Logo from '../../components/Logo';
+import { selectStatusBarHeightCss } from '../../redux/globalSlice';
+import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
+import { selectUnreadCount } from '../messages/messagesSlice';
 import {
   Burger,
   Calendar,
@@ -17,15 +20,8 @@ import {
   Orientation,
   Settings,
   Sport,
-} from '../../icons';
-import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
-import { selectUnreadCount } from '../messages/messagesSlice';
-import {
-  selectSideMenuOpen,
-  selectStatusBarHeightCss,
-  setSideMenuOpen,
-} from './commonSlice';
-import Logo from './Logo';
+} from './icons';
+import { selectSideMenuOpen, setSideMenuOpen } from './sideMenuSlice';
 
 const SideMenu = () => {
   const dispatch = useDispatch();
@@ -52,7 +48,7 @@ const SideMenu = () => {
       style={{
         textOverflow: 'ellipsis',
         fontSize: '1.3em',
-        marginTop: seperator ? '1.5em' : '0.5em',
+        marginTop: seperator ? '2.5em' : '1em',
         overflowX: 'hidden',
         padding: '0 1em',
         whiteSpace: 'nowrap',
@@ -78,7 +74,8 @@ const SideMenu = () => {
         <Icon
           style={{
             display: 'inline-block',
-            width: '1.875em',
+            verticalAlign: 'bottom',
+            width: '1.5em',
             marginLeft: '0.125em',
             marginRight: '0.625em',
           }}
@@ -178,14 +175,9 @@ const SideMenu = () => {
               {unreadMsgs ? (
                 <>
                   {' '}
-                  <Badge
-                    style={{ fontSize: '0.75rem', verticalAlign: 'middle' }}
-                    pill
-                    bg="warning"
-                    text="dark"
-                  >
+                  <div className="inline-block rounded-full bg-yellow-500 px-2 align-top text-sm font-bold text-black">
                     {unreadMsgs}
-                  </Badge>
+                  </div>
                 </>
               ) : null}
             </HomeButton>

@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import Button from '../components/Button';
+import PageFrame from '../components/PageFrame';
+import { logout } from '../features/auth/authSlice';
 import { log } from './errorReporting';
-import { logout } from './features/auth/authSlice';
-import PageFrame from './features/common/PageFrame';
-import { Inspection } from './icons';
+import Inspection from './Inspection';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -55,31 +55,33 @@ class ErrorBoundary extends React.Component {
             <br />
             was schief gegangen!
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div
+            className="mx-4"
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
             <Button
               style={{ margin: '0.25rem 0 1.25rem' }}
-              variant="outline-secondary"
+              className="bg-gray-100 border border-gray-500 text-gray-500"
               onClick={() => alert(toMessage(this.state.error))}
             >
               Technische Details anzeigen
             </Button>
             <Button
               style={{ margin: '0.25rem 0' }}
-              variant="primary"
               onClick={() => navigate(-1)}
             >
               Zurück
             </Button>
             <Button
               style={{ margin: '0.25rem 0' }}
-              variant="outline-secondary"
+              className="bg-gray-100 border border-gray-500 text-gray-500"
               onClick={() => window.history.go(window.history.length * -1 + 1)}
             >
               Startseite
             </Button>
             <Button
               style={{ margin: '0.25rem 0' }}
-              variant="outline-danger"
+              className="bg-red-100 border-red-500 border text-red-500"
               onClick={() => {
                 logout();
                 window.history.go(window.history.length * -1 + 1);

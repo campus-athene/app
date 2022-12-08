@@ -42,7 +42,7 @@ const PrivacyPage = () => {
           onChange={(e) => e.target.checked && setSelected('minimal')}
         />
       </div>
-      <Button onClick={onNext} disabled={!selected}>
+      <Button className="mx-auto" onClick={onNext} disabled={!selected}>
         Weiter
       </Button>
     </Frame>

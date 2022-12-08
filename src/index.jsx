@@ -6,15 +6,14 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { HashRouter as ReactRouter } from 'react-router-dom';
-import { log } from './errorReporting';
-import { setStatusBarHeight } from './features/common/commonSlice';
-import reportWebVitals from './reportWebVitals';
+import './app/App.css';
+import ErrorBoundary from './app/ErrorBoundary';
+import { log } from './app/errorReporting';
+import Routes from './app/Routes';
+import SideMenu from './features/sideMenu/SideMenu';
 import store from './redux';
+import { setStatusBarHeight } from './redux/globalSlice';
 import { UpdateEffect } from './redux/sync';
-import ErrorBoundary from './ErrorBoundary';
-import Routes from './Routes';
-import './App.css';
-import SideMenu from './features/common/SideMenu';
 
 export const storeRef = { store: null };
 
@@ -87,8 +86,3 @@ if (window.cordova)
     false
   );
 else initializeReact();
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

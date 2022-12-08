@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
-import { Envelope } from '../../icons';
 import Widget from '../home/Widget';
+import { Envelope } from '../sideMenu/icons';
 import MessageList from './MessageList';
 import { selectUnreadMessages } from './messagesSlice';
 

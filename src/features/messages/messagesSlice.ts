@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
 import { Badge } from '@capawesome/capacitor-badge';
-import { session } from '../../api';
-import { log } from '../../errorReporting';
+import { createSlice } from '@reduxjs/toolkit';
+import { log } from '../../app/errorReporting';
+import { session } from '../../provider/tucan';
 import { AppThunkAction, RootState } from '../../redux';
 import { selectCreds } from '../auth/authSlice';
 

@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { session } from '../../api';
-import { CourseDetailsResult, Module } from '../../api/apiTypes';
-import { log } from '../../errorReporting';
-import { AppThunkAction, RootState } from '../../redux';
-import { selectCreds } from '../auth/authSlice';
+import { log } from '../../app/errorReporting';
+import { session } from '../../provider/tucan';
+import { CourseDetailsResult, Module } from '../../provider/tucan/apiTypes';
 import {
   descriptions as semesterDescs,
   getRegSemester,
   getSemester,
   Semester,
-} from '../common/semesters';
+} from '../../provider/tucan/semesters';
+import { AppThunkAction, RootState } from '../../redux';
+import { selectCreds } from '../auth/authSlice';
 
 type CourseItems = { [semester: number]: { [code: string]: Module } };
 

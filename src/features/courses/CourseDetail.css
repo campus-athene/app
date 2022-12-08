@@ -1,0 +1,8 @@
+.course-detail b {
+  @apply font-normal italic;
+}
+
+.course-detail br {
+  @apply mb-1 block;
+  content: ' ';
+}

@@ -1,7 +1,7 @@
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications } from '@capacitor/push-notifications';
-import { session } from '../../api';
-import { log } from '../../errorReporting';
+import { log } from '../../app/errorReporting';
+import { session } from '../../provider/tucan';
 
 const platform = Capacitor.getPlatform();
 const registrationType = { android: 'FCM', ios: 'APNS' }[platform];

@@ -1,16 +1,16 @@
 import { Capacitor } from '@capacitor/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useRef, useState } from 'react';
+import Hammer from 'react-hammerjs';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import Hammer from 'react-hammerjs';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
-import { log } from '../../errorReporting';
-import stadtmitte from './data/stadtmitte.png';
+import { log } from '../../app/errorReporting';
+import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import lichtwiese from './data/lichtwiese.png';
+import stadtmitte from './data/stadtmitte.png';
 import windkanal from './data/windkanal.png';
-import { selectStatusBarHeightCss } from '../common/commonSlice';
 
 const MapViewPage = () => {
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());

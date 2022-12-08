@@ -1,21 +1,23 @@
 import { configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { Action, combineReducers } from 'redux';
-import mainApi from '../api/mainApi';
-import { log } from '../errorReporting';
+import { log } from '../app/errorReporting';
 import auth from '../features/auth/authSlice';
 import canteenData from '../features/canteen/canteenData';
-import common from '../features/common/commonSlice';
-import settings from '../features/settings/settingsSlice';
-import news from '../features/news/newsSlice';
 import canteenSettings from '../features/canteen/canteenSettings';
-import messages from '../features/messages/messagesSlice';
 import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
 import eventApi from '../features/events/eventApi';
+import messages from '../features/messages/messagesSlice';
+import news from '../features/news/newsSlice';
+import settings from '../features/settings/settingsSlice';
+import sideMenu from '../features/sideMenu/sideMenuSlice';
+import mainApi from '../provider/tucan/tucanApi';
+import global from './globalSlice';
 
 const appReducer = combineReducers({
   auth,
-  common,
+  global,
+  sideMenu,
   settings,
 
   [mainApi.reducerPath]: mainApi.reducer,
