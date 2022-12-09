@@ -15,8 +15,8 @@ import { NetworkError, ServerError } from './errors';
 const base =
   process.env.REACT_APP_API_BASE_URL ||
   (process.env.NODE_ENV === 'development'
-    ? 'http://dev.api.study-campus.de'
-    : 'https://campus.akamu.de');
+    ? 'https://dev.api.study-campus.de'
+    : 'https://api.study-campus.de');
 
 export type AppCredentials = { dummy: boolean; token: string };
 
