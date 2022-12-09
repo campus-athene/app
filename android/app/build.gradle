@@ -10,13 +10,18 @@ def keystoreProperties = new Properties()
 // Load your keystore.properties file into the keystoreProperties object.
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
+// get version code from the specified property argument `-PversionCode` during the build call
+def getMyVersionCode = { ->
+    return project.hasProperty('versionCode') ? versionCode.toInteger() : -1
+}
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.oliverrm.campus"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 20700
+        versionCode getMyVersionCode()
         versionName '2.7.0'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
