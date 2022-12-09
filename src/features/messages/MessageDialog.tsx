@@ -33,8 +33,8 @@ const MessageDialog = ({ messageId }: { messageId: number }) => {
         {date} {time} - {from}
       </div>
       {body
-        .replaceAll(/(?<!\r?\n\s*)\r?\n(?!\s*\r?\n)/g, '<br />')
         .split(/\r?\n(?:\s*\r?\n)+/)
+        .map((p) => p.replaceAll(/\r?\n/g, '<br />'))
         .map((v, i) => (
           <p
             key={i}
