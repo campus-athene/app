@@ -45,9 +45,10 @@ const LoginPage = () => {
     >
       <Logo style={{ height: '40vw' }} />
       <div
-        style={{ fontWeight: 'bold', color: 'lightgray', textAlign: 'center' }}
+        className="font-semibold"
+        style={{ color: 'lightgray', textAlign: 'center' }}
       >
-        <p>Campus</p>
+        <p className="mb-2">Campus</p>
         <p>
           Die App für Studierende
           <br />
@@ -98,7 +99,7 @@ const LoginPage = () => {
         {processing ? (
           <CircularProgress style={{ margin: 'auto' }} color="warning" />
         ) : (
-          <Button type="submit" disabled={processing}>
+          <Button className="mx-auto" type="submit" disabled={processing}>
             Anmelden
           </Button>
         )}

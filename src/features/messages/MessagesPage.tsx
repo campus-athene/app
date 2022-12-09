@@ -1,4 +1,5 @@
 import { useParams } from 'react-router-dom';
+import { ContextMenuItem } from '../../components/ContextMenu';
 import PageFrame from '../../components/PageFrame';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import MessageDialog from './MessageDialog';
@@ -13,14 +14,11 @@ import {
 const ContextMenu = () => {
   const dispatch = useAppDispatch();
   return (
-    <div className="divide-y">
-      <div
-        className="px-4 py-3 text-lg"
-        onClick={() => dispatch(markAllRead())}
-      >
+    <>
+      <ContextMenuItem onClick={() => dispatch(markAllRead())}>
         Alle als gelesen markieren
-      </div>
-    </div>
+      </ContextMenuItem>
+    </>
   );
 };
 

@@ -21,7 +21,9 @@ const CardModal = (props: CardModalProps) => {
       {...props}
       PaperProps={{
         ...props.PaperProps,
-        className: ['rounded-t-3xl p-4', props.PaperProps?.className].join(' '),
+        className: ['rounded-3xl p-4 m-2', props.PaperProps?.className].join(
+          ' '
+        ),
         style: {
           maxHeight: '85%',
           paddingBottom: 'calc(1rem + env(safe-area-inset-bottom))',

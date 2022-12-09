@@ -12,7 +12,7 @@ export const Input = (props) =>
     type: 'text',
     ...props,
     className: [
-      'rounded-full px-6 bg-white bg-opacity-80 focus-visible:bg-opacity-100',
+      'rounded-full px-4 bg-white bg-opacity-80 focus-visible:bg-opacity-100',
       props.className,
     ].join(' '),
   });
@@ -45,8 +45,8 @@ export const Frame = ({ children }) => (
 
 export const Heading = ({ children }) => (
   <h3
+    className="text-xl"
     style={{
-      fontWeight: 'normal',
       color: 'lightgray',
       textAlign: 'center',
     }}

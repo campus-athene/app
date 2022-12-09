@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectStatusBarHeightCss } from '../redux/globalSlice';
+import ContextMenu from './ContextMenu';
 import NavButton from './NavButton';
 
 const PageFrame = (props: {
@@ -26,9 +27,10 @@ const PageFrame = (props: {
       }}
     >
       <nav
-        className="flex h-14 items-center text-white"
+        className="flex items-center text-white"
         style={{
           backgroundColor: '#372649',
+          height: 'calc(3.5rem + env(safe-area-inset-top))',
           paddingTop: statusBarHeightCss,
           width: '100vw',
         }}
@@ -92,17 +94,17 @@ const PageFrame = (props: {
       >
         {props.children}
       </div>
-      {props.more && menuOpen && (
-        <div
-          className="absolute inset-0 bg-black bg-opacity-70"
-          onClick={(e) => {
-            e.stopPropagation();
-            setMenuOpen(false);
+      {props.more && (
+        <ContextMenu
+          anchor="top"
+          open={menuOpen}
+          onClose={() => setMenuOpen(false)}
+          PaperProps={{
+            style: { marginTop: 'calc(4rem + env(safe-area-inset-top))' },
           }}
-          style={{ paddingTop: `calc(${statusBarHeightCss} + 3.5rem)` }}
         >
-          <div className="divide-y bg-white ">{props.more}</div>
-        </div>
+          {props.more}
+        </ContextMenu>
       )}
     </div>
   );

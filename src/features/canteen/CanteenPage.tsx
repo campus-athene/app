@@ -9,6 +9,7 @@ import moment from 'moment-timezone';
 import { MouseEventHandler, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
+import { ContextMenuItem } from '../../components/ContextMenu';
 import PageFrame from '../../components/PageFrame';
 import canteenData from './canteenData';
 import {
@@ -59,8 +60,8 @@ const CanteenPage = () => {
   const ContextMenu = () => {
     const dispatch = useDispatch();
     return (
-      <div className="divide-y">
-        <div onClick={() => dispatch(setCanteen('1'))}>
+      <>
+        <ContextMenuItem onClick={() => dispatch(setCanteen('1'))}>
           <FontAwesomeIcon
             icon={faCheck}
             style={{
@@ -69,8 +70,8 @@ const CanteenPage = () => {
             }}
           />
           Stadtmitte
-        </div>
-        <div onClick={() => dispatch(setCanteen('2'))}>
+        </ContextMenuItem>
+        <ContextMenuItem onClick={() => dispatch(setCanteen('2'))}>
           <FontAwesomeIcon
             icon={faCheck}
             style={{
@@ -79,8 +80,8 @@ const CanteenPage = () => {
             }}
           />
           Lichtwiese
-        </div>
-      </div>
+        </ContextMenuItem>
+      </>
     );
   };
 

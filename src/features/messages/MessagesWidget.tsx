@@ -41,6 +41,7 @@ const MessagesWidget = () => {
         >
           <Envelope
             style={{
+              verticalAlign: '-40%',
               display: 'inline-block',
               marginRight: '0.5em',
               width: '2em',
