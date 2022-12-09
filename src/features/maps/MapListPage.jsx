@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import PageFrame from '../../components/PageFrame';
 import lichtwiese from './data/lichtwiese.png';
 import stadtmitte from './data/stadtmitte.png';
-import windkanal from './data/windkanal.png';
+// import windkanal from './data/windkanal.png';
 
 const MapPreview = ({ title, abbrev, onClick, map, viewBox }) => (
   <div
@@ -77,13 +77,13 @@ const MapListPage = () => {
         map={lichtwiese}
         viewBox="100 660 500 250"
       />
-      <MapPreview
+      {/* <MapPreview
         title="indkanal"
         abbrev="W"
         onClick={() => navigate('/maps/windkanal')}
         map={windkanal}
         viewBox="0 240 1000 500"
-      />
+      /> */}
     </PageFrame>
   );
 };

@@ -2,15 +2,79 @@ import { Capacitor } from '@capacitor/core';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useRef, useState } from 'react';
-import Hammer from 'react-hammerjs';
+import 'leaflet/dist/leaflet.css';
+import { useEffect } from 'react';
+import { ImageOverlay, MapContainer, TileLayer } from 'react-leaflet';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { log } from '../../app/errorReporting';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import lichtwiese from './data/lichtwiese.png';
 import stadtmitte from './data/stadtmitte.png';
-import windkanal from './data/windkanal.png';
+
+const getMapData = (mapArg) => {
+  return mapArg === 'stadtmitte'
+    ? {
+        url: stadtmitte,
+        bounds: [
+          [49.8846, 8.6367],
+          [49.8655, 8.6666],
+        ],
+        center: [49.8758, 8.6568],
+        zoom: 16,
+      }
+    : mapArg === 'lichtwiese'
+    ? {
+        url: lichtwiese,
+        bounds: [
+          [49.8571, 8.6885],
+          [49.8716, 8.6636],
+        ],
+        center: [49.86, 8.681],
+        zoom: 15,
+      }
+    : mapArg === 'botanischergarten'
+    ? {
+        url: lichtwiese,
+        bounds: [
+          [49.8571, 8.6885],
+          [49.8716, 8.6636],
+        ],
+        center: [49.868, 8.681],
+        zoom: 16,
+      }
+    : mapArg === 'hochschulstadion'
+    ? {
+        url: lichtwiese,
+        bounds: [
+          [49.8571, 8.6885],
+          [49.8716, 8.6636],
+        ],
+        center: [49.86, 8.672],
+        zoom: 16,
+      }
+    : // : mapArg === 'windkanal'
+      // ? {
+      //     url: windkanal,
+      //     bounds: [
+      //       [49.8547, 8.6001], // 49.854718, 8.584159
+      //       [49.8662, 8.5842],
+      //     ],
+      //     center: [49.86, 8.592],
+      //     zoom: 16,
+      //   }
+      log('warning', `MapViewPage was parsed an invalid map parameter.`, {
+        map: mapArg,
+      }) || {
+        url: stadtmitte,
+        bounds: [
+          [49.8846, 8.6367],
+          [49.8655, 8.6666],
+        ],
+        center: [49.8758, 8.6568],
+        zoom: 16,
+      };
+};
 
 const MapViewPage = () => {
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
@@ -22,108 +86,23 @@ const MapViewPage = () => {
   }, []);
 
   const { map: mapArg } = useParams();
-  const [mapSource, initialPos] =
-    mapArg === 'stadtmitte'
-      ? [stadtmitte, { x: 935, y: 610 }]
-      : mapArg === 'lichtwiese'
-      ? [lichtwiese, { x: 895, y: 920 }]
-      : mapArg === 'botanischergarten'
-      ? [lichtwiese, { x: 905, y: 240 }]
-      : mapArg === 'hochschulstadion'
-      ? [lichtwiese, { x: 440, y: 960 }]
-      : mapArg === 'windkanal'
-      ? [windkanal, { x: 250, y: 500 }]
-      : log('warning', `MapViewPage was parsed an invalid map parameter.`, {
-          map: mapArg,
-        }) || [stadtmitte, { x: 935, y: 610 }];
+  const map = getMapData(mapArg);
   const navigate = useNavigate();
 
-  const mapImg = useRef(null);
-  const requestRef = useRef();
-
-  // Following event orders are possible for pinch:
-  // pinchstart pinchend panstart panend
-  // pinchstart pinchend panend
-  // pinchstart pinchend
-
-  const [mapPosBase, setMapPosBase] = useState({
-    x: visualViewport.width / 2 - initialPos.x,
-    y: visualViewport.height / 2 - initialPos.y,
-    s: 1,
-  });
-  const [mapPosStart, setMapPosStart] = useState({ x: 0, y: 0 });
-  const mapPosCurrent = useRef(mapPosBase);
-
-  const limitScale = (s) => Math.max(Math.min(s, 4), 0.3);
-  const calcMapPos = (e) => ({
-    x:
-      e.center.x +
-      (limitScale(mapPosBase.s * e.scale) / mapPosBase.s) *
-        (mapPosBase.x + e.deltaX - mapPosStart.x - e.center.x),
-    y:
-      e.center.y +
-      (limitScale(mapPosBase.s * e.scale) / mapPosBase.s) *
-        (mapPosBase.y + e.deltaY - mapPosStart.y - e.center.y),
-    s: limitScale(mapPosBase.s * e.scale),
-  });
-
-  const getTransform = (pos) =>
-    `translate(${pos.x + 'px'}, ${pos.y + 'px'}) scale(${pos.s})`;
-
-  const callback = () => {
-    requestRef.current = null;
-    if (!mapImg.current) return;
-    mapImg.current.style.transform = getTransform(mapPosCurrent.current);
-  };
-
-  const onMapMove = (e) => {
-    mapPosCurrent.current = calcMapPos(e);
-    if (!requestRef.current)
-      requestRef.current = requestAnimationFrame(callback);
-  };
-  const onMapStart = (e) => {
-    setMapPosStart({ x: e.deltaX, y: e.deltaY });
-  };
-  const onMapEnd = (e) => {
-    setMapPosBase(calcMapPos(e));
-    setMapPosStart({ x: e.deltaX, y: e.deltaY });
-  };
-
   return (
-    <div style={{ height: '100vh' }}>
-      <Hammer
-        onPan={onMapMove}
-        onPinch={onMapMove}
-        onPanStart={onMapStart}
-        onPinchStart={onMapStart}
-        onPanEnd={onMapEnd}
-        onPanCancel={onMapEnd}
-        onPinchEnd={onMapEnd}
-        onPinchCancel={onMapEnd}
-        options={{
-          recognizers: {
-            pinch: { enable: true },
-          },
-        }}
+    <div className="h-screen relative bg-cyan-200">
+      <MapContainer
+        className="bg-[#aaa] absolute inset-0"
+        center={map.center}
+        zoom={map.zoom}
+        zoomControl={false}
       >
-        <div
-          style={{
-            position: 'absolute',
-            background: '#dad8c8',
-          }}
-        >
-          <img
-            ref={mapImg}
-            src={mapSource}
-            alt="Karte"
-            style={{
-              transform: getTransform(mapPosBase),
-              transformOrigin: 'top left',
-              width: '83.55em',
-            }}
-          />
-        </div>
-      </Hammer>
+        <TileLayer
+          attribution='&copy; TU Darmstadt, <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <ImageOverlay url={map.url} bounds={map.bounds} />
+      </MapContainer>
       <div
         style={{
           position: 'absolute',
@@ -137,6 +116,7 @@ const MapViewPage = () => {
           height: '3em',
           borderRadius: '1.5em',
           cursor: 'pointer',
+          zIndex: '10000', // Leaflet uses up to 1000
         }}
         onClick={() => navigate(-1)}
       >
