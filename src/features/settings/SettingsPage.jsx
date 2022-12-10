@@ -188,7 +188,7 @@ const SettingsPage = () => {
       <CardModal open={logoutModal} onClose={() => setLogoutModal(false)}>
         <ModalHeader>Abmelden</ModalHeader>
         <p>Möchtest Du Dich wirklich abmelden?</p>
-        <div className="flex gap-2 mt-4">
+        <div className="mt-4 flex gap-2">
           <Button className="bg-gray-400" onClick={() => setLogoutModal(false)}>
             Abbrechen
           </Button>

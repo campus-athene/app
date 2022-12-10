@@ -61,7 +61,7 @@ class ErrorBoundary extends React.Component {
           >
             <Button
               style={{ margin: '0.25rem 0 1.25rem' }}
-              className="bg-gray-100 border border-gray-500 text-gray-500"
+              className="border border-gray-500 bg-gray-100 text-gray-500"
               onClick={() => alert(toMessage(this.state.error))}
             >
               Technische Details anzeigen
@@ -74,14 +74,14 @@ class ErrorBoundary extends React.Component {
             </Button>
             <Button
               style={{ margin: '0.25rem 0' }}
-              className="bg-gray-100 border border-gray-500 text-gray-500"
+              className="border border-gray-500 bg-gray-100 text-gray-500"
               onClick={() => window.history.go(window.history.length * -1 + 1)}
             >
               Startseite
             </Button>
             <Button
               style={{ margin: '0.25rem 0' }}
-              className="bg-red-100 border-red-500 border text-red-500"
+              className="border border-red-500 bg-red-100 text-red-500"
               onClick={() => {
                 logout();
                 window.history.go(window.history.length * -1 + 1);

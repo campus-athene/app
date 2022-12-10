@@ -67,7 +67,7 @@ const LoginPage = () => {
         }}
       >
         <div
-          className="bg-yellow-100 border border-yellow-800 text-yellow-800 rounded-2xl"
+          className="rounded-2xl border border-yellow-800 bg-yellow-100 text-yellow-800"
           style={{
             visibility: error ? null : 'hidden',
             marginBottom: '0',

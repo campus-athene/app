@@ -43,7 +43,7 @@ export const Header = (
   return (
     <h1
       {...props}
-      className={['text-lg font-semibold mb-4', props.className].join(' ')}
+      className={['mb-4 text-lg font-semibold', props.className].join(' ')}
     >
       {props.children}
     </h1>

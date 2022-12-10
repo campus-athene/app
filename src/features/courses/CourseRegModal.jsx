@@ -121,7 +121,7 @@ const CourseRegModal = ({ offer, onClose }) => {
       >
         {state === 'CONFIRM' ? (
           <>
-            <Button className="bg-neutral-400 mr-2" onClick={onClose}>
+            <Button className="mr-2 bg-neutral-400" onClick={onClose}>
               Abbrechen
             </Button>
             <Button

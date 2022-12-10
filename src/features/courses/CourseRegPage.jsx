@@ -41,7 +41,7 @@ const CourseRegPage = () => {
             {modules.map(({ id: moduleId, code, name, instructor }) => (
               <div
                 key={moduleId}
-                className="px-4 relative py-2"
+                className="relative px-4 py-2"
                 onClick={() =>
                   navigate(
                     `/courses/register/${major}/${area}/${id}/${moduleId}`

@@ -90,9 +90,9 @@ const MapViewPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="h-screen relative bg-cyan-200">
+    <div className="relative h-screen bg-cyan-200">
       <MapContainer
-        className="bg-[#aaa] absolute inset-0"
+        className="absolute inset-0 bg-[#aaa]"
         center={map.center}
         zoom={map.zoom}
         zoomControl={false}

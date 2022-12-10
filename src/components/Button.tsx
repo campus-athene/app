@@ -10,7 +10,7 @@ const Button = (
     <button
       {...props}
       className={[
-        'bg-amber-500 text-white font-semibold text-base rounded-lg px-4 py-2',
+        'rounded-lg bg-amber-500 px-4 py-2 text-base font-semibold text-white',
         props.className,
       ].join(' ')}
     >
