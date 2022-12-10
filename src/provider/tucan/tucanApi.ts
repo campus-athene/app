@@ -1,5 +1,4 @@
 import { createApi } from '@reduxjs/toolkit/dist/query/react';
-import { UseQuery } from '@reduxjs/toolkit/dist/query/react/buildHooks';
 import { session } from '.';
 import { Appointment } from './tucanApiTypes';
 
