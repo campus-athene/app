@@ -57,7 +57,6 @@ eventApi.useHighlightsQuery = (arg, options) => {
   return {
     ...query,
     data,
-    refetch() {},
   };
 };
 
