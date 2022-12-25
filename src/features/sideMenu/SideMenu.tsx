@@ -104,6 +104,7 @@ const SideMenu = () => {
   return (
     <SwipeableDrawer
       anchor="left"
+      disableSwipeToOpen={false}
       open={menuOpen}
       onClose={() => dispatch(setSideMenuOpen(false))}
       onOpen={() => dispatch(setSideMenuOpen(true))}
