@@ -32,30 +32,13 @@ const MessageList = (props: {
                 }}
               />
             )}
-            <div style={{ flexGrow: 1, flexShrink: 1, fontSize: '1.1em' }}>
+            <div className="flex-grow truncate text-xs font-semibold">
               {from}
             </div>
-            <div>{date}</div>
+            <div className="flex-shrink-0 text-xs">{date}</div>
           </div>
-          <Sanitize
-            style={{
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              color: '#000000',
-            }}
-          >
-            {subject}
-          </Sanitize>
-          <Sanitize
-            style={{
-              WebkitLineClamp: 2,
-              overflow: 'hidden',
-              display: '-webkit-box',
-              WebkitBoxOrient: 'vertical',
-              maxHeight: '3em',
-            }}
-          >
+          <Sanitize className="truncate text-sm">{subject}</Sanitize>
+          <Sanitize className="text-sm text-neutral-500 line-clamp-2">
             {body}
           </Sanitize>
         </div>
