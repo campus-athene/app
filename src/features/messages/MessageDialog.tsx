@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import sanitizeHtml from 'sanitize-html';
 import Button from '../../components/Button';
 import CardModal from '../../components/CardModal';
@@ -8,9 +7,48 @@ import { useAppDispatch } from '../../redux/hooks';
 import { markRead, selectMessageById } from './messagesSlice';
 import Sanitize from './Sanitize';
 
-const MessageDialog = ({ messageId }: { messageId: number }) => {
+const MessageDialog = ({
+  messageId,
+  onClose,
+}: {
+  messageId: number | null;
+  onClose: React.ReactEventHandler<{}>;
+}) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const [savedMessageId, setSavedMessageId] = useState<number | null>(null);
+  useEffect(() => {
+    if (messageId) {
+      // Save messageId so that the message will still be displayed while the dialog closes.
+      setSavedMessageId(messageId);
+      // Reset scroll to top.
+      modalRef.current?.scrollTo({ top: 0 });
+    }
+  }, [messageId]);
+
+  const renderMessageId = messageId || savedMessageId;
+  return (
+    <CardModal
+      open={!!messageId}
+      onClose={onClose}
+      PaperProps={{ ref: modalRef }}
+    >
+      {renderMessageId && (
+        <DialogContent messageId={renderMessageId} onClose={onClose} />
+      )}
+    </CardModal>
+  );
+};
+
+const DialogContent = ({
+  messageId,
+  onClose,
+}: {
+  messageId: number;
+  onClose: React.ReactEventHandler<{}>;
+}) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+
   const selected = useSelector(selectMessageById(messageId));
   const { subject, from, date, time, body } = selected;
 
@@ -20,7 +58,7 @@ const MessageDialog = ({ messageId }: { messageId: number }) => {
   }, [messageId, dispatch]);
 
   return (
-    <CardModal open={true} onClose={() => navigate(-1)}>
+    <>
       <Sanitize
         style={{
           fontSize: '1.2em',
@@ -47,8 +85,8 @@ const MessageDialog = ({ messageId }: { messageId: number }) => {
             }}
           />
         ))}
-      <Button onClick={() => navigate(-1)}>Schließen</Button>
-    </CardModal>
+      <Button onClick={onClose}>Schließen</Button>
+    </>
   );
 };
 

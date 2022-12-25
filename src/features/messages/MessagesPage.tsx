@@ -1,8 +1,6 @@
-import { useParams } from 'react-router-dom';
 import { ContextMenuItem } from '../../components/ContextMenu';
 import PageFrame from '../../components/PageFrame';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import MessageDialog from './MessageDialog';
 import MessageList from './MessageList';
 import {
   markAllRead,
@@ -24,7 +22,6 @@ const ContextMenu = () => {
 
 const MessagesPage = () => {
   const messages = useAppSelector(selectAllMessages());
-  const selectedId = Number.parseInt(useParams().id || '');
 
   return (
     <PageFrame
@@ -34,7 +31,6 @@ const MessagesPage = () => {
     >
       {/* reverse() is in place, use slice() to make a copy */}
       <MessageList messages={messages.slice().reverse()} />
-      {selectedId && <MessageDialog messageId={selectedId} />}
     </PageFrame>
   );
 };

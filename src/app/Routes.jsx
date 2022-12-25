@@ -42,7 +42,6 @@ const Routes = () => {
       <Route path="/maps" element={<MapListPage />} />
       <Route path="/maps/:map" element={<MapViewPage />} />
       <Route path="/messages" element={<MessagesPage />} />
-      <Route path="/messages/:id" element={<MessagesPage />} />
       <Route path="/news" element={<BrowseNewsPage />} />
       <Route path="/oapp" element={<OappPage />} />
       <Route path="/settings" element={<SettingsPage />} />

@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import MessageDialog from './MessageDialog';
 import { Message } from './messagesSlice';
 import Sanitize from './Sanitize';
 
@@ -7,14 +8,15 @@ const MessageList = (props: {
   messages: Message[];
   unreadIndicators?: boolean;
 }) => {
-  const navigate = useNavigate();
+  const [selectedMessage, setSelectedMessage] = useState<number | null>(null);
+
   return (
     <div className="divide-y">
       {props.messages.map(({ id, subject, body, from, date, unread }) => (
         <div
           className="px-4 py-2"
           key={id}
-          onClick={() => navigate(`/messages/${id}`)}
+          onClick={() => setSelectedMessage(id)}
           style={props.itemStyle}
         >
           <div className="flex items-baseline">
@@ -58,6 +60,10 @@ const MessageList = (props: {
           </Sanitize>
         </div>
       ))}
+      <MessageDialog
+        messageId={selectedMessage}
+        onClose={() => setSelectedMessage(null)}
+      />
     </div>
   );
 };
