@@ -4,73 +4,44 @@ import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import 'leaflet/dist/leaflet.css';
 import { useEffect } from 'react';
-import { ImageOverlay, MapContainer, TileLayer } from 'react-leaflet';
+import { ImageOverlay, MapContainer } from 'react-leaflet';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
 import { log } from '../../app/errorReporting';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import lichtwiese from './data/lichtwiese.png';
 import stadtmitte from './data/stadtmitte.png';
+import windkanal from './data/windkanal.png';
 
-const getMapData = (mapArg) => {
-  return mapArg === 'stadtmitte'
+const getViewData = (view) => {
+  return view === 'stadtmitte'
     ? {
-        url: stadtmitte,
-        bounds: [
-          [49.8846, 8.6367],
-          [49.8655, 8.6666],
-        ],
         center: [49.8758, 8.6568],
         zoom: 16,
       }
-    : mapArg === 'lichtwiese'
+    : view === 'lichtwiese'
     ? {
-        url: lichtwiese,
-        bounds: [
-          [49.8571, 8.6885],
-          [49.8716, 8.6636],
-        ],
         center: [49.86, 8.681],
         zoom: 15,
       }
-    : mapArg === 'botanischergarten'
+    : view === 'botanischergarten'
     ? {
-        url: lichtwiese,
-        bounds: [
-          [49.8571, 8.6885],
-          [49.8716, 8.6636],
-        ],
         center: [49.868, 8.681],
         zoom: 16,
       }
-    : mapArg === 'hochschulstadion'
+    : view === 'hochschulstadion'
     ? {
-        url: lichtwiese,
-        bounds: [
-          [49.8571, 8.6885],
-          [49.8716, 8.6636],
-        ],
         center: [49.86, 8.672],
         zoom: 16,
       }
-    : // : mapArg === 'windkanal'
-      // ? {
-      //     url: windkanal,
-      //     bounds: [
-      //       [49.8547, 8.6001], // 49.854718, 8.584159
-      //       [49.8662, 8.5842],
-      //     ],
-      //     center: [49.86, 8.592],
-      //     zoom: 16,
-      //   }
-      log('warning', `MapViewPage was parsed an invalid map parameter.`, {
-        map: mapArg,
+    : view === 'windkanal'
+    ? {
+        center: [49.86, 8.592],
+        zoom: 16,
+      }
+    : log('warning', `MapViewPage was parsed an invalid map parameter.`, {
+        map: view,
       }) || {
-        url: stadtmitte,
-        bounds: [
-          [49.8846, 8.6367],
-          [49.8655, 8.6666],
-        ],
         center: [49.8758, 8.6568],
         zoom: 16,
       };
@@ -86,22 +57,47 @@ const MapViewPage = () => {
   }, []);
 
   const { map: mapArg } = useParams();
-  const map = getMapData(mapArg);
+  const map = getViewData(mapArg);
   const navigate = useNavigate();
 
   return (
-    <div className="relative h-screen bg-cyan-200">
+    <div className="relative h-screen">
       <MapContainer
         className="absolute inset-0 bg-[#aaa]"
         center={map.center}
+        maxBounds={[
+          [49.8901, 8.5783],
+          [49.8516, 8.694],
+        ]}
+        maxZoom={18}
+        minZoom={13}
         zoom={map.zoom}
         zoomControl={false}
       >
-        <TileLayer
-          attribution='&copy; TU Darmstadt, <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+        <ImageOverlay
+          attribution="&copy; TU Darmstadt"
+          bounds={[
+            [49.8846, 8.6367],
+            [49.8655, 8.6666],
+          ]}
+          url={stadtmitte}
         />
-        <ImageOverlay url={map.url} bounds={map.bounds} />
+        <ImageOverlay
+          attribution="&copy; TU Darmstadt"
+          bounds={[
+            [49.8716, 8.6636],
+            [49.8571, 8.6885],
+          ]}
+          url={lichtwiese}
+        />
+        <ImageOverlay
+          attribution="&copy; TU Darmstadt"
+          bounds={[
+            [49.8642, 8.5842],
+            [49.8547, 8.6001],
+          ]}
+          url={windkanal}
+        />
       </MapContainer>
       <div
         style={{
