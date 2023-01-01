@@ -20,7 +20,11 @@ type Event = {
 const eventApi = createApi({
   reducerPath: 'eventsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://events.study-campus.de/api',
+    baseUrl:
+      process.env.REACT_APP_EVENTS_BASE_URL ||
+      (process.env.NODE_ENV === 'development'
+        ? 'https://dev.events.study-campus.de/api'
+        : 'https://events.study-campus.de/api'),
   }),
   endpoints: (build) => ({
     highlights: build.query<Event[], null>({
