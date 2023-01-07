@@ -5,14 +5,20 @@ import { ServerError } from '../../provider/tucan/errors';
 import { AppThunkAction, RootState } from '../../redux';
 import { update } from '../../redux/sync';
 
+type CampusNetCreds = { username: string; password: string };
+
 type AuthState = {
   creds: AppCredentials | null;
+  campusNetCreds: CampusNetCreds | null;
 };
 
 const loadState = (state: AuthState) => {
   try {
-    const json = localStorage.getItem('creds');
-    if (json) state.creds = JSON.parse(json);
+    const credsJson = localStorage.getItem('creds');
+    if (credsJson) state.creds = JSON.parse(credsJson);
+    const campusNetCredsJson = localStorage.getItem('campusNetCreds');
+    if (campusNetCredsJson)
+      state.campusNetCreds = JSON.parse(campusNetCredsJson);
   } catch (e) {
     log('error', 'authSlice.loadState threw an error.', e);
   }
@@ -26,13 +32,20 @@ const authSlice = createSlice({
       state.creds = creds;
       localStorage.setItem('creds', JSON.stringify(creds));
     },
+    updateCampusNetCreds: (
+      state,
+      { payload }: { payload: { creds: CampusNetCreds } }
+    ) => {
+      state.campusNetCreds = payload.creds;
+      localStorage.setItem('campusNetCreds', JSON.stringify(payload.creds));
+    },
   },
   extraReducers: (builder) => {
     builder.addCase('@@INIT', loadState);
   },
 });
 
-export const { updateCreds } = authSlice.actions;
+export const { updateCreds, updateCampusNetCreds } = authSlice.actions;
 
 export const login: (
   username: string,
@@ -50,6 +63,7 @@ export const login: (
       } else {
         const { token } = await session.login(username, password);
         dispatch(updateCreds({ creds: { token } }));
+        dispatch(updateCampusNetCreds({ creds: { username, password } }));
       }
 
       dispatch(update());
@@ -76,5 +90,10 @@ export const selectCreds =
   () =>
   ({ auth: { creds } }: RootState) =>
     creds;
+
+export const selectCampusNetCreds =
+  () =>
+  ({ auth: { campusNetCreds } }: RootState): CampusNetCreds | null =>
+    campusNetCreds;
 
 export default authSlice.reducer;

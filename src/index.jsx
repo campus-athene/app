@@ -2,6 +2,7 @@
 
 import { Capacitor } from '@capacitor/core';
 import { StatusBar } from '@capacitor/status-bar';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -37,6 +38,14 @@ const initializeCordova = () => {
 
 const initializeReact = async () => {
   storeRef.store = store;
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus:
+          process.env.NODE_ENV === 'development' ? false : true,
+      },
+    },
+  });
 
   const statusBarPromise =
     window.StatusBarHeight &&
@@ -63,14 +72,16 @@ const initializeReact = async () => {
   root.render(
     <React.StrictMode>
       <Provider store={store}>
-        {/* Check for outdated or missing state and fetch is asyncronously from the server. */}
-        <UpdateEffect />
-        <ReactRouter>
-          <ErrorBoundary>
-            <Routes />
-            <SideMenu />
-          </ErrorBoundary>
-        </ReactRouter>
+        <QueryClientProvider client={queryClient}>
+          {/* Check for outdated or missing state and fetch is asyncronously from the server. */}
+          <UpdateEffect />
+          <ReactRouter>
+            <ErrorBoundary>
+              <Routes />
+              <SideMenu />
+            </ErrorBoundary>
+          </ReactRouter>
+        </QueryClientProvider>
       </Provider>
     </React.StrictMode>
   );
