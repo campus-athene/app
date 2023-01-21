@@ -25,6 +25,7 @@ import {
   Map,
   Newspaper,
   Orientation,
+  Room,
   Settings,
   Sport,
 } from './icons';
@@ -188,6 +189,14 @@ const SideMenu = () => {
       </HomeButton>
       <HomeButton target={'/maps?hamburger'} icon={Map}>
         Campuskarten
+      </HomeButton>
+      <HomeButton
+        icon={Room}
+        onClick={() =>
+          window.open('https://rc.tucan.tu-darmstadt.de/', '_blank')
+        }
+      >
+        Lernräume
       </HomeButton>
 
       {courses.map((c, i) => (
