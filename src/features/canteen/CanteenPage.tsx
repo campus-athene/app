@@ -17,6 +17,7 @@ import {
   selectCanteen,
   setCanteen,
 } from './canteenSettings';
+import closedCanteen from './closedCanteen.svg';
 import DishTypeImage from './DishTypeImage';
 import foodPlaceholderSq from './foodPlaceholderSq.svg';
 import Star from './Star';
@@ -154,63 +155,75 @@ const CanteenPage = () => {
         </div>
         <NavButton icon={faAngleRight} offset={1} />
       </div>
-      <div style={{ flexShrink: 1, overflow: 'scroll' }}>
-        {data?.menuItems
-          .filter((m) => m.date === selection / 1000)
-          .map((m) => (
-            <div
-              className="flex h-24"
-              key={m.id}
-              style={{
-                borderBottom: '1px solid lightgray',
-              }}
-            >
-              <div className="relative w-24 flex-shrink-0">
-                <img
-                  alt=""
-                  className="absolute h-auto w-24 object-cover"
-                  src={foodPlaceholderSq}
-                />
-                <img
-                  alt=""
-                  className="absolute h-full w-24 object-cover"
-                  src={m.dish.image?.thumbUrl}
-                />
-              </div>
-              <div className="flex flex-grow flex-col  px-2.5 py-2 text-sm">
-                <div className="flex items-baseline">
-                  <div className="flex flex-shrink-0 gap-0.5">
-                    <Star shine={true} />
-                    <Star shine={m.dish.rating > 1} />
-                    <Star shine={m.dish.rating > 2} />
-                    <Star shine={m.dish.rating > 3} />
-                    <Star shine={m.dish.rating > 4} />
-                  </div>
-                  <span className="flex-grow text-center text-xs font-semibold">
-                    {[...m.dish.additionals, ...m.dish.allergics].join(' ')}
-                  </span>
-                  <div
-                    style={{
-                      alignSelf: 'start',
-                      height: '1.25em',
-                      width: '1.25em',
-                    }}
-                  >
-                    <DishTypeImage type={m.dish.type} />
-                  </div>
-                  <div style={{ minWidth: '3em', textAlign: 'right' }}>
-                    {new Intl.NumberFormat('de-DE', {
-                      style: 'currency',
-                      currency: 'EUR',
-                    }).format(m.dish.price)}
-                  </div>
+
+      {data === undefined ? null : data.menuItems.filter(
+          (m) => m.date === selection / 1000
+        ).length ? (
+        <div style={{ flexShrink: 1, overflow: 'scroll' }}>
+          {data.menuItems
+            .filter((m) => m.date === selection / 1000)
+            .map((m) => (
+              <div
+                className="flex h-24"
+                key={m.id}
+                style={{
+                  borderBottom: '1px solid lightgray',
+                }}
+              >
+                <div className="relative w-24 flex-shrink-0">
+                  <img
+                    alt=""
+                    className="absolute h-auto w-24 object-cover"
+                    src={foodPlaceholderSq}
+                  />
+                  <img
+                    alt=""
+                    className="absolute h-full w-24 object-cover"
+                    src={m.dish.image?.thumbUrl}
+                  />
                 </div>
-                <span>{m.issuingOffice.name}</span>
-                <span className="font-medium line-clamp-2">{m.dish.name}</span>
+                <div className="flex flex-grow flex-col  px-2.5 py-2 text-sm">
+                  <div className="flex items-baseline">
+                    <div className="flex flex-shrink-0 gap-0.5">
+                      <Star shine={true} />
+                      <Star shine={m.dish.rating > 1} />
+                      <Star shine={m.dish.rating > 2} />
+                      <Star shine={m.dish.rating > 3} />
+                      <Star shine={m.dish.rating > 4} />
+                    </div>
+                    <span className="flex-grow text-center text-xs font-semibold">
+                      {[...m.dish.additionals, ...m.dish.allergics].join(' ')}
+                    </span>
+                    <div
+                      style={{
+                        alignSelf: 'start',
+                        height: '1.25em',
+                        width: '1.25em',
+                      }}
+                    >
+                      <DishTypeImage type={m.dish.type} />
+                    </div>
+                    <div style={{ minWidth: '3em', textAlign: 'right' }}>
+                      {new Intl.NumberFormat('de-DE', {
+                        style: 'currency',
+                        currency: 'EUR',
+                      }).format(m.dish.price)}
+                    </div>
+                  </div>
+                  <span>{m.issuingOffice.name}</span>
+                  <span className="font-medium line-clamp-2">
+                    {m.dish.name}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
-      </div>
+            ))}
+        </div>
+      ) : (
+        <div className="flex flex-shrink flex-grow flex-col items-center justify-center text-2xl font-medium">
+          <img alt="" className="h-64" src={closedCanteen} />
+          <div className="mt-10 text-gray-500">Die Mensa hat geschlossen.</div>
+        </div>
+      )}
     </PageFrame>
   );
 };
