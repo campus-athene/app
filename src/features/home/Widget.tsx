@@ -1,4 +1,5 @@
 import React, { CSSProperties, HTMLAttributes, ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 export const WidgetTitle = (props: HTMLAttributes<HTMLHeadingElement>) =>
   React.createElement('h4', {
@@ -12,7 +13,7 @@ export const WidgetTitle = (props: HTMLAttributes<HTMLHeadingElement>) =>
 export const WidgetBox = (props: HTMLAttributes<HTMLDivElement>) =>
   React.createElement('div', {
     ...props,
-    className: ['snap-start', props.className].join(' '),
+    className: twMerge('snap-start', props.className),
     style: {
       border: '1px solid lightgray',
       borderRadius: '1rem',
@@ -50,10 +51,10 @@ export const ScrollWidget = (props: {
       {props.title}
     </WidgetTitle>
     <div
-      className={[
+      className={twMerge(
         'no-scrollbar flex snap-x snap-mandatory scroll-p-4 gap-2 overflow-x-scroll px-3',
-        props.className,
-      ].join(' ')}
+        props.className
+      )}
     >
       {props.children}
     </div>

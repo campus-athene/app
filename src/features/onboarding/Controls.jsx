@@ -1,20 +1,21 @@
 import React from 'react';
+import { twMerge } from 'tailwind-merge';
 import BaseButton from '../../components/Button';
 
 export const Button = (props) =>
   React.createElement(BaseButton, {
     ...props,
-    className: ['rounded-full', props.className].join(' '),
+    className: twMerge('rounded-full text-white', props.className),
   });
 
 export const Input = (props) =>
   React.createElement('input', {
     type: 'text',
     ...props,
-    className: [
+    className: twMerge(
       'rounded-full px-4 bg-white bg-opacity-80 focus-visible:bg-opacity-100',
-      props.className,
-    ].join(' '),
+      props.className
+    ),
   });
 
 export const Radio = ({ children, checked, label, onChange }) => (

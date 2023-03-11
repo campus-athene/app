@@ -1,5 +1,6 @@
 import { SwipeableDrawer, SwipeableDrawerProps } from '@mui/material';
 import { HTMLAttributes } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 type ContextMenuProps = { closeOnClick?: boolean } & Omit<
   SwipeableDrawerProps,
@@ -15,10 +16,10 @@ const ContextMenu = (props: ContextMenuProps) => {
       {...props}
       PaperProps={{
         ...props.PaperProps,
-        className: [
+        className: twMerge(
           'divide-y rounded-2xl m-2',
-          props.PaperProps?.className,
-        ].join(' '),
+          props.PaperProps?.className
+        ),
         onClick: (e) =>
           props.closeOnClick !== false ? props.onClose(e) : undefined,
         style: {
@@ -32,10 +33,7 @@ const ContextMenu = (props: ContextMenuProps) => {
 
 export const ContextMenuItem = (props: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div
-      {...props}
-      className={['px-4 py-3 text-lg', props.className].join(' ')}
-    >
+    <div {...props} className={twMerge('px-4 py-3 text-lg', props.className)}>
       {props.children}
     </div>
   );
