@@ -10,7 +10,7 @@ import NotificationsPage from './NotificationsPage';
 import PrivacyPage from './PrivacyPage';
 import WelcomePage from './WelcomePage';
 
-const Onboarding = () => {
+const Onboarding = (): JSX.Element => {
   const needsLogin = !useSelector(selectCreds());
   const needsSetup = useSelector(selectNeedsNotificationSetup());
   const needsPrivacySetup = useSelector(selectNeedsPrivacySetup());

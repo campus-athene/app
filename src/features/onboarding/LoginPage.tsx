@@ -1,20 +1,20 @@
 import { CircularProgress } from '@mui/material';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import Logo from '../../components/Logo';
+import { useAppDispatch } from '../../redux/hooks';
 import { login } from '../auth/authSlice';
 import { Button, Input } from './Controls';
 
 const LoginPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const [processing, setProcessing] = useState();
-  const [error, setError] = useState();
+  const [processing, setProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-  const onSubmit = async (event) => {
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
 
     setProcessing(true);
@@ -69,7 +69,7 @@ const LoginPage = () => {
         <div
           className="rounded-2xl border border-yellow-800 bg-yellow-100 text-yellow-800"
           style={{
-            visibility: error ? null : 'hidden',
+            visibility: error ? undefined : 'hidden',
             marginBottom: '0',
             padding: '0.375rem 0.75rem',
             overflow: 'hidden',
