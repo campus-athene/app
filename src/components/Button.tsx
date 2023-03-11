@@ -11,7 +11,7 @@ const Button = (
     <button
       {...props}
       className={twMerge(
-        'rounded-lg bg-amber-500 px-4 py-2 text-base font-semibold text-white',
+        'rounded-lg bg-accent px-4 py-2 text-base font-semibold text-black',
         props.className
       )}
     >

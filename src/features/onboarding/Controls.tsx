@@ -1,17 +1,29 @@
-import React, { DetailedHTMLProps } from 'react';
+import React from 'react';
 import { twMerge } from 'tailwind-merge';
 import BaseButton from '../../components/Button';
 
 export const Button = (
-  props: DetailedHTMLProps<
+  props: React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   >
-) =>
-  React.createElement(BaseButton, {
-    ...props,
-    className: twMerge('rounded-full text-white', props.className),
-  });
+) => (
+  <BaseButton {...props} className={twMerge('rounded-full', props.className)} />
+);
+
+export const SecondaryButton = (
+  props: React.DetailedHTMLProps<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    HTMLButtonElement
+  >
+) => {
+  return (
+    <button
+      {...props}
+      className={twMerge('text-chalk underline', props.className)}
+    />
+  );
+};
 
 export const Input = (
   props: React.DetailedHTMLProps<
@@ -31,58 +43,60 @@ export const Input = (
 export const Radio = (props: {
   checked?: boolean;
   children?: React.ReactNode;
+  className?: string;
   label?: React.ReactNode;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  style?: React.CSSProperties;
 }) => (
-  <label style={{ color: 'lightgray' }}>
+  <label
+    className={twMerge('text-chalk inline-block', props.className)}
+    style={props.style}
+  >
     <div>
       <input type="radio" checked={props.checked} onChange={props.onChange} />
-      <span style={{ fontSize: '1.1em', marginLeft: '0.4em' }}>
+      <span className="text-lg" style={{ marginLeft: '0.4em' }}>
         {props.label}
       </span>
     </div>
-    <div style={{ fontSize: '0.9em' }}>{props.children}</div>
+    <div>{props.children}</div>
   </label>
 );
 
 export const Frame = (
-  props: DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+  props: React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >
 ) => (
   <div
     {...props}
-    style={{
-      height: '100vh',
-      background: '#372649',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-evenly',
-      paddingTop: 'env(safe-area-inset-bottom))',
-      paddingBottom: 'env(safe-area-inset-bottom))',
-    }}
-  >
-    {props.children}
-  </div>
+    className={twMerge(
+      'flex h-screen flex-col justify-evenly bg-theme pt-safe pb-safe',
+      props.className
+    )}
+  />
 );
 
 export const Heading = (
-  props: DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+  props: React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >
 ) => (
   <h3
     {...props}
-    className="text-xl"
-    style={{
-      color: 'lightgray',
-      textAlign: 'center',
-    }}
-  >
-    {props.children}
-  </h3>
+    className={twMerge('text-chalk text-center text-2xl', props.className)}
+  />
 );
 
 export const Subheading = (
-  props: DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+  props: React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  >
 ) => (
-  <div {...props} style={{ color: 'lightgray', textAlign: 'center' }}>
-    {props.children}
-  </div>
+  <div
+    {...props}
+    className={twMerge('text-chalk text-center', props.className)}
+  />
 );

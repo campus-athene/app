@@ -4,9 +4,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        theme: '#372649',
+        // These colors are also defined in ./src/app/muiTheme.ts
+        theme: '#27143C',
+        accent: '#FFB800',
+        chalk: '#F0F0F0',
       },
     },
+    fontFamily: {
+      sans: ['"Source Sans 3 VF"', 'sans-serif'],
+    },
   },
-  plugins: [require('@tailwindcss/line-clamp')],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+    require('tailwindcss-safe-area'),
+  ],
 };

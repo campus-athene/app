@@ -2,6 +2,7 @@
 
 import { Capacitor } from '@capacitor/core';
 import { StatusBar } from '@capacitor/status-bar';
+import { ThemeProvider } from '@mui/material';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -9,6 +10,7 @@ import { HashRouter as ReactRouter } from 'react-router-dom';
 import './app/App.css';
 import ErrorBoundary from './app/ErrorBoundary';
 import { log } from './app/errorReporting';
+import muiTheme from './app/muiTheme';
 import Routes from './app/Routes';
 import SideMenu from './features/sideMenu/SideMenu';
 import store from './redux';
@@ -65,12 +67,14 @@ const initializeReact = async () => {
       <Provider store={store}>
         {/* Check for outdated or missing state and fetch is asyncronously from the server. */}
         <UpdateEffect />
-        <ReactRouter>
-          <ErrorBoundary>
-            <Routes />
-            <SideMenu />
-          </ErrorBoundary>
-        </ReactRouter>
+        <ThemeProvider theme={muiTheme}>
+          <ReactRouter>
+            <ErrorBoundary>
+              <Routes />
+              <SideMenu />
+            </ErrorBoundary>
+          </ReactRouter>
+        </ThemeProvider>
       </Provider>
     </React.StrictMode>
   );

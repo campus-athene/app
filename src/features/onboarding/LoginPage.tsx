@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Logo from '../../components/Logo';
 import { useAppDispatch } from '../../redux/hooks';
 import { login } from '../auth/authSlice';
-import { Button, Input } from './Controls';
+import { Button, Frame, Input, Subheading } from './Controls';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
@@ -32,29 +32,16 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      style={{
-        height: '100vh',
-        background: '#372649',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        paddingTop: 'env(safe-area-inset-bottom))',
-        paddingBottom: 'env(safe-area-inset-bottom))',
-      }}
-    >
-      <Logo style={{ height: '40vw' }} />
-      <div
-        className="font-semibold"
-        style={{ color: 'lightgray', textAlign: 'center' }}
-      >
+    <Frame>
+      <Logo className="h-36" />
+      <Subheading>
         <p className="mb-2">Campus</p>
         <p>
           Die App für Studierende
           <br />
-          der TU Darmstadt.
+          der TU Darmstadt
         </p>
-      </div>
+      </Subheading>
       <div></div>
       <form
         onSubmit={onSubmit}
@@ -97,14 +84,14 @@ const LoginPage = () => {
           style={{ height: 'auto' }}
         />
         {processing ? (
-          <CircularProgress style={{ margin: 'auto' }} color="warning" />
+          <CircularProgress style={{ margin: 'auto' }} color="secondary" />
         ) : (
           <Button className="mx-auto" type="submit" disabled={processing}>
             Anmelden
           </Button>
         )}
       </form>
-    </div>
+    </Frame>
   );
 };
 

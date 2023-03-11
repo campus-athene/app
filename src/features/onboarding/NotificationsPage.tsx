@@ -1,6 +1,12 @@
 import { useDispatch } from 'react-redux';
 import { setPushNotif } from '../settings/settingsSlice';
-import { Button, Frame, Heading, Subheading } from './Controls';
+import {
+  Button,
+  Frame,
+  Heading,
+  SecondaryButton,
+  Subheading,
+} from './Controls';
 
 const NotificationsPage = () => {
   const dispatch = useDispatch();
@@ -16,7 +22,7 @@ const NotificationsPage = () => {
           <br />
           erhalten, wenn Du auf TUCaN
           <br />
-          eine Nachricht erhälst?
+          eine Nachricht erhältst?
         </p>
         <p>
           Du kannst sie jederzeit
@@ -26,17 +32,9 @@ const NotificationsPage = () => {
       </Subheading>
       <div style={{ textAlign: 'center' }}>
         <Button onClick={onActivate}>Aktivieren</Button>
-        <button
-          style={{
-            display: 'block',
-            margin: '0.5em auto 0',
-            color: 'lightgray',
-            textDecoration: 'underline',
-          }}
-          onClick={onSkip}
-        >
+        <SecondaryButton className="mx-auto mt-2 block" onClick={onSkip}>
           Später
-        </button>
+        </SecondaryButton>
       </div>
     </Frame>
   );
