@@ -5,6 +5,7 @@ import CanteenPage from '../features/canteen/CanteenPage';
 import CourseRegPage from '../features/courses/CourseRegPage';
 import CourseDetailsPage from '../features/courses/DetailsPage';
 import CourseListPage from '../features/courses/ListPage';
+import DocumentsPage from '../features/documents/DocumentsPage';
 import HomePage from '../features/home/HomePage';
 import MapListPage from '../features/maps/MapListPage';
 import MapViewPage from '../features/maps/MapViewPage';
@@ -44,6 +45,7 @@ const Routes = () => {
       <Route path="/messages" element={<MessagesPage />} />
       <Route path="/news" element={<BrowseNewsPage />} />
       <Route path="/oapp" element={<OappPage />} />
+      <Route path="/documents" element={<DocumentsPage />} />
       <Route path="/settings" element={<SettingsPage />} />
       <Route path="*" element={<NoMatch />} />
     </RoutesCollection>

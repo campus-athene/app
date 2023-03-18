@@ -18,6 +18,7 @@ import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
 import {
   Burger,
   Calendar,
+  Document,
   Envelope,
   Home,
   Lecture,
@@ -212,7 +213,10 @@ const SideMenu = () => {
         </HomeButton>
       ))}
 
-      <HomeButton icon={Settings} separator target="/settings?hamburger">
+      <HomeButton icon={Document} separator target="/documents?hamburger">
+        Dokumente
+      </HomeButton>
+      <HomeButton icon={Settings} target="/settings?hamburger">
         Einstellungen
       </HomeButton>
     </SwipeableDrawer>
