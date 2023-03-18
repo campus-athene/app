@@ -1,10 +1,4 @@
-import {
-  Session,
-  login,
-  messages,
-  myDocuments,
-  set,
-} from '@campus/campusnet-sdk';
+import { login, myDocuments, Session, set } from '@campus/campusnet-sdk';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   selectCampusNetCreds,
@@ -12,7 +6,6 @@ import {
 } from '../../features/auth/authSlice';
 import { AppThunkAction } from '../../redux';
 import { useAppDispatch } from '../../redux/hooks';
-import { MessagesResult } from '../tucan/apiTypes';
 
 if (process.env.NODE_ENV === 'development')
   // During development the REACT_APP_CAMPUSNET_BASE_URL is used as proxy
@@ -102,20 +95,23 @@ const createSession: () => AppThunkAction<Promise<Session>> =
   };
 
 /**
+ * Hook that returns a function that reasolves to a session.
+ */
+const useGetSession = () => {
+  const dispatch = useAppDispatch();
+  return () => sessionPromise || (sessionPromise = dispatch(createSession()));
+};
+
+/**
  * Hook that returns a function that calls a function that requires a session.
  * @argument func The function that requires a session.
  * @argument args The arguments that need to be passed to the function.
  */
-function useWithSession<TResult, TArgs extends []>(
-  func: (session: Session, ...args: TArgs) => Promise<TResult>,
-  ...args: TArgs
-): () => Promise<TResult> {
-  const dispatch = useAppDispatch();
-
-  return async () => {
-    if (!sessionPromise) sessionPromise = dispatch(createSession());
-    return func(await sessionPromise, ...args);
-  };
+export function useWithSession<TResult, TArgs extends unknown[]>(
+  func: (session: Session, ...args: TArgs) => Promise<TResult>
+): (...args: TArgs) => Promise<TResult> {
+  const getSession = useGetSession();
+  return async (...args) => func(await getSession(), ...args);
 }
 
 export const useDocuments = () => {
@@ -123,25 +119,5 @@ export const useDocuments = () => {
   return useQuery({
     queryKey: ['campusnet', 'documents'],
     queryFn,
-  });
-};
-
-export const useMessages = () => {
-  const queryFn = useWithSession(messages);
-
-  return useQuery({
-    queryKey: ['campusnet', 'messages'],
-    queryFn: async (): Promise<MessagesResult['messages']> =>
-      (await queryFn())
-        .filter((m) => m.folder === 'inbox')
-        .map((m) => ({
-          id: m.messageId,
-          subject: m.subject,
-          body: m.body,
-          date: m.sentDateStr,
-          time: m.sentTimeStr,
-          unread: m.unread,
-          from: m.from,
-        })),
   });
 };

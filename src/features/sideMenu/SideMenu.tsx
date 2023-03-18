@@ -12,9 +12,9 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { To, useNavigate } from 'react-router-dom';
 import Logo from '../../components/Logo';
+import { useUnreadMessagesCount } from '../../provider/camusnet/messages';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
-import { selectUnreadCount } from '../messages/messagesSlice';
 import {
   Burger,
   Calendar,
@@ -50,7 +50,7 @@ const SideMenu = () => {
   const courses = useSelector(selectCurrentSemester());
   const menuOpen = useSelector(selectSideMenuOpen());
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
-  const unreadMsgs = useSelector(selectUnreadCount());
+  const unreadMsgs = useUnreadMessagesCount();
 
   const HomeButton = ({
     target,
@@ -147,11 +147,11 @@ const SideMenu = () => {
       </HomeButton>
       <HomeButton target={'/messages?hamburger'} icon={Envelope}>
         Nachrichten
-        {unreadMsgs ? (
+        {unreadMsgs.data ? (
           <>
             {' '}
             <div className="inline-block rounded-full bg-yellow-500 px-2 align-top text-sm font-bold text-black">
-              {unreadMsgs}
+              {unreadMsgs.data > 99 ? '99+' : unreadMsgs.data}
             </div>
           </>
         ) : null}

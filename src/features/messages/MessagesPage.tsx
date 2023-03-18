@@ -1,17 +1,20 @@
 import { ContextMenuItem } from '../../components/ContextMenu';
 import PageFrame from '../../components/PageFrame';
-import { useMessages, UserNotLoggedInError } from '../../provider/camusnet';
-import { useAppDispatch } from '../../redux/hooks';
+import { UserNotLoggedInError } from '../../provider/camusnet';
+import {
+  useMarkAllMessagesRead,
+  useMessages,
+} from '../../provider/camusnet/messages';
 import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 import MessageList from './MessageList';
-import { markAllRead } from './messagesSlice';
 
 // Must start with a capital letter as it is a React component.
 const ContextMenu = () => {
-  const dispatch = useAppDispatch();
+  const markAllMessagesRead = useMarkAllMessagesRead();
+
   return (
     <>
-      <ContextMenuItem onClick={() => dispatch(markAllRead())}>
+      <ContextMenuItem onClick={() => markAllMessagesRead.mutate()}>
         Alle als gelesen markieren
       </ContextMenuItem>
     </>

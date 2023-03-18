@@ -1,13 +1,17 @@
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { useMessages } from '../../provider/camusnet/messages';
 import Widget from '../home/Widget';
 import { Envelope } from '../sideMenu/icons';
 import MessageList from './MessageList';
-import { selectUnreadMessages } from './messagesSlice';
 
 const MessagesWidget = () => {
   const navigate = useNavigate();
-  const unreadMsgs = useSelector(selectUnreadMessages());
+
+  const { data } = useMessages();
+
+  if (!data) return null;
+
+  const unreadMsgs = data.filter((m) => m.unread);
   const unreadMsgCount = unreadMsgs.length;
 
   const numberMsgsShow = unreadMsgCount > 4 ? 3 : unreadMsgCount;

@@ -7,7 +7,6 @@ import canteenData from '../features/canteen/canteenData';
 import { selectCanteen } from '../features/canteen/canteenSettings';
 import { update as updateCourses } from '../features/courses/coursesSlice';
 import { loadArea } from '../features/courses/offersSlice';
-import { update as updateMessages } from '../features/messages/messagesSlice';
 import { update as updateNews } from '../features/news/newsSlice';
 import { syncSettings } from '../features/settings/settingsSlice';
 import { useAppDispatch } from './hooks';
@@ -21,7 +20,6 @@ export const update: () => AppThunkAction<void> =
       ...(creds
         ? [
             syncSettings,
-            updateMessages,
             updateCourses,
             loadArea, // Request course offers from server. They are not included in loadData.
           ]

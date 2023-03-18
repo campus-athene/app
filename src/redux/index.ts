@@ -7,7 +7,6 @@ import canteenSettings from '../features/canteen/canteenSettings';
 import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
 import eventApi from '../features/events/eventApi';
-import messages from '../features/messages/messagesSlice';
 import news from '../features/news/newsSlice';
 import settings from '../features/settings/settingsSlice';
 import sideMenu from '../features/sideMenu/sideMenuSlice';
@@ -28,7 +27,6 @@ const appReducer = combineReducers({
   canteenSettings,
 
   // data
-  messages,
   courses,
   offers,
 });

@@ -1,10 +1,12 @@
+import { utc } from 'moment-timezone';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import sanitizeHtml from 'sanitize-html';
 import Button from '../../components/Button';
 import CardModal from '../../components/CardModal';
-import { useAppDispatch } from '../../redux/hooks';
-import { markRead, selectMessageById } from './messagesSlice';
+import {
+  useMessage,
+  useSetMessageStatus,
+} from '../../provider/camusnet/messages';
 import Sanitize from './Sanitize';
 
 const MessageDialog = ({
@@ -47,15 +49,17 @@ const DialogContent = ({
   messageId: number;
   onClose: React.ReactEventHandler<{}>;
 }) => {
-  const dispatch = useAppDispatch();
-
-  const selected = useSelector(selectMessageById(messageId));
-  const { subject, from, date, time, body } = selected;
+  const message = useMessage(messageId);
+  const setMessageStatus = useSetMessageStatus();
 
   // Hook must not return a value.
   useEffect(() => {
-    messageId && dispatch(markRead(messageId));
-  }, [messageId, dispatch]);
+    message.isSuccess && setMessageStatus.mutate({ messageId });
+  }, [messageId, message.isSuccess, setMessageStatus.mutate]);
+
+  if (!message.data) return <>Lade Nachricht...</>;
+
+  const { subject, from, sent, body } = message.data;
 
   return (
     <>
@@ -68,7 +72,9 @@ const DialogContent = ({
         {subject}
       </Sanitize>
       <div className="mb-4">
-        {date} {time} - {from}
+        {from}
+        <br />
+        {utc(sent).local().locale('de-DE').format('LLLL')}
       </div>
       {body
         .split(/\r?\n(?:\s*\r?\n)+/)
