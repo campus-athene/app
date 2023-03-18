@@ -1,6 +1,6 @@
+import { Message } from '@campus/campusnet-sdk';
 import { utc } from 'moment-timezone';
 import { useState } from 'react';
-import { Message } from '../../provider/camusnet/messages';
 import MessageDialog from './MessageDialog';
 import Sanitize from './Sanitize';
 

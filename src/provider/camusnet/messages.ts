@@ -2,27 +2,16 @@ import * as cn from '@campus/campusnet-sdk';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useWithSession } from '.';
 
-export type Message = {
-  messageId: number;
-  subject: string;
-  body: string;
-  sent: number;
-  sentDateStr: string;
-  sentTimeStr: string;
-  folder: string;
-  unread: boolean;
-  from: string;
-  to: string;
-};
-
 const queryKey = ['campusnet', 'messages'];
 
-const useMessagesWithSelector = <TData>(select: (data: Message[]) => TData) => {
+const useMessagesWithSelector = <TData>(
+  select: (data: cn.Message[]) => TData
+) => {
   const queryFn = useWithSession(cn.messages);
 
-  return useQuery<Message[], unknown, TData, string[]>({
+  return useQuery<cn.Message[], unknown, TData, string[]>({
     queryKey,
-    queryFn: async (): Promise<Message[]> =>
+    queryFn: async (): Promise<cn.Message[]> =>
       (await queryFn()).filter((m) => m.folder === 'inbox'),
     select,
   });
@@ -47,10 +36,10 @@ export const useSetMessageStatus = () => {
   type QueryArgs = { messageId: number; unread?: boolean };
 
   const queryClient = useQueryClient();
-  const setMessageStatusWithSession = useWithSession(cn.setStatus);
+  const setMessageStatusWithSession = useWithSession(cn.setMessageStatus);
 
   const mutationFn = (args: QueryArgs) =>
-    setMessageStatusWithSession(args.messageId, !args.unread);
+    setMessageStatusWithSession(args.messageId, args.unread);
 
   return useMutation({
     mutationFn,
@@ -60,7 +49,7 @@ export const useSetMessageStatus = () => {
 
       queryClient.setQueryData(
         queryKey,
-        (messages?: Message[]) =>
+        (messages?: cn.Message[]) =>
           messages &&
           messages.map((m) =>
             m.messageId === messageId
@@ -86,7 +75,7 @@ export const useSetMessageStatus = () => {
 export const useMarkAllMessagesRead = () => {
   const queryClient = useQueryClient();
 
-  const setStatusWithSession = useWithSession(cn.setStatus);
+  const setStatusWithSession = useWithSession(cn.setMessageStatus);
   const messages = useMessages();
 
   return useMutation({
@@ -95,7 +84,7 @@ export const useMarkAllMessagesRead = () => {
       Promise.all(
         messages.data
           .filter((m) => m.unread)
-          .map((m) => setStatusWithSession(m.messageId, true))
+          .map((m) => setStatusWithSession(m.messageId, false))
       ),
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey });
@@ -103,7 +92,7 @@ export const useMarkAllMessagesRead = () => {
 
       queryClient.setQueryData(
         queryKey,
-        (messages?: Message[]) =>
+        (messages?: cn.Message[]) =>
           messages &&
           messages.map((m) => ({
             ...m,
