@@ -2,9 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Source Sans 3 VF';
+  font-weight: 200 900;
+  font-style: normal;
+  font-stretch: normal;
+  src: url('SourceSans3VF-Roman.otf.woff') format('woff');
+}
+
 body {
   overflow: hidden;
   user-select: none;
+  font-feature-settings: 'ss02', 'ss03'; /* Alternate glyphs for a and g */
 }
 
 .no-scrollbar::-webkit-scrollbar {

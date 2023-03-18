@@ -63,15 +63,8 @@ const DialogContent = ({
 
   return (
     <>
-      <Sanitize
-        style={{
-          fontSize: '1.2em',
-          fontWeight: 'bold',
-        }}
-      >
-        {subject}
-      </Sanitize>
-      <div className="mb-4">
+      <Sanitize className="mb-1 mt-4 text-xl font-semibold">{subject}</Sanitize>
+      <div className="mb-6 text-sm text-neutral-500">
         {from}
         <br />
         {utc(sent).local().locale('de-DE').format('LLLL')}
@@ -82,16 +75,13 @@ const DialogContent = ({
         .map((v, i) => (
           <p
             key={i}
-            className="mb-2"
+            className="mb-2 select-text break-words"
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(v) }}
-            style={{
-              overflowWrap: 'break-word',
-              userSelect: 'text',
-              WebkitUserSelect: 'text',
-            }}
           />
         ))}
-      <Button onClick={onClose}>Schließen</Button>
+      <Button className="mt-8" onClick={onClose}>
+        Schließen
+      </Button>
     </>
   );
 };

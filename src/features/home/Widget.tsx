@@ -1,21 +1,17 @@
 import React, { CSSProperties, HTMLAttributes, ReactNode } from 'react';
+import { twMerge } from 'tailwind-merge';
 
 export const WidgetTitle = (props: HTMLAttributes<HTMLHeadingElement>) =>
   React.createElement('h4', {
     ...props,
     className: 'font-normal text-lg mb-1',
-    style: {
-      ...props.style,
-    },
   });
 
 export const WidgetBox = (props: HTMLAttributes<HTMLDivElement>) =>
   React.createElement('div', {
     ...props,
-    className: ['snap-start', props.className].join(' '),
+    className: twMerge('snap-start rounded-xl border', props.className),
     style: {
-      border: '1px solid lightgray',
-      borderRadius: '1rem',
       // Fix Safari not cropping in rounded corners
       WebkitMaskImage: '-webkit-radial-gradient(white, black)',
       ...props.style,
@@ -50,10 +46,10 @@ export const ScrollWidget = (props: {
       {props.title}
     </WidgetTitle>
     <div
-      className={[
+      className={twMerge(
         'no-scrollbar flex snap-x snap-mandatory scroll-p-4 gap-2 overflow-x-scroll px-3',
-        props.className,
-      ].join(' ')}
+        props.className
+      )}
     >
       {props.children}
     </div>

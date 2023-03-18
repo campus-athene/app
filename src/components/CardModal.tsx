@@ -1,5 +1,6 @@
 import { Drawer, SwipeableDrawer, SwipeableDrawerProps } from '@mui/material';
 import React from 'react';
+import { twMerge } from 'tailwind-merge';
 
 type OptionalProps = 'onOpen' | 'onClose';
 type CardModalProps = { canClose?: boolean } & Omit<
@@ -43,7 +44,7 @@ export const Header = (
   return (
     <h1
       {...props}
-      className={['mb-4 text-lg font-semibold', props.className].join(' ')}
+      className={twMerge('mb-4 text-lg font-semibold', props.className)}
     >
       {props.children}
     </h1>

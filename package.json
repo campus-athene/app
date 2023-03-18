@@ -39,6 +39,8 @@
     "react-transition-group": "^4.4.2",
     "redux": "^4.0.5",
     "sanitize-html": "^2.7.2",
+    "tailwind-merge": "^1.10.0",
+    "tailwindcss-safe-area": "^0.2.2",
     "typescript": "^4.6.3"
   },
   "scripts": {
