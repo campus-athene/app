@@ -14,12 +14,12 @@ const MessageList = (props: {
     <div className="divide-y">
       {props.messages.map(({ id, subject, body, from, date, unread }) => (
         <div
-          className="px-4 py-2"
+          className="px-4 py-3"
           key={id}
           onClick={() => setSelectedMessage(id)}
           style={props.itemStyle}
         >
-          <div className="flex items-baseline">
+          <div className="flex items-baseline text-sm">
             {unread && props.unreadIndicators !== false && (
               <div
                 style={{
@@ -32,15 +32,13 @@ const MessageList = (props: {
                 }}
               />
             )}
-            <div className="flex-grow truncate text-xs font-semibold">
-              {from}
+            <div className="flex-grow truncate font-medium">
+              {from === 'System' ? 'Ankündigungen' : from}
             </div>
-            <div className="flex-shrink-0 text-xs">{date}</div>
+            <div className="flex-shrink-0 text-neutral-500">{date}</div>
           </div>
-          <Sanitize className="truncate text-sm">{subject}</Sanitize>
-          <Sanitize className="text-sm text-neutral-500 line-clamp-2">
-            {body}
-          </Sanitize>
+          <Sanitize className="truncate font-medium">{subject}</Sanitize>
+          <Sanitize className="text-neutral-500 line-clamp-2">{body}</Sanitize>
         </div>
       ))}
       <MessageDialog

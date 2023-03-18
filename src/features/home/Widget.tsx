@@ -5,18 +5,13 @@ export const WidgetTitle = (props: HTMLAttributes<HTMLHeadingElement>) =>
   React.createElement('h4', {
     ...props,
     className: 'font-normal text-lg mb-1',
-    style: {
-      ...props.style,
-    },
   });
 
 export const WidgetBox = (props: HTMLAttributes<HTMLDivElement>) =>
   React.createElement('div', {
     ...props,
-    className: twMerge('snap-start', props.className),
+    className: twMerge('snap-start rounded-xl border', props.className),
     style: {
-      border: '1px solid lightgray',
-      borderRadius: '1rem',
       // Fix Safari not cropping in rounded corners
       WebkitMaskImage: '-webkit-radial-gradient(white, black)',
       ...props.style,

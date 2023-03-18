@@ -22,34 +22,13 @@ const NewsWidget = () => {
             width: 'min(18rem, 100vw - 4rem)',
           }}
         >
-          <div style={{ fontSize: '0.75em' }}>
+          <div className="text-sm">
             {new Date(a.isoDate).toLocaleDateString('de-DE', {
               dateStyle: 'full',
             })}
           </div>
-          <div
-            style={{
-              display: '-webkit-box',
-              fontWeight: 'bold',
-              maxHeight: '3em',
-              overflow: 'hidden',
-              WebkitBoxOrient: 'vertical',
-              WebkitLineClamp: 2,
-            }}
-          >
-            {a.title}
-          </div>
-          <div
-            style={{
-              display: '-webkit-box',
-              maxHeight: '4.5em',
-              overflow: 'hidden',
-              WebkitBoxOrient: 'vertical',
-              WebkitLineClamp: 3,
-            }}
-          >
-            {a.content}
-          </div>
+          <div className="font-semibold line-clamp-2">{a.title}</div>
+          <div className="text-neutral-600 line-clamp-3">{a.content}</div>
         </WidgetBox>
       ))}
     </ScrollWidget>
