@@ -1,4 +1,5 @@
 import { login, myDocuments, Session, set } from '@campus/campusnet-sdk';
+import { CapacitorHttp } from '@capacitor/core';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   selectCampusNetCreds,
@@ -6,6 +7,32 @@ import {
 } from '../../features/auth/authSlice';
 import { AppThunkAction } from '../../redux';
 import { useAppDispatch } from '../../redux/hooks';
+
+if (CapacitorHttp)
+  // Use native http plugin to prevent CORS issues
+  set('onRequest', async (info, url, init) => {
+    const requestHeaders = new Headers(init.headers);
+    if (init.body)
+      requestHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
+
+    const response = await CapacitorHttp.request({
+      data: init.body as string,
+      disableRedirects: true,
+      headers: Object.fromEntries(requestHeaders),
+      method: init.method,
+      responseType: 'text',
+      url,
+    });
+
+    const responseHeaders = new Headers(response.headers);
+    return {
+      headers: {
+        get: (name: string) => responseHeaders.get(name),
+      },
+      status: response.status,
+      text: async () => response.data as string,
+    };
+  });
 
 if (process.env.NODE_ENV === 'development')
   // During development the REACT_APP_CAMPUSNET_BASE_URL is used as proxy
