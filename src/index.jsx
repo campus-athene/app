@@ -91,9 +91,6 @@ const initializeReact = async () => {
   );
 };
 
-// The exams area has been removed, therefor also remove the data.
-localStorage.removeItem('exams');
-
 if (window.cordova)
   document.addEventListener(
     'deviceready',

@@ -6,6 +6,8 @@ import CourseRegPage from '../features/courses/CourseRegPage';
 import CourseDetailsPage from '../features/courses/DetailsPage';
 import CourseListPage from '../features/courses/ListPage';
 import DocumentsPage from '../features/documents/DocumentsPage';
+import ExamDetailsPage from '../features/exams/ExamDetailsPage';
+import ExamListPage from '../features/exams/ExamListPage';
 import HomePage from '../features/home/HomePage';
 import MapListPage from '../features/maps/MapListPage';
 import MapViewPage from '../features/maps/MapViewPage';
@@ -40,6 +42,8 @@ const Routes = () => {
         path="/courses/register/:major/:area/:list/:module"
         element={<CourseDetailsPage registration />}
       />
+      <Route path="/exams" element={<ExamListPage />} />
+      <Route path="/exams/:id" element={<ExamDetailsPage />} />
       <Route path="/maps" element={<MapListPage />} />
       <Route path="/maps/:map" element={<MapViewPage />} />
       <Route path="/messages" element={<MessagesPage />} />

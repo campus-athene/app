@@ -20,6 +20,7 @@ import {
   Calendar,
   Document,
   Envelope,
+  Exam,
   Home,
   Lecture,
   Library,
@@ -162,6 +163,9 @@ const SideMenu = () => {
       </HomeButton>
       <HomeButton target={'/courses?hamburger'} icon={Lecture}>
         Mein Studium
+      </HomeButton>
+      <HomeButton target={'/exams?hamburger'} icon={Exam}>
+        Prüfungen
       </HomeButton>
       <HomeButton target={'/canteen?hamburger'} icon={Burger}>
         Mensa
