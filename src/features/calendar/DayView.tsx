@@ -1,7 +1,6 @@
 import moment, { MomentInput } from 'moment';
 import React, { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
-import { selectAppointmentsOnDay } from './calendarApi';
+import { useAppointmentsOnDay } from '../../provider/camusnet/appointments';
 
 const DayView = (props: {
   autoScrollParent?: boolean;
@@ -11,7 +10,7 @@ const DayView = (props: {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   style?: React.CSSProperties;
 }) => {
-  const apps = useSelector(selectAppointmentsOnDay(props.day));
+  const apps = useAppointmentsOnDay(props.day).data;
 
   const msPerHour = 3600000; // 60 * 60 * 1000 ms per hour
   const padding = 0.9;
@@ -102,7 +101,7 @@ const DayView = (props: {
       ))}
       {apps?.map((app) => (
         <div
-          key={app.id}
+          key={app.appointmentId}
           style={{
             backgroundColor: '#BADEFF',
             border: '1px solid #5FB2FF',
@@ -138,7 +137,7 @@ const DayView = (props: {
               whiteSpace: 'nowrap',
             }}
           >
-            {app.room} | {app.instructor}
+            {app.room} | {app.lecturer}
           </div>
         </div>
       ))}

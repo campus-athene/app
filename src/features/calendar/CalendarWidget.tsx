@@ -1,14 +1,13 @@
 import moment, { utc } from 'moment';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useNextAppointment } from '../../provider/camusnet/appointments';
 import Widget from '../home/Widget';
-import { selectNextAppointment } from './calendarApi';
 import DayView from './DayView';
 
 const CalendarWidget = () => {
   const navigate = useNavigate();
 
-  const nextApp = useSelector(selectNextAppointment());
+  const nextApp = useNextAppointment().data;
   if (!nextApp) return null;
 
   /** Next day on which there is an appointment. */

@@ -10,7 +10,6 @@ import eventApi from '../features/events/eventApi';
 import news from '../features/news/newsSlice';
 import settings from '../features/settings/settingsSlice';
 import sideMenu from '../features/sideMenu/sideMenuSlice';
-import mainApi from '../provider/tucan/tucanApi';
 import global from './globalSlice';
 
 const appReducer = combineReducers({
@@ -19,7 +18,6 @@ const appReducer = combineReducers({
   sideMenu,
   settings,
 
-  [mainApi.reducerPath]: mainApi.reducer,
   [eventApi.reducerPath]: eventApi.reducer,
   [canteenData.reducerPath]: canteenData.reducer,
 
@@ -57,7 +55,6 @@ const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-      .concat(mainApi.middleware)
       .concat(eventApi.middleware)
       .concat(canteenData.middleware),
 });
