@@ -38,7 +38,11 @@ export const useCoursesGroupedBySemester = () =>
     ].sort((a, b) => b.id - a.id)
   );
 
-export const getCourseColor = ({ code }: Module, s: number, bl: number) => {
+export const getCourseColor = (
+  { code }: Pick<Module, 'code'>,
+  s: number,
+  bl: number
+) => {
   // https://www.30secondsofcode.org/js/s/hsb-to-rgb
   const HSBToRGB = (h: number, s: number, b: number) => {
     s /= 100;

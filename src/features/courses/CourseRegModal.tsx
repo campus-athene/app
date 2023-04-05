@@ -1,16 +1,22 @@
 import { Checkbox, CircularProgress, FormControlLabel } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import Button from '../../components/Button';
 import CardModal, { Header } from '../../components/CardModal';
+import { useAppDispatch } from '../../redux/hooks';
 import { register } from './offersSlice';
 
-const CourseRegModal = ({ offer, onClose }) => {
+const CourseRegModal = (props: {
+  offer: any;
+  onClose?: React.MouseEventHandler<HTMLButtonElement> &
+    React.ReactEventHandler<{}>;
+}) => {
+  const { offer, onClose } = props;
+
   const [state, setState] = useState('CONFIRM');
   const [selection, _setSelection] = useState(
     offer && {
       ...Object.fromEntries(
-        offer.courses.map(({ id, status }) => [
+        offer.courses.map(({ id, status }: any) => [
           id,
           offer.status === status ||
             (offer.status === 'edit' && status === 'register'),
@@ -18,10 +24,10 @@ const CourseRegModal = ({ offer, onClose }) => {
       ),
     }
   );
-  const setSelection = (key, value) =>
+  const setSelection = (key: any, value: any) =>
     _setSelection({ ...selection, [key]: value });
-  const [error, setError] = useState();
-  const dispatch = useDispatch();
+  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
 
   if (!offer) return null;
 
@@ -37,7 +43,7 @@ const CourseRegModal = ({ offer, onClose }) => {
       register({
         action: offer.status,
         module: offer.status === 'register' && offer.regArgs ? offer : null,
-        courses: offer.courses.filter((c) =>
+        courses: offer.courses.filter((c: any) =>
           offer.status !== 'edit'
             ? selection[c.id]
             : selection[c.id]
@@ -59,7 +65,7 @@ const CourseRegModal = ({ offer, onClose }) => {
     <CardModal
       canClose={state !== 'EXECUTING'}
       open={true}
-      onClose={() => state !== 'EXECUTING' && onClose()}
+      onClose={(e) => state !== 'EXECUTING' && onClose && onClose(e)}
     >
       <Header>
         {offer.status === 'register'
@@ -91,7 +97,7 @@ const CourseRegModal = ({ offer, onClose }) => {
             ?
           </div>
           <div style={{ marginBottom: '1em' }}>
-            {offer.courses.map((c) => (
+            {offer.courses.map((c: any) => (
               <FormControlLabel
                 control={
                   <Checkbox
@@ -117,7 +123,9 @@ const CourseRegModal = ({ offer, onClose }) => {
       <div
         className="mt-8 flex items-center"
         style={{ height: '4.5rem' }}
-        onClick={() => (state === 'SUCCESS' || state === 'ERROR') && onClose()}
+        onClick={(e) =>
+          (state === 'SUCCESS' || state === 'ERROR') && onClose && onClose(e)
+        }
       >
         {state === 'CONFIRM' ? (
           <>
@@ -127,7 +135,9 @@ const CourseRegModal = ({ offer, onClose }) => {
             <Button
               onClick={execute}
               className={
-                Object.values(selection).some((s) => s) ? null : 'bg-amber-200'
+                Object.values(selection).some((s) => s)
+                  ? undefined
+                  : 'bg-amber-200'
               }
             >
               {offer.status === 'register'
