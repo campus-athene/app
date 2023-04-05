@@ -1,152 +1,42 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { log } from '../../app/errorReporting';
-import { session } from '../../provider/tucan';
-import { CourseDetailsResult, Module } from '../../provider/tucan/apiTypes';
+import { useCoursesWithSelectorFromGroupedByModule } from '../../provider/camusnet/courses';
+import { Module } from '../../provider/tucan/apiTypes';
 import {
   descriptions as semesterDescs,
   getRegSemester,
   getSemester,
   Semester,
 } from '../../provider/tucan/semesters';
-import { AppThunkAction, RootState } from '../../redux';
-import { selectCreds } from '../auth/authSlice';
 
-type CourseItems = { [semester: number]: { [code: string]: Module } };
+export const useCoursesBySemesterAndNumber = (
+  semester?: number,
+  code?: string
+) =>
+  useCoursesWithSelectorFromGroupedByModule((modules) => {
+    if (semester === undefined || code === undefined)
+      throw new Error('Selector from a disabled query was called.');
+    return modules[semester][code];
+  }, semester !== undefined && code !== undefined);
 
-const loadState = ({ items }: { items: CourseItems }) => {
-  try {
-    const local = localStorage.getItem('courses');
-    if (!local) return;
-
-    JSON.parse(local).forEach(
-      (e: Module) =>
-        ((items[e.semester] || (items[e.semester] = {}))[e.code] = e)
-    );
-  } catch (e) {
-    log('error', 'coursesSlice.loadState threw an error.', e);
-  }
-};
-
-const saveState = ({ items }: { items: CourseItems }) => {
-  localStorage.setItem(
-    'courses',
-    JSON.stringify(
-      Object.values(items)
-        .map((s) => Object.values(s))
-        .flat()
+export const useCoursesFromCurrentSemester = () =>
+  useCoursesWithSelectorFromGroupedByModule((modules) =>
+    Object.values(modules[getSemester()] || {}).sort((a, b) =>
+      a.code < b.code ? -1 : a.code > b.code ? 1 : 0
     )
   );
-};
 
-const coursesSlice = createSlice({
-  name: 'courses',
-  initialState: {
-    items: {} as CourseItems,
-    details: {} as { [id: number]: CourseDetailsResult },
-    status: 'initial',
-  },
-  reducers: {
-    setStatus(state, { payload }) {
-      state.status = payload;
-    },
-    setDetails(state, { payload }: { payload: CourseDetailsResult }) {
-      state.details[payload.id] = payload;
-    },
-    reset(state, { payload: { courses } }: { payload: { courses: Module[] } }) {
-      state.items = {};
-      courses.forEach((c) => {
-        (state.items[c.semester] || (state.items[c.semester] = {}))[c.code] = c;
-      });
-      saveState(state);
-    },
-  },
-  extraReducers: (builder) => {
-    builder.addCase('@@INIT', loadState);
-  },
-});
-
-const { setStatus, setDetails } = coursesSlice.actions;
-export const { reset } = coursesSlice.actions;
-
-export const update: () => AppThunkAction<Promise<void>> =
-  () => async (dispatch, getState) => {
-    const creds = selectCreds()(getState());
-    if (!creds) {
-      log('warning', 'coursesSlice.update was called without creds being set.');
-      return;
-    }
-    dispatch(setStatus('loading'));
-    try {
-      const response = await new session(creds).getCourses();
-      dispatch(reset({ courses: response.modules }));
-      dispatch(setStatus('loaded'));
-    } catch (e) {
-      log('error', 'coursesSlice.update raised an error.', e);
-      dispatch(setStatus('error'));
-    }
-  };
-
-export const useDetails: (
-  id: number
-) =>
-  | { loading: true; result: null; error: null }
-  | { loading: false; result: CourseDetailsResult; error: null }
-  | { loading: false; result: null; error: string } = (id) => {
-  const cache = useSelector((state: RootState) => state.courses.details[id]);
-  const creds = useSelector(selectCreds());
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (creds)
-      new session(creds)
-        .getCourseDetails({ id })
-        .then((r) => dispatch(setDetails(r)));
-  }, [creds, dispatch, id]);
-
-  if (!creds)
-    return { loading: false, result: null, error: 'Not authenticated' };
-
-  return cache
-    ? { loading: false, result: cache, error: null }
-    : { loading: true, result: null, error: null };
-};
-
-export const selectSyncState =
-  () =>
-  ({ courses: { status } }: RootState) => ({
-    isLoading: status === 'loading',
-    isOffline: status === 'error',
-  });
-
-export const selectBySemesterAndNumber =
-  (semester: number, code: string) =>
-  ({ courses }: RootState) =>
-    courses.items[semester][code];
-
-export const selectCurrentSemester =
-  () =>
-  ({ courses }: RootState) =>
-    Object.values(courses.items[getSemester()] || {}).sort((a, b) =>
-      a.code < b.code ? -1 : a.code > b.code ? 1 : 0
-    );
-
-export const selectGroupedBySemester =
-  () =>
-  ({ courses }: RootState) =>
+export const useCoursesGroupedBySemester = () =>
+  useCoursesWithSelectorFromGroupedByModule((modules) =>
     [
-      ...Object.keys({ [getRegSemester()]: null, ...courses.items }).map(
-        (key) => {
-          const semester = Number.parseInt(key) as Semester;
-          return {
-            id: semester,
-            name: semesterDescs[semester] || 'Sonstige',
-            courses: Object.values(courses.items[semester] || {}),
-          };
-        }
-      ),
-    ].sort((a, b) => b.id - a.id);
+      ...Object.keys({ [getRegSemester()]: null, ...modules }).map((key) => {
+        const semester = Number.parseInt(key) as Semester;
+        return {
+          id: semester,
+          name: semesterDescs[semester] || 'Sonstige',
+          courses: Object.values(modules[semester] || {}),
+        };
+      }),
+    ].sort((a, b) => b.id - a.id)
+  );
 
 export const getCourseColor = ({ code }: Module, s: number, bl: number) => {
   // https://www.30secondsofcode.org/js/s/hsb-to-rgb
@@ -168,5 +58,3 @@ export const getCourseColor = ({ code }: Module, s: number, bl: number) => {
   );
   return `#${r}${g}${b}`;
 };
-
-export default coursesSlice.reducer;

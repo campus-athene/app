@@ -1,24 +1,22 @@
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import PageFrame from '../../components/PageFrame';
 import { getRegSemester } from '../../provider/tucan/semesters';
-import {
-  getCourseColor,
-  selectGroupedBySemester,
-  selectSyncState,
-} from './coursesSlice';
+import { getCourseColor, useCoursesGroupedBySemester } from './coursesSlice';
 
 const ListPage = () => {
   const navigate = useNavigate();
-  const semesters = useSelector(selectGroupedBySemester());
+  const semesters = useCoursesGroupedBySemester();
   return (
     <PageFrame
       className="divide-y"
       title="Mein Studium"
-      syncState={useSelector(selectSyncState())}
+      syncState={{
+        isLoading: semesters.isLoading,
+        isOffline: semesters.isError,
+      }}
     >
       {semesters.map(({ id: semesterId, name: semesterName, courses }) => (
         <React.Fragment key={semesterId}>

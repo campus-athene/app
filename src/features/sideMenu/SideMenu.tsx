@@ -14,7 +14,10 @@ import { To, useNavigate } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import { useUnreadMessagesCount } from '../../provider/camusnet/messages';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
-import { getCourseColor, selectCurrentSemester } from '../courses/coursesSlice';
+import {
+  getCourseColor,
+  useCoursesFromCurrentSemester,
+} from '../courses/coursesSlice';
 import {
   Burger,
   Calendar,
@@ -49,7 +52,7 @@ const SideMenu = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const courses = useSelector(selectCurrentSemester());
+  const courses = useCoursesFromCurrentSemester().data;
   const menuOpen = useSelector(selectSideMenuOpen());
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
   const unreadMsgs = useUnreadMessagesCount();
@@ -204,7 +207,7 @@ const SideMenu = () => {
         Lernräume
       </HomeButton>
 
-      {courses.map((c, i) => (
+      {courses?.map((c, i) => (
         <HomeButton
           color={getCourseColor(c, 70, 100)}
           key={c.code}

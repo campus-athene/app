@@ -6,7 +6,7 @@ import NavButton from '../../components/NavButton';
 import PageFrame from '../../components/PageFrame';
 import { Module } from '../../provider/tucan/apiTypes';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
-import { getCourseColor, selectBySemesterAndNumber } from './coursesSlice';
+import { getCourseColor, useCoursesBySemesterAndNumber } from './coursesSlice';
 import { selectOffer } from './offersSlice';
 import OverviewTab from './OverviewTab';
 
@@ -20,7 +20,12 @@ const DetailsPage = () => {
     module: moduleId,
   } = useParams();
   const number = numberEncoded && decodeURIComponent(numberEncoded);
-  const module: Module | null = useSelector(
+
+  const fromSemesterNumber = useCoursesBySemesterAndNumber(
+    semester !== undefined ? Number.parseInt(semester) : undefined,
+    number
+  ).data;
+  const fromMajorAreaListId = useSelector(
     major && area && list && moduleId
       ? selectOffer(
           Number.parseInt(major),
@@ -28,10 +33,9 @@ const DetailsPage = () => {
           Number.parseInt(list),
           Number.parseInt(moduleId)
         )
-      : semester && number
-      ? selectBySemesterAndNumber(Number.parseInt(semester), number)
       : () => null
   );
+  const module: Module | null = fromSemesterNumber || fromMajorAreaListId;
 
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 

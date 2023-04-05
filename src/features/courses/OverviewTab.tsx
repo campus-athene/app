@@ -7,6 +7,7 @@ import { OverridableComponent } from '@mui/types';
 import { useState } from 'react';
 import sanitizeHtml from 'sanitize-html';
 import Button from '../../components/Button';
+import { useCourseDetails } from '../../provider/camusnet/courses';
 import {
   Course,
   CourseOffer,
@@ -16,7 +17,6 @@ import {
 import { descriptions as semesterDescs } from '../../provider/tucan/semesters';
 import './CourseDetail.css';
 import CourseRegModal from './CourseRegModal';
-import { useDetails } from './coursesSlice';
 
 const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
   props: SkeletonProps
@@ -30,7 +30,7 @@ const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
 
 const CourseDetails = (params: { course: Course | CourseOffer }) => {
   const course = params.course;
-  const details = useDetails(params.course.id);
+  const details = useCourseDetails(params.course.id);
 
   return (
     <>
@@ -41,22 +41,22 @@ const CourseDetails = (params: { course: Course | CourseOffer }) => {
         <b>{course.name}</b>
       </p>
       <p style={{ marginBottom: '1em' }}>{course.instructor}</p>
-      {details.loading ? (
+      {details.isLoading ? (
         <p>
           <Skeleton width={210} /> <Skeleton width={120} />{' '}
           <Skeleton width={240} /> <Skeleton width={120} />{' '}
           <Skeleton width={150} /> <Skeleton width={150} />
         </p>
       ) : (
-        details.result?.details
-          .filter((d) => d.value)
+        details.data
+          ?.filter((d) => d.value)
           .map((d) => (
             <div
               className="courseDetail"
-              key={d.title}
+              key={d.name}
               style={{ marginBottom: '0.5em' }}
             >
-              <span style={{ color: 'gray' }}>{d.title}: </span>
+              <span style={{ color: 'gray' }}>{d.name}: </span>
               {d.value
                 .replaceAll(/<br\s*\/>(?!\s*<br \s*\/>)/g, '')
                 .split(/\r?\n(?:\s*\r?\n)+/)

@@ -4,7 +4,6 @@ import { log } from '../app/errorReporting';
 import auth from '../features/auth/authSlice';
 import canteenData from '../features/canteen/canteenData';
 import canteenSettings from '../features/canteen/canteenSettings';
-import courses from '../features/courses/coursesSlice';
 import offers from '../features/courses/offersSlice';
 import eventApi from '../features/events/eventApi';
 import news from '../features/news/newsSlice';
@@ -25,7 +24,6 @@ const appReducer = combineReducers({
   canteenSettings,
 
   // data
-  courses,
   offers,
 });
 
