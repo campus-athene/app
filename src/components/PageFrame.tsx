@@ -1,3 +1,4 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
@@ -13,6 +14,7 @@ const PageFrame = (props: {
   style?: React.CSSProperties;
   noMenu?: boolean;
   more?: React.ReactNode;
+  moreIcon?: IconProp;
   syncState?: { isLoading: boolean; isOffline: boolean };
 }) => {
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
@@ -67,7 +69,7 @@ const PageFrame = (props: {
               width: '3.5rem',
             }}
           >
-            <FontAwesomeIcon icon={faEllipsisH} />
+            <FontAwesomeIcon icon={props.moreIcon || faEllipsisH} />
           </div>
         )}
       </nav>

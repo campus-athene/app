@@ -104,3 +104,14 @@ export const useCourseDetails = (id: number) => {
     queryFn: () => queryFn(id),
   });
 };
+
+export const useCourseOffers = (major = 0, area = 0, list = 0) => {
+  const queryFn = useWithSession(cn.courseOffers);
+
+  // If major is 0, data will be chached for the value 0. This behaviour
+  // should be changed to cache for the data for the actual major.
+  return useQuery({
+    queryKey: ['campusnet', 'courseOffers', major, area, list],
+    queryFn: () => queryFn(major, area, list),
+  });
+};
