@@ -1,13 +1,13 @@
+import { ModuleOffer } from '@campus/campusnet-sdk';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { log } from '../../app/errorReporting';
 import NavButton from '../../components/NavButton';
 import PageFrame from '../../components/PageFrame';
-import { Module } from '../../provider/camusnet/courses';
+import { Module, useCourseOffers } from '../../provider/camusnet/courses';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import { getCourseColor, useCoursesBySemesterAndNumber } from './coursesSlice';
-import { selectOffer } from './offersSlice';
 import OverviewTab from './OverviewTab';
 
 const DetailsPage = () => {
@@ -17,25 +17,22 @@ const DetailsPage = () => {
     major,
     area,
     list,
-    module: moduleId,
+    module: moduleIdString,
   } = useParams();
   const number = numberEncoded && decodeURIComponent(numberEncoded);
+  const moduleId = moduleIdString && Number.parseInt(moduleIdString);
 
   const fromSemesterNumber = useCoursesBySemesterAndNumber(
     semester !== undefined ? Number.parseInt(semester) : undefined,
     number
   ).data;
-  const fromMajorAreaListId = useSelector(
-    major && area && list && moduleId
-      ? selectOffer(
-          Number.parseInt(major),
-          Number.parseInt(area),
-          Number.parseInt(list),
-          Number.parseInt(moduleId)
-        )
-      : () => null
-  );
-  const module: Module | null = fromSemesterNumber || fromMajorAreaListId;
+  const fromMajorAreaListId = useCourseOffers(
+    major !== undefined ? Number.parseInt(major) : undefined,
+    area !== undefined ? Number.parseInt(area) : undefined,
+    list !== undefined ? Number.parseInt(list) : undefined
+  ).data?.modules.find((m) => m.moduleId === moduleId);
+  const module: Module | ModuleOffer | undefined =
+    fromSemesterNumber || fromMajorAreaListId;
 
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 

@@ -5,13 +5,10 @@ import {
   SkeletonTypeMap,
 } from '@mui/material';
 import { OverridableComponent } from '@mui/types';
-import { useState } from 'react';
 import sanitizeHtml from 'sanitize-html';
-import Button from '../../components/Button';
 import { Module, useCourseDetails } from '../../provider/camusnet/courses';
 import { descriptions as semesterDescs } from '../../provider/tucan/semesters';
 import './CourseDetail.css';
-import CourseRegModal from './CourseRegModal';
 
 const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
   props: SkeletonProps
@@ -77,10 +74,6 @@ const CourseDetails = (params: { course: CourseMobile | CourseOffer }) => {
 };
 
 const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
-  const registration = 'status' in module;
-
-  const [regDlgOpen, setRegDlgOpen] = useState(false);
-
   return (
     <div
       style={{ fontSize: '0.8em', padding: '0.8em 1em', overflowY: 'scroll' }}
@@ -99,27 +92,9 @@ const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
           </>
         )}
       </p>
-      {registration && (
-        <>
-          <p>
-            {module.status === 'register' && (
-              <Button onClick={() => setRegDlgOpen(true)}>Anmelden</Button>
-            )}
-            {/* {module.status === 'edit' && (
-              <Button onClick={() => setRegDlgOpen(true)}>Ummelden</Button>
-            )} */}
-            {module.status === 'unregister' && (
-              <Button onClick={() => setRegDlgOpen(true)}>Abmelden</Button>
-            )}
-          </p>
-        </>
-      )}
       {module.courses.map((c) => (
         <CourseDetails key={c.courseId} course={c} />
       ))}
-      {registration && regDlgOpen && (
-        <CourseRegModal offer={module} onClose={() => setRegDlgOpen(false)} />
-      )}
     </div>
   );
 };

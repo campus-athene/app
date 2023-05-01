@@ -5,7 +5,6 @@ import { log } from '../app/errorReporting';
 import { selectCreds } from '../features/auth/authSlice';
 import canteenData from '../features/canteen/canteenData';
 import { selectCanteen } from '../features/canteen/canteenSettings';
-import { loadArea } from '../features/courses/offersSlice';
 import { update as updateNews } from '../features/news/newsSlice';
 import { syncSettings } from '../features/settings/settingsSlice';
 import { useAppDispatch } from './hooks';
@@ -16,12 +15,7 @@ export const update: () => AppThunkAction<void> =
 
     const tasks: (() => AppThunkAction<Promise<unknown> | unknown>)[] = [
       updateNews,
-      ...(creds
-        ? [
-            syncSettings,
-            loadArea, // Request course offers from server. They are not included in loadData.
-          ]
-        : []),
+      ...(creds ? [syncSettings] : []),
     ];
 
     Promise.allSettled(
