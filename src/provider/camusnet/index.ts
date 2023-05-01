@@ -1,4 +1,10 @@
-import { login, myDocuments, Session, set } from '@campus/campusnet-sdk';
+import {
+  AccessError,
+  login,
+  myDocuments,
+  Session,
+  set,
+} from '@campus/campusnet-sdk';
 import { CapacitorHttp } from '@capacitor/core';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
@@ -122,7 +128,7 @@ const createSession: () => AppThunkAction<Promise<Session>> =
   };
 
 /**
- * Hook that returns a function that reasolves to a session.
+ * Hook that returns a function that resolves to a session.
  */
 const useGetSession = () => {
   const dispatch = useAppDispatch();
@@ -138,7 +144,20 @@ export function useWithSession<TResult, TArgs extends unknown[]>(
   func: (session: Session, ...args: TArgs) => Promise<TResult>
 ): (...args: TArgs) => Promise<TResult> {
   const getSession = useGetSession();
-  return async (...args) => func(await getSession(), ...args);
+  return async (...args) => {
+    const currentSessionPromise = getSession();
+    try {
+      return await func(await currentSessionPromise, ...args);
+    } catch (e) {
+      if (e instanceof AccessError) {
+        if (sessionPromise === currentSessionPromise) {
+          console.log(`Dropping session due to AccessError of type ${e.type}.`);
+          sessionPromise = null;
+        }
+        return await func(await getSession(), ...args);
+      } else throw e;
+    }
+  };
 }
 
 export const useDocuments = () => {
