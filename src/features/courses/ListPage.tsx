@@ -24,17 +24,19 @@ const ListPage = () => {
             <div className="bg-neutral-100 px-4 py-1 text-sm font-medium">
               {semesterName}
             </div>
-            {courses.map(({ code, name, instructor }) => (
+            {courses.map(({ number, name, lecturer }) => (
               <div
                 className="relative px-4 py-2"
-                key={code}
+                key={number}
                 onClick={() =>
-                  navigate(`/courses/${semesterId}/${encodeURIComponent(code)}`)
+                  navigate(
+                    `/courses/${semesterId}/${encodeURIComponent(number)}`
+                  )
                 }
               >
                 <div
                   style={{
-                    background: getCourseColor({ code }, 90, 70),
+                    background: getCourseColor({ number }, 90, 70),
                     bottom: '0',
                     left: '-10em',
                     position: 'absolute',
@@ -49,8 +51,9 @@ const ListPage = () => {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  <span style={{ fontFamily: 'monospace' }}>{code}</span>&ensp;
-                  {instructor}
+                  <span style={{ fontFamily: 'monospace' }}>{number}</span>
+                  &ensp;
+                  {lecturer}
                 </div>
                 <div
                   style={{

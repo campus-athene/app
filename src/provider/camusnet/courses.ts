@@ -3,24 +3,16 @@ import { useQuery } from '@tanstack/react-query';
 import { useWithSession } from '.';
 import { log } from '../../app/errorReporting';
 
-type MappedCourse = {
-  id: number;
-  groupId: number;
-  code: string;
+export type Module = {
+  number: string;
   name: string;
-  instructor: string;
-};
-
-type MappedModule = {
-  code: string;
-  name: string;
-  instructor: string;
+  lecturer: string;
   semester: cn.Semester;
-  courses: MappedCourse[];
+  courses: cn.CourseMobile[];
 };
 
 type MappedModulesBySemesterAndCode = {
-  [semester: number]: { [code: string]: MappedModule };
+  [semester: number]: { [code: string]: Module };
 };
 
 const queryKey = ['campusnet', 'courses'];
@@ -36,22 +28,26 @@ export const useCoursesWithSelectorFromGroupedByModule = <TData>(
     queryKey,
     queryFn,
     select: (courses) => {
-      type module = {
-        code: string;
-        semester: cn.Semester;
-        courses: cn.CourseMobile[];
-      };
-      const modules = new Map<string, module>();
+      const modules = new Map<string, Module>();
 
       for (const c of courses) {
         if (c.smallGroup) continue;
 
-        const code = c.module.number || c.number;
-        const key = [c.semester, code].join();
+        const number = c.module.number || c.number;
+        const key = [c.semester, number].join();
 
         let m = modules.get(key);
         if (!m)
-          modules.set(key, (m = { code, semester: c.semester, courses: [] }));
+          modules.set(
+            key,
+            (m = {
+              number,
+              name: c.module.name || c.name,
+              lecturer: courses[0].instructors,
+              semester: c.semester,
+              courses: [],
+            })
+          );
 
         m.courses.push(c);
       }
@@ -65,30 +61,13 @@ export const useCoursesWithSelectorFromGroupedByModule = <TData>(
           })
       );
 
-      const mapped: MappedModule[] = Array.from(
-        modules.values(),
-        ({ code, semester, courses: cs }) => ({
-          code,
-          name: cs[0].module.name || cs[0].name,
-          instructor: cs[0].instructors,
-          semester,
-          courses: cs.map((c) => ({
-            id: c.courseId,
-            groupId: c.groupId,
-            code: c.number,
-            name: c.name,
-            instructor: c.instructors,
-          })),
-        })
-      );
-
       type CourseItems = {
-        [semester: number]: { [code: string]: MappedModule };
+        [semester: number]: { [code: string]: Module };
       };
       const asObject: CourseItems = {};
 
-      mapped.forEach((c) => {
-        (asObject[c.semester] || (asObject[c.semester] = {}))[c.code] = c;
+      modules.forEach((c) => {
+        (asObject[c.semester] || (asObject[c.semester] = {}))[c.number] = c;
       });
 
       return select(asObject);

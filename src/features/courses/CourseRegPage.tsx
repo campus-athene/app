@@ -93,7 +93,7 @@ const OfferList = (params: {
                 >
                   <div
                     style={{
-                      background: getCourseColor({ code: number }, 90, 70),
+                      background: getCourseColor({ number }, 90, 70),
                       bottom: '0',
                       left: '-10em',
                       position: 'absolute',

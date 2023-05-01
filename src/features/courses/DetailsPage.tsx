@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { log } from '../../app/errorReporting';
 import NavButton from '../../components/NavButton';
 import PageFrame from '../../components/PageFrame';
-import { Module } from '../../provider/tucan/apiTypes';
+import { Module } from '../../provider/camusnet/courses';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import { getCourseColor, useCoursesBySemesterAndNumber } from './coursesSlice';
 import { selectOffer } from './offersSlice';
@@ -94,7 +94,7 @@ const DetailsPage = () => {
         }}
       >
         <NavButton style={{ marginLeft: '-1rem' }} />
-        <div>{module.instructor}</div>
+        <div>{module.lecturer}</div>
         <div style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
           {module.name}
         </div>

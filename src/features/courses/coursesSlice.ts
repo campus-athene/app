@@ -1,5 +1,7 @@
-import { useCoursesWithSelectorFromGroupedByModule } from '../../provider/camusnet/courses';
-import { Module } from '../../provider/tucan/apiTypes';
+import {
+  Module,
+  useCoursesWithSelectorFromGroupedByModule,
+} from '../../provider/camusnet/courses';
 import {
   descriptions as semesterDescs,
   getRegSemester,
@@ -9,18 +11,18 @@ import {
 
 export const useCoursesBySemesterAndNumber = (
   semester?: number,
-  code?: string
+  number?: string
 ) =>
   useCoursesWithSelectorFromGroupedByModule((modules) => {
-    if (semester === undefined || code === undefined)
+    if (semester === undefined || number === undefined)
       throw new Error('Selector from a disabled query was called.');
-    return modules[semester][code];
-  }, semester !== undefined && code !== undefined);
+    return modules[semester][number];
+  }, semester !== undefined && number !== undefined);
 
 export const useCoursesFromCurrentSemester = () =>
   useCoursesWithSelectorFromGroupedByModule((modules) =>
     Object.values(modules[getSemester()] || {}).sort((a, b) =>
-      a.code < b.code ? -1 : a.code > b.code ? 1 : 0
+      a.number < b.number ? -1 : a.number > b.number ? 1 : 0
     )
   );
 
@@ -39,7 +41,7 @@ export const useCoursesGroupedBySemester = () =>
   );
 
 export const getCourseColor = (
-  { code }: Pick<Module, 'code'>,
+  { number }: Pick<Module, 'number'>,
   s: number,
   bl: number
 ) => {
@@ -54,7 +56,7 @@ export const getCourseColor = (
   };
 
   const hash =
-    (new TextEncoder().encode(code).reduce((p, c) => (p + c) / p, 257) *
+    (new TextEncoder().encode(number).reduce((p, c) => (p + c) / p, 257) *
       39119) %
     360;
   const [r, g, b] = HSBToRGB(hash, s, bl).map((c) =>

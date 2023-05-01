@@ -1,3 +1,4 @@
+import { CourseMobile, CourseOffer, ModuleOffer } from '@campus/campusnet-sdk';
 import {
   Skeleton as MuiSkeleton,
   SkeletonProps,
@@ -7,13 +8,7 @@ import { OverridableComponent } from '@mui/types';
 import { useState } from 'react';
 import sanitizeHtml from 'sanitize-html';
 import Button from '../../components/Button';
-import { useCourseDetails } from '../../provider/camusnet/courses';
-import {
-  Course,
-  CourseOffer,
-  Module,
-  ModuleOffer,
-} from '../../provider/tucan/apiTypes';
+import { Module, useCourseDetails } from '../../provider/camusnet/courses';
 import { descriptions as semesterDescs } from '../../provider/tucan/semesters';
 import './CourseDetail.css';
 import CourseRegModal from './CourseRegModal';
@@ -28,19 +23,21 @@ const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
   />
 );
 
-const CourseDetails = (params: { course: Course | CourseOffer }) => {
+const CourseDetails = (params: { course: CourseMobile | CourseOffer }) => {
   const course = params.course;
-  const details = useCourseDetails(params.course.id);
+  const details = useCourseDetails(params.course.courseId);
 
   return (
     <>
       <p style={{ marginBottom: 0, marginTop: '3em' }}>
-        <code>{course.code}</code>
+        <code>{course.number}</code>
       </p>
       <p style={{ marginBottom: 0 }}>
         <b>{course.name}</b>
       </p>
-      <p style={{ marginBottom: '1em' }}>{course.instructor}</p>
+      <p style={{ marginBottom: '1em' }}>
+        {'lecturer' in course ? course.lecturer : course.instructors}
+      </p>
       {details.isLoading ? (
         <p>
           <Skeleton width={210} /> <Skeleton width={120} />{' '}
@@ -90,11 +87,11 @@ const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
     >
       <p>
         Modulnummer:{' '}
-        <span style={{ fontFamily: 'monospace' }}>{module.code}</span>
+        <span style={{ fontFamily: 'monospace' }}>{module.number}</span>
         <br />
         Modulname: {module.name}
         <br />
-        Lehrende: {module.instructor}
+        Lehrende: {module.lecturer}
         {'semester' in module && (
           <>
             <br />
@@ -108,9 +105,9 @@ const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
             {module.status === 'register' && (
               <Button onClick={() => setRegDlgOpen(true)}>Anmelden</Button>
             )}
-            {module.status === 'edit' && (
+            {/* {module.status === 'edit' && (
               <Button onClick={() => setRegDlgOpen(true)}>Ummelden</Button>
-            )}
+            )} */}
             {module.status === 'unregister' && (
               <Button onClick={() => setRegDlgOpen(true)}>Abmelden</Button>
             )}
@@ -118,7 +115,7 @@ const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
         </>
       )}
       {module.courses.map((c) => (
-        <CourseDetails key={c.id} course={c} />
+        <CourseDetails key={c.courseId} course={c} />
       ))}
       {registration && regDlgOpen && (
         <CourseRegModal offer={module} onClose={() => setRegDlgOpen(false)} />
