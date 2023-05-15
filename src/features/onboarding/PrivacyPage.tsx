@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setPrivacy } from '../settings/settingsSlice';
-import { Button, Frame, Heading, Radio, Subheading } from './Controls';
+import { Frame, Radio } from './Controls';
 
 const PrivacyPage = () => {
   const dispatch = useDispatch();
@@ -12,16 +12,15 @@ const PrivacyPage = () => {
   const onNext = () => dispatch(setPrivacy({ level: selected }));
 
   return (
-    <Frame>
-      <Heading>Privatsphäre</Heading>
-      <Subheading>
+    <Frame title="Privatsphäre" priAction="Weiter" onPriAction={onNext}>
+      <p>
         Deine Privatsphäre ist uns
         <br />
         wichtig. Wähle selbst, welche Daten
         <br />
         Du mit uns teilen möchtest.
-      </Subheading>
-      <div style={{ margin: '0 15vw' }}>
+      </p>
+      <div className="mx-auto max-w-xs">
         <Radio
           checked={selected === 'complete'}
           className="mb-4 block"
@@ -51,9 +50,6 @@ const PrivacyPage = () => {
           onChange={(e) => e.target.checked && setSelected('minimal')}
         />
       </div>
-      <Button className="mx-auto" onClick={onNext} disabled={!selected}>
-        Weiter
-      </Button>
     </Frame>
   );
 };

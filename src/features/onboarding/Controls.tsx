@@ -1,44 +1,6 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
-import BaseButton from '../../components/Button';
-
-export const Button = (
-  props: React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >
-) => (
-  <BaseButton {...props} className={twMerge('rounded-full', props.className)} />
-);
-
-export const SecondaryButton = (
-  props: React.DetailedHTMLProps<
-    React.ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  >
-) => {
-  return (
-    <button
-      {...props}
-      className={twMerge('text-chalk underline', props.className)}
-    />
-  );
-};
-
-export const Input = (
-  props: React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  >
-) =>
-  React.createElement('input', {
-    type: 'text',
-    ...props,
-    className: twMerge(
-      'rounded-full px-4 bg-white bg-opacity-80 focus-visible:bg-opacity-100',
-      props.className
-    ),
-  });
+import Button from '../../components/Button';
 
 export const Radio = (props: {
   checked?: boolean;
@@ -49,7 +11,7 @@ export const Radio = (props: {
   style?: React.CSSProperties;
 }) => (
   <label
-    className={twMerge('text-chalk inline-block', props.className)}
+    className={twMerge('inline-block text-chalk', props.className)}
     style={props.style}
   >
     <div>
@@ -62,41 +24,61 @@ export const Radio = (props: {
   </label>
 );
 
-export const Frame = (
-  props: React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  >
-) => (
-  <div
-    {...props}
-    className={twMerge(
-      'flex h-screen flex-col justify-evenly bg-theme pt-safe pb-safe',
-      props.className
-    )}
-  />
-);
-
-export const Heading = (
-  props: React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  >
-) => (
-  <h3
-    {...props}
-    className={twMerge('text-chalk text-center text-2xl', props.className)}
-  />
-);
-
-export const Subheading = (
-  props: React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLDivElement>,
-    HTMLDivElement
-  >
-) => (
-  <div
-    {...props}
-    className={twMerge('text-chalk text-center', props.className)}
-  />
-);
+export const Frame = (props: {
+  children: ReactNode;
+  noBack?: boolean;
+  title?: string;
+  priAction?: ReactNode;
+  secAction?: ReactNode;
+  onPriAction?: React.MouseEventHandler<HTMLButtonElement>;
+  onSecAction?: React.MouseEventHandler<HTMLButtonElement>;
+}) => {
+  return (
+    <div
+      className="flex h-screen flex-col justify-center bg-theme"
+      style={{
+        paddingTop: 'calc(2rem + env(safe-area-inset-top))',
+        paddingBottom: 'calc(2rem + env(safe-area-inset-bottom))',
+      }}
+    >
+      <div
+        className="mx-3 flex max-w-xs flex-col self-center text-center text-chalk"
+        style={{ height: '100vh', maxHeight: '32rem' }}
+      >
+        {props.title && <div className="text-2xl">{props.title}</div>}
+        <div className="flex flex-grow flex-col justify-between">
+          {props.title && <div />}
+          {props.children}
+          <div />
+        </div>
+        <div
+          className="flex flex-col items-center space-y-4"
+          style={{ height: '4.375rem' }}
+        >
+          {!!props.priAction && (
+            <Button className="rounded-full" onClick={props.onPriAction}>
+              {props.priAction}
+            </Button>
+          )}
+          {!!props.secAction && (
+            <button
+              className="border-none bg-transparent text-xs text-chalk underline"
+              onClick={props.onSecAction}
+            >
+              {props.secAction}
+            </button>
+          )}
+        </div>
+      </div>
+      {/* Still needs to be implemented. */}
+      {/* <NavButton
+        type="back"
+        style={{
+          position: 'absolute',
+          top: statusBarHeightCss,
+          visibility: props.noBack ? 'hidden' : undefined,
+        }}
+      /> */}
+    </div>
+  );
+};

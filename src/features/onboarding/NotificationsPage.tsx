@@ -1,12 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { setPushNotif } from '../settings/settingsSlice';
-import {
-  Button,
-  Frame,
-  Heading,
-  SecondaryButton,
-  Subheading,
-} from './Controls';
+import { Frame } from './Controls';
 
 const NotificationsPage = () => {
   const dispatch = useDispatch();
@@ -14,9 +8,14 @@ const NotificationsPage = () => {
   const onSkip = () => dispatch(setPushNotif({ messages: false }));
 
   return (
-    <Frame>
-      <Heading>Benachrichtigungen</Heading>
-      <Subheading>
+    <Frame
+      title="Benachrichtigungen"
+      priAction="Aktivieren"
+      secAction="Später aktivieren"
+      onPriAction={onActivate}
+      onSecAction={onSkip}
+    >
+      <div>
         <p>
           Möchtest Du Push-Benachrichtigungen
           <br />
@@ -29,12 +28,6 @@ const NotificationsPage = () => {
           <br />
           wieder deaktivieren.
         </p>
-      </Subheading>
-      <div style={{ textAlign: 'center' }}>
-        <Button onClick={onActivate}>Aktivieren</Button>
-        <SecondaryButton className="mx-auto mt-2 block" onClick={onSkip}>
-          Später
-        </SecondaryButton>
       </div>
     </Frame>
   );

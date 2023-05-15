@@ -1,6 +1,6 @@
 import { useAppDispatch } from '../../redux/hooks';
 import { setOnboardingComplete } from '../settings/settingsSlice';
-import { Button, Frame, Heading, Subheading } from './Controls';
+import { Frame } from './Controls';
 import focusedPeopleStudying from './focused-people-studying-online-school.svg';
 
 const WelcomePage = () => {
@@ -8,23 +8,19 @@ const WelcomePage = () => {
   const onClose = () => dispatch(setOnboardingComplete());
 
   return (
-    <Frame>
-      <Heading>Willkommen</Heading>
-      <Subheading>
+    <Frame title="Willkommen" priAction="Los geht’s" onPriAction={onClose}>
+      <p>
         Herzlich Willkommen bei
         <br />
         Campus und im organisierten
         <br />
         Studienalltag.
-      </Subheading>
+      </p>
       <img
         src={focusedPeopleStudying}
         style={{ height: '8em' }}
         alt="focused people studying"
       />
-      <Button className="mx-auto" onClick={onClose}>
-        Los geht’s
-      </Button>
     </Frame>
   );
 };

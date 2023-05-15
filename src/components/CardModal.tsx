@@ -3,7 +3,7 @@ import React from 'react';
 import { twMerge } from 'tailwind-merge';
 
 type OptionalProps = 'onOpen' | 'onClose';
-type CardModalProps = { canClose?: boolean } & Omit<
+export type CardModalProps = { canClose?: boolean } & Omit<
   SwipeableDrawerProps,
   OptionalProps
 > &

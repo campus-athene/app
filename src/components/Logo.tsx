@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { ClassAttributes, SVGAttributes } from 'react';
 
-const Logo = (props) =>
+type SvgProps = ClassAttributes<SVGElement> & SVGAttributes<SVGElement>;
+
+const Logo = (props: SvgProps) =>
   React.createElement('svg', {
     viewBox: '0 0 509.3 509.3',
     ...props,
@@ -15,5 +17,19 @@ const svg = `
 <ellipse style="fill:#AD7317;" cx="254.7" cy="186.7" rx="32" ry="16"/>
 <path style="fill:#A87611;" d="M390.5,362.7v48c0,4.4,3.6,8,8,8h8v-72C397.6,346.7,390.5,353.8,390.5,362.7z"/>
 `;
+
+export const TucanLogo = (props: SvgProps) =>
+  React.createElement('svg', {
+    viewBox: '0 0 172.61 106.36',
+    ...props,
+    dangerouslySetInnerHTML: {
+      __html: `
+<path fill="#99A604" d="M27.43,106.36c-9.93-44.13,6.99-49.3,50.67-49.3c55.24,0,93.32,18.53,93.32,18.53
+C183.05,32.4,106.91,0,54.68,0C-10.13,0-14.84,43.32,27.43,106.36z"/>
+<circle fill="#FFFFFF" cx="30.22" cy="29.67" r="20.2"/>
+<circle fill="#93999E" cx="30.22" cy="29.67" r="6.78"/>
+`,
+    },
+  });
 
 export default Logo;

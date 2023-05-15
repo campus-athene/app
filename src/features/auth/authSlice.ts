@@ -8,10 +8,18 @@ type CampusNetCreds = { username: string; password: string };
 type AuthState = {
   creds: AppCredentials | null;
   campusNetCreds: CampusNetCreds | null;
+  moodleToken: string | null;
+};
+
+const initialState: AuthState = {
+  creds: null,
+  campusNetCreds: null,
+  moodleToken: null,
 };
 
 const loadState = (state: AuthState) => {
   try {
+    state.moodleToken = localStorage.getItem('moodle');
     const credsJson = localStorage.getItem('creds');
     if (credsJson) state.creds = JSON.parse(credsJson);
     const campusNetCredsJson = localStorage.getItem('campusNetCreds');
@@ -24,7 +32,7 @@ const loadState = (state: AuthState) => {
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { creds: null } as AuthState,
+  initialState,
   reducers: {
     updateCreds: (state, { payload: { creds } }) => {
       state.creds = creds;
@@ -37,13 +45,19 @@ const authSlice = createSlice({
       state.campusNetCreds = payload.creds;
       localStorage.setItem('campusNetCreds', JSON.stringify(payload.creds));
     },
+    updateMoodleToken: (state, { payload }: { payload: string }) => {
+      state.moodleToken = payload;
+      if (payload) localStorage.setItem('moodle', payload);
+      else localStorage.removeItem('moodle');
+    },
   },
   extraReducers: (builder) => {
     builder.addCase('@@INIT', loadState);
   },
 });
 
-export const { updateCreds, updateCampusNetCreds } = authSlice.actions;
+const { updateCreds } = authSlice.actions;
+export const { updateCampusNetCreds, updateMoodleToken } = authSlice.actions;
 
 export const logout: () => AppThunkAction = () => (dispatch) => {
   const { history } = window;
@@ -55,6 +69,7 @@ export const logout: () => AppThunkAction = () => (dispatch) => {
   });
 };
 
+/** @deprecated */
 export const selectCreds =
   () =>
   ({ auth: { creds } }: RootState) =>
@@ -64,5 +79,10 @@ export const selectCampusNetCreds =
   () =>
   ({ auth: { campusNetCreds } }: RootState): CampusNetCreds | null =>
     campusNetCreds;
+
+export const selectMoodleToken =
+  () =>
+  ({ auth: { moodleToken } }: RootState) =>
+    moodleToken;
 
 export default authSlice.reducer;
