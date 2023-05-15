@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../components/Button';
 import CardModal, { Header as ModalHeader } from '../../components/CardModal';
 import PageFrame from '../../components/PageFrame';
+import { useCoreWebserviceGetSiteInfo } from '../../provider/moodle';
 import { logout } from '../auth/authSlice';
 import {
   selectPrivacy,
@@ -43,7 +44,8 @@ const Setting = ({ checked, description, children, onClick }) => (
       fontSize: '1.25rem',
       lineHeight: 1,
       overflowX: 'hidden',
-      padding: '0.875rem 1rem 0.8125rem 2.5rem',
+      padding: '0.875rem 1rem 0.8125rem',
+      paddingLeft: typeof checked === 'boolean' ? '2.5rem' : '1rem',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
     }}
@@ -110,6 +112,8 @@ const SettingsPage = () => {
   const dispatch = useDispatch();
   const [logoutModal, setLogoutModal] = useState();
 
+  const moodleSiteInfo = useCoreWebserviceGetSiteInfo();
+
   const pushMessages = useSelector(selectPushEnabled('messages'));
   const { level: privacy } = useSelector(selectPrivacy());
 
@@ -123,6 +127,20 @@ const SettingsPage = () => {
         title="Einstellungen"
         style={{ background: '#F4F4F4', paddingBottom: '2em' }}
       >
+        <Header>Profil</Header>
+        <Setting>
+          <span className="text-neutral-400">Vorname: </span>
+          {moodleSiteInfo.data?.firstname}
+        </Setting>
+        <Setting>
+          <span className="text-neutral-400">Nachname: </span>
+          {moodleSiteInfo.data?.lastname}
+        </Setting>
+        <Setting>
+          <span className="text-neutral-400">TU-Id: </span>
+          {moodleSiteInfo.data?.username}
+        </Setting>
+
         <Header>Benachrichtigungen</Header>
         <Setting checked={pushMessages} onClick={setMessagePushHandler(true)}>
           Aktiviert
