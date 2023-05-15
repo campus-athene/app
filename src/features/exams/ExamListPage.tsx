@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { useNavigate } from 'react-router';
 import PageFrame from '../../components/PageFrame';
 import { useExamsGroupedBySemester } from '../../provider/camusnet/exams';
-import { descriptions as semesterDescs } from '../../provider/tucan/semesters';
+import { descriptions as semesterDescs } from '../../provider/camusnet/semesters';
 import convertGrade from './gradeConverter';
 
 // // https://www.flaticon.com/free-icon/logout_1828433 (yes, its logout.svg for registration)

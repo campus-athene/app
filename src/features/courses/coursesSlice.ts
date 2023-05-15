@@ -1,3 +1,4 @@
+import { Semester } from '@campus/campusnet-sdk';
 import {
   Module,
   useCoursesWithSelectorFromGroupedByModule,
@@ -6,8 +7,7 @@ import {
   descriptions as semesterDescs,
   getRegSemester,
   getSemester,
-  Semester,
-} from '../../provider/tucan/semesters';
+} from '../../provider/camusnet/semesters';
 
 export const useCoursesBySemesterAndNumber = (
   semester?: number,

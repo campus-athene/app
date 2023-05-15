@@ -1,12 +1,13 @@
 import { CircularProgress } from '@mui/material';
 import React, { useState } from 'react';
 import Logo from '../../components/Logo';
+import { useLogin } from '../../provider/camusnet';
 import { useAppDispatch } from '../../redux/hooks';
-import { login } from '../auth/authSlice';
 import { Button, Frame, Input, Subheading } from './Controls';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
+  const login = useLogin();
 
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +21,7 @@ const LoginPage = () => {
     setProcessing(true);
     setError(null);
 
-    const error = await dispatch(login(username, password));
+    const error = await login(username, password);
 
     if (!error)
       // No need to do anything here as successful login will move the onboarding process to the next page.

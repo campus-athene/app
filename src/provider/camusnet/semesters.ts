@@ -1,7 +1,5 @@
 import * as cn from '@campus/campusnet-sdk';
 
-export type Semester = keyof typeof descriptions;
-
 export const descriptions: Record<cn.Semester, string> = {
   // Yes, the first two are irregular.
   15024000: 'Wintersemester 2016 / 2017',
@@ -24,7 +22,7 @@ export const descriptions: Record<cn.Semester, string> = {
 
 const allSemesters = Object.keys(descriptions).map((s) =>
   Number.parseInt(s)
-) as Semester[];
+) as cn.Semester[];
 
 // Currently we are ignoring timezones assuming semester changes with UTC.
 

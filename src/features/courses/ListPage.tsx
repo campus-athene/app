@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useNavigate } from 'react-router';
 import PageFrame from '../../components/PageFrame';
-import { getRegSemester } from '../../provider/tucan/semesters';
+import { getRegSemester } from '../../provider/camusnet/semesters';
 import { getCourseColor, useCoursesGroupedBySemester } from './coursesSlice';
 
 const ListPage = () => {

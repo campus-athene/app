@@ -1,15 +1,4 @@
-import {
-  AppointmentsResult,
-  CourseDetailsResult,
-  CourseOffersResult,
-  CourseRegistrationRequest,
-  CoursesResult,
-  LoginResult,
-  MessagesResult,
-  ReportErrorRequest,
-  Settings,
-} from './apiTypes';
-import dummyResponse from './dummyResponse';
+import { ReportErrorRequest, Settings } from './apiTypes';
 import { NetworkError, ServerError } from './errors';
 
 const base =
@@ -18,14 +7,12 @@ const base =
     ? 'https://dev.api.study-campus.de'
     : 'https://api.study-campus.de');
 
-export type AppCredentials = { dummy: boolean; token: string };
+export type AppCredentials = { token: string };
 
 export class session {
-  dummy: AppCredentials['dummy'];
   token: AppCredentials['token'];
 
   constructor(creds: AppCredentials) {
-    this.dummy = creds.dummy;
     this.token = creds.token;
   }
 
@@ -61,24 +48,13 @@ export class session {
   };
 
   send = (path: string, body: any = null): Promise<any> =>
-    this.dummy
-      ? dummyResponse(path, body)
-      : session.sendAdvanced(
-          path,
-          {
-            Authorization: `Bearer ${this.token}`,
-            'Content-Type': 'application/json',
-          },
-          body
-        );
-
-  static login = (username: string, password: string): Promise<LoginResult> =>
     session.sendAdvanced(
-      '/account/login',
+      path,
       {
+        Authorization: `Bearer ${this.token}`,
         'Content-Type': 'application/json',
       },
-      { username, password }
+      body
     );
 
   syncSettings = (deviceId: string, settings: Settings): Promise<void> =>
@@ -89,44 +65,6 @@ export class session {
     registrationType: 'APNS' | 'FCM'
   ): Promise<void> =>
     this.send('/account/subscribepns', { registrationId, registrationType });
-
-  // sync = () => this.send('/tucan/sync');
-
-  getMessages = (): Promise<MessagesResult> => this.send('/tucan/messages');
-
-  getAppointments = (): Promise<AppointmentsResult> =>
-    this.send('/tucan/appointments');
-
-  getCourses = (): Promise<CoursesResult> => this.send('/tucan/courses');
-
-  getCourseDetails = (args: { id: number }): Promise<CourseDetailsResult> =>
-    this.send('/tucan/coursedetails', args);
-
-  // getExams = (): Promise<ExamsResult> => this.send('/tucan/exams');
-
-  getCourseOffers = (
-    args: null | { major: number; area: number; rootList: number } = null
-  ): Promise<CourseOffersResult> => this.send('/tucan/courseoffers', args);
-
-  // getExamGrades = (examId: number): Promise<ExamGradesResult> =>
-  //   this.send('/tucan/examgrades', { exam: examId });
-
-  markMsgRead = async (messageId: number): Promise<void> =>
-    this.send('/tucan/markmsgread', { messageId });
-
-  markAllMsgsRead = (): Promise<void> => this.send('/tucan/markallmsgsread');
-
-  registerCourse = async (
-    rgtrArgs: CourseRegistrationRequest
-  ): Promise<CourseOffersResult> =>
-    this.send('/tucan/registercourse', rgtrArgs);
-
-  // registerExam = async (
-  //   id: number,
-  //   semester: number,
-  //   type: 'register' | 'unregister'
-  // ): Promise<ExamsResult> =>
-  //   this.send('/tucan/registerexam', { id, semester, type });
 
   static reportError = async (errorData: ReportErrorRequest): Promise<void> => {
     this.sendAdvanced(

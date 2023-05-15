@@ -7,7 +7,7 @@ import {
 import { OverridableComponent } from '@mui/types';
 import sanitizeHtml from 'sanitize-html';
 import { Module, useCourseDetails } from '../../provider/camusnet/courses';
-import { descriptions as semesterDescs } from '../../provider/tucan/semesters';
+import { descriptions as semesterDescs } from '../../provider/camusnet/semesters';
 import './CourseDetail.css';
 
 const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
