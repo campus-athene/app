@@ -1,11 +1,15 @@
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PageFrame from '../../components/PageFrame';
-import { useDocuments } from '../../provider/camusnet';
+import { useDocuments, UserNotLoggedInError } from '../../provider/camusnet';
+import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 
 const DocumentsPage = () => {
-  const { isError, isLoading, data } = useDocuments();
-  console.log({ isError, isLoading, data });
+  const { isError, isLoading, data, error } = useDocuments();
+
+  if (error instanceof UserNotLoggedInError)
+    return <CampusNetLoginTeaser title="Dokumente" />;
+
   return (
     <PageFrame title="Dokumente" syncState={{ isLoading, isOffline: isError }}>
       {data &&

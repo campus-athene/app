@@ -3,12 +3,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useNavigate } from 'react-router';
 import PageFrame from '../../components/PageFrame';
+import { UserNotLoggedInError } from '../../provider/camusnet';
 import { getRegSemester } from '../../provider/camusnet/semesters';
+import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 import { getCourseColor, useCoursesGroupedBySemester } from './coursesSlice';
 
 const ListPage = () => {
   const navigate = useNavigate();
   const semesters = useCoursesGroupedBySemester();
+
+  if (semesters.error instanceof UserNotLoggedInError)
+    return <CampusNetLoginTeaser title="Mein Studium" />;
+
   return (
     <PageFrame
       className="divide-y"

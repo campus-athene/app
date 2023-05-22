@@ -1,8 +1,10 @@
 import { Fragment } from 'react';
 import { useNavigate } from 'react-router';
 import PageFrame from '../../components/PageFrame';
+import { UserNotLoggedInError } from '../../provider/camusnet';
 import { useExamsGroupedBySemester } from '../../provider/camusnet/exams';
 import { descriptions as semesterDescs } from '../../provider/camusnet/semesters';
+import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 import convertGrade from './gradeConverter';
 
 // // https://www.flaticon.com/free-icon/logout_1828433 (yes, its logout.svg for registration)
@@ -27,6 +29,9 @@ const ExamListPage = () => {
   const navigate = useNavigate();
   const groupedExams = useExamsGroupedBySemester();
   // const [selectedExam, setSelectedExam] = useState<ExamMobile | null>(null);
+
+  if (groupedExams.error instanceof UserNotLoggedInError)
+    return <CampusNetLoginTeaser title="Prüfungen" />;
 
   return (
     <PageFrame

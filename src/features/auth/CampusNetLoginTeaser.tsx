@@ -17,7 +17,7 @@ const CampusNetLoginTeaser = (props: { title: string }) => {
     >
       <div className="w-[70%] text-center">
         <p className="mb-4">
-          Verbinde Campus mit TUCaN um diesen Inhalt anzeigen zu können.
+          Verbinde Campus mit TUCaN um diesen Inhalt anzuzeigen.
         </p>
         <Button onClick={() => setDialogOpen(true)}>Verbinden</Button>
       </div>

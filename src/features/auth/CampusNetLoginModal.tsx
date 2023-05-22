@@ -29,9 +29,11 @@ const CampusNetLoginModal = (
   return (
     <CardModal open={props.open} onOpen={props.onOpen} onClose={props.onClose}>
       <TucanLogo className="mx-auto mb-4 mt-4 block h-12" />
-      <p className="mb-4 text-center">
-        Die Anmeldung mit TUCaN erfolgt getrennt vom SSO. Die Zugangsdaten
-        werden lokal auf Deinem Gerät gespeichert.
+      <p className="mx-4 mb-4 text-center">
+        {/* Die Anmeldung mit TUCaN erfolgt getrennt vom SSO. Die Zugangsdaten
+        werden verschlüsselt lokal auf Deinem Gerät gespeichert. */}
+        Deine Anmeldedaten werden verschlüsselt an die TUCaN-Server übertragen
+        und nicht an Dritte weitergegeben.
       </p>
       <form
         onSubmit={onSubmit}

@@ -5,9 +5,19 @@ import moment from 'moment-timezone';
 import { MouseEventHandler, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PageFrame from '../../components/PageFrame';
+import { useGetSession, UserNotLoggedInError } from '../../provider/camusnet';
+import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 import DayView from './DayView';
 
 const CalendarPage = () => {
+  const [state, setState] = useState<'loading' | 'loaded' | 'error' | 'login'>(
+    'loading'
+  );
+  useGetSession()().then(
+    () => setState('loaded'),
+    (reason) =>
+      setState(reason instanceof UserNotLoggedInError ? 'login' : 'error')
+  );
   const dayFromUrlStr = useSearchParams()[0].get('day');
   const dayFromUrl = (dayFromUrlStr && Number.parseInt(dayFromUrlStr)) || null;
 
@@ -53,10 +63,16 @@ const CalendarPage = () => {
     </button>
   );
 
+  if (state === 'login') return <CampusNetLoginTeaser title="Kalender" />;
+
   return (
     <PageFrame
       title="Kalender"
       style={{ display: 'flex', flexDirection: 'column' }}
+      syncState={{
+        isLoading: state === 'loading',
+        isOffline: state === 'error',
+      }}
     >
       <div
         style={{

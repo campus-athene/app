@@ -136,7 +136,7 @@ const createSession: () => AppThunkAction<Promise<Session>> =
 /**
  * Hook that returns a function that resolves to a session.
  */
-const useGetSession = () => {
+export const useGetSession = () => {
   const dispatch = useAppDispatch();
   return () => sessionPromise || (sessionPromise = dispatch(createSession()));
 };
