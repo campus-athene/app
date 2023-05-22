@@ -7,7 +7,7 @@ workflows:
       groups:
         - keystore_credentials # <-- (Includes CM_KEYSTORE, CM_KEYSTORE_PASSWORD, CM_KEY_PASSWORD, CM_KEY_ALIAS)
         - google_play # <-- (Includes GCLOUD_SERVICE_ACCOUNT_CREDENTIALS)
-        - other
+        - gitlab # <-- (Includes GITLAB_TOKEN)
       # Add the group environment variables in Codemagic UI (either in Application/Team variables) - https://docs.codemagic.io/variables/environment-variable-groups/
       node: latest
     triggering:
@@ -20,6 +20,7 @@ workflows:
     scripts:
       - name: Install npm dependencies
         script: |
+          npm config set -- //gitlab.akamu.de/api/v4/projects/41/packages/npm/:_authToken=$GITLAB_TOKEN
           npm ci
       - name: Build React app
         script: |
@@ -75,6 +76,7 @@ workflows:
         # Automatic Code Signing
         # https://appstoreconnect.apple.com/access/api
         - app_store_credentials # <-- (Includes APP_STORE_CONNECT_ISSUER_ID, APP_STORE_CONNECT_KEY_IDENTIFIER, APP_STORE_CONNECT_PRIVATE_KEY, CERTIFICATE_PRIVATE_KEY)
+        - gitlab # <-- (Includes GITLAB_TOKEN)
       # Add the group environment variables in Codemagic UI (either in Application/Team variables) - https://docs.codemagic.io/variables/environment-variable-groups/
       vars:
         # Ionic Capacitor Xcode worskspace and scheme
@@ -93,6 +95,7 @@ workflows:
     scripts:
       - name: Install npm dependencies for Ionic project
         script: |
+          npm config set -- //gitlab.akamu.de/api/v4/projects/41/packages/npm/:_authToken=$GITLAB_TOKEN
           npm ci
       - name: Build React app
         script: |
