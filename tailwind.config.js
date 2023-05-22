@@ -14,8 +14,5 @@ module.exports = {
       sans: ['"Source Sans 3 VF"', 'sans-serif'],
     },
   },
-  plugins: [
-    require('@tailwindcss/line-clamp'),
-    require('tailwindcss-safe-area'),
-  ],
+  plugins: [require('tailwindcss-safe-area')],
 };

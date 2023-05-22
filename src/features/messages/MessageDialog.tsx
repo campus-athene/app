@@ -50,12 +50,12 @@ const DialogContent = ({
   onClose: React.ReactEventHandler<{}>;
 }) => {
   const message = useMessage(messageId);
-  const setMessageStatus = useSetMessageStatus();
+  const { mutate: setMessageStatus_mutate } = useSetMessageStatus();
 
   // Hook must not return a value.
   useEffect(() => {
-    message.isSuccess && setMessageStatus.mutate({ messageId });
-  }, [messageId, message.isSuccess, setMessageStatus.mutate]);
+    message.isSuccess && setMessageStatus_mutate({ messageId });
+  }, [messageId, message.isSuccess, setMessageStatus_mutate]);
 
   if (!message.data) return <>Lade Nachricht...</>;
 

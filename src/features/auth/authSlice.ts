@@ -6,6 +6,10 @@ import { AppThunkAction, RootState } from '../../redux';
 type CampusNetCreds = { username: string; password: string };
 
 type AuthState = {
+  /**
+   * Deprecated and now read only.
+   * @deprecated
+   */
   creds: AppCredentials | null;
   campusNetCreds: CampusNetCreds | null;
   moodle: { token: string; privateToken: string } | null;
@@ -39,10 +43,6 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    updateCreds: (state, { payload: { creds } }) => {
-      state.creds = creds;
-      localStorage.setItem('creds', JSON.stringify(creds));
-    },
     updateCampusNetCreds: (
       state,
       { payload }: { payload: { creds: CampusNetCreds } }
@@ -72,7 +72,6 @@ const authSlice = createSlice({
   },
 });
 
-const { updateCreds } = authSlice.actions;
 export const { updateCampusNetCreds, updateMoodleToken } = authSlice.actions;
 
 export const logout: () => AppThunkAction = () => (dispatch) => {
