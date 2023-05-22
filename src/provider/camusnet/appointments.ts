@@ -1,21 +1,17 @@
 import * as cn from '@campus/campusnet-sdk';
-import { useQuery } from '@tanstack/react-query';
 import { utc } from 'moment-timezone';
-import { useWithSession } from '.';
+import { useCNQuery } from '.';
 
-const queryKey = ['campusnet', 'appointments'];
+const queryKey = ['appointments'];
 
 const useAppointmentsWithSelector = <TData>(
   select?: (data: cn.Appointment[]) => TData
-) => {
-  const queryFn = useWithSession(cn.myAppointments);
-
-  return useQuery<cn.Appointment[], unknown, TData, string[]>({
+) =>
+  useCNQuery<cn.Appointment[], unknown, TData, string[]>({
     queryKey,
-    queryFn,
+    queryFn: cn.myAppointments,
     select,
   });
-};
 
 export const useAppointmentsOnDay = (day: number) => {
   const from = day;

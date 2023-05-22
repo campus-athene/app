@@ -1,6 +1,5 @@
 import * as cn from '@campus/campusnet-sdk';
-import { useQuery } from '@tanstack/react-query';
-import { useWithSession } from '.';
+import { useCNQuery } from '.';
 import { log } from '../../app/errorReporting';
 
 export type Module = {
@@ -15,18 +14,16 @@ type MappedModulesBySemesterAndCode = {
   [semester: number]: { [code: string]: Module };
 };
 
-const queryKey = ['campusnet', 'courses'];
+const queryKey = ['courses'];
 
 export const useCoursesWithSelectorFromGroupedByModule = <TData>(
   select: (data: MappedModulesBySemesterAndCode) => TData,
   enabled = true
-) => {
-  const queryFn = useWithSession(cn.coursesMobile);
-
-  return useQuery({
+) =>
+  useCNQuery({
     enabled,
     queryKey,
-    queryFn,
+    queryFn: cn.coursesMobile,
     select: (courses) => {
       const modules = new Map<string, Module>();
 
@@ -73,24 +70,17 @@ export const useCoursesWithSelectorFromGroupedByModule = <TData>(
       return select(asObject);
     },
   });
-};
 
-export const useCourseDetails = (id: number) => {
-  const queryFn = useWithSession(cn.courseDetails);
-
-  return useQuery({
+export const useCourseDetails = (id: number) =>
+  useCNQuery({
     queryKey: [...queryKey, 'details', id],
-    queryFn: () => queryFn(id),
+    queryFn: (session) => cn.courseDetails(session, id),
   });
-};
 
-export const useCourseOffers = (major = 0, area = 0, list = 0) => {
-  const queryFn = useWithSession(cn.courseOffers);
-
+export const useCourseOffers = (major = 0, area = 0, list = 0) =>
   // If major is 0, data will be chached for the value 0. This behaviour
   // should be changed to cache for the data for the actual major.
-  return useQuery({
+  useCNQuery({
     queryKey: ['campusnet', 'courseOffers', major, area, list],
-    queryFn: () => queryFn(major, area, list),
+    queryFn: (session) => cn.courseOffers(session, major, area, list),
   });
-};

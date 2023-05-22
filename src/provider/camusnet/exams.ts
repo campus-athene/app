@@ -1,20 +1,16 @@
 import * as cn from '@campus/campusnet-sdk';
-import { useQuery } from '@tanstack/react-query';
-import { useWithSession } from '.';
+import { useCNQuery } from '.';
 
-const queryKey = ['campusnet', 'exams'];
+const queryKey = ['exams'];
 
 const useExamsWithSelector = <TData>(
   select: (data: cn.ExamMobile[]) => TData
-) => {
-  const queryFn = useWithSession(cn.examsMobile);
-
-  return useQuery<cn.ExamMobile[], unknown, TData, string[]>({
+) =>
+  useCNQuery<cn.ExamMobile[], unknown, TData, string[]>({
     queryKey,
-    queryFn,
+    queryFn: cn.examsMobile,
     select,
   });
-};
 
 export const useExam = (id: number) =>
   useExamsWithSelector((exams) => exams.find((e) => e.examId === id));
@@ -34,11 +30,8 @@ export const useExamsGroupedBySemester = () =>
     )
   );
 
-export const useExamGrade = (id: number) => {
-  const queryFn = useWithSession(cn.examGrades);
-
-  return useQuery({
+export const useExamGrade = (id: number) =>
+  useCNQuery({
     queryKey: [...queryKey, 'grades', id],
-    queryFn: () => queryFn(id),
+    queryFn: (session) => cn.examGrades(session, id),
   });
-};

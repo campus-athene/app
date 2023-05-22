@@ -1,21 +1,19 @@
 import * as cn from '@campus/campusnet-sdk';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useWithSession } from '.';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useCNQuery, useWithSession } from '.';
 
-const queryKey = ['campusnet', 'messages'];
+const queryKey = ['messages'];
 
 const useMessagesWithSelector = <TData>(
   select: (data: cn.Message[]) => TData
-) => {
-  const queryFn = useWithSession(cn.messages);
-
-  return useQuery<cn.Message[], unknown, TData, string[]>({
+) =>
+  useCNQuery<cn.Message[], unknown, TData, string[]>({
     queryKey,
-    queryFn: async (): Promise<cn.Message[]> =>
-      (await queryFn()).filter((m) => m.folder === 'inbox'),
+    queryFn: async (session): Promise<cn.Message[]> =>
+      (await cn.messages(session)).filter((m) => m.folder === 'inbox'),
     select,
   });
-};
+
 export const useMessage = (id: number) =>
   useMessagesWithSelector((messages) =>
     messages.find((m) => m.folder === 'inbox' && m.messageId === id)

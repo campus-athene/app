@@ -6,7 +6,13 @@ import {
   set,
 } from '@campus/campusnet-sdk';
 import { CapacitorHttp } from '@capacitor/core';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  QueryKey,
+  useQuery,
+  useQueryClient,
+  UseQueryOptions,
+  UseQueryResult,
+} from '@tanstack/react-query';
 import {
   selectCampusNetCreds,
   updateCampusNetCreds,
@@ -160,10 +166,36 @@ export function useWithSession<TResult, TArgs extends unknown[]>(
   };
 }
 
+export function useCNQuery<
+  TQueryFnData = unknown,
+  TError = unknown,
+  TData = TQueryFnData,
+  TQueryKey extends QueryKey = QueryKey
+>({
+  queryFn,
+  queryKey,
+  ...options
+}: Omit<
+  UseQueryOptions<TQueryFnData, TError, TData, [string, ...TQueryKey]>,
+  'initialData' | 'queryFn' | 'queryKey'
+> & {
+  initialData?: () => undefined;
+  queryFn: (session: Session) => Promise<TQueryFnData>;
+  queryKey?: TQueryKey;
+}): UseQueryResult<TData, TError> {
+  const queryFnWithSession = useWithSession<TQueryFnData, []>(queryFn);
+  return useQuery<TQueryFnData, TError, TData, [string, ...TQueryKey]>({
+    retry: (failureCount, error) =>
+      failureCount < 3 && !(error instanceof UserNotLoggedInError),
+    ...options,
+    queryFn: () => queryFnWithSession(),
+    queryKey: queryKey && ['campusnet', ...queryKey],
+  });
+}
+
 export const useDocuments = () => {
-  const queryFn = useWithSession(myDocuments);
-  return useQuery({
-    queryKey: ['campusnet', 'documents'],
-    queryFn,
+  return useCNQuery({
+    queryKey: ['documents'],
+    queryFn: myDocuments,
   });
 };
