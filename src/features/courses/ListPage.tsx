@@ -1,10 +1,10 @@
+import { getRegSemester } from '@campus/campusnet-sdk';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useNavigate } from 'react-router';
 import PageFrame from '../../components/PageFrame';
 import { UserNotLoggedInError } from '../../provider/camusnet';
-import { getRegSemester } from '../../provider/camusnet/semesters';
 import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 import { getCourseColor, useCoursesGroupedBySemester } from './coursesSlice';
 

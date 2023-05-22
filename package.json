@@ -5,7 +5,7 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@campus/campusnet-sdk": "^2.0.0-pre.4",
+    "@campus/campusnet-sdk": "^2.0.0",
     "@capacitor/android": "^4.0.0",
     "@capacitor/app": "^4.0.0",
     "@capacitor/core": "^4.0.0",

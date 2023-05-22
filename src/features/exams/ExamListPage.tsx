@@ -1,9 +1,9 @@
+import { descriptions as semesterDescs } from '@campus/campusnet-sdk';
 import { Fragment } from 'react';
 import { useNavigate } from 'react-router';
 import PageFrame from '../../components/PageFrame';
 import { UserNotLoggedInError } from '../../provider/camusnet';
 import { useExamsGroupedBySemester } from '../../provider/camusnet/exams';
-import { descriptions as semesterDescs } from '../../provider/camusnet/semesters';
 import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 import convertGrade from './gradeConverter';
 

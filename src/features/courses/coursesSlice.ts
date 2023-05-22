@@ -1,13 +1,13 @@
-import { Semester } from '@campus/campusnet-sdk';
-import {
-  Module,
-  useCoursesWithSelectorFromGroupedByModule,
-} from '../../provider/camusnet/courses';
 import {
   descriptions as semesterDescs,
   getRegSemester,
   getSemester,
-} from '../../provider/camusnet/semesters';
+  Semester,
+} from '@campus/campusnet-sdk';
+import {
+  Module,
+  useCoursesWithSelectorFromGroupedByModule,
+} from '../../provider/camusnet/courses';
 
 export const useCoursesBySemesterAndNumber = (
   semester?: number,

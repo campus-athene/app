@@ -1,4 +1,9 @@
-import { CourseMobile, CourseOffer, ModuleOffer } from '@campus/campusnet-sdk';
+import {
+  CourseMobile,
+  CourseOffer,
+  descriptions as semesterDescs,
+  ModuleOffer,
+} from '@campus/campusnet-sdk';
 import {
   Skeleton as MuiSkeleton,
   SkeletonProps,
@@ -7,7 +12,6 @@ import {
 import { OverridableComponent } from '@mui/types';
 import sanitizeHtml from 'sanitize-html';
 import { Module, useCourseDetails } from '../../provider/camusnet/courses';
-import { descriptions as semesterDescs } from '../../provider/camusnet/semesters';
 import './CourseDetail.css';
 
 const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
