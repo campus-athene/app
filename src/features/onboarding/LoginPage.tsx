@@ -6,6 +6,14 @@ import Logo from '../../components/Logo';
 import { updateMoodleToken } from '../auth/authSlice';
 import { Frame } from './Controls';
 
+const svcWindow = window as Window & {
+  SafariViewController?: {
+    show: (options: { toolbarColor: string; url: string }) => void;
+    hide: () => void;
+    isAvailable: (cb: (isAvailable: boolean) => void) => void;
+  };
+};
+
 const LoginPage = () => {
   const dispatch = useDispatch();
 
@@ -14,29 +22,30 @@ const LoginPage = () => {
       Math.random() * 1000
     }&urlscheme=com.oliverrm.campus.moodlelogin`;
 
-    (window as any).SafariViewController?.isAvailable(
-      (isAvailable: boolean) => {
-        if (isAvailable)
-          (window as any).SafariViewController.show({
-            toolbarColor: '#372649',
-            url,
-          });
-        else if (process.env.NODE_ENV === 'development') {
-          window.open(url, '_blank');
-        } else {
-          log(
-            'error',
-            'User cannot log in as there is no SafariViewController.'
-          );
-          alert('Anmeldung wird auf diesem Gerät nicht unterstützt.');
-        }
+    const onAvailable = (isAvailable: boolean) => {
+      if (svcWindow.SafariViewController && isAvailable)
+        svcWindow.SafariViewController.show({
+          toolbarColor: '#372649',
+          url,
+        });
+      else if (process.env.NODE_ENV === 'development') {
+        window.open(url, '_blank');
+        // For debugging purposes only.
+        (window as any).setMoodleToken = (token: string) =>
+          dispatch(updateMoodleToken(token));
+        console.log(
+          `Open ${url} in the browser and run window.setMoodleToken("...") in the console to log in.`
+        );
+      } else {
+        log('error', 'User cannot log in as there is no SafariViewController.');
+        alert('Anmeldung wird auf diesem Gerät nicht unterstützt.');
       }
-    );
-  };
+    };
 
-  // For debugging purposes only.
-  (window as any).setMoodleToken = (token: string) =>
-    dispatch(updateMoodleToken(token));
+    svcWindow.SafariViewController
+      ? (window as any).SafariViewController.isAvailable(onAvailable)
+      : onAvailable(false);
+  };
 
   useEffect(() => {
     const hd = App.addListener('appUrlOpen', (e) => {
