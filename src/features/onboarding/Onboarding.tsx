@@ -12,7 +12,7 @@ import NotificationsPage from './NotificationsPage';
 import PrivacyPage from './PrivacyPage';
 import WelcomePage from './WelcomePage';
 
-const Onboarding = () => {
+export const useOnboardingElement = () => {
   const [skipCampusNetLogin, setSkipCampusNetLogin] = useState(false);
 
   const needsMoodleLogin = !useSelector(selectMoodleToken());
@@ -20,16 +20,15 @@ const Onboarding = () => {
   const needsCampusNetLogin =
     !useSelector(selectCampusNetCreds()) && !skipCampusNetLogin;
   const needsPushSetup = useSelector(selectNeedsNotificationSetup());
-  const needsWelcome = !useSelector(selectOnboardingComplete());
+  const onboardingComplete = useSelector(selectOnboardingComplete());
 
   if (needsMoodleLogin) return <LoginPage />;
   if (needsPrivacySetup) return <PrivacyPage />;
-  if (needsCampusNetLogin)
+  // Do not show CampusNet login if the user has already completed onboarding before
+  if (needsCampusNetLogin && !onboardingComplete)
     return <CampusNetLoginPage onSkip={() => setSkipCampusNetLogin(true)} />;
   if (needsPushSetup) return <NotificationsPage />;
-  if (needsWelcome) return <WelcomePage />;
+  if (!onboardingComplete) return <WelcomePage />;
 
-  throw new Error('Onboarding was displayed even though finished.');
+  return null;
 };
-
-export default Onboarding;
