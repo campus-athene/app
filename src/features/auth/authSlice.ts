@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { log } from '../../app/errorReporting';
-import { AppCredentials } from '../../provider/tucan';
+import { AppCredentials } from '../../provider/api';
 import { AppThunkAction, RootState } from '../../redux';
 
 type CampusNetCreds = { username: string; password: string };

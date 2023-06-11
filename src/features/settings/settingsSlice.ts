@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { log } from '../../app/errorReporting';
-import { session } from '../../provider/tucan';
+import { session } from '../../provider/api';
 import { AppThunkAction, RootState } from '../../redux';
 import { setupPush } from './pushNotifications';
 

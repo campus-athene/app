@@ -1,7 +1,7 @@
 import { storeRef } from '..';
 import { selectCreds } from '../features/auth/authSlice';
 import { selectPrivacy } from '../features/settings/settingsSlice';
-import { session } from '../provider/tucan';
+import { session } from '../provider/api';
 import { RootState } from '../redux';
 
 export const log = (
