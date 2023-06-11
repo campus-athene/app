@@ -20,10 +20,10 @@ const PrivacyPage = () => {
         <br />
         Du mit uns teilen möchtest.
       </p>
-      <div className="mx-auto max-w-xs">
+      <div className="mx-auto max-w-xs text-left">
         <Radio
           checked={selected === 'complete'}
-          className="mb-4 block"
+          className="mb-4"
           label="Vollständig"
           onChange={(e) => e.target.checked && setSelected('complete')}
         >
@@ -35,7 +35,7 @@ const PrivacyPage = () => {
         </Radio>
         <Radio
           checked={selected === 'balanced'}
-          className="mb-4 block"
+          className="mb-4"
           label="Ausgewogen"
           onChange={(e) => e.target.checked && setSelected('balanced')}
         >

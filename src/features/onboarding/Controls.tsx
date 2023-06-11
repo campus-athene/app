@@ -11,16 +11,19 @@ export const Radio = (props: {
   style?: React.CSSProperties;
 }) => (
   <label
-    className={twMerge('inline-block text-chalk', props.className)}
+    className={twMerge('flex items-center text-chalk', props.className)}
     style={props.style}
   >
-    <div>
-      <input type="radio" checked={props.checked} onChange={props.onChange} />
-      <span className="text-lg" style={{ marginLeft: '0.4em' }}>
-        {props.label}
-      </span>
+    <input
+      className="flex-shrink-0 flex-grow-0"
+      type="radio"
+      checked={props.checked}
+      onChange={props.onChange}
+    />
+    <div className="ml-2">
+      <div className="text-lg font-medium">{props.label}</div>
+      <div>{props.children}</div>
     </div>
-    <div>{props.children}</div>
   </label>
 );
 

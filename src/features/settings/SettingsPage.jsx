@@ -50,16 +50,18 @@ const Setting = ({ checked, description, children, onClick }) => (
       whiteSpace: 'nowrap',
     }}
   >
-    <FontAwesomeIcon
-      icon={faCheck}
-      style={{
-        visibility: checked ? 'visible' : 'hidden',
-        marginBottom: '0.15em',
-        marginLeft: '-1.5em',
-        height: '0.7em',
-        width: '1.5em',
-      }}
-    />
+    {typeof checked === 'boolean' && (
+      <FontAwesomeIcon
+        icon={faCheck}
+        style={{
+          visibility: checked ? 'visible' : 'hidden',
+          marginBottom: '0.15em',
+          marginLeft: '-1.5em',
+          height: '0.7em',
+          width: '1.5em',
+        }}
+      />
+    )}
     {children}
     {description && (
       <div
@@ -129,16 +131,28 @@ const SettingsPage = () => {
       >
         <Header>Profil</Header>
         <Setting>
-          <span className="text-neutral-400">Vorname: </span>
-          {moodleSiteInfo.data?.firstname}
+          <div className="text-xs text-neutral-400">Vorname:</div>
+          <div>
+            {moodleSiteInfo.data?.firstname ?? (
+              <i>{moodleSiteInfo.isLoading ? 'Lädt...' : 'Fehler'}</i>
+            )}
+          </div>
         </Setting>
         <Setting>
-          <span className="text-neutral-400">Nachname: </span>
-          {moodleSiteInfo.data?.lastname}
+          <div className="text-xs text-neutral-400">Nachname:</div>
+          <div>
+            {moodleSiteInfo.data?.lastname ?? (
+              <i>{moodleSiteInfo.isLoading ? 'Lädt...' : 'Fehler'}</i>
+            )}
+          </div>
         </Setting>
         <Setting>
-          <span className="text-neutral-400">TU-Id: </span>
-          {moodleSiteInfo.data?.username}
+          <div className="text-xs text-neutral-400">TU-ID:</div>
+          <div>
+            {moodleSiteInfo.data?.username ?? (
+              <i>{moodleSiteInfo.isLoading ? 'Lädt...' : 'Fehler'}</i>
+            )}
+          </div>
         </Setting>
 
         <Header>Benachrichtigungen</Header>
