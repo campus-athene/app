@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { AppThunkAction } from '.';
 import { log } from '../app/errorReporting';
-import { selectCreds } from '../features/auth/authSlice';
 import canteenData from '../features/canteen/canteenData';
 import { selectCanteen } from '../features/canteen/canteenSettings';
 import { update as updateNews } from '../features/news/newsSlice';
@@ -11,11 +10,9 @@ import { useAppDispatch } from './hooks';
 
 export const update: () => AppThunkAction<void> =
   () => (dispatch, getState) => {
-    const creds = selectCreds()(getState());
-
     const tasks: (() => AppThunkAction<Promise<unknown> | unknown>)[] = [
       updateNews,
-      ...(creds ? [syncSettings] : []),
+      syncSettings,
     ];
 
     Promise.allSettled(

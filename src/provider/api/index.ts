@@ -1,3 +1,4 @@
+import { getSessionId } from '../../app/common';
 import { ReportErrorRequest, Settings } from './apiTypes';
 import { NetworkError, ServerError } from './errors';
 
@@ -7,75 +8,52 @@ const base =
     ? 'https://dev.api.study-campus.de'
     : 'https://api.study-campus.de');
 
-export type AppCredentials = { token: string };
+const send = async (
+  path: string,
+  body?: any,
+  headers?: HeadersInit
+): Promise<any> => {
+  let httpResponse;
+  const sessionId = getSessionId();
 
-export class session {
-  token: AppCredentials['token'];
-
-  constructor(creds: AppCredentials) {
-    this.token = creds.token;
+  try {
+    httpResponse = await fetch(base + path, {
+      method: 'post',
+      headers: {
+        Authorization: `Bearer sid.${sessionId}`,
+        'Content-Type': 'application/json',
+        ...(headers || {}),
+      },
+      body: JSON.stringify(body || {}),
+    });
+  } catch (error) {
+    throw new NetworkError('Keine Internetverbindung!');
   }
 
-  static sendAdvanced = async (
-    path: string,
-    headers: HeadersInit,
-    body: any
-  ): Promise<any> => {
-    let httpResponse;
+  if (!httpResponse.ok) {
+    console.error(`Server returned error code ${httpResponse.status}.`);
+    let body;
     try {
-      httpResponse = await fetch(base + path, {
-        method: 'post',
-        headers,
-        body: JSON.stringify(body || {}),
-      });
-    } catch (error) {
-      throw new NetworkError('Keine Internetverbindung!');
+      body = await httpResponse.json();
+    } catch (_) {}
+    if (typeof body?.message === 'string') {
+      throw new ServerError(body);
     }
+    throw new ServerError();
+  }
 
-    if (!httpResponse.ok) {
-      console.error(`Server returned error code ${httpResponse.status}.`);
-      let body;
-      try {
-        body = await httpResponse.json();
-      } catch (_) {}
-      if (typeof body?.message === 'string') {
-        throw new ServerError(body);
-      }
-      throw new ServerError();
-    }
+  return await httpResponse.json();
+};
 
-    return await httpResponse.json();
-  };
+export const syncSettings = (settings: Settings): Promise<void> =>
+  send('/account/settings', { settings });
 
-  send = (path: string, body: any = null): Promise<any> =>
-    session.sendAdvanced(
-      path,
-      {
-        Authorization: `Bearer ${this.token}`,
-        'Content-Type': 'application/json',
-      },
-      body
-    );
+export const subscribePNS = (
+  registrationId: string,
+  registrationType: 'APNS' | 'FCM'
+): Promise<void> =>
+  send('/account/subscribepns', { registrationId, registrationType });
 
-  syncSettings = (deviceId: string, settings: Settings): Promise<void> =>
-    this.send('/account/settings', { deviceId, settings });
-
-  subscribePNS = (
-    registrationId: string,
-    registrationType: 'APNS' | 'FCM'
-  ): Promise<void> =>
-    this.send('/account/subscribepns', { registrationId, registrationType });
-
-  static reportError = async (errorData: ReportErrorRequest): Promise<void> => {
-    this.sendAdvanced(
-      '/reporterror',
-      {
-        'Content-Type': 'application/json',
-      },
-      errorData
-    );
-  };
-  reportError = async (errorData: ReportErrorRequest): Promise<void> => {
-    this.send('/reporterror', errorData);
-  };
-}
+export const reportError = async (
+  errorData: ReportErrorRequest
+): Promise<void> => send('/reporterror', errorData);

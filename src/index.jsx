@@ -98,3 +98,6 @@ if (window.cordova)
     false
   );
 else initializeReact();
+
+// Creds is not being used anymore any stores sensitive data.
+localStorage.removeItem('creds');

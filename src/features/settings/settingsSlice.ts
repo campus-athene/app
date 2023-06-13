@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { log } from '../../app/errorReporting';
-import { session } from '../../provider/api';
+import * as api from '../../provider/api';
 import { AppThunkAction, RootState } from '../../redux';
 import { setupPush } from './pushNotifications';
 
@@ -8,7 +8,6 @@ type PrivacyLevel = 'complete' | 'balanced' | 'minimal';
 type Topic = 'messages';
 
 type SettingsState = {
-  deviceId: string;
   onboardingComplete: boolean;
   privacy: { level: PrivacyLevel } | null;
   push: { [key in Topic]: boolean } | null;
@@ -31,14 +30,6 @@ const loadState = (state: SettingsState) => {
         level: localStorage.getItem('privacy') as PrivacyLevel,
       }) ||
       null;
-    let deviceId = localStorage.getItem('deviceId');
-    if (!deviceId) {
-      deviceId = Array.from(crypto.getRandomValues(new Uint8Array(8)))
-        .map((n) => n.toString(16).padStart(2, 'X'))
-        .join('');
-      localStorage.setItem('deviceId', deviceId);
-    }
-    state.deviceId = deviceId;
     state.push = tryParse(localStorage.getItem('push'));
     if (state.push && state.push.messages) setupPush();
   } catch (e) {
@@ -88,24 +79,18 @@ export const setOnboardingComplete: () => AppThunkAction = () => (dispatch) => {
 export const syncSettings: () => AppThunkAction =
   () => (_dispatch, getState) => {
     const state = getState();
-    const creds = state.auth.creds;
 
     // Do not send settings to server until onboarding has been completed.
     // setOnboardingComplete will sync settings once called.
-    if (!selectOnboardingComplete()(state) || !creds) return;
+    if (!selectOnboardingComplete()(state)) return;
 
-    new session(creds).syncSettings(selectDeviceId()(state), {
+    api.syncSettings({
       privacy: selectPrivacy()(state)?.level || 'minimal',
       push: {
         messages: selectPushEnabled('messages')(state) || false,
       },
     });
   };
-
-export const selectDeviceId =
-  () =>
-  ({ settings: { deviceId } }: RootState) =>
-    deviceId;
 
 export const selectOnboardingComplete =
   () =>

@@ -1,7 +1,6 @@
 import { storeRef } from '..';
-import { selectCreds } from '../features/auth/authSlice';
 import { selectPrivacy } from '../features/settings/settingsSlice';
-import { session } from '../provider/api';
+import * as api from '../provider/api';
 import { RootState } from '../redux';
 
 export const log = (
@@ -23,7 +22,6 @@ export const log = (
 
     const state = (storeRef.store as any).getState() as RootState;
     const privacy = selectPrivacy()(state)?.level;
-    const creds = selectCreds()(state);
 
     if (privacy !== 'complete' && privacy !== 'balanced') return;
 
@@ -43,8 +41,8 @@ export const log = (
       data: serializedData,
     };
 
-    creds
-      ? new session(creds).reportError(report)
-      : session.reportError(report);
-  } catch (e) {}
+    api.reportError(report);
+  } catch (e) {
+    console.error('Failed to report error to API.', e);
+  }
 };

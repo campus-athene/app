@@ -1,22 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { log } from '../../app/errorReporting';
-import { AppCredentials } from '../../provider/api';
 import { AppThunkAction, RootState } from '../../redux';
 
 type CampusNetCreds = { username: string; password: string };
 
 type AuthState = {
-  /**
-   * Deprecated and now read only.
-   * @deprecated
-   */
-  creds: AppCredentials | null;
   campusNetCreds: CampusNetCreds | null;
   moodle: { token: string; privateToken: string } | null;
 };
 
 const initialState: AuthState = {
-  creds: null,
   campusNetCreds: null,
   moodle: null,
 };
@@ -27,9 +20,6 @@ const loadState = (state: AuthState) => {
     const moodlePrivateToken = localStorage.getItem('moodlePrivateToken');
     if (moodleToken && moodlePrivateToken)
       state.moodle = { token: moodleToken, privateToken: moodlePrivateToken };
-
-    const credsJson = localStorage.getItem('creds');
-    if (credsJson) state.creds = JSON.parse(credsJson);
 
     const campusNetCredsJson = localStorage.getItem('campusNetCreds');
     if (campusNetCredsJson)
@@ -83,12 +73,6 @@ export const logout: () => AppThunkAction = () => (dispatch) => {
     type: 'LOGOUT',
   });
 };
-
-/** @deprecated */
-export const selectCreds =
-  () =>
-  ({ auth: { creds } }: RootState) =>
-    creds;
 
 export const selectCampusNetCreds =
   () =>
