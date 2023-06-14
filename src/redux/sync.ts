@@ -5,14 +5,13 @@ import { log } from '../app/errorReporting';
 import canteenData from '../features/canteen/canteenData';
 import { selectCanteen } from '../features/canteen/canteenSettings';
 import { update as updateNews } from '../features/news/newsSlice';
-import { syncSettings } from '../features/settings/settingsSlice';
+import { useSyncSettings } from '../features/settings/settingsSlice';
 import { useAppDispatch } from './hooks';
 
 export const update: () => AppThunkAction<void> =
   () => (dispatch, getState) => {
     const tasks: (() => AppThunkAction<Promise<unknown> | unknown>)[] = [
       updateNews,
-      syncSettings,
     ];
 
     Promise.allSettled(
@@ -32,6 +31,8 @@ export const UpdateEffect = () => {
   useEffect(() => {
     dispatch(update());
   }, [dispatch]);
+
+  useSyncSettings();
 
   const canteenId = useSelector(selectCanteen());
   canteenData.useMenuItemsQuery({ canteenId, days: 1 });

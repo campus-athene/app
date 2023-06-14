@@ -1,6 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { log } from '../../app/errorReporting';
 import * as api from '../../provider/api';
+import { useCoreWebserviceGetSiteInfo } from '../../provider/moodle';
 import { AppThunkAction, RootState } from '../../redux';
 import { setupPush } from './pushNotifications';
 
@@ -73,24 +76,33 @@ export const { setPrivacy, setPushNotif } = settingsSlice.actions;
 
 export const setOnboardingComplete: () => AppThunkAction = () => (dispatch) => {
   dispatch(setOnboardingCompleteValue({ isComplete: true }));
-  dispatch(syncSettings());
 };
 
-export const syncSettings: () => AppThunkAction =
-  () => (_dispatch, getState) => {
-    const state = getState();
+export const useSyncSettings = () => {
+  const username = useCoreWebserviceGetSiteInfo().data?.username;
+  const privacy = useSelector(selectPrivacy())?.level || 'minimal';
+  const messages = useSelector(selectPushEnabled('messages')) || false;
+  const onboardingComplete = useSelector(selectOnboardingComplete());
 
-    // Do not send settings to server until onboarding has been completed.
-    // setOnboardingComplete will sync settings once called.
-    if (!selectOnboardingComplete()(state)) return;
+  console.log('useSyncSettings', {
+    username,
+    privacy,
+    messages,
+    onboardingComplete,
+  });
 
-    api.syncSettings({
-      privacy: selectPrivacy()(state)?.level || 'minimal',
-      push: {
-        messages: selectPushEnabled('messages')(state) || false,
-      },
-    });
-  };
+  // Do not send settings to server until onboarding has been completed.
+  // setOnboardingComplete will sync settings once called.
+  useEffect(() => {
+    if (username && onboardingComplete)
+      api.syncSettings(username, {
+        privacy,
+        push: {
+          messages,
+        },
+      });
+  }, [username, privacy, messages, onboardingComplete]);
+};
 
 export const selectOnboardingComplete =
   () =>

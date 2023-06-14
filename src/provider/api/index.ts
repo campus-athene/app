@@ -45,8 +45,10 @@ const send = async (
   return await httpResponse.json();
 };
 
-export const syncSettings = (settings: Settings): Promise<void> =>
-  send('/account/settings', { settings });
+export const syncSettings = (
+  username: string,
+  settings: Settings
+): Promise<void> => send('/account/settings', { username, settings });
 
 export const subscribePNS = (
   registrationId: string,
