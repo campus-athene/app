@@ -32,7 +32,7 @@ const PageFrame = (props: {
         className="flex items-center text-white"
         style={{
           backgroundColor: '#372649',
-          height: 'calc(3.5rem + env(safe-area-inset-top))',
+          height: `calc(3.5rem + ${statusBarHeightCss})`,
           paddingTop: statusBarHeightCss,
           width: '100vw',
         }}
@@ -102,7 +102,7 @@ const PageFrame = (props: {
           open={menuOpen}
           onClose={() => setMenuOpen(false)}
           PaperProps={{
-            style: { marginTop: 'calc(4rem + env(safe-area-inset-top))' },
+            style: { marginTop: `calc(4rem + ${statusBarHeightCss})` },
           }}
         >
           {props.more}
