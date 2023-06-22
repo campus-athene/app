@@ -7,6 +7,8 @@ import { selectCanteen } from '../features/canteen/canteenSettings';
 import { update as updateNews } from '../features/news/newsSlice';
 import { useSyncSettings } from '../features/settings/settingsSlice';
 import { useAppDispatch } from './hooks';
+import { useUnreadMessagesCount } from '../provider/camusnet/messages';
+import { Badge } from '@capawesome/capacitor-badge';
 
 export const update: () => AppThunkAction<void> =
   () => (dispatch, getState) => {
@@ -33,6 +35,18 @@ export const UpdateEffect = () => {
   }, [dispatch]);
 
   useSyncSettings();
+
+  // Keep unread messages badge up to date
+  const unreadMessages = useUnreadMessagesCount().data;
+  useEffect(() => {
+    if (unreadMessages !== undefined)
+    try {
+      Badge.set({ count: unreadMessages });
+    } catch (e) {
+      log('warning', 'Failed to set badge count', e);
+    }
+  }, [unreadMessages]);
+
 
   const canteenId = useSelector(selectCanteen());
   canteenData.useMenuItemsQuery({ canteenId, days: 1 });
