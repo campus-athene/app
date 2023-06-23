@@ -1,6 +1,5 @@
 import { ExamMobile, ModuleOffer } from '@campus/campusnet-sdk';
 import { Fragment } from 'react';
-import { useNavigate } from 'react-router';
 import { UserNotLoggedInError } from '../../provider/camusnet';
 import { Module } from '../../provider/camusnet/courses';
 import { useExams } from '../../provider/camusnet/exams';
@@ -26,7 +25,6 @@ import ExamDetails from './ExamDetails';
 //   });
 
 const ExamsTab = (props: { module: Module | ModuleOffer }) => {
-  const navigate = useNavigate();
   const groupedExams = useExams();
   // const [selectedExam, setSelectedExam] = useState<ExamMobile | null>(null);
 
