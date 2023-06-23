@@ -7,6 +7,7 @@ import NavButton from '../../components/NavButton';
 import PageFrame from '../../components/PageFrame';
 import { Module, useCourseOffers } from '../../provider/camusnet/courses';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
+import ExamsTab from '../exams/ExamsTab';
 import AppointmentsTab from './AppointmentsTab';
 import { getCourseColor, useCoursesBySemesterAndNumber } from './coursesSlice';
 import OverviewTab from './OverviewTab';
@@ -50,7 +51,7 @@ const DetailsPage = () => {
       });
   });
 
-  type tabs = 'overview' | 'appointments';
+  type tabs = 'overview' | 'appointments' | 'exams';
   const [tab, setTab] = useState<tabs>('overview');
   const selectedTab = tab;
 
@@ -108,10 +109,12 @@ const DetailsPage = () => {
         >
           <TabButton tab="overview">Übersicht</TabButton>
           <TabButton tab="appointments">Termine</TabButton>
+          <TabButton tab="exams">Prüfungen</TabButton>
         </div>
       </div>
       {tab === 'overview' && <OverviewTab module={module} />}
       {tab === 'appointments' && <AppointmentsTab module={module} />}
+      {tab === 'exams' && <ExamsTab module={module} />}
     </div>
   );
 };

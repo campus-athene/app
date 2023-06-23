@@ -1,56 +1,51 @@
-import { ResponsivePie } from '@nivo/pie';
-import { useParams } from 'react-router-dom';
-import PageFrame from '../../components/PageFrame';
 import {
-  useExam,
-  useExamGrade as useExamGradeDistribution,
-} from '../../provider/camusnet/exams';
+  descriptions as semesterDescs,
+  ExamMobile,
+} from '@campus/campusnet-sdk';
+import { ResponsivePie } from '@nivo/pie';
+import { useExamGrade as useExamGradeDistribution } from '../../provider/camusnet/exams';
 import convertGrade from './gradeConverter';
 
-const ExamDetailsPage = () => {
-  const id = Number.parseInt(useParams<{ id: string }>().id || '0');
-
-  // const [modalOpen, setModalOpen] = useState();
-
-  const statsQuery = useExamGradeDistribution(id);
+const ExamDetails = (props: { exam: ExamMobile }) => {
+  const statsQuery = useExamGradeDistribution(props.exam.examId);
   const stats = statsQuery.data;
-  const examQuery = useExam(id);
-  const exam = examQuery.data;
-
-  if (!exam) return null;
+  const exam = props.exam;
 
   return (
-    <PageFrame
-      title="Klausurergebnisse"
-      className="p-4"
-      syncState={{
-        isLoading: examQuery.isLoading || statsQuery.isLoading,
-        isOffline: examQuery.isError || statsQuery.isError,
-      }}
-    >
-      <h3>{exam.contextName}</h3>
-      <h4>{exam.name}</h4>
-      <p>
-        K&uuml;rzel: {exam.contextNumber}
-        <br />
-        Datum: {exam.dueDate}
-        <br />
-        {exam.grade && (
+    <div className="overflow-hidden p-4">
+      <div className="truncate text-xl">{exam.contextName}</div>
+      <div className="truncate">{exam.name}</div>
+      <div>K&uuml;rzel: {exam.contextNumber}</div>
+      <div>Semester: {semesterDescs[exam.semester]}</div>
+      <div>Datum: {exam.dueDate || 'Keine Angabe'}</div>
+      {exam.grade && (
+        <div>
           <span>
-            Bewertung: {convertGrade(exam.grade).desc} ({exam.grade})
+            Bewertung:{' '}
+            <div
+              style={{
+                backgroundColor: convertGrade(exam.grade).hexColor,
+              }}
+              className="inline-block rounded-full px-2 text-sm font-bold"
+            >
+              {convertGrade(exam.grade).desc} ({exam.grade})
+            </div>
           </span>
-        )}
-      </p>
+        </div>
+      )}
+      {stats && <div>Durchschnitt: {stats.average}</div>}
       {stats && (
         <div className="aspect-square">
           <ResponsivePie
             // height={250}
-            data={stats.gradeDist.map(([grade, value]) => ({
-              id: grade,
-              label: grade,
-              value,
-              color: convertGrade(grade).hexColor,
-            }))}
+            data={stats.gradeDist
+              .filter(([_, value]) => value)
+              .map(([grade, value]) => ({
+                id: grade,
+                label: grade,
+                value,
+                color: convertGrade(grade).hexColor,
+              }))}
             margin={{ top: 20, right: 60, bottom: 20, left: 60 }}
             innerRadius={0.6}
             activeOuterRadiusOffset={8}
@@ -68,21 +63,8 @@ const ExamDetailsPage = () => {
           />
         </div>
       )}
-      {/* {exam.status === 'register' && (
-        <Button variant="outline-success" onClick={() => setModalOpen(true)}>
-          Anmelden
-        </Button>
-      )}
-      {exam.status === 'unregister' && (
-        <Button variant="outline-danger" onClick={() => setModalOpen(true)}>
-          Abmelden
-        </Button>
-      )}
-      {modalOpen ? (
-        <ExamRegModal exam={exam} closeCallback={() => setModalOpen(false)} />
-      ) : null} */}
-    </PageFrame>
+    </div>
   );
 };
 
-export default ExamDetailsPage;
+export default ExamDetails;

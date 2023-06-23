@@ -1,11 +1,11 @@
-import { descriptions as semesterDescs } from '@campus/campusnet-sdk';
+import { ExamMobile, ModuleOffer } from '@campus/campusnet-sdk';
 import { Fragment } from 'react';
 import { useNavigate } from 'react-router';
-import PageFrame from '../../components/PageFrame';
 import { UserNotLoggedInError } from '../../provider/camusnet';
-import { useExamsGroupedBySemester } from '../../provider/camusnet/exams';
+import { Module } from '../../provider/camusnet/courses';
+import { useExams } from '../../provider/camusnet/exams';
 import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
-import convertGrade from './gradeConverter';
+import ExamDetails from './ExamDetails';
 
 // // https://www.flaticon.com/free-icon/logout_1828433 (yes, its logout.svg for registration)
 // export const Register = (props) =>
@@ -25,96 +25,66 @@ import convertGrade from './gradeConverter';
 //     },
 //   });
 
-const ExamListPage = () => {
+const ExamsTab = (props: { module: Module | ModuleOffer }) => {
   const navigate = useNavigate();
-  const groupedExams = useExamsGroupedBySemester();
+  const groupedExams = useExams();
   // const [selectedExam, setSelectedExam] = useState<ExamMobile | null>(null);
 
   if (groupedExams.error instanceof UserNotLoggedInError)
     return <CampusNetLoginTeaser title="Prüfungen" />;
 
+  console.log(groupedExams.data);
+
+  // Workaround. It should always be contextNumber.
+  const contextNumber = (exam: ExamMobile) =>
+    'contextNumber' in exam ? exam.contextNumber : (exam as any).contextCode;
+
   return (
-    <PageFrame
-      title="Prüfungen"
-      className="divide-y"
-      syncState={{
-        isLoading: groupedExams.isLoading,
-        isOffline: groupedExams.isError,
-      }}
-    >
+    <div className="overflow-y-scroll">
       {groupedExams.data
-        ?.sort((a, b) => b.id - a.id)
-        .map(
-          ({ id: semester, exams }) =>
-            exams.length > 0 && ( // Might not be the case for "Anmeldung"
-              <Fragment key={semester}>
-                <div className="overflow-hidden text-clip bg-gray-200 px-4">
-                  {semesterDescs[semester]}
-                </div>
-                {exams.map((exam) => (
-                  <div
-                    key={exam.examId}
-                    className="flex flex-row items-center"
-                    onClick={() => navigate(`/exams/${exam.examId}`)}
-                  >
-                    <div className="flex-grow overflow-hidden p-4">
-                      <div className="truncate text-xl">{exam.contextName}</div>
-                      <div className="truncate">{exam.name}</div>
-                      <div>
-                        {exam.grade ? (
-                          <div
-                            style={{
-                              backgroundColor: convertGrade(exam.grade)
-                                .hexColor,
-                            }}
-                            className="mt-2 inline-block rounded-full px-2 text-sm font-bold"
-                          >
-                            {convertGrade(exam.grade).desc} ({exam.grade})
-                          </div>
-                        ) : (
-                          <span className="text-gray-700">
-                            Datum: {exam.dueDate || 'Keine Angabe'}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    {/* {(exam.status === 'register' || exam.status === 'unregister') && (
-                    <div
-                      style={{
-                        flexShrink: 0,
-                        margin: '-0.75rem -1.25rem -0.75rem 0',
-                        width: '3.5rem',
-                        padding: '0 1.25rem 0 0.5rem',
-                        alignSelf: 'stretch',
-                        display: 'grid',
-                        alignContent: 'center',
-                      }}
-                      onClick={(e) => {
-                        setSelectedExam(exam);
-                        e.stopPropagation();
-                      }}
-                    >
-                      {exam.status === 'register' && (
-                        <Register style={{ fill: '#28a745' }} />
-                      )}
-                      {exam.status === 'unregister' && (
-                        <Unregister style={{ fill: '#dc3545' }} />
-                      )}
-                    </div>
-                  )} */}
-                  </div>
-                ))}
-              </Fragment>
-            )
-        )}
+        ?.filter(
+          (e) =>
+            (e.contextType === 'module' &&
+              contextNumber(e) === props.module.number) ||
+            props.module.courses.map((c) => c.number).includes(contextNumber(e))
+        )
+        .map((exam) => (
+          <Fragment key={exam.examId}>
+            <ExamDetails exam={exam} />
+            {/* {(exam.status === 'register' || exam.status === 'unregister') && (
+              <div
+                style={{
+                  flexShrink: 0,
+                  margin: '-0.75rem -1.25rem -0.75rem 0',
+                  width: '3.5rem',
+                  padding: '0 1.25rem 0 0.5rem',
+                  alignSelf: 'stretch',
+                  display: 'grid',
+                  alignContent: 'center',
+                }}
+                onClick={(e) => {
+                  setSelectedExam(exam);
+                  e.stopPropagation();
+                }}
+              >
+                {exam.status === 'register' && (
+                  <Register style={{ fill: '#28a745' }} />
+                )}
+                {exam.status === 'unregister' && (
+                  <Unregister style={{ fill: '#dc3545' }} />
+                )}
+              </div>
+            )} */}
+          </Fragment>
+        ))}
       {/* {selectedExam && (
         <ExamRegModal
           exam={selectedExam}
           closeCallback={() => setSelectedExam(null)}
         />
       )} */}
-    </PageFrame>
+    </div>
   );
 };
 
-export default ExamListPage;
+export default ExamsTab;
