@@ -71,6 +71,12 @@ export const useCoursesWithSelectorFromGroupedByModule = <TData>(
     },
   });
 
+export const useCourseProps = (courseId: number, groupId: number) =>
+  useCNQuery({
+    queryKey: [...queryKey, 'props', courseId, groupId],
+    queryFn: (session) => cn.courseProps(session, courseId, groupId),
+  });
+
 export const useCourseDetails = (id: number) =>
   useCNQuery({
     queryKey: [...queryKey, 'details', id],

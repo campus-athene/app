@@ -1,5 +1,5 @@
 import { ModuleOffer } from '@campus/campusnet-sdk';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { log } from '../../app/errorReporting';
@@ -7,6 +7,7 @@ import NavButton from '../../components/NavButton';
 import PageFrame from '../../components/PageFrame';
 import { Module, useCourseOffers } from '../../provider/camusnet/courses';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
+import AppointmentsTab from './AppointmentsTab';
 import { getCourseColor, useCoursesBySemesterAndNumber } from './coursesSlice';
 import OverviewTab from './OverviewTab';
 
@@ -49,23 +50,24 @@ const DetailsPage = () => {
       });
   });
 
-  // const [tab, setTab] = useState('overview');
-  // const selectedTab = tab;
-  //
-  // const TabButton = ({ children, tab }) => (
-  //   <button
-  //     onClick={() => setTab(tab)}
-  //     style={{
-  //       background: 'none',
-  //       border: 'none',
-  //       color: selectedTab === tab ? 'white' : '#fffa',
-  //       fontWeight: 'bold',
-  //       padding: '2em 0.75em 0.5em',
-  //     }}
-  //   >
-  //     {children}
-  //   </button>
-  // );
+  type tabs = 'overview' | 'appointments';
+  const [tab, setTab] = useState<tabs>('overview');
+  const selectedTab = tab;
+
+  const TabButton = (props: { children: React.ReactNode; tab: tabs }) => (
+    <button
+      onClick={() => setTab(props.tab)}
+      style={{
+        background: 'none',
+        border: 'none',
+        color: selectedTab === props.tab ? 'white' : '#fffa',
+        fontWeight: 'bold',
+        padding: '2em 0.75em 0.5em',
+      }}
+    >
+      {props.children}
+    </button>
+  );
 
   if (!module)
     return (
@@ -95,47 +97,21 @@ const DetailsPage = () => {
         <div style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
           {module.name}
         </div>
-        {/* <div
+        <div
           style={{
             color: 'white',
             display: 'flex',
-            justifyContent: 'space-between',
             margin: '0 -1em',
             overflowY: 'scroll',
             padding: '0 0.25em',
           }}
         >
           <TabButton tab="overview">Übersicht</TabButton>
-          <TabButton tab="messages">Nachrichten</TabButton>
-          <TabButton tab="material">Material</TabButton>
-        </div> */}
+          <TabButton tab="appointments">Termine</TabButton>
+        </div>
       </div>
-      {
-        //tab === 'overview' &&
-        <OverviewTab module={module} />
-      }
-      {/* {tab === 'material' && (
-        <button
-          onClick={() =>
-            window.open('https://moodle.tu-darmstadt.de/my/', '_blank')
-          }
-          style={{
-            background: '#f5a300',
-            border: 'none',
-            borderRadius: '0.5em',
-            color: 'white',
-            fontWeight: 'bold',
-            left: '0',
-            lineHeight: '2.5em',
-            margin: '2em auto 0 auto',
-            position: 'absolute',
-            right: '0',
-            width: '12em',
-          }}
-        >
-          Moodle öffnen
-        </button>
-      )} */}
+      {tab === 'overview' && <OverviewTab module={module} />}
+      {tab === 'appointments' && <AppointmentsTab module={module} />}
     </div>
   );
 };
