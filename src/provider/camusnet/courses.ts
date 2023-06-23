@@ -40,7 +40,7 @@ export const useCoursesWithSelectorFromGroupedByModule = <TData>(
             (m = {
               number,
               name: c.module.name || c.name,
-              lecturer: courses[0].instructors,
+              lecturer: c.instructors,
               semester: c.semester,
               courses: [],
             })
