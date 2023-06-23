@@ -10,8 +10,14 @@ import {
   SkeletonTypeMap,
 } from '@mui/material';
 import { OverridableComponent } from '@mui/types';
+import { Fragment } from 'react';
 import sanitizeHtml from 'sanitize-html';
-import { Module, useCourseDetails } from '../../provider/camusnet/courses';
+import { twMerge } from 'tailwind-merge';
+import {
+  Module,
+  useCourseDetails,
+  useCourseProps,
+} from '../../provider/camusnet/courses';
 import './CourseDetail.css';
 
 const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
@@ -24,9 +30,23 @@ const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
   />
 );
 
+const InfoBlock = ({
+  title,
+  ...props
+}: React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLDivElement>,
+  HTMLDivElement
+> & { title: string }) => (
+  <div {...props} className={twMerge('mb-2', props.className)}>
+    <span style={{ color: 'gray' }}>{title}: </span>
+    {props.children}
+  </div>
+);
+
 const CourseDetails = (params: { course: CourseMobile | CourseOffer }) => {
   const course = params.course;
   const details = useCourseDetails(params.course.courseId);
+  const props = useCourseProps(params.course.courseId, params.course.groupId);
 
   return (
     <>
@@ -39,6 +59,54 @@ const CourseDetails = (params: { course: CourseMobile | CourseOffer }) => {
       <p style={{ marginBottom: '1em' }}>
         {'lecturer' in course ? course.lecturer : course.instructors}
       </p>
+      <InfoBlock title="Raum">
+        {props.data ? (
+          props.data.appointments
+            .flatMap((a) => a.rooms)
+            .filter((v, i, a) => a.indexOf(v) === i)
+            .map((r, i) => (
+              <Fragment key={r}>
+                {i !== 0 && <span style={{ color: 'gray' }}> | </span>}
+                <span className="inline-block">{r}</span>
+              </Fragment>
+            ))
+        ) : props.isLoading ? (
+          <Skeleton />
+        ) : (
+          <i>Fehler</i>
+        )}
+      </InfoBlock>
+      <InfoBlock title="Credits">
+        {props.data ? (
+          props.data.credits === 0 ? (
+            'keine'
+          ) : (
+            props.data.credits
+          )
+        ) : props.isLoading ? (
+          <Skeleton />
+        ) : (
+          <i>Fehler</i>
+        )}
+      </InfoBlock>
+      <InfoBlock title="Wochenstunden">
+        {props.data ? (
+          props.data.hoursPerWeek
+        ) : props.isLoading ? (
+          <Skeleton />
+        ) : (
+          <i>Fehler</i>
+        )}
+      </InfoBlock>
+      <InfoBlock title="Unterrichtssprache">
+        {props.data ? (
+          props.data.langDesc
+        ) : props.isLoading ? (
+          <Skeleton />
+        ) : (
+          <i>Fehler</i>
+        )}
+      </InfoBlock>
       {details.isLoading ? (
         <p>
           <Skeleton width={210} /> <Skeleton width={120} />{' '}
@@ -49,28 +117,27 @@ const CourseDetails = (params: { course: CourseMobile | CourseOffer }) => {
         details.data
           ?.filter((d) => d.value)
           .map((d) => (
-            <div
-              className="courseDetail"
-              key={d.name}
-              style={{ marginBottom: '0.5em' }}
-            >
-              <span style={{ color: 'gray' }}>{d.name}: </span>
-              {d.value
-                .replaceAll(/<br\s*\/>(?!\s*<br \s*\/>)/g, '')
-                .split(/\r?\n(?:\s*\r?\n)+/)
-                .map((v, i) => (
-                  <p
-                    key={i}
-                    className="mb-2 inline-block"
-                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(v) }}
-                    style={{
-                      overflowWrap: 'break-word',
-                      userSelect: 'text',
-                      WebkitUserSelect: 'text',
-                    }}
-                  />
-                ))}
-            </div>
+            <InfoBlock key={d.name} title={d.name}>
+              {
+                <div className="-mb-2 inline-block">
+                  {d.value
+                    .replaceAll(/<br\s*\/>(?!\s*<br \s*\/>)/g, '')
+                    .split(/\r?\n(?:\s*\r?\n)+/)
+                    .map((v, i) => (
+                      <p
+                        key={i}
+                        className="mb-2 inline-block"
+                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(v) }}
+                        style={{
+                          overflowWrap: 'break-word',
+                          userSelect: 'text',
+                          WebkitUserSelect: 'text',
+                        }}
+                      />
+                    ))}
+                </div>
+              }
+            </InfoBlock>
           ))
       )}
     </>
@@ -82,20 +149,14 @@ const OverviewTab = ({ module }: { module: Module | ModuleOffer }) => {
     <div
       style={{ fontSize: '0.8em', padding: '0.8em 1em', overflowY: 'scroll' }}
     >
-      <p>
-        Modulnummer:{' '}
+      <InfoBlock title="Modulnummer">
         <span style={{ fontFamily: 'monospace' }}>{module.number}</span>
-        <br />
-        Modulname: {module.name}
-        <br />
-        Lehrende: {module.lecturer}
-        {'semester' in module && (
-          <>
-            <br />
-            Semester: {semesterDescs[module.semester]}
-          </>
-        )}
-      </p>
+      </InfoBlock>
+      <InfoBlock title="Modulname">{module.name}</InfoBlock>
+      <InfoBlock title="Lehrende">{module.lecturer}</InfoBlock>
+      {'semester' in module && (
+        <InfoBlock title="Semester">{semesterDescs[module.semester]}</InfoBlock>
+      )}
       {module.courses.map((c) => (
         <CourseDetails key={c.courseId} course={c} />
       ))}
