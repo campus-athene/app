@@ -31,8 +31,6 @@ const ExamsTab = (props: { module: Module | ModuleOffer }) => {
   if (groupedExams.error instanceof UserNotLoggedInError)
     return <CampusNetLoginTeaser title="Prüfungen" />;
 
-  console.log(groupedExams.data);
-
   // Workaround. It should always be contextNumber.
   const contextNumber = (exam: ExamMobile) =>
     'contextNumber' in exam ? exam.contextNumber : (exam as any).contextCode;

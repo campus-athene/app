@@ -41,18 +41,16 @@ const authSlice = createSlice({
       localStorage.setItem('campusNetCreds', JSON.stringify(payload.creds));
     },
     updateMoodleToken: (state, { payload }: { payload: string | null }) => {
-      console.log('updateMoodleToken', payload);
       const params = payload && atob(payload).split(':::');
       if (!params || params.length !== 3) {
         state.moodle = null;
         localStorage.removeItem('moodleToken');
         localStorage.removeItem('moodlePrivateToken');
-        console.log('Failed to parse moodleToken', payload);
+        log('error', 'Failed to parse moodleToken', payload);
         return;
       }
       // params[0] is the signature which we ignore
       state.moodle = { token: params[1], privateToken: params[2] };
-      console.log('moodleToken', state.moodle);
       localStorage.setItem('moodleToken', params[1]);
       localStorage.setItem('moodlePrivateToken', params[2]);
     },

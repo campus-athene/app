@@ -13,6 +13,7 @@ import {
   UseQueryOptions,
   UseQueryResult,
 } from '@tanstack/react-query';
+import { log } from '../../app/errorReporting';
 import {
   selectCampusNetCreds,
   updateCampusNetCreds,
@@ -157,7 +158,7 @@ export function useWithSession<TResult, TArgs extends unknown[]>(
     } catch (e) {
       if (e instanceof AccessError) {
         if (sessionPromise === currentSessionPromise) {
-          console.log(`Dropping session due to AccessError of type ${e.type}.`);
+          log('info', `Dropping session due to AccessError of type ${e.type}.`);
           sessionPromise = null;
         }
         return await func(await getSession(), ...args);

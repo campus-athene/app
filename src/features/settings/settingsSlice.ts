@@ -84,13 +84,6 @@ export const useSyncSettings = () => {
   const messages = useSelector(selectPushEnabled('messages')) || false;
   const onboardingComplete = useSelector(selectOnboardingComplete());
 
-  console.log('useSyncSettings', {
-    username,
-    privacy,
-    messages,
-    onboardingComplete,
-  });
-
   // Do not send settings to server until onboarding has been completed.
   // setOnboardingComplete will sync settings once called.
   useEffect(() => {
