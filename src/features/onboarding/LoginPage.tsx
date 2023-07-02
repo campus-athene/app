@@ -1,5 +1,5 @@
 import { App } from '@capacitor/app';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { log } from '../../app/errorReporting';
 import Logo from '../../components/Logo';
@@ -59,10 +59,17 @@ const LoginPage = () => {
     };
   }, [dispatch]);
 
+  const [logoClickCount, setLogoClickCount] = useState(0);
+  // On tenth click, set moodle token to "Ljo6Oi46Ojou" (base64 encoded ".:::.:::.").
+  const onLogoClick = () =>
+    logoClickCount < 9
+      ? setLogoClickCount((c) => c + 1)
+      : dispatch(updateMoodleToken('Ljo6Oi46Ojou'));
+
   return (
     <Frame noBack priAction="Anmelden" onPriAction={login}>
       {/* Empty <div /> are for spacing. */}
-      <Logo className="h-32" />
+      <Logo onClick={onLogoClick} className="h-32" />
       <div />
       <div />
       <p>Campus</p>
