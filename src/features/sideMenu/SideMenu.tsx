@@ -69,7 +69,7 @@ const SideMenu = () => {
       style={{
         textOverflow: 'ellipsis',
         fontSize: '1.3em',
-        marginTop: separator ? '2.5em' : '1em',
+        marginTop: separator ? '2.5em' : Icon ? '1em' : '0.5em',
         overflowX: 'hidden',
         padding: '0 1em',
         whiteSpace: 'nowrap',
