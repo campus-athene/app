@@ -192,6 +192,13 @@ const SettingsPage = () => {
         <Separator />
         <SettingButton
           onClick={() =>
+            window.open('https://www.idm.tu-darmstadt.de/wlan/wlan', '_blank')
+          }
+        >
+          WLAN-Zugänge
+        </SettingButton>
+        <SettingButton
+          onClick={() =>
             window.open(
               'https://www.idm.tu-darmstadt.de/password/account',
               '_blank'
