@@ -16,6 +16,7 @@ def getMyVersionCode = { ->
 }
 
 android {
+    namespace "com.oliverrm.campus"
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.oliverrm.campus"
