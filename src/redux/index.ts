@@ -5,7 +5,6 @@ import auth from '../features/auth/authSlice';
 import canteenData from '../features/canteen/canteenData';
 import canteenSettings from '../features/canteen/canteenSettings';
 import eventApi from '../features/events/eventApi';
-import news from '../features/news/newsSlice';
 import settings from '../features/settings/settingsSlice';
 import sideMenu from '../features/sideMenu/sideMenuSlice';
 import global from './globalSlice';
@@ -19,7 +18,6 @@ const appReducer = combineReducers({
   [eventApi.reducerPath]: eventApi.reducer,
   [canteenData.reducerPath]: canteenData.reducer,
 
-  news,
   canteenSettings,
 });
 

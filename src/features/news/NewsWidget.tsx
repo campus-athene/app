@@ -1,17 +1,24 @@
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ScrollWidget, WidgetBox } from '../home/Widget';
-import { selectSubscribedArticles } from './newsSlice';
+import asta from './logos/asta.png';
+import tu from './logos/tu.png';
+import ulb from './logos/ulb.png';
+import { useFeeds } from './newsData';
 
 const NewsWidget = () => {
   const navigate = useNavigate();
-  const news = useSelector(selectSubscribedArticles());
 
-  if (!news) return null;
+  const feeds = useFeeds(['general', 'ulb', 'asta']);
+
+  const articles = feeds
+    .flatMap((f) => f.data ?? [])
+    .sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+
+  if (!articles.length) return null;
 
   return (
     <ScrollWidget onClick={() => navigate('/news')} title="Aktuelles">
-      {news.slice(0, 5).map((a) => (
+      {articles.slice(0, 5).map((a) => (
         <WidgetBox
           key={a.guid}
           onClick={() => window.open(a.link, '_blank')}
@@ -22,13 +29,24 @@ const NewsWidget = () => {
             width: 'min(18rem, 100vw - 4rem)',
           }}
         >
-          <div className="text-sm">
-            {new Date(a.isoDate).toLocaleDateString('de-DE', {
-              dateStyle: 'full',
-            })}
+          <div className="flex text-sm">
+            <span className="flex-grow">{a.pubDate.fromNow()}</span>
+            <img
+              src={
+                a.source === 'general'
+                  ? tu
+                  : a.source === 'ulb'
+                  ? ulb
+                  : a.source === 'asta'
+                  ? asta
+                  : undefined
+              }
+              alt=""
+              className="h-3"
+            />
           </div>
-          <div className="font-semibold line-clamp-2">{a.title}</div>
-          <div className="text-neutral-600 line-clamp-3">{a.content}</div>
+          <div className="line-clamp-2 font-semibold">{a.title}</div>
+          <div className="line-clamp-3 text-neutral-600">{a.description}</div>
         </WidgetBox>
       ))}
     </ScrollWidget>
