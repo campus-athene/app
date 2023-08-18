@@ -42,20 +42,22 @@ workflows:
         script: |
           # npx cap copy # <- use this is you don't need to update native dependencies
           npx cap sync # <- update native dependencies and copy web assets to native project
-      - name: Increment build number
+      - name: Build Android release
         script: |
           cd android
+
+          # Calculate new build number
           LATEST_GOOGLE_PLAY_BUILD_NUMBER=$(google-play get-latest-build-number --package-name 'com.oliverrm.campus')
           if [ -z LATEST_GOOGLE_PLAY_BUILD_NUMBER ]; then
             exit 1
           fi
           STORE_BUILD_NUMBER=$(($LATEST_GOOGLE_PLAY_BUILD_NUMBER + 1))
-      - name: Build Android release
-        script: |
-          # provide build number and version through project properties
+          echo "New build number: $STORE_BUILD_NUMBER"
+
+          # Start build
           ./gradlew bundleRelease -PversionCode=$STORE_BUILD_NUMBER
-      - name: Tag git commit and push tag
-        script: |
+
+          # Tag git commit and push tag
           git tag -a build-android-$BUILD_NUMBER-$STORE_BUILD_NUMBER -m "Build Android, Codemagic: $BUILD_NUMBER, Google Play: $STORE_BUILD_NUMBER"
           git push origin build-android-$BUILD_NUMBER-$STORE_BUILD_NUMBER
     artifacts:
@@ -118,19 +120,25 @@ workflows:
           #!/bin/sh
           set -e
           set -x
-          STORE_BUILD_NUMBER=$(app-store-connect get-latest-build-number $APP_APPLE_ID)
+          LATEST_APP_STORE_BUILD_NUMBER=$(app-store-connect get-latest-build-number $APP_APPLE_ID)
+          if [ -z LATEST_APP_STORE_BUILD_NUMBER ]; then
+            exit 1
+          fi
+          STORE_BUILD_NUMBER=$(($LATEST_APP_STORE_BUILD_NUMBER + 1))
+          echo "New build number: $STORE_BUILD_NUMBER"
+
           cd $CM_BUILD_DIR/ios/App
-          agvtool new-version -all $(($STORE_BUILD_NUMBER + 1))
+          agvtool new-version -all $STORE_BUILD_NUMBER
+
+          # Tag git commit and push tag
+          git tag -a build-ios-$BUILD_NUMBER-$STORE_BUILD_NUMBER -m "Build iOS, Codemagic: $BUILD_NUMBER, App Store Connect: $STORE_BUILD_NUMBER"
+          git push origin build-ios-$BUILD_NUMBER-$STORE_BUILD_NUMBER
       - name: Set up code signing settings on Xcode project
         script: |
           xcode-project use-profiles
       - name: Build ipa for distribution
         script: |
           xcode-project build-ipa --workspace "$XCODE_WORKSPACE" --scheme "$XCODE_SCHEME"
-      - name: Tag git commit and push tag
-        script: |
-          git tag -a build-ios-$BUILD_NUMBER-$STORE_BUILD_NUMBER -m "Build iOS, Codemagic: $BUILD_NUMBER, App Store Connect: $STORE_BUILD_NUMBER"
-          git push origin build-ios-$BUILD_NUMBER-$STORE_BUILD_NUMBER
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
