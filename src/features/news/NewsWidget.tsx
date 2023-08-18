@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ScrollWidget, WidgetBox } from '../home/Widget';
+import Sanitize from '../messages/Sanitize';
 import asta from './logos/asta.png';
 import tu from './logos/tu.png';
 import ulb from './logos/ulb.png';
@@ -46,7 +47,13 @@ const NewsWidget = () => {
             />
           </div>
           <div className="line-clamp-2 font-semibold">{a.title}</div>
-          <div className="line-clamp-3 text-neutral-600">{a.description}</div>
+          <div className="line-clamp-3 text-neutral-600">
+            {a.source === 'asta' ? (
+              <Sanitize>{a.description}</Sanitize>
+            ) : (
+              a.description
+            )}
+          </div>
         </WidgetBox>
       ))}
     </ScrollWidget>
