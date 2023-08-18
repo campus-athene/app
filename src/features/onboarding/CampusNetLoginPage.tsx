@@ -3,7 +3,7 @@ import { TucanLogo } from '../../components/Logo';
 import CampusNetLoginModal from '../auth/CampusNetLoginModal';
 import { Frame } from './Controls';
 
-const CampusNetLoginPage = (props: { onSkip: () => void }) => {
+const CampusNetLoginPage = (props: { onCompleted: () => void }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -11,7 +11,7 @@ const CampusNetLoginPage = (props: { onSkip: () => void }) => {
       priAction="Verbinden"
       secAction="Später verbinden"
       onPriAction={() => setModalOpen(true)}
-      onSecAction={props.onSkip}
+      onSecAction={props.onCompleted}
     >
       <TucanLogo className="h-12" />
       <p className="mx-auto w-64 text-center text-chalk">
@@ -22,6 +22,10 @@ const CampusNetLoginPage = (props: { onSkip: () => void }) => {
         open={modalOpen}
         onOpen={() => setModalOpen(true)}
         onClose={() => setModalOpen(false)}
+        onCompleted={() => {
+          setModalOpen(false);
+          props.onCompleted();
+        }}
       />
     </Frame>
   );

@@ -1,16 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { log } from '../../app/errorReporting';
+import { removeCredentials } from '../../provider/camusnet/credentials';
 import { AppThunkAction, RootState } from '../../redux';
 
-type CampusNetCreds = { username: string; password: string };
-
 type AuthState = {
-  campusNetCreds: CampusNetCreds | null;
   moodle: { token: string; privateToken: string } | null;
 };
 
 const initialState: AuthState = {
-  campusNetCreds: null,
   moodle: null,
 };
 
@@ -20,10 +17,6 @@ const loadState = (state: AuthState) => {
     const moodlePrivateToken = localStorage.getItem('moodlePrivateToken');
     if (moodleToken && moodlePrivateToken)
       state.moodle = { token: moodleToken, privateToken: moodlePrivateToken };
-
-    const campusNetCredsJson = localStorage.getItem('campusNetCreds');
-    if (campusNetCredsJson)
-      state.campusNetCreds = JSON.parse(campusNetCredsJson);
   } catch (e) {
     log('error', 'authSlice.loadState threw an error.', e);
   }
@@ -33,13 +26,6 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    updateCampusNetCreds: (
-      state,
-      { payload }: { payload: { creds: CampusNetCreds } }
-    ) => {
-      state.campusNetCreds = payload.creds;
-      localStorage.setItem('campusNetCreds', JSON.stringify(payload.creds));
-    },
     updateMoodleToken: (state, { payload }: { payload: string | null }) => {
       const params = payload && atob(payload).split(':::');
       if (!params || params.length !== 3) {
@@ -60,22 +46,19 @@ const authSlice = createSlice({
   },
 });
 
-export const { updateCampusNetCreds, updateMoodleToken } = authSlice.actions;
+export const { updateMoodleToken } = authSlice.actions;
 
 export const logout: () => AppThunkAction = () => (dispatch) => {
   const { history } = window;
   history.go(1 - history.length);
   history.replaceState(null, '', '/');
 
+  removeCredentials();
+
   dispatch({
     type: 'LOGOUT',
   });
 };
-
-export const selectCampusNetCreds =
-  () =>
-  ({ auth: { campusNetCreds } }: RootState): CampusNetCreds | null =>
-    campusNetCreds;
 
 export const selectMoodleToken =
   () =>

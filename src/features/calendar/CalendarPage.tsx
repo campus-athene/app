@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 import { MouseEventHandler, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PageFrame from '../../components/PageFrame';
-import { useGetSession, UserNotLoggedInError } from '../../provider/camusnet';
+import { getSession, UserNotLoggedInError } from '../../provider/camusnet';
 import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 import DayView from './DayView';
 
@@ -13,7 +13,7 @@ const CalendarPage = () => {
   const [state, setState] = useState<'loading' | 'loaded' | 'error' | 'login'>(
     'loading'
   );
-  useGetSession()().then(
+  getSession().then(
     () => setState('loaded'),
     (reason) =>
       setState(reason instanceof UserNotLoggedInError ? 'login' : 'error')

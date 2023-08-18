@@ -5,7 +5,11 @@ import { TucanLogo } from '../../components/Logo';
 import { useLogin } from '../../provider/camusnet';
 
 const CampusNetLoginModal = (
-  props: Pick<CardModalProps, 'open' | 'onOpen' | 'onClose'>
+  props: Partial<
+    Pick<CardModalProps, 'open' | 'onOpen' | 'onClose'> & {
+      onCompleted: () => void;
+    }
+  >
 ) => {
   const login = useLogin();
 
@@ -24,6 +28,7 @@ const CampusNetLoginModal = (
     setProcessing(true);
     setError(await login(username, password));
     setProcessing(false);
+    props.onCompleted && props.onCompleted();
   };
 
   return (

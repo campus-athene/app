@@ -15,11 +15,10 @@ import {
 } from '@tanstack/react-query';
 import { log } from '../../app/errorReporting';
 import {
-  selectCampusNetCreds,
-  updateCampusNetCreds,
-} from '../../features/auth/authSlice';
-import { AppThunkAction } from '../../redux';
-import { useAppDispatch } from '../../redux/hooks';
+  getCredentials,
+  removeCredentials,
+  setCredentials,
+} from './credentials';
 
 if (CapacitorHttp)
   // Use native http plugin to prevent CORS issues
@@ -80,7 +79,6 @@ export const useLogin: () => (
   username: string,
   password: string
 ) => Promise<string | null> = () => {
-  const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
 
   return async (username, password) => {
@@ -111,35 +109,35 @@ export const useLogin: () => (
     });
 
     // Save credentials in state for later use.
-    dispatch(updateCampusNetCreds({ creds: { username, password } }));
+    setCredentials({ username, password });
 
     // Return null to indicate that the login was successful.
     return null;
   };
 };
 
-/** Thunk action that retrieves credentials from state and uses these the create a new session. */
-const createSession: () => AppThunkAction<Promise<Session>> =
-  () => async (dispatch, getState) => {
-    const creds = selectCampusNetCreds()(getState());
-    if (!creds)
-      // User has not logged in yet.
-      throw new UserNotLoggedInError();
+/** Retrieves credentials from secure storage and uses these to create a new session. */
+const createSession: () => Promise<Session> = async () => {
+  const creds = await getCredentials();
+  if (!creds)
+    // User has not logged in yet.
+    throw new UserNotLoggedInError();
 
-    const session = await login(creds.username, creds.password);
-    if (!session)
-      // Credentials are invalid.
-      throw new UserNotLoggedInError();
+  const session = await login(creds.username, creds.password);
+  if (!session) {
+    // Credentials are invalid.
+    removeCredentials();
+    throw new UserNotLoggedInError();
+  }
 
-    return session;
-  };
+  return session;
+};
 
 /**
- * Hook that returns a function that resolves to a session.
+ * Returns a promise that resolves to the current session.
  */
-export const useGetSession = () => {
-  const dispatch = useAppDispatch();
-  return () => sessionPromise || (sessionPromise = dispatch(createSession()));
+export const getSession = () => {
+  return sessionPromise || (sessionPromise = createSession());
 };
 
 /**
@@ -150,7 +148,6 @@ export const useGetSession = () => {
 export function useWithSession<TResult, TArgs extends unknown[]>(
   func: (session: Session, ...args: TArgs) => Promise<TResult>
 ): (...args: TArgs) => Promise<TResult> {
-  const getSession = useGetSession();
   return async (...args) => {
     const currentSessionPromise = getSession();
     try {
