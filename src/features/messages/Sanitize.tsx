@@ -1,20 +1,26 @@
-import { createElement } from 'react';
-import sanitizeHtml from 'sanitize-html';
+import { createElement, ReactHTML } from 'react';
+import sanitizeHtml, { IOptions } from 'sanitize-html';
 
 /**
  * Displays html content as text.
  */
 const Sanitize = ({
   children,
+  as,
+  options,
   ...props
 }: Omit<
-  React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
-  'children' | 'dangerouslySetInnerHTML'
-> & { children: string }) =>
-  createElement('div', {
+  React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>,
+  'children' | 'as' | 'options' | 'dangerouslySetInnerHTML'
+> & {
+  children: string;
+  as?: keyof ReactHTML;
+  options?: IOptions;
+}) =>
+  createElement(as || 'div', {
     ...props,
     dangerouslySetInnerHTML: {
-      __html: sanitizeHtml(children, { allowedTags: [] }),
+      __html: sanitizeHtml(children, options || { allowedTags: [] }),
     },
   });
 

@@ -1,6 +1,6 @@
 // Regular expression to convert comments to documentation:
 // Look for: (\w+\??: \w+;) // (.+)
-// Rplace with: /** $2 */\n$1
+// Replace with: /** $2 */\n$1
 // Or with: /**\n * $2\n **/\n$1
 
 /**
@@ -28,6 +28,35 @@ export enum CoreSiteInfoUserHomepage {
   /** My courses. */
   HOMEPAGE_MYCOURSES = 3,
 }
+
+/**
+ * Constants to get either read, unread or both notifications.
+ */
+export enum AddonNotificationsGetReadType {
+  UNREAD = 0,
+  READ = 1,
+  BOTH = 2,
+}
+
+/**
+ * Params of core_message_get_messages WS.
+ */
+export type AddonNotificationsGetMessagesWSParams = {
+  /** The user id who received the message, 0 for any user. */
+  useridto: number;
+  /** The user id who send the message, 0 for any user. -10 or -20 for no-reply or support user. */
+  useridfrom?: number;
+  /** Type of message to return, expected values are: notifications, conversations and both. */
+  type?: 'notifications' | 'conversations' | 'both';
+  /** 0=unread, 1=read. @since 4.0 it also accepts 2=both. */
+  read?: AddonNotificationsGetReadType;
+  /** True for ordering by newest first, false for oldest first. */
+  newestfirst?: boolean;
+  /** Limit from. */
+  limitfrom?: number;
+  /** Limit number. */
+  limitnum?: number;
+};
 
 /**
  * Message data returned by core_message_get_messages.
@@ -60,7 +89,7 @@ export type AddonNotificationsNotificationMessage = {
   /** Time created. */
   timecreated: number;
   /** Time read. */
-  timeread: number;
+  timeread: number | null;
   /** User to full name. */
   usertofullname: string;
   /** User from full name. */

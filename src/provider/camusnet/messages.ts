@@ -24,12 +24,6 @@ export const useMessages = () =>
     messages.filter((m) => m.folder === 'inbox')
   );
 
-export const useUnreadMessagesCount = () =>
-  useMessagesWithSelector(
-    (messages) =>
-      messages.filter((m) => m.folder === 'inbox' && m.unread).length
-  );
-
 export const useSetMessageStatus = () => {
   type QueryArgs = { messageId: number; unread?: boolean };
 

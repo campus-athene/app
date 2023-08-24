@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import { log } from '../app/errorReporting';
 import canteenData from '../features/canteen/canteenData';
 import { selectCanteen } from '../features/canteen/canteenSettings';
+import { useUnreadMessagesCount } from '../features/messages/messageModel';
 import { useSyncSettings } from '../features/settings/settingsSlice';
-import { useUnreadMessagesCount } from '../provider/camusnet/messages';
 
 export const UpdateEffect = () => {
   useSyncSettings();

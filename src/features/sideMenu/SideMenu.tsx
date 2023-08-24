@@ -12,12 +12,12 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { To, useNavigate } from 'react-router-dom';
 import Logo from '../../components/Logo';
-import { useUnreadMessagesCount } from '../../provider/camusnet/messages';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import {
   getCourseColor,
   useCoursesFromCurrentSemester,
 } from '../courses/coursesSlice';
+import { useUnreadMessagesCount } from '../messages/messageModel';
 import {
   Burger,
   Calendar,

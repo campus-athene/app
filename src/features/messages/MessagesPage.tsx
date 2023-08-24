@@ -1,12 +1,9 @@
 import { ContextMenuItem } from '../../components/ContextMenu';
 import PageFrame from '../../components/PageFrame';
 import { UserNotLoggedInError } from '../../provider/camusnet';
-import {
-  useMarkAllMessagesRead,
-  useMessages,
-} from '../../provider/camusnet/messages';
 import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 import MessageList from './MessageList';
+import { useMarkAllMessagesRead, useMessages } from './messageModel';
 
 // Must start with a capital letter as it is a React component.
 const ContextMenu = () => {
@@ -14,7 +11,7 @@ const ContextMenu = () => {
 
   return (
     <>
-      <ContextMenuItem onClick={() => markAllMessagesRead.mutate()}>
+      <ContextMenuItem onClick={() => markAllMessagesRead()}>
         Alle als gelesen markieren
       </ContextMenuItem>
     </>
@@ -36,8 +33,7 @@ const MessagesPage = () => {
         isOffline: isError,
       }}
     >
-      {/* reverse() is in place, use slice() to make a copy */}
-      <MessageList messages={(data || []).slice().reverse()} />
+      <MessageList messages={data || []} />
     </PageFrame>
   );
 };

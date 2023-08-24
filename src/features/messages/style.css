@@ -1,0 +1,9 @@
+.moodle-message-content div,
+.moodle-message-content p {
+  margin-bottom: 0.5rem;
+}
+
+.moodle-message-content a {
+  color: #1d4ed8; /* blue-700 */
+  text-decoration: underline;
+}

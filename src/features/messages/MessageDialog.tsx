@@ -1,84 +1,124 @@
 import { utc } from 'moment-timezone';
 import { useEffect, useRef, useState } from 'react';
-import sanitizeHtml from 'sanitize-html';
 import Button from '../../components/Button';
 import CardModal from '../../components/CardModal';
-import {
-  useMessage,
-  useSetMessageStatus,
-} from '../../provider/camusnet/messages';
+import { TucanLogo } from '../../components/Logo';
+import { useSetMessageStatus } from '../../provider/camusnet/messages';
+import { useCoreMessageMarkNotificationRead } from '../../provider/moodle';
+import { Message } from './messageModel';
+import moodleIcon from './moodle.svg';
 import Sanitize from './Sanitize';
+import './style.css';
+
+// prettier-ignore
+const allowedTags = [
+  "address", "article", "aside", "footer", "header", "h1", "h2", "h3", "h4",
+  "h5", "h6", "hgroup", "main", "nav", "section", "blockquote", "dd", "div",
+  "dl", "dt", "figcaption", "figure", /*"hr",*/ "li", "main", "ol", "p", "pre",
+  "ul", "a", "abbr", "b", "bdi", "bdo", "br", "cite", "code", "data", "dfn",
+  "em", "i", "kbd", "mark", "q", "rb", "rp", "rt", "rtc", "ruby", "s", "samp",
+  "small", "span", "strong", "sub", "sup", "time", "u", "var", "wbr", "caption",
+  "col", "colgroup", /*"table", "tbody", "td", "tfoot", "th", "thead", "tr",*/
+];
 
 const MessageDialog = ({
-  messageId,
+  message,
   onClose,
 }: {
-  messageId: number | null;
+  message: Message | null;
   onClose: React.ReactEventHandler<{}>;
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const [savedMessageId, setSavedMessageId] = useState<number | null>(null);
+  const [savedMessage, setSavedMessage] = useState<Message | null>(null);
   useEffect(() => {
-    if (messageId) {
+    if (message) {
       // Save messageId so that the message will still be displayed while the dialog closes.
-      setSavedMessageId(messageId);
+      setSavedMessage(message);
       // Reset scroll to top.
       modalRef.current?.scrollTo({ top: 0 });
     }
-  }, [messageId]);
+  }, [message]);
 
-  const renderMessageId = messageId || savedMessageId;
+  const renderMessage = message || savedMessage;
   return (
     <CardModal
-      open={!!messageId}
+      open={!!message}
       onClose={onClose}
       PaperProps={{ ref: modalRef }}
     >
-      {renderMessageId && (
-        <DialogContent messageId={renderMessageId} onClose={onClose} />
+      {renderMessage && (
+        <DialogContent message={renderMessage} onClose={onClose} />
       )}
     </CardModal>
   );
 };
 
 const DialogContent = ({
-  messageId,
+  message,
   onClose,
 }: {
-  messageId: number;
+  message: Message;
   onClose: React.ReactEventHandler<{}>;
 }) => {
-  const message = useMessage(messageId);
-  const { mutate: setMessageStatus_mutate } = useSetMessageStatus();
+  const { mutate: setCampusNetMsgRead } = useSetMessageStatus();
+  const { mutate: setMoodleMsgRead } = useCoreMessageMarkNotificationRead();
 
   // Hook must not return a value.
   useEffect(() => {
-    message.isSuccess && setMessageStatus_mutate({ messageId });
-  }, [messageId, message.isSuccess, setMessageStatus_mutate]);
+    if (message.source === 'campusnet' && !message.read)
+      setCampusNetMsgRead({ messageId: message.id });
+    if (message.source === 'moodle') setMoodleMsgRead(message.id);
+  }, [
+    message.source,
+    message.read,
+    message.id,
+    setCampusNetMsgRead,
+    setMoodleMsgRead,
+  ]);
 
-  if (!message.data) return <>Lade Nachricht...</>;
-
-  const { subject, from, sent, body } = message.data;
+  const { subject, sender, sent, preview, source } = message;
 
   return (
     <>
       <Sanitize className="mb-1 mt-4 text-xl font-semibold">{subject}</Sanitize>
-      <div className="mb-6 text-sm text-neutral-500">
-        {from}
-        <br />
-        {utc(sent).local().locale('de-DE').format('LLLL')}
+      <div className="mb-6 flex">
+        <div className="flex-grow text-sm text-neutral-500">
+          {sender}
+          <br />
+          {utc(sent).local().locale('de-DE').format('LLLL')}
+          <br />
+          {source === 'campusnet'
+            ? 'TUCaN'
+            : source === 'moodle'
+            ? 'Moodle'
+            : null}
+        </div>
+        {source === 'campusnet' ? (
+          <TucanLogo className="ml-2 h-8 w-8 flex-shrink-0" />
+        ) : source === 'moodle' ? (
+          <img alt="" className="ml-2 h-8 w-8 flex-shrink-0" src={moodleIcon} />
+        ) : null}
       </div>
-      {body
-        .split(/\r?\n(?:\s*\r?\n)+/)
-        .map((p) => p.replaceAll(/\r?\n/g, '<br />'))
-        .map((v, i) => (
-          <p
-            key={i}
-            className="mb-2 select-text break-words"
-            dangerouslySetInnerHTML={{ __html: sanitizeHtml(v) }}
-          />
-        ))}
+      {source === 'campusnet' ? (
+        preview
+          .split(/\r?\n(?:\s*\r?\n)+/)
+          .map((p) => p.replaceAll(/\r?\n/g, '<br />'))
+          .map((v, i) => (
+            <Sanitize
+              key={i}
+              as="p"
+              className="mb-2 select-text break-words"
+              options={{}} // Setting options to {} to allow standard tags.
+            >
+              {v}
+            </Sanitize>
+          ))
+      ) : (
+        <Sanitize className="moodle-message-content" options={{ allowedTags }}>
+          {preview}
+        </Sanitize>
+      )}
       <Button className="mt-8" onClick={onClose}>
         Schließen
       </Button>
