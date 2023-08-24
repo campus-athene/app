@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { ContextMenuItem } from '../../components/ContextMenu';
 import PageFrame from '../../components/PageFrame';
-import canteenData from './canteenData';
+import { useMenuItems } from './canteenData';
 import {
   canteenFriendlyName,
   selectCanteen,
@@ -56,7 +56,7 @@ const CanteenPage = () => {
       ? moment(selection).format('dddd')
       : moment(selection).format('dddd, D. MMM');
 
-  const { data } = canteenData.useMenuItemsQuery({ canteenId, days: 14 });
+  const { data } = useMenuItems({ canteenId, days: 14 });
 
   const ContextMenu = () => {
     const dispatch = useDispatch();
@@ -211,7 +211,7 @@ const CanteenPage = () => {
                     </div>
                   </div>
                   <span>{m.issuingOffice.name}</span>
-                  <span className="font-medium line-clamp-2">
+                  <span className="line-clamp-2 font-medium">
                     {m.dish.name}
                   </span>
                 </div>

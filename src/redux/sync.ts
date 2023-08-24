@@ -1,9 +1,6 @@
 import { Badge } from '@capawesome/capacitor-badge';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { log } from '../app/errorReporting';
-import canteenData from '../features/canteen/canteenData';
-import { selectCanteen } from '../features/canteen/canteenSettings';
 import { useUnreadMessagesCount } from '../features/messages/messageModel';
 import { useSyncSettings } from '../features/settings/settingsSlice';
 
@@ -20,9 +17,6 @@ export const UpdateEffect = () => {
         log('warning', 'Failed to set badge count', e);
       }
   }, [unreadMessages]);
-
-  const canteenId = useSelector(selectCanteen());
-  canteenData.useMenuItemsQuery({ canteenId, days: 1 });
 
   return null;
 };

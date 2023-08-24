@@ -2,7 +2,6 @@ import { configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { Action, combineReducers } from 'redux';
 import { log } from '../app/errorReporting';
 import auth from '../features/auth/authSlice';
-import canteenData from '../features/canteen/canteenData';
 import canteenSettings from '../features/canteen/canteenSettings';
 import eventApi from '../features/events/eventApi';
 import settings from '../features/settings/settingsSlice';
@@ -16,7 +15,6 @@ const appReducer = combineReducers({
   settings,
 
   [eventApi.reducerPath]: eventApi.reducer,
-  [canteenData.reducerPath]: canteenData.reducer,
 
   canteenSettings,
 });
@@ -46,9 +44,7 @@ const rootReducer = (state: any, action: any) => {
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware()
-      .concat(eventApi.middleware)
-      .concat(canteenData.middleware),
+    getDefaultMiddleware().concat(eventApi.middleware),
 });
 
 // Infer the types from the store itself

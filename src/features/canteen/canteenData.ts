@@ -1,4 +1,4 @@
-import { createApi } from '@reduxjs/toolkit/dist/query/react';
+import { useQuery } from '@tanstack/react-query';
 import { gql, GraphQLClient } from 'graphql-request';
 
 interface Image {
@@ -92,34 +92,23 @@ const menuItemsQuery = gql`
   }
 `;
 
-const canteenData = createApi({
-  reducerPath: 'canteenData',
-  async baseQuery({ query, variables }) {
-    try {
-      return { data: await client.request(query, variables) };
-    } catch (e) {
-      return { error: e };
-    }
-  },
-  endpoints: (build) => ({
-    menuItems: build.query<
-      { menuItems: MenuItem[] },
-      { canteenId: '1' | '2'; days: number }
-    >({
-      query: ({ canteenId, days }) => ({
-        query: menuItemsQuery,
-        variables: {
-          minDate: new Date().toISOString().substring(0, 10),
-          maxDate: new Date(Date.now() + (days - 1) * 24 * 60 * 60 * 1000)
-            .toISOString()
-            .substring(0, 10),
-          status: 'STUDENT',
-          lang: 'DE',
-          canteenId,
-        },
+export const useMenuItems = ({
+  canteenId,
+  days,
+}: {
+  canteenId: '1' | '2';
+  days: number;
+}) =>
+  useQuery<{ menuItems: MenuItem[] }>({
+    queryKey: ['canteen', 'menuItems', canteenId],
+    queryFn: () =>
+      client.request(menuItemsQuery, {
+        minDate: new Date().toISOString().substring(0, 10),
+        maxDate: new Date(Date.now() + (days - 1) * 24 * 60 * 60 * 1000)
+          .toISOString()
+          .substring(0, 10),
+        status: 'STUDENT',
+        lang: 'DE',
+        canteenId,
       }),
-    }),
-  }),
-});
-
-export default canteenData;
+  });

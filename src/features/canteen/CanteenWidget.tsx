@@ -2,7 +2,7 @@ import moment from 'moment-timezone';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { ScrollWidget, WidgetBox } from '../home/Widget';
-import canteenData from './canteenData';
+import { useMenuItems } from './canteenData';
 import { canteenFriendlyName, selectCanteen } from './canteenSettings';
 import DishTypeImage from './DishTypeImage';
 import foodPlaceholder from './foodPlaceholder.svg';
@@ -19,7 +19,7 @@ const CanteenWidget = () => {
 const CanteenWidgetContent = () => {
   const navigate = useNavigate();
   const canteenId = useSelector(selectCanteen());
-  const { data } = canteenData.useMenuItemsQuery({ canteenId, days: 1 });
+  const { data } = useMenuItems({ canteenId, days: 1 });
 
   if (!data || !data.menuItems.length) return null;
 
