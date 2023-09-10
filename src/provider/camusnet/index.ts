@@ -5,7 +5,7 @@ import {
   Session,
   set,
 } from '@campus/campusnet-sdk';
-import { CapacitorHttp } from '@capacitor/core';
+import { CapacitorCookies, CapacitorHttp } from '@capacitor/core';
 import {
   QueryKey,
   useQuery,
@@ -26,6 +26,24 @@ if (CapacitorHttp)
     const requestHeaders = new Headers(init.headers);
     if (init.body)
       requestHeaders.set('Content-Type', 'application/x-www-form-urlencoded');
+
+    // CapacitorHttp requires Cookies to be handled via CapacitorCookies plugin
+    const cookie = requestHeaders.get('Cookie');
+    requestHeaders.delete('Cookie');
+    if (cookie) {
+      await Promise.all(
+        cookie
+          .split(';')
+          .map((cookie) => cookie.split('='))
+          .map(([key, value]) =>
+            CapacitorCookies.setCookie({
+              url,
+              key,
+              value,
+            })
+          )
+      );
+    }
 
     const response = await CapacitorHttp.request({
       data: init.body as string,
