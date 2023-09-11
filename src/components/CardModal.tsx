@@ -23,7 +23,7 @@ const CardModal = (props: CardModalProps) => {
       PaperProps={{
         ...props.PaperProps,
         className: ['rounded-3xl p-4 m-2', props.PaperProps?.className].join(
-          ' '
+          ' ',
         ),
         style: {
           maxHeight: '85%',
@@ -39,7 +39,7 @@ export const Header = (
   props: React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLHeadingElement>,
     HTMLHeadingElement
-  >
+  >,
 ) => {
   return (
     <h1

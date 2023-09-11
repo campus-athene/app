@@ -21,7 +21,7 @@ import {
 import './CourseDetail.css';
 
 const Skeleton: OverridableComponent<SkeletonTypeMap<{}, 'span'>> = (
-  props: SkeletonProps
+  props: SkeletonProps,
 ) => (
   <MuiSkeleton
     animation="wave"

@@ -40,8 +40,8 @@ if (CapacitorHttp)
               url,
               key,
               value,
-            })
-          )
+            }),
+          ),
       );
     }
 
@@ -71,7 +71,7 @@ if (process.env.NODE_ENV === 'development')
 else if (process.env.REACT_APP_CAMPUSNET_BASE_URL)
   set(
     'baseUrl',
-    process.env.REACT_APP_CAMPUSNET_BASE_URL + '/scripts/mgrqispi.dll'
+    process.env.REACT_APP_CAMPUSNET_BASE_URL + '/scripts/mgrqispi.dll',
   );
 
 if (process.env.NODE_ENV === 'development') {
@@ -95,7 +95,7 @@ export class UserNotLoggedInError extends Error {
  */
 export const useLogin: () => (
   username: string,
-  password: string
+  password: string,
 ) => Promise<string | null> = () => {
   const queryClient = useQueryClient();
 
@@ -164,7 +164,7 @@ export const getSession = () => {
  * @argument args The arguments that need to be passed to the function.
  */
 export function useWithSession<TResult, TArgs extends unknown[]>(
-  func: (session: Session, ...args: TArgs) => Promise<TResult>
+  func: (session: Session, ...args: TArgs) => Promise<TResult>,
 ): (...args: TArgs) => Promise<TResult> {
   return async (...args) => {
     const currentSessionPromise = getSession();
@@ -186,7 +186,7 @@ export function useCNQuery<
   TQueryFnData = unknown,
   TError = unknown,
   TData = TQueryFnData,
-  TQueryKey extends QueryKey = QueryKey
+  TQueryKey extends QueryKey = QueryKey,
 >({
   queryFn,
   queryKey,

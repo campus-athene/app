@@ -32,7 +32,7 @@ export const useFeeds = (feeds: FeedName[]) =>
         });
 
         const xml = await new Promise<any>((resolve, reject) =>
-          parseString(response.data, (e, r) => (e ? reject(e) : resolve(r)))
+          parseString(response.data, (e, r) => (e ? reject(e) : resolve(r))),
         );
 
         return xml.rss.channel[0].item.map((item: any) => ({

@@ -48,7 +48,7 @@ export const ScrollWidget = (props: {
     <div
       className={twMerge(
         'no-scrollbar flex snap-x snap-mandatory scroll-p-4 gap-2 overflow-x-scroll px-3',
-        props.className
+        props.className,
       )}
     >
       {props.children}

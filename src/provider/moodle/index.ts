@@ -44,7 +44,7 @@ const useRequestWithLateArg = <TResult>() => {
           body: Object.entries(body)
             .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
             .join('&'),
-        }
+        },
       )
     ).json();
   };
@@ -61,7 +61,7 @@ export const useCoreWebserviceGetSiteInfo = () => {
 };
 
 export const useCoreMessageGetMessages = (
-  params: Partial<AddonNotificationsGetMessagesWSParams>
+  params: Partial<AddonNotificationsGetMessagesWSParams>,
 ) => {
   const userId = useCoreWebserviceGetSiteInfo().data?.userid;
   const boolToNum = (b: boolean | undefined) =>
@@ -115,8 +115,8 @@ export const useCoreMessageMarkNotificationRead = () => {
                   ...m,
                   read: true,
                 }
-              : m
-          )
+              : m,
+          ),
       );
 
       return { previousMessages };
@@ -160,8 +160,8 @@ export const useCoreMessageMarkAllNotificationsAsRead = () => {
                   ...m,
                   timeread: Date.now() / 1000,
                 }
-              : m
-          )
+              : m,
+          ),
       );
 
       return { previousMessages };

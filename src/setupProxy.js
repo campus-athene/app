@@ -22,6 +22,6 @@ module.exports = function (app) {
         if (proxyRes.headers['set-cookie'])
           res.setHeader('safe-set-cookie', proxyRes.headers['set-cookie']);
       },
-    })
+    }),
   );
 };

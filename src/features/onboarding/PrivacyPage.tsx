@@ -6,7 +6,7 @@ import { Frame, Radio } from './Controls';
 const PrivacyPage = () => {
   const dispatch = useDispatch();
   const [selected, setSelected] = useState<'complete' | 'balanced' | 'minimal'>(
-    'balanced'
+    'balanced',
   );
 
   const onNext = () => dispatch(setPrivacy({ level: selected }));

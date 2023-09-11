@@ -42,7 +42,7 @@ const CanteenPage = () => {
         : today.isoWeekday() === 7
         ? today.add('1', 'd')
         : today
-      ).diff(0)
+      ).diff(0),
   );
 
   const offset = moment(selection).diff(today, 'd');
@@ -157,7 +157,7 @@ const CanteenPage = () => {
       </div>
 
       {data === undefined ? null : data.menuItems.filter(
-          (m) => m.date === selection / 1000
+          (m) => m.date === selection / 1000,
         ).length ? (
         <div style={{ flexShrink: 1, overflow: 'scroll' }}>
           {data.menuItems

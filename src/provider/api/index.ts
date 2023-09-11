@@ -11,7 +11,7 @@ const base =
 const send = async (
   path: string,
   body?: any,
-  headers?: HeadersInit
+  headers?: HeadersInit,
 ): Promise<any> => {
   let httpResponse;
   const sessionId = getSessionId();
@@ -47,15 +47,15 @@ const send = async (
 
 export const syncSettings = (
   username: string,
-  settings: Settings
+  settings: Settings,
 ): Promise<void> => send('/account/settings', { username, settings });
 
 export const subscribePNS = (
   registrationId: string,
-  registrationType: 'APNS' | 'FCM'
+  registrationType: 'APNS' | 'FCM',
 ): Promise<void> =>
   send('/account/subscribepns', { registrationId, registrationType });
 
 export const reportError = async (
-  errorData: ReportErrorRequest
+  errorData: ReportErrorRequest,
 ): Promise<void> => send('/reporterror', errorData);

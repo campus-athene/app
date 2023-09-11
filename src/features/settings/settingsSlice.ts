@@ -48,7 +48,7 @@ const settingsSlice = createSlice({
       settings.onboardingComplete = !payload || payload.isComplete !== false;
       localStorage.setItem(
         'onboardingComplete',
-        JSON.stringify(settings.onboardingComplete)
+        JSON.stringify(settings.onboardingComplete),
       );
     },
     setPrivacy: (settings, { payload: { level } }) => {

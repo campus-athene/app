@@ -20,7 +20,7 @@ const OfferList = (params: {
   const offersQuery = useCourseOffers(
     params.list?.majorId,
     params.list?.areaId,
-    params.list?.listId
+    params.list?.listId,
   );
 
   return (
@@ -83,11 +83,10 @@ const OfferList = (params: {
                   className="relative px-4 py-2"
                   onClick={() =>
                     navigate(
-                      `/courses/register/${
-                        offersQuery.data.path.at(-1)?.majorId
-                      }/${offersQuery.data.path.at(-1)?.areaId}/${
-                        offersQuery.data.path.at(-1)?.listId
-                      }/${moduleId}`
+                      `/courses/register/${offersQuery.data.path.at(-1)
+                        ?.majorId}/${offersQuery.data.path.at(-1)
+                        ?.areaId}/${offersQuery.data.path.at(-1)
+                        ?.listId}/${moduleId}`,
                     )
                   }
                 >
@@ -123,7 +122,7 @@ const OfferList = (params: {
                     {name}
                   </div>
                 </div>
-              )
+              ),
             )
           )}
           {offersQuery.data?.lists
@@ -144,9 +143,7 @@ const OfferList = (params: {
             ))}
           {offersQuery.data?.lists
             .filter(({ listId }) => !listId)
-            .map((list) => (
-              <OfferList list={list} parentPath={path} />
-            ))}
+            .map((list) => <OfferList list={list} parentPath={path} />)}
         </>
       )}
     </>
@@ -191,7 +188,7 @@ const CourseRegPage = () => {
           : offerMajorSelection
           ? (selectedMajor
               ? query.data.majors.find(
-                  ({ majorId }) => majorId === selectedMajor
+                  ({ majorId }) => majorId === selectedMajor,
                 )
               : query.data.majors[0]
             )?.name

@@ -36,7 +36,7 @@ const ListPage = () => {
                 key={number}
                 onClick={() =>
                   navigate(
-                    `/courses/${semesterId}/${encodeURIComponent(number)}`
+                    `/courses/${semesterId}/${encodeURIComponent(number)}`,
                   )
                 }
               >
@@ -83,7 +83,7 @@ const ListPage = () => {
               </div>
             )}
           </React.Fragment>
-        )
+        ),
       )}
     </PageFrame>
   );

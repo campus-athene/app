@@ -30,7 +30,7 @@ const rootReducer = (state: any, action: any) => {
   if (action.type === '@@INIT' && state)
     log(
       'warning',
-      'An @@INIT action occured even though the state is not empty.'
+      'An @@INIT action occured even though the state is not empty.',
     );
   if (!state) {
     if (action.type !== '@@INIT')
@@ -54,7 +54,7 @@ export type AppDispatch = typeof store.dispatch;
 
 export type AppThunkAction<
   ReturnType = void,
-  ExtraThunkArg = unknown
+  ExtraThunkArg = unknown,
 > = ThunkAction<ReturnType, RootState, ExtraThunkArg, Action<string>>;
 
 export default store;

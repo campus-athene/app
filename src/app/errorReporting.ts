@@ -6,7 +6,7 @@ import { RootState } from '../redux';
 export const log = (
   level: 'error' | 'warning' | 'info',
   message: string,
-  data?: unknown
+  data?: unknown,
 ) => {
   try {
     const log =

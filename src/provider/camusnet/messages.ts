@@ -5,7 +5,7 @@ import { useCNQuery, useWithSession } from '.';
 const queryKey = ['messages'];
 
 const useMessagesWithSelector = <TData>(
-  select: (data: cn.Message[]) => TData
+  select: (data: cn.Message[]) => TData,
 ) =>
   useCNQuery<cn.Message[], unknown, TData, string[]>({
     queryKey,
@@ -16,12 +16,12 @@ const useMessagesWithSelector = <TData>(
 
 export const useMessage = (id: number) =>
   useMessagesWithSelector((messages) =>
-    messages.find((m) => m.folder === 'inbox' && m.messageId === id)
+    messages.find((m) => m.folder === 'inbox' && m.messageId === id),
   );
 
 export const useMessages = () =>
   useMessagesWithSelector((messages) =>
-    messages.filter((m) => m.folder === 'inbox')
+    messages.filter((m) => m.folder === 'inbox'),
   );
 
 export const useSetMessageStatus = () => {
@@ -49,8 +49,8 @@ export const useSetMessageStatus = () => {
                   ...m,
                   unread: !!unread,
                 }
-              : m
-          )
+              : m,
+          ),
       );
 
       return { previousMessages };
@@ -76,7 +76,7 @@ export const useMarkAllMessagesRead = () => {
       Promise.all(
         messages.data
           .filter((m) => m.unread)
-          .map((m) => setStatusWithSession(m.messageId, false))
+          .map((m) => setStatusWithSession(m.messageId, false)),
       ),
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey });
@@ -89,7 +89,7 @@ export const useMarkAllMessagesRead = () => {
           messages.map((m) => ({
             ...m,
             unread: false,
-          }))
+          })),
       );
 
       return { previousMessages };

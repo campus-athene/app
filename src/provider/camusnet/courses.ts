@@ -18,7 +18,7 @@ const queryKey = ['courses'];
 
 export const useCoursesWithSelectorFromGroupedByModule = <TData>(
   select: (data: MappedModulesBySemesterAndCode) => TData,
-  enabled = true
+  enabled = true,
 ) =>
   useCNQuery({
     enabled,
@@ -43,7 +43,7 @@ export const useCoursesWithSelectorFromGroupedByModule = <TData>(
               lecturer: c.instructors,
               semester: c.semester,
               courses: [],
-            })
+            }),
           );
 
         m.courses.push(c);
@@ -55,7 +55,7 @@ export const useCoursesWithSelectorFromGroupedByModule = <TData>(
           cs.slice(1).some((c) => c.module.name !== cs[0].module.name) &&
           log('warning', `Courses for module have mismatching names.`, {
             moduleNumber: cs[0].module.number,
-          })
+          }),
       );
 
       type CourseItems = {

@@ -18,7 +18,7 @@ const ContextMenu = (props: ContextMenuProps) => {
         ...props.PaperProps,
         className: twMerge(
           'divide-y rounded-2xl m-2',
-          props.PaperProps?.className
+          props.PaperProps?.className,
         ),
         onClick: (e) =>
           props.closeOnClick !== false ? props.onClose(e) : undefined,

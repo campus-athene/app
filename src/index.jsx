@@ -61,11 +61,11 @@ const initializeReact = async () => {
           log(
             'error',
             'window.StatusBarHeight.getValue threw an error.',
-            error
+            error,
           );
           rej(error);
-        }
-      )
+        },
+      ),
     );
 
   await statusBarPromise;
@@ -87,7 +87,7 @@ const initializeReact = async () => {
           </ThemeProvider>
         </QueryClientProvider>
       </Provider>
-    </React.StrictMode>
+    </React.StrictMode>,
   );
 };
 
@@ -95,7 +95,7 @@ if (window.cordova)
   document.addEventListener(
     'deviceready',
     () => initializeCordova() || initializeReact(),
-    false
+    false,
   );
 else initializeReact();
 

@@ -201,7 +201,7 @@ const SettingsPage = () => {
           onClick={() =>
             window.open(
               'https://www.idm.tu-darmstadt.de/password/account',
-              '_blank'
+              '_blank',
             )
           }
         >

@@ -11,19 +11,22 @@ import {
 
 export const useCoursesBySemesterAndNumber = (
   semester?: number,
-  number?: string
+  number?: string,
 ) =>
-  useCoursesWithSelectorFromGroupedByModule((modules) => {
-    if (semester === undefined || number === undefined)
-      throw new Error('Selector from a disabled query was called.');
-    return modules[semester][number];
-  }, semester !== undefined && number !== undefined);
+  useCoursesWithSelectorFromGroupedByModule(
+    (modules) => {
+      if (semester === undefined || number === undefined)
+        throw new Error('Selector from a disabled query was called.');
+      return modules[semester][number];
+    },
+    semester !== undefined && number !== undefined,
+  );
 
 export const useCoursesFromCurrentSemester = () =>
   useCoursesWithSelectorFromGroupedByModule((modules) =>
     Object.values(modules[getSemester()] || {}).sort((a, b) =>
-      a.number < b.number ? -1 : a.number > b.number ? 1 : 0
-    )
+      a.number < b.number ? -1 : a.number > b.number ? 1 : 0,
+    ),
   );
 
 export const useCoursesGroupedBySemester = () =>
@@ -37,13 +40,13 @@ export const useCoursesGroupedBySemester = () =>
           courses: Object.values(modules[semester] || {}),
         };
       }),
-    ].sort((a, b) => b.id - a.id)
+    ].sort((a, b) => b.id - a.id),
   );
 
 export const getCourseColor = (
   { number }: Pick<Module, 'number'>,
   s: number,
-  bl: number
+  bl: number,
 ) => {
   // https://www.30secondsofcode.org/js/s/hsb-to-rgb
   const HSBToRGB = (h: number, s: number, b: number) => {
@@ -60,7 +63,7 @@ export const getCourseColor = (
       39119) %
     360;
   const [r, g, b] = HSBToRGB(hash, s, bl).map((c) =>
-    c.toString(16).padStart(2, '0')
+    c.toString(16).padStart(2, '0'),
   );
   return `#${r}${g}${b}`;
 };

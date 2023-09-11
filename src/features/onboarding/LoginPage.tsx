@@ -34,7 +34,7 @@ const LoginPage = () => {
         (window as any).setMoodleToken = (token: string) =>
           dispatch(updateMoodleToken(token));
         console.log(
-          `Open ${url} in the browser and run window.setMoodleToken("...") in the console to log in.`
+          `Open ${url} in the browser and run window.setMoodleToken("...") in the console to log in.`,
         );
       } else {
         log('error', 'User cannot log in as there is no SafariViewController.');

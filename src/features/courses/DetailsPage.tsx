@@ -26,12 +26,12 @@ const DetailsPage = () => {
 
   const fromSemesterNumber = useCoursesBySemesterAndNumber(
     semester !== undefined ? Number.parseInt(semester) : undefined,
-    number
+    number,
   ).data;
   const fromMajorAreaListId = useCourseOffers(
     major !== undefined ? Number.parseInt(major) : undefined,
     area !== undefined ? Number.parseInt(area) : undefined,
-    list !== undefined ? Number.parseInt(list) : undefined
+    list !== undefined ? Number.parseInt(list) : undefined,
   ).data?.modules.find((m) => m.moduleId === moduleId);
   const module: Module | ModuleOffer | undefined =
     fromSemesterNumber || fromMajorAreaListId;

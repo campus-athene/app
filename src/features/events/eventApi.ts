@@ -34,7 +34,7 @@ const eventApi = createApi({
       transformResponse(result: any) {
         localStorage.setItem(
           'eventHighlights',
-          JSON.stringify(result.highlights)
+          JSON.stringify(result.highlights),
         );
         return result.highlights;
       },

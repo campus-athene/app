@@ -32,7 +32,7 @@ const EventWidget = () => {
               onClick={() =>
                 window.open(
                   'https://events.study-campus.de/event/' + e.id,
-                  '_blank'
+                  '_blank',
                 )
               }
             >
@@ -51,7 +51,7 @@ const EventWidget = () => {
                 <div className="overflow-hidden text-ellipsis whitespace-nowrap pt-1">
                   {utc(e.date).local().locale('de').format('lll')}
                 </div>
-                <div className="block overflow-hidden text-ellipsis whitespace-nowrap pt-1 pb-2 lg:text-base">
+                <div className="block overflow-hidden text-ellipsis whitespace-nowrap pb-2 pt-1 lg:text-base">
                   {e.online ? (
                     <>
                       <FontAwesomeIcon

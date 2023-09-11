@@ -56,7 +56,7 @@ const DayView = (props: {
       containerRef.current?.parentElement?.scroll(
         0,
         autoScrollOffset *
-          parseFloat(getComputedStyle(containerRef.current).fontSize)
+          parseFloat(getComputedStyle(containerRef.current).fontSize),
       );
   }, [autoScrollOffset, props.autoScrollParent]);
 

@@ -9,7 +9,7 @@ const CampusNetLoginModal = (
     Pick<CardModalProps, 'open' | 'onOpen' | 'onClose'> & {
       onCompleted: () => void;
     }
-  >
+  >,
 ) => {
   const login = useLogin();
 

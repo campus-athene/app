@@ -42,7 +42,9 @@ const ExamsTab = (props: { module: Module | ModuleOffer }) => {
           (e) =>
             (e.contextType === 'module' &&
               contextNumber(e) === props.module.number) ||
-            props.module.courses.map((c) => c.number).includes(contextNumber(e))
+            props.module.courses
+              .map((c) => c.number)
+              .includes(contextNumber(e)),
         )
         .map((exam) => (
           <Fragment key={exam.examId}>

@@ -181,7 +181,7 @@ const SideMenu = () => {
         onClick={() =>
           window.open(
             'https://online-anmeldung.usz.tu-darmstadt.de/angebote/aktueller_zeitraum/m.html',
-            '_blank'
+            '_blank',
           )
         }
         icon={Sport}
@@ -209,7 +209,7 @@ const SideMenu = () => {
           key={c.number}
           separator={i === 0}
           target={`/courses/${encodeURIComponent(
-            c.semester
+            c.semester,
           )}/${encodeURIComponent(c.number)}?hamburger`}
         >
           {c.name}

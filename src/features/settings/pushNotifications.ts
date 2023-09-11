@@ -10,7 +10,7 @@ const registrationType =
 const registrationListenerPromise = registrationType
   ? Promise.all([
       PushNotifications.addListener('registration', (token) =>
-        api.subscribePNS(token.value, registrationType)
+        api.subscribePNS(token.value, registrationType),
       ),
       PushNotifications.addListener('registrationError', (err) => {
         log('warning', 'registrationError was raised.', err);

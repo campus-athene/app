@@ -6,7 +6,7 @@ export class ServerError extends Error {
   constructor(response?: { message: string }) {
     super(
       response?.message ||
-        'Ein unbekannter serverseitiger Fehler ist aufgetreten.'
+        'Ein unbekannter serverseitiger Fehler ist aufgetreten.',
     );
     this.response = response;
   }

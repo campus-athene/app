@@ -5,14 +5,14 @@ const Button = (
   props: DetailedHTMLProps<
     ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
-  >
+  >,
 ) => {
   return (
     <button
       {...props}
       className={twMerge(
         'rounded-lg bg-accent px-4 py-2 text-base font-semibold text-black',
-        props.className
+        props.className,
       )}
     >
       {props.children}

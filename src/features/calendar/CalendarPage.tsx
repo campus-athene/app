@@ -11,12 +11,12 @@ import DayView from './DayView';
 
 const CalendarPage = () => {
   const [state, setState] = useState<'loading' | 'loaded' | 'error' | 'login'>(
-    'loading'
+    'loading',
   );
   getSession().then(
     () => setState('loaded'),
     (reason) =>
-      setState(reason instanceof UserNotLoggedInError ? 'login' : 'error')
+      setState(reason instanceof UserNotLoggedInError ? 'login' : 'error'),
   );
   const dayFromUrlStr = useSearchParams()[0].get('day');
   const dayFromUrl = (dayFromUrlStr && Number.parseInt(dayFromUrlStr)) || null;
