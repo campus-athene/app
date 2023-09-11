@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { ScrollWidget, WidgetBox } from '../home/Widget';
 import Sanitize from '../messages/Sanitize';
 import asta from './logos/asta.png';
@@ -7,7 +7,7 @@ import ulb from './logos/ulb.png';
 import { useFeeds } from './newsData';
 
 const NewsWidget = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const feeds = useFeeds(['general', 'ulb', 'asta']);
 
@@ -18,7 +18,7 @@ const NewsWidget = () => {
   if (!articles.length) return null;
 
   return (
-    <ScrollWidget onClick={() => navigate('/news')} title="Aktuelles">
+    <ScrollWidget onClick={() => history.push('/news')} title="Aktuelles">
       {articles.slice(0, 5).map((a) => (
         <WidgetBox
           key={a.guid}

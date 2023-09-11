@@ -2,7 +2,7 @@ import * as cn from '@campus/campusnet-sdk';
 import { faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { ContextMenuItem } from '../../components/ContextMenu';
 import PageFrame from '../../components/PageFrame';
 import { useCourseOffers } from '../../provider/camusnet/courses';
@@ -16,7 +16,7 @@ const OfferList = (params: {
     ...(params.parentPath || []),
     ...(params.list?.name ? [params.list.name] : []),
   ];
-  const navigate = useNavigate();
+  const history = useHistory();
   const offersQuery = useCourseOffers(
     params.list?.majorId,
     params.list?.areaId,
@@ -82,7 +82,7 @@ const OfferList = (params: {
                   key={moduleId}
                   className="relative px-4 py-2"
                   onClick={() =>
-                    navigate(
+                    history.push(
                       `/courses/register/${offersQuery.data.path.at(-1)
                         ?.majorId}/${offersQuery.data.path.at(-1)
                         ?.areaId}/${offersQuery.data.path.at(-1)
@@ -132,7 +132,7 @@ const OfferList = (params: {
                 key={`${majorId}.${areaId}.${listId}`}
                 className="flex gap-2 px-4 py-2"
                 onClick={() =>
-                  navigate(`/coursereg/${majorId}/${areaId}/${listId}`)
+                  history.push(`/coursereg/${majorId}/${areaId}/${listId}`)
                 }
               >
                 <div style={{ flexGrow: '1', flexShrink: '1' }}>{name}</div>
@@ -151,7 +151,7 @@ const OfferList = (params: {
 };
 
 const CourseRegPage = () => {
-  const params = useParams();
+  const params: Record<string, string> = useParams();
 
   // If major is not in the params, we offer the user to select a major.
   const [selectedMajor, setSelectedMajor] = useState(0);

@@ -2,6 +2,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { SwipeableDrawer } from '@mui/material';
 import { Property } from 'csstype';
+import { LocationDescriptor } from 'history';
 import {
   ComponentClass,
   FunctionComponent,
@@ -10,7 +11,7 @@ import {
   ReactNode,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { To, useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import {
@@ -36,7 +37,7 @@ import {
 import { selectSideMenuOpen, setSideMenuOpen } from './sideMenuSlice';
 
 type HomeButtonType = {
-  target?: To;
+  target?: LocationDescriptor<unknown>;
   onClick?: MouseEventHandler<HTMLDivElement>;
   dontAutoClose?: boolean;
   icon?:
@@ -49,7 +50,7 @@ type HomeButtonType = {
 
 const SideMenu = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const courses = useCoursesFromCurrentSemester().data;
   const menuOpen = useSelector(selectSideMenuOpen());
@@ -77,7 +78,7 @@ const SideMenu = () => {
       onClick={(e) => {
         dontAutoClose || dispatch(setSideMenuOpen(false));
         onClick && onClick(e);
-        target && navigate(target, { replace: true });
+        target && history.replace(target);
       }}
     >
       {color ? (

@@ -1,11 +1,11 @@
 import moment, { utc } from 'moment';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useNextAppointment } from '../../provider/camusnet/appointments';
 import Widget from '../home/Widget';
 import DayView from './DayView';
 
 const CalendarWidget = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const nextApp = useNextAppointment().data;
   if (!nextApp) return null;
@@ -21,7 +21,7 @@ const CalendarWidget = () => {
 
   return (
     <Widget
-      onClick={() => navigate(`/calendar?day=${nextDay.diff(0)}`)}
+      onClick={() => history.push(`/calendar?day=${nextDay.diff(0)}`)}
       style={{ overflow: 'hidden', padding: 0 }}
       title={dayString}
     >
@@ -29,7 +29,7 @@ const CalendarWidget = () => {
         cropToContent
         hourHeight={2}
         day={nextDay.diff(0)}
-        onClick={() => navigate(`/calendar?day=${nextDay.diff(0)}`)}
+        onClick={() => history.push(`/calendar?day=${nextDay.diff(0)}`)}
       />
     </Widget>
   );

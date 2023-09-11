@@ -1,7 +1,7 @@
 import { faAngleLeft, faBars } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useDispatch } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { setSideMenuOpen } from '../features/sideMenu/sideMenuSlice';
 
 const NavButton = (props: {
@@ -10,7 +10,7 @@ const NavButton = (props: {
   type?: 'hamburger' | 'back';
 }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const history = useHistory();
   const hamburgerInUrl = useLocation().search.includes('hamburger');
 
   const hamburger =
@@ -20,7 +20,7 @@ const NavButton = (props: {
   return (
     <As
       onClick={() =>
-        hamburger ? dispatch(setSideMenuOpen(true)) : navigate(-1)
+        hamburger ? dispatch(setSideMenuOpen(true)) : history.go(-1)
       }
       style={{
         background: 'none',

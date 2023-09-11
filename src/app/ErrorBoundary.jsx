@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import Button from '../components/Button';
 import PageFrame from '../components/PageFrame';
 import { logout } from '../features/auth/authSlice';
@@ -24,7 +24,7 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    const { logout, navigate } = this.props;
+    const { logout, history } = this.props;
 
     const toMessage = (error) => {
       if (typeof error?.toString !== 'function')
@@ -68,7 +68,7 @@ class ErrorBoundary extends React.Component {
             </Button>
             <Button
               style={{ margin: '0.25rem 0' }}
-              onClick={() => navigate(-1)}
+              onClick={() => history.go(-1)}
             >
               Zurück
             </Button>
@@ -99,12 +99,12 @@ class ErrorBoundary extends React.Component {
 }
 
 const ErrorBoundaryWrapper = ({ children }) => {
-  const navigate = useNavigate();
+  const history = useHistory();
 
   return React.createElement(connect(null, { logout })(ErrorBoundary), {
     children,
     key: useLocation().pathname,
-    navigate,
+    history,
   });
 };
 

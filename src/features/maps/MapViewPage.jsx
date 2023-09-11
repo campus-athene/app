@@ -6,7 +6,7 @@ import 'leaflet/dist/leaflet.css';
 import { useEffect } from 'react';
 import { ImageOverlay, MapContainer } from 'react-leaflet';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { log } from '../../app/errorReporting';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import lichtwiese from './data/lichtwiese.png';
@@ -58,7 +58,7 @@ const MapViewPage = () => {
 
   const { map: mapArg } = useParams();
   const map = getViewData(mapArg);
-  const navigate = useNavigate();
+  const history = useHistory();
 
   return (
     <div className="relative h-screen">
@@ -114,7 +114,7 @@ const MapViewPage = () => {
           cursor: 'pointer',
           zIndex: '10000', // Leaflet uses up to 1000
         }}
-        onClick={() => navigate(-1)}
+        onClick={() => history.go(-1)}
       >
         <FontAwesomeIcon icon={faAngleLeft} color="white" />
       </div>

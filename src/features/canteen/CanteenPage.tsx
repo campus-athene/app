@@ -6,9 +6,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment-timezone';
-import { MouseEventHandler, useState } from 'react';
+import { MouseEventHandler, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ContextMenuItem } from '../../components/ContextMenu';
 import PageFrame from '../../components/PageFrame';
 import { useMenuItems } from './canteenData';
@@ -23,9 +23,13 @@ import foodPlaceholderSq from './foodPlaceholderSq.svg';
 import Star from './Star';
 
 const CanteenPage = () => {
+  const location = useLocation();
   const canteenId = useSelector(selectCanteen());
 
-  const dayFromUrlStr = useSearchParams()[0].get('day');
+  const dayFromUrlStr = useMemo(
+    () => new URLSearchParams(location.search).get('day'),
+    [location.search],
+  );
   const dayFromUrl = (dayFromUrlStr && Number.parseInt(dayFromUrlStr)) || null;
 
   const today = moment(Date.now())

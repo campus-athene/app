@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router';
+import { useHistory } from 'react-router';
 import Widget from '../home/Widget';
 import { Envelope } from '../sideMenu/icons';
 import MessageList from './MessageList';
 import { useMessages } from './messageModel';
 
 const MessagesWidget = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
 
   const { data } = useMessages();
 
@@ -21,7 +21,7 @@ const MessagesWidget = () => {
 
   return (
     <Widget
-      onClick={() => navigate('/messages')}
+      onClick={() => history.push('/messages')}
       style={{ overflow: 'hidden', padding: 0 }}
       title={
         unreadMsgCount === 1
@@ -36,7 +36,7 @@ const MessagesWidget = () => {
       />
       {moreMsgs && (
         <div
-          onClick={() => navigate('/messages')}
+          onClick={() => history.push('/messages')}
           style={{
             fontSize: '1.2em',
             padding: '0.5rem',

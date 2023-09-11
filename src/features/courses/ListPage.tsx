@@ -2,14 +2,14 @@ import { getRegSemester } from '@campus/campusnet-sdk';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { useNavigate } from 'react-router';
+import { useHistory } from 'react-router';
 import PageFrame from '../../components/PageFrame';
 import { UserNotLoggedInError } from '../../provider/camusnet';
 import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 import { getCourseColor, useCoursesGroupedBySemester } from './coursesSlice';
 
 const ListPage = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
   const semesters = useCoursesGroupedBySemester();
 
   if (semesters.error instanceof UserNotLoggedInError)
@@ -35,7 +35,7 @@ const ListPage = () => {
                 className="relative px-4 py-2"
                 key={number}
                 onClick={() =>
-                  navigate(
+                  history.push(
                     `/courses/${semesterId}/${encodeURIComponent(number)}`,
                   )
                 }
@@ -76,7 +76,7 @@ const ListPage = () => {
             {semesterId === getRegSemester() && (
               <div
                 className="flex px-4 py-2 font-semibold"
-                onClick={() => navigate('/coursereg')}
+                onClick={() => history.push('/coursereg')}
               >
                 <div style={{ flexGrow: '1' }}>Anmeldung</div>
                 <FontAwesomeIcon className="self-center" icon={faAngleRight} />

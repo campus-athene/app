@@ -1,4 +1,4 @@
-import { Route, Routes as RoutesCollection } from 'react-router-dom';
+import { Route, Switch as RoutesCollection } from 'react-router-dom';
 import CalendarPage from '../features/calendar/CalendarPage';
 import CanteenPage from '../features/canteen/CanteenPage';
 import CourseRegPage from '../features/courses/CourseRegPage';
@@ -21,31 +21,28 @@ const Routes = () => {
   return (
     // Usually just called <Routes> but the component we are exporting is also called Routes.
     <RoutesCollection>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/calendar" element={<CalendarPage />} />
-      <Route path="/canteen" element={<CanteenPage />} />
-      <Route path="/coursereg" element={<CourseRegPage />} />
+      <Route exact path="/" component={HomePage} />
+      <Route path="/calendar" component={CalendarPage} />
+      <Route path="/canteen" component={CanteenPage} />
+      <Route path="/coursereg" component={CourseRegPage} />
       <Route
         path="/coursereg/:major/:area/:rootList"
-        element={<CourseRegPage />}
+        component={CourseRegPage}
       />
-      <Route path="/courses" element={<CourseListPage />} />
-      <Route
-        path="/courses/:semester/:number"
-        element={<CourseDetailsPage />}
-      />
+      <Route path="/courses" component={CourseListPage} />
+      <Route path="/courses/:semester/:number" component={CourseDetailsPage} />
       <Route
         path="/courses/register/:major/:area/:list/:module"
-        element={<CourseDetailsPage registration />}
+        component={<CourseDetailsPage registration />}
       />
-      <Route path="/maps" element={<MapListPage />} />
-      <Route path="/maps/:map" element={<MapViewPage />} />
-      <Route path="/messages" element={<MessagesPage />} />
-      <Route path="/news" element={<BrowseNewsPage />} />
-      <Route path="/oapp" element={<OappPage />} />
-      <Route path="/documents" element={<DocumentsPage />} />
-      <Route path="/settings" element={<SettingsPage />} />
-      <Route path="*" element={<NoMatch />} />
+      <Route path="/maps" component={MapListPage} />
+      <Route path="/maps/:map" component={MapViewPage} />
+      <Route path="/messages" component={MessagesPage} />
+      <Route path="/news" component={BrowseNewsPage} />
+      <Route path="/oapp" component={OappPage} />
+      <Route path="/documents" component={DocumentsPage} />
+      <Route path="/settings" component={SettingsPage} />
+      <Route path="*" component={NoMatch} />
     </RoutesCollection>
   );
 };

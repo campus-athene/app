@@ -2,14 +2,15 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment-timezone';
-import { MouseEventHandler, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { MouseEventHandler, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import PageFrame from '../../components/PageFrame';
 import { getSession, UserNotLoggedInError } from '../../provider/camusnet';
 import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
 import DayView from './DayView';
 
 const CalendarPage = () => {
+  const location = useLocation();
   const [state, setState] = useState<'loading' | 'loaded' | 'error' | 'login'>(
     'loading',
   );
@@ -18,7 +19,10 @@ const CalendarPage = () => {
     (reason) =>
       setState(reason instanceof UserNotLoggedInError ? 'login' : 'error'),
   );
-  const dayFromUrlStr = useSearchParams()[0].get('day');
+  const dayFromUrlStr = useMemo(
+    () => new URLSearchParams(location.search).get('day'),
+    [location.search],
+  );
   const dayFromUrl = (dayFromUrlStr && Number.parseInt(dayFromUrlStr)) || null;
 
   const today = moment(Date.now())

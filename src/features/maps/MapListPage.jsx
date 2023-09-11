@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+import { useHistory } from 'react-router';
 import PageFrame from '../../components/PageFrame';
 import lichtwiese from './data/lichtwiese.png';
 import stadtmitte from './data/stadtmitte.png';
@@ -44,42 +44,42 @@ const MapPreview = ({ title, abbrev, onClick, map, viewBox }) => (
 );
 
 const MapListPage = () => {
-  const navigate = useNavigate();
+  const history = useHistory();
   return (
     <PageFrame title="Karten">
       <div style={{ height: '1em' }} />
       <MapPreview
         title="tadtmitte"
         abbrev="S"
-        onClick={() => navigate('/maps/stadtmitte')}
+        onClick={() => history.push('/maps/stadtmitte')}
         map={stadtmitte}
         viewBox="490 330 414 207"
       />
       <MapPreview
         title="ichtwiese"
         abbrev="L"
-        onClick={() => navigate('/maps/lichtwiese')}
+        onClick={() => history.push('/maps/lichtwiese')}
         map={lichtwiese}
         viewBox="445 550 500 250"
       />
       <MapPreview
         title="otanischer Garten"
         abbrev="B"
-        onClick={() => navigate('/maps/botanischergarten')}
+        onClick={() => history.push('/maps/botanischergarten')}
         map={lichtwiese}
         viewBox="470 70 500 250"
       />
       <MapPreview
         title="ochschulstadion"
         abbrev="H"
-        onClick={() => navigate('/maps/hochschulstadion')}
+        onClick={() => history.push('/maps/hochschulstadion')}
         map={lichtwiese}
         viewBox="100 660 500 250"
       />
       <MapPreview
         title="indkanal"
         abbrev="W"
-        onClick={() => navigate('/maps/windkanal')}
+        onClick={() => history.push('/maps/windkanal')}
         map={windkanal}
         viewBox="0 240 1000 500"
       />

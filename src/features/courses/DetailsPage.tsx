@@ -20,7 +20,7 @@ const DetailsPage = () => {
     area,
     list,
     module: moduleIdString,
-  } = useParams();
+  } = useParams<Record<string, string>>();
   const number = numberEncoded && decodeURIComponent(numberEncoded);
   const moduleId = moduleIdString && Number.parseInt(moduleIdString);
 
