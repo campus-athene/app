@@ -1,7 +1,7 @@
-import { storeRef } from '..';
 import { selectPrivacy } from '../features/settings/settingsSlice';
 import * as api from '../provider/api';
 import { RootState } from '../redux';
+import { storeRef } from './main';
 
 export const log = (
   level: 'error' | 'warning' | 'info',
@@ -18,7 +18,7 @@ export const log = (
     log(message);
     log(data);
 
-    if (process.env.NODE_ENV === 'development') return;
+    if (import.meta.env.DEV) return;
 
     const state = (storeRef.store as any).getState() as RootState;
     const privacy = selectPrivacy()(state)?.level;

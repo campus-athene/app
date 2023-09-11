@@ -24,18 +24,18 @@ const Routes = () => {
       <Route exact path="/" component={HomePage} />
       <Route path="/calendar" component={CalendarPage} />
       <Route path="/canteen" component={CanteenPage} />
-      <Route path="/coursereg" component={CourseRegPage} />
+      <Route exact path="/coursereg" component={CourseRegPage} />
       <Route
         path="/coursereg/:major/:area/:rootList"
         component={CourseRegPage}
       />
-      <Route path="/courses" component={CourseListPage} />
-      <Route path="/courses/:semester/:number" component={CourseDetailsPage} />
+      <Route exact path="/courses" component={CourseListPage} />
       <Route
         path="/courses/register/:major/:area/:list/:module"
         component={<CourseDetailsPage registration />}
       />
-      <Route path="/maps" component={MapListPage} />
+      <Route path="/courses/:semester/:number" component={CourseDetailsPage} />
+      <Route exact path="/maps" component={MapListPage} />
       <Route path="/maps/:map" component={MapViewPage} />
       <Route path="/messages" component={MessagesPage} />
       <Route path="/news" component={BrowseNewsPage} />

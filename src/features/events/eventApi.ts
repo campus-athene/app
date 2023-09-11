@@ -21,8 +21,8 @@ const eventApi = createApi({
   reducerPath: 'eventsApi',
   baseQuery: fetchBaseQuery({
     baseUrl:
-      process.env.REACT_APP_EVENTS_BASE_URL ||
-      (process.env.NODE_ENV === 'development'
+      import.meta.env.VITE_EVENTS_BASE_URL ||
+      (import.meta.env.DEV
         ? 'https://dev.events.study-campus.de/api'
         : 'https://events.study-campus.de/api'),
   }),

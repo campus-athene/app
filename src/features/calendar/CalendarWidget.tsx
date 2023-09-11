@@ -1,8 +1,10 @@
-import moment, { utc } from 'moment';
+import moment from 'moment';
 import { useHistory } from 'react-router-dom';
 import { useNextAppointment } from '../../provider/camusnet/appointments';
 import Widget from '../home/Widget';
 import DayView from './DayView';
+
+const { utc } = moment;
 
 const CalendarWidget = () => {
   const history = useHistory();

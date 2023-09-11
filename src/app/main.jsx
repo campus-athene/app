@@ -8,15 +8,15 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { HashRouter as ReactRouter } from 'react-router-dom';
-import './app/App.css';
-import ErrorBoundary from './app/ErrorBoundary';
-import { log } from './app/errorReporting';
-import muiTheme from './app/muiTheme';
-import Routes from './app/Routes';
-import SideMenu from './features/sideMenu/SideMenu';
-import store from './redux';
-import { setStatusBarHeight } from './redux/globalSlice';
-import { UpdateEffect } from './redux/sync';
+import SideMenu from '../features/sideMenu/SideMenu';
+import store from '../redux';
+import { setStatusBarHeight } from '../redux/globalSlice';
+import { UpdateEffect } from '../redux/sync';
+import './App.css';
+import ErrorBoundary from './ErrorBoundary';
+import { log } from './errorReporting';
+import muiTheme from './muiTheme';
+import Routes from './Routes';
 
 export const storeRef = { store: null };
 
@@ -43,8 +43,7 @@ const initializeReact = async () => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
-        refetchOnWindowFocus:
-          process.env.NODE_ENV === 'development' ? false : true,
+        refetchOnWindowFocus: import.meta.env.PROD,
       },
     },
   });

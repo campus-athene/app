@@ -28,7 +28,7 @@ const LoginPage = () => {
           toolbarColor: '#372649',
           url,
         });
-      else if (process.env.NODE_ENV === 'development') {
+      else if (import.meta.env.DEV) {
         window.open(url, '_blank');
         // For debugging purposes only.
         (window as any).setMoodleToken = (token: string) =>

@@ -64,17 +64,17 @@ if (CapacitorHttp)
     };
   });
 
-if (process.env.NODE_ENV === 'development')
-  // During development the REACT_APP_CAMPUSNET_BASE_URL is used as proxy
+if (import.meta.env.DEV)
+  // During development the VITE_CAMPUSNET_BASE_URL is used as proxy
   // target for /campusnet-proxy/scripts/mgrqispi.dll
   set('baseUrl', '/campusnet-proxy/scripts/mgrqispi.dll');
-else if (process.env.REACT_APP_CAMPUSNET_BASE_URL)
+else if (import.meta.env.VITE_CAMPUSNET_BASE_URL)
   set(
     'baseUrl',
-    process.env.REACT_APP_CAMPUSNET_BASE_URL + '/scripts/mgrqispi.dll',
+    import.meta.env.VITE_CAMPUSNET_BASE_URL + '/scripts/mgrqispi.dll',
   );
 
-if (process.env.NODE_ENV === 'development') {
+if (import.meta.env.DEV) {
   set('cookieHeaderReceive', 'Safe-Set-Cookie');
   set('cookieHeaderSend', 'Safe-Cookie');
 }
