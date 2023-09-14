@@ -32,7 +32,7 @@ const Routes = () => {
       <Route exact path="/courses" component={CourseListPage} />
       <Route
         path="/courses/register/:major/:area/:list/:module"
-        component={<CourseDetailsPage registration />}
+        component={CourseDetailsPage}
       />
       <Route path="/courses/:semester/:number" component={CourseDetailsPage} />
       <Route exact path="/maps" component={MapListPage} />

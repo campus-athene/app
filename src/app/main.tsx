@@ -9,7 +9,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { HashRouter as ReactRouter } from 'react-router-dom';
 import SideMenu from '../features/sideMenu/SideMenu';
-import store from '../redux';
+import store, { AppStore } from '../redux';
 import { setStatusBarHeight } from '../redux/globalSlice';
 import { UpdateEffect } from '../redux/sync';
 import './App.css';
@@ -18,14 +18,29 @@ import { log } from './errorReporting';
 import muiTheme from './muiTheme';
 import Routes from './Routes';
 
-export const storeRef = { store: null };
+declare global {
+  interface Window {
+    StatusBarHeight?: {
+      getValue(
+        successCallback: (value: number) => void,
+        errorCallback: (error: any) => void,
+      ): void;
+    };
+  }
+}
+
+export const storeRef: { store: AppStore | null } = { store: null };
 
 const initializeCordova = () => {
   // Initialize plugins etc. here
 
   window.SafariViewController?.isAvailable((isAvailable) => {
     if (isAvailable)
-      window.open = (url, _target, options) =>
+      (window.open as any) = (
+        url: string,
+        _target: unknown,
+        options: Partial<SafariViewControllerShowOptions>,
+      ) =>
         SafariViewController.show({
           toolbarColor: '#372649',
           url,
@@ -51,7 +66,7 @@ const initializeReact = async () => {
   const statusBarPromise =
     window.StatusBarHeight &&
     new Promise((res, rej) =>
-      window.StatusBarHeight.getValue(
+      window.StatusBarHeight!.getValue(
         (value) => {
           store.dispatch(setStatusBarHeight(value));
           res(value);
@@ -69,7 +84,7 @@ const initializeReact = async () => {
 
   await statusBarPromise;
 
-  const root = createRoot(document.getElementById('root'));
+  const root = createRoot(document.getElementById('root')!);
   root.render(
     <React.StrictMode>
       <Provider store={store}>
@@ -90,10 +105,13 @@ const initializeReact = async () => {
   );
 };
 
-if (window.cordova)
+if ((window as any).cordova)
   document.addEventListener(
     'deviceready',
-    () => initializeCordova() || initializeReact(),
+    () => {
+      initializeCordova();
+      initializeReact();
+    },
     false,
   );
 else initializeReact();
