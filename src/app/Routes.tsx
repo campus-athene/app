@@ -1,4 +1,5 @@
-import { Route, Switch as RoutesCollection } from 'react-router-dom';
+import { IonRouterOutlet } from '@ionic/react';
+import { Redirect, Route, useLocation } from 'react-router-dom';
 import CalendarPage from '../features/calendar/CalendarPage';
 import CanteenPage from '../features/canteen/CanteenPage';
 import CourseRegPage from '../features/courses/CourseRegPage';
@@ -10,18 +11,16 @@ import MapListPage from '../features/maps/MapListPage';
 import MapViewPage from '../features/maps/MapViewPage';
 import MessagesPage from '../features/messages/MessagesPage';
 import BrowseNewsPage from '../features/news/BrowseNewsPage';
-import { useOnboardingElement } from '../features/onboarding/Onboarding';
 import SettingsPage from '../features/settings/SettingsPage';
 import OappPage from '../features/wiki/WikiPage';
 
 const Routes = () => {
-  const onboardingElement = useOnboardingElement();
-  if (onboardingElement) return onboardingElement;
-
   return (
-    // Usually just called <Routes> but the component we are exporting is also called Routes.
-    <RoutesCollection>
-      <Route exact path="/" component={HomePage} />
+    <IonRouterOutlet>
+      <Route exact path="/">
+        <Redirect to="/home" />
+      </Route>
+      <Route path="/home" component={HomePage} />
       <Route path="/calendar" component={CalendarPage} />
       <Route path="/canteen" component={CanteenPage} />
       <Route exact path="/coursereg" component={CourseRegPage} />
@@ -42,13 +41,16 @@ const Routes = () => {
       <Route path="/oapp" component={OappPage} />
       <Route path="/documents" component={DocumentsPage} />
       <Route path="/settings" component={SettingsPage} />
-      <Route path="*" component={NoMatch} />
-    </RoutesCollection>
+      <Route component={NoMatch} />
+    </IonRouterOutlet>
   );
 };
 
 const NoMatch = () => {
-  throw new Error('The requested path could not be found.');
+  const location = useLocation();
+  throw new Error(
+    `The requested path could not be found: ${location.pathname}`,
+  );
 };
 
 export default Routes;

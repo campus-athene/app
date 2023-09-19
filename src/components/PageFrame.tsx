@@ -1,17 +1,27 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectStatusBarHeightCss } from '../redux/globalSlice';
 import ContextMenu from './ContextMenu';
-import NavButton from './NavButton';
 
 const PageFrame = (props: {
   className?: string;
   children?: React.ReactNode;
   title?: string;
   style?: React.CSSProperties;
+  /** @deprecated */
   noMenu?: boolean;
   more?: React.ReactNode;
   moreIcon?: IconProp;
@@ -21,94 +31,50 @@ const PageFrame = (props: {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateRows: 'auto auto 1fr',
-        height: '100vh',
-      }}
-    >
-      <nav
-        className="flex items-center text-white"
-        style={{
-          backgroundColor: '#372649',
-          height: `calc(3.5rem + ${statusBarHeightCss})`,
-          paddingTop: statusBarHeightCss,
-          width: '100vw',
-        }}
-      >
-        <NavButton
-          style={{
-            alignItems: 'center',
-            alignSelf: 'stretch',
-            display: props.noMenu ? 'none' : 'flex',
-            justifyContent: 'center',
-          }}
-        />
-        <div
-          className="text-lg"
-          style={{
-            flexGrow: 1,
-            marginRight: 0,
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {props.title || <>&nbsp;</>}
-        </div>
-        {props.more && (
+    <IonPage>
+      <IonHeader translucent collapse="fade">
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton />
+          </IonButtons>
+          <IonTitle>{props.title}</IonTitle>
+          {props.more && (
+            <IonButtons slot="end">
+              <IonButton onClick={() => setMenuOpen(!menuOpen)}>
+                <FontAwesomeIcon icon={props.moreIcon || faEllipsisH} />
+              </IonButton>
+            </IonButtons>
+          )}
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className={props.className} fullscreen style={props.style}>
+        {(props.syncState?.isLoading || props.syncState?.isOffline) && (
           <div
-            onClick={() => setMenuOpen(!menuOpen)}
             style={{
-              marginRight: '0',
-              alignSelf: 'stretch',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '3.5rem',
+              background: '#777',
+              textAlign: 'center',
+              color: '#fff',
+              letterSpacing: '0.05em',
             }}
           >
-            <FontAwesomeIcon icon={props.moreIcon || faEllipsisH} />
+            {props.syncState?.isLoading ? 'Lädt...' : 'Offline'}
           </div>
         )}
-      </nav>
-      {(props.syncState?.isLoading || props.syncState?.isOffline) && (
-        <div
-          style={{
-            background: '#777',
-            textAlign: 'center',
-            color: '#fff',
-            letterSpacing: '0.05em',
-          }}
-        >
-          {props.syncState?.isLoading ? 'Lädt...' : 'Offline'}
-        </div>
-      )}
-      <div
-        className={props.className}
-        style={{
-          overflowX: 'hidden',
-          overflowY: 'scroll',
-          gridRow: '3',
-          ...props.style,
-        }}
-      >
         {props.children}
-      </div>
-      {props.more && (
-        <ContextMenu
-          anchor="top"
-          open={menuOpen}
-          onClose={() => setMenuOpen(false)}
-          PaperProps={{
-            style: { marginTop: `calc(4rem + ${statusBarHeightCss})` },
-          }}
-        >
-          {props.more}
-        </ContextMenu>
-      )}
-    </div>
+        {props.more && (
+          <ContextMenu
+            anchor="top"
+            open={menuOpen}
+            onClose={() => setMenuOpen(false)}
+            PaperProps={{
+              style: { marginTop: `calc(4rem + ${statusBarHeightCss})` },
+            }}
+          >
+            {props.more}
+          </ContextMenu>
+        )}
+      </IonContent>
+    </IonPage>
   );
 };
 

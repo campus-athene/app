@@ -1,9 +1,9 @@
 import { ModuleOffer } from '@campus/campusnet-sdk';
+import { IonBackButton } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { log } from '../../app/errorReporting';
-import NavButton from '../../components/NavButton';
 import PageFrame from '../../components/PageFrame';
 import { Module, useCourseOffers } from '../../provider/camusnet/courses';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
@@ -93,7 +93,7 @@ const DetailsPage = () => {
           padding: `${statusBarHeightCss} 1em 0 1em`,
         }}
       >
-        <NavButton style={{ marginLeft: '-1rem' }} />
+        <IonBackButton style={{ marginLeft: '-1rem' }} />
         <div>{module.lecturer}</div>
         <div style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
           {module.name}

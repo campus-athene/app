@@ -1,3 +1,5 @@
+@import '@ionic/react/css/core.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,9 +15,29 @@
 body {
   overflow: hidden;
   user-select: none;
-  font-feature-settings: 'ss02', 'ss03'; /* Alternate glyphs for a and g */
 }
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+:root {
+  --ion-background-color: #fafafa;
+  --ion-background-color-rgb: 250, 250, 250;
+  --ion-tab-bar-color-selected: #27143c;
+}
+
+:root.md {
+  --ion-toolbar-background: #27143c;
+  --ion-toolbar-color: #fff;
+}
+
+ion-content {
+  --ion-font-family: 'Source Sans 3 VF', sans-serif;
+  font-feature-settings: 'ss02', 'ss03'; /* Alternate glyphs for a and g */
+}
+
+ion-header {
+  --ion-font-family: var(--ion-default-font);
+  font-feature-settings: initial;
 }

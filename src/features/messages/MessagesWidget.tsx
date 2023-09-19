@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router';
 import Widget from '../home/Widget';
-import { Envelope } from '../sideMenu/icons';
+import { Envelope } from './icons';
 import MessageList from './MessageList';
 import { useMessages } from './messageModel';
 

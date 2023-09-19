@@ -2,21 +2,18 @@
 
 import { Capacitor } from '@capacitor/core';
 import { StatusBar } from '@capacitor/status-bar';
+import { setupIonicReact } from '@ionic/react';
 import { ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { HashRouter as ReactRouter } from 'react-router-dom';
-import SideMenu from '../features/sideMenu/SideMenu';
 import store, { AppStore } from '../redux';
 import { setStatusBarHeight } from '../redux/globalSlice';
 import { UpdateEffect } from '../redux/sync';
-import './App.css';
-import ErrorBoundary from './ErrorBoundary';
+import App from './App';
 import { log } from './errorReporting';
 import muiTheme from './muiTheme';
-import Routes from './Routes';
 
 declare global {
   interface Window {
@@ -84,6 +81,8 @@ const initializeReact = async () => {
 
   await statusBarPromise;
 
+  setupIonicReact();
+
   const root = createRoot(document.getElementById('root')!);
   root.render(
     <React.StrictMode>
@@ -92,12 +91,7 @@ const initializeReact = async () => {
           {/* Check for outdated or missing state and fetch is asyncronously from the server. */}
           <UpdateEffect />
           <ThemeProvider theme={muiTheme}>
-            <ReactRouter>
-              <ErrorBoundary>
-                <Routes />
-                <SideMenu />
-              </ErrorBoundary>
-            </ReactRouter>
+            <App />
           </ThemeProvider>
         </QueryClientProvider>
       </Provider>

@@ -10,9 +10,9 @@ module.exports = {
         chalk: '#F0F0F0',
       },
     },
-    fontFamily: {
-      sans: ['"Source Sans 3 VF"', 'sans-serif'],
-    },
+  },
+  corePlugins: {
+    fontFamily: false,
   },
   plugins: [require('tailwindcss-safe-area')],
 };
