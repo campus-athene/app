@@ -1,10 +1,17 @@
 import { ModuleOffer } from '@campus/campusnet-sdk';
-import { IonBackButton } from '@ionic/react';
+import {
+  IonBackButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { log } from '../../app/errorReporting';
-import PageFrame from '../../components/PageFrame';
 import { Module, useCourseOffers } from '../../provider/camusnet/courses';
 import { selectStatusBarHeightCss } from '../../redux/globalSlice';
 import ExamsTab from '../exams/ExamsTab';
@@ -49,7 +56,7 @@ const DetailsPage = () => {
         list,
         moduleId,
       });
-  });
+  }, []);
 
   type tabs = 'overview' | 'appointments' | 'exams';
   const [tab, setTab] = useState<tabs>('overview');
@@ -72,50 +79,60 @@ const DetailsPage = () => {
 
   if (!module)
     return (
-      <PageFrame title="Kursdetails">
-        Dieser Kurs konnte nicht gefunden werden.
-      </PageFrame>
+      <IonPage>
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonBackButton />
+            </IonButtons>
+            <IonTitle>Kursdetails</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <div className="p-4">Dieser Kurs konnte nicht gefunden werden.</div>
+        </IonContent>
+      </IonPage>
     );
 
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'grid',
-        gridTemplateRows: 'auto 1fr',
-      }}
-    >
-      <div
+    <IonPage>
+      <IonHeader
         style={{
-          background: getCourseColor(module, 90, 70),
-          color: 'white',
-          minHeight: '8em',
-          padding: `${statusBarHeightCss} 1em 0 1em`,
+          '--border-style': 'none',
+          '--ion-background-color': getCourseColor(module, 90, 70),
+          '--ion-toolbar-background': 'var(--ion-background-color)',
+          '--ion-toolbar-color': 'white',
+          background: 'var(--ion-background-color)',
         }}
       >
-        <IonBackButton style={{ marginLeft: '-1rem' }} />
-        <div>{module.lecturer}</div>
-        <div style={{ fontSize: '1.2em', fontWeight: 'bold' }}>
-          {module.name}
-        </div>
-        <div
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton />
+          </IonButtons>
+        </IonToolbar>
+        <IonToolbar
           style={{
-            color: 'white',
-            display: 'flex',
-            margin: '0 -1em',
-            overflowY: 'scroll',
-            padding: '0 0.25em',
+            '--padding-start': '0',
+            '--padding-end': '0',
           }}
         >
-          <TabButton tab="overview">Übersicht</TabButton>
-          <TabButton tab="appointments">Termine</TabButton>
-          <TabButton tab="exams">Prüfungen</TabButton>
-        </div>
-      </div>
-      {tab === 'overview' && <OverviewTab module={module} />}
-      {tab === 'appointments' && <AppointmentsTab module={module} />}
-      {tab === 'exams' && <ExamsTab module={module} />}
-    </div>
+          <div className="mx-4 line-clamp-1 ">{module.lecturer}</div>
+          <div className="mx-4 line-clamp-1 text-lg font-bold">
+            {module.name}
+          </div>
+          <div className="no-scrollbar flex overflow-y-scroll px-1">
+            <TabButton tab="overview">Übersicht</TabButton>
+            <TabButton tab="appointments">Termine</TabButton>
+            <TabButton tab="exams">Prüfungen</TabButton>
+          </div>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        {tab === 'overview' && <OverviewTab module={module} />}
+        {tab === 'appointments' && <AppointmentsTab module={module} />}
+        {tab === 'exams' && <ExamsTab module={module} />}
+      </IonContent>
+    </IonPage>
   );
 };
 
