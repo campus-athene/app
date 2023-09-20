@@ -1,6 +1,7 @@
 import moment from 'moment-timezone';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import pageRoutes from '../../app/pageRoutes';
 import { ScrollWidget, WidgetBox } from '../home/Widget';
 import { useMenuItems } from './canteenData';
 import { canteenFriendlyName, selectCanteen } from './canteenSettings';
@@ -25,14 +26,14 @@ const CanteenWidgetContent = () => {
 
   return (
     <ScrollWidget
-      onClick={() => history.push('/canteen')}
+      onClick={() => history.push(pageRoutes.canteen())}
       title={canteenFriendlyName[canteenId]}
     >
       {data.menuItems.map((m) => (
         <WidgetBox
           className="relative h-32 w-48 flex-shrink-0 overflow-hidden bg-cover bg-center bg-no-repeat"
           key={m.id}
-          onClick={() => history.push('/canteen')}
+          onClick={() => history.push(pageRoutes.canteen())}
           style={{
             backgroundImage: `url('${foodPlaceholder}')`,
           }}

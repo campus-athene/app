@@ -1,4 +1,5 @@
 import { useHistory } from 'react-router';
+import pageRoutes from '../../app/pageRoutes';
 import Widget from '../home/Widget';
 import { Envelope } from './icons';
 import MessageList from './MessageList';
@@ -21,7 +22,7 @@ const MessagesWidget = () => {
 
   return (
     <Widget
-      onClick={() => history.push('/messages')}
+      onClick={() => history.push(pageRoutes.messages())}
       style={{ overflow: 'hidden', padding: 0 }}
       title={
         unreadMsgCount === 1
@@ -36,7 +37,7 @@ const MessagesWidget = () => {
       />
       {moreMsgs && (
         <div
-          onClick={() => history.push('/messages')}
+          onClick={() => history.push(pageRoutes.messages())}
           style={{
             fontSize: '1.2em',
             padding: '0.5rem',

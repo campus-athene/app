@@ -3,6 +3,7 @@ import { faAngleDown, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import pageRoutes from '../../app/pageRoutes';
 import { ContextMenuItem } from '../../components/ContextMenu';
 import PageFrame from '../../components/PageFrame';
 import { useCourseOffers } from '../../provider/camusnet/courses';
@@ -83,10 +84,12 @@ const OfferList = (params: {
                   className="relative px-4 py-2"
                   onClick={() =>
                     history.push(
-                      `/courses/register/${offersQuery.data.path.at(-1)
-                        ?.majorId}/${offersQuery.data.path.at(-1)
-                        ?.areaId}/${offersQuery.data.path.at(-1)
-                        ?.listId}/${moduleId}`,
+                      pageRoutes.courseRegDetail(
+                        offersQuery.data.path.at(-1)!.majorId,
+                        offersQuery.data.path.at(-1)!.areaId,
+                        offersQuery.data.path.at(-1)!.listId,
+                        moduleId,
+                      ),
                     )
                   }
                 >
@@ -132,7 +135,13 @@ const OfferList = (params: {
                 key={`${majorId}.${areaId}.${listId}`}
                 className="flex gap-2 px-4 py-2"
                 onClick={() =>
-                  history.push(`/coursereg/${majorId}/${areaId}/${listId}`)
+                  history.push(
+                    pageRoutes.courseReg({
+                      major: majorId,
+                      area: areaId,
+                      list: listId,
+                    }),
+                  )
                 }
               >
                 <div style={{ flexGrow: '1', flexShrink: '1' }}>{name}</div>

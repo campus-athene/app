@@ -1,4 +1,5 @@
 import { IonIcon, IonLabel, IonTabBar, IonTabButton } from '@ionic/react';
+import pageRoutes from './pageRoutes';
 import './TabBar.css';
 import iconBook from './tabIcons/book.svg';
 import iconBookFilled from './tabIcons/bookFilled.svg';
@@ -14,27 +15,27 @@ import iconUserFilled from './tabIcons/userFilled.svg';
 const TabBar = () => {
   return (
     <IonTabBar translucent slot="bottom">
-      <IonTabButton tab="home" href="/home">
+      <IonTabButton tab="home" href={pageRoutes.home()}>
         <IonIcon className="selected-state p-1" icon={iconHomeFilled} />
         <IonIcon className="unselected-state p-1" icon={iconHome} />
         <IonLabel>Start</IonLabel>
       </IonTabButton>
-      <IonTabButton tab="calendar" href="/calendar">
+      <IonTabButton tab="calendar" href={pageRoutes.calendar()}>
         <IonIcon className="selected-state p-1" icon={iconCalendarFilled} />
         <IonIcon className="unselected-state p-1" icon={iconCalendar} />
         <IonLabel>Kalender</IonLabel>
       </IonTabButton>
-      <IonTabButton tab="study" href="/courses">
+      <IonTabButton tab="study" href={pageRoutes.study()}>
         <IonIcon className="selected-state p-1" icon={iconBookFilled} />
         <IonIcon className="unselected-state p-1" icon={iconBook} />
         <IonLabel>Mein Studium</IonLabel>
       </IonTabButton>
-      <IonTabButton tab="maps" href="/maps">
+      <IonTabButton tab="maps" href={pageRoutes.map()}>
         <IonIcon className="selected-state p-1" icon={iconMapFilled} />
         <IonIcon className="unselected-state p-1" icon={iconMap} />
         <IonLabel>Karten</IonLabel>
       </IonTabButton>
-      <IonTabButton tab="profile" href="/settings">
+      <IonTabButton tab="profile" href={pageRoutes.profile()}>
         <IonIcon className="selected-state p-1" icon={iconUserFilled} />
         <IonIcon className="unselected-state p-1" icon={iconUser} />
         <IonLabel>Profil</IonLabel>

@@ -3,6 +3,7 @@ import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { useHistory } from 'react-router';
+import pageRoutes from '../../app/pageRoutes';
 import PageFrame from '../../components/PageFrame';
 import { UserNotLoggedInError } from '../../provider/camusnet';
 import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
@@ -35,9 +36,7 @@ const ListPage = () => {
                 className="relative px-4 py-2"
                 key={number}
                 onClick={() =>
-                  history.push(
-                    `/courses/${semesterId}/${encodeURIComponent(number)}`,
-                  )
+                  history.push(pageRoutes.courseDetails(semesterId, number))
                 }
               >
                 <div
@@ -76,7 +75,7 @@ const ListPage = () => {
             {semesterId === getRegSemester() && (
               <div
                 className="flex px-4 py-2 font-semibold"
-                onClick={() => history.push('/coursereg')}
+                onClick={() => history.push(pageRoutes.courseReg())}
               >
                 <div style={{ flexGrow: '1' }}>Anmeldung</div>
                 <FontAwesomeIcon className="self-center" icon={faAngleRight} />

@@ -1,5 +1,6 @@
 import moment from 'moment';
 import { useHistory } from 'react-router-dom';
+import pageRoutes from '../../app/pageRoutes';
 import { useNextAppointment } from '../../provider/camusnet/appointments';
 import Widget from '../home/Widget';
 import DayView from './DayView';
@@ -23,7 +24,7 @@ const CalendarWidget = () => {
 
   return (
     <Widget
-      onClick={() => history.push(`/calendar?day=${nextDay.diff(0)}`)}
+      onClick={() => history.push(pageRoutes.calendar(nextDay.diff(0)))}
       style={{ overflow: 'hidden', padding: 0 }}
       title={dayString}
     >
@@ -31,7 +32,7 @@ const CalendarWidget = () => {
         cropToContent
         hourHeight={2}
         day={nextDay.diff(0)}
-        onClick={() => history.push(`/calendar?day=${nextDay.diff(0)}`)}
+        onClick={() => history.push(pageRoutes.calendar(nextDay.diff(0)))}
       />
     </Widget>
   );

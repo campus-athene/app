@@ -1,4 +1,5 @@
 import { useHistory } from 'react-router';
+import pageRoutes from '../../app/pageRoutes';
 import PageFrame from '../../components/PageFrame';
 import lichtwiese from './data/lichtwiese.png';
 import stadtmitte from './data/stadtmitte.png';
@@ -51,35 +52,35 @@ const MapListPage = () => {
       <MapPreview
         title="tadtmitte"
         abbrev="S"
-        onClick={() => history.push('/maps/stadtmitte')}
+        onClick={() => history.push(pageRoutes.map('stadtmitte'))}
         map={stadtmitte}
         viewBox="490 330 414 207"
       />
       <MapPreview
         title="ichtwiese"
         abbrev="L"
-        onClick={() => history.push('/maps/lichtwiese')}
+        onClick={() => history.push('lichtwiese')}
         map={lichtwiese}
         viewBox="445 550 500 250"
       />
       <MapPreview
         title="otanischer Garten"
         abbrev="B"
-        onClick={() => history.push('/maps/botanischergarten')}
+        onClick={() => history.push('botanischer-garten')}
         map={lichtwiese}
         viewBox="470 70 500 250"
       />
       <MapPreview
         title="ochschulstadion"
         abbrev="H"
-        onClick={() => history.push('/maps/hochschulstadion')}
+        onClick={() => history.push('hochschulstadion')}
         map={lichtwiese}
         viewBox="100 660 500 250"
       />
       <MapPreview
         title="indkanal"
         abbrev="W"
-        onClick={() => history.push('/maps/windkanal')}
+        onClick={() => history.push('windkanal')}
         map={windkanal}
         viewBox="0 240 1000 500"
       />

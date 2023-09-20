@@ -1,4 +1,5 @@
 import { useHistory } from 'react-router-dom';
+import pageRoutes from '../../app/pageRoutes';
 import { ScrollWidget, WidgetBox } from '../home/Widget';
 import Sanitize from '../messages/Sanitize';
 import asta from './logos/asta.png';
@@ -18,7 +19,10 @@ const NewsWidget = () => {
   if (!articles.length) return null;
 
   return (
-    <ScrollWidget onClick={() => history.push('/news')} title="Aktuelles">
+    <ScrollWidget
+      onClick={() => history.push(pageRoutes.news())}
+      title="Aktuelles"
+    >
       {articles.slice(0, 5).map((a) => (
         <WidgetBox
           key={a.guid}

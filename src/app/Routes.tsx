@@ -12,7 +12,7 @@ import MapViewPage from '../features/maps/MapViewPage';
 import MessagesPage from '../features/messages/MessagesPage';
 import BrowseNewsPage from '../features/news/BrowseNewsPage';
 import SettingsPage from '../features/settings/SettingsPage';
-import OappPage from '../features/wiki/WikiPage';
+import WikiPage from '../features/wiki/WikiPage';
 
 const Routes = () => {
   return (
@@ -20,27 +20,30 @@ const Routes = () => {
       <Route exact path="/">
         <Redirect to="/home" />
       </Route>
-      <Route path="/home" component={HomePage} />
+      <Route exact path="/home" component={HomePage} />
+      <Route path="/home/messages" component={MessagesPage} />
+      <Route path="/home/canteen" component={CanteenPage} />
+      <Route path="/home/news" component={BrowseNewsPage} />
+      <Route path="/home/wiki" component={WikiPage} />
       <Route path="/calendar" component={CalendarPage} />
-      <Route path="/canteen" component={CanteenPage} />
-      <Route exact path="/coursereg" component={CourseRegPage} />
+      <Route exact path="/study" component={CourseListPage} />
       <Route
-        path="/coursereg/:major/:area/:rootList"
-        component={CourseRegPage}
-      />
-      <Route exact path="/courses" component={CourseListPage} />
-      <Route
-        path="/courses/register/:major/:area/:list/:module"
+        path="/study/course/detail/semester/:semester/:number"
         component={CourseDetailsPage}
       />
-      <Route path="/courses/:semester/:number" component={CourseDetailsPage} />
-      <Route exact path="/maps" component={MapListPage} />
-      <Route path="/maps/:map" component={MapViewPage} />
-      <Route path="/messages" component={MessagesPage} />
-      <Route path="/news" component={BrowseNewsPage} />
-      <Route path="/oapp" component={OappPage} />
-      <Route path="/documents" component={DocumentsPage} />
-      <Route path="/settings" component={SettingsPage} />
+      <Route
+        path="/study/course/detail/list/:major/:area/:list/:module"
+        component={CourseDetailsPage}
+      />
+      <Route exact path="/study/courseReg/root" component={CourseRegPage} />
+      <Route
+        path="/study/courseReg/list/:major/:area/:rootList"
+        component={CourseRegPage}
+      />
+      <Route exact path="/map" component={MapListPage} />
+      <Route path="/map/:map" component={MapViewPage} />
+      <Route exact path="/profile" component={SettingsPage} />
+      <Route path="/profile/documents" component={DocumentsPage} />
       <Route component={NoMatch} />
     </IonRouterOutlet>
   );
