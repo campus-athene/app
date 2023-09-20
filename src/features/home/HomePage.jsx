@@ -12,6 +12,7 @@ import CanteenWidget from '../canteen/CanteenWidget';
 import EventWidget from '../events/EventWidget';
 import MessagesWidget from '../messages/MessagesWidget';
 import NewsWidget from '../news/NewsWidget';
+import AppsWidget from './AppsWidget';
 import groupYoungPeoplePosingPhoto from './group-young-people-posing-photo.svg';
 import Widget from './Widget';
 
@@ -31,6 +32,7 @@ const HomePage = () => {
             <IonTitle size="large">Start</IonTitle>
           </IonToolbar>
         </IonHeader>
+        <AppsWidget />
         <CalendarWidget />
         <MessagesWidget />
         <CanteenWidget />
