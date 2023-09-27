@@ -116,7 +116,6 @@ const CanteenPage = () => {
         style={{
           background: 'none',
           border: 'none',
-          color: '#FFF',
           fontSize: '1.25rem',
           height: '2.5rem',
           opacity: enabled ? undefined : '0.5',
@@ -133,33 +132,30 @@ const CanteenPage = () => {
       title={canteenFriendlyName[canteenId]}
       more={<ContextMenu />}
       style={{ display: 'flex', flexDirection: 'column' }}
-    >
-      <div
-        style={{
-          backgroundColor: '#372649',
-          color: '#FFF',
-          display: 'flex',
-          marginTop: '-0.5em',
-        }}
-      >
-        <NavButton icon={faAngleLeft} offset={-1} />
-        <div
-          style={{
-            flexGrow: 1,
-            flexShrink: 1,
-            lineHeight: '1',
-            overflow: 'hidden',
-            padding: '0.75em 0',
-            textAlign: 'center',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {selectionString}
+      headerProps={{
+        collapse: undefined,
+      }}
+      toolbarExtension={
+        <div className="flex">
+          <NavButton icon={faAngleLeft} offset={-1} />
+          <div
+            style={{
+              flexGrow: 1,
+              flexShrink: 1,
+              lineHeight: '1',
+              overflow: 'hidden',
+              padding: '0.75em 0',
+              textAlign: 'center',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            {selectionString}
+          </div>
+          <NavButton icon={faAngleRight} offset={1} />
         </div>
-        <NavButton icon={faAngleRight} offset={1} />
-      </div>
-
+      }
+    >
       {data === undefined ? null : data.menuItems.filter(
           (m) => m.date === selection / 1000,
         ).length ? (
