@@ -1,3 +1,4 @@
+import { MouseEventHandler } from 'react';
 import { useHistory } from 'react-router';
 import pageRoutes from '../../app/pageRoutes';
 import PageFrame from '../../components/PageFrame';
@@ -5,7 +6,19 @@ import lichtwiese from './data/lichtwiese.png';
 import stadtmitte from './data/stadtmitte.png';
 import windkanal from './data/windkanal.png';
 
-const MapPreview = ({ title, abbrev, onClick, map, viewBox }) => (
+const MapPreview = ({
+  title,
+  abbrev,
+  onClick,
+  map,
+  viewBox,
+}: {
+  title: string;
+  abbrev: string;
+  onClick: MouseEventHandler<HTMLDivElement>;
+  map: string;
+  viewBox: string;
+}) => (
   <div
     style={{
       margin: '0 1em 1em 1em',
@@ -52,35 +65,35 @@ const MapListPage = () => {
       <MapPreview
         title="tadtmitte"
         abbrev="S"
-        onClick={() => history.push(pageRoutes.map('stadtmitte'))}
+        onClick={() => history.push(pageRoutes.mapSingle('stadtmitte'))}
         map={stadtmitte}
         viewBox="490 330 414 207"
       />
       <MapPreview
         title="ichtwiese"
         abbrev="L"
-        onClick={() => history.push('lichtwiese')}
+        onClick={() => history.push(pageRoutes.mapSingle('lichtwiese'))}
         map={lichtwiese}
         viewBox="445 550 500 250"
       />
       <MapPreview
         title="otanischer Garten"
         abbrev="B"
-        onClick={() => history.push('botanischer-garten')}
+        onClick={() => history.push(pageRoutes.mapSingle('botanischergarten'))}
         map={lichtwiese}
         viewBox="470 70 500 250"
       />
       <MapPreview
         title="ochschulstadion"
         abbrev="H"
-        onClick={() => history.push('hochschulstadion')}
+        onClick={() => history.push(pageRoutes.mapSingle('hochschulstadion'))}
         map={lichtwiese}
         viewBox="100 660 500 250"
       />
       <MapPreview
         title="indkanal"
         abbrev="W"
-        onClick={() => history.push('windkanal')}
+        onClick={() => history.push(pageRoutes.mapSingle('windkanal'))}
         map={windkanal}
         viewBox="0 240 1000 500"
       />
