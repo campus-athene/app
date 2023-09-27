@@ -1,8 +1,8 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IonButton, IonButtons } from '@ionic/react';
 import moment from 'moment-timezone';
-import { MouseEventHandler, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import PageFrame from '../../components/PageFrame';
 import { getSession, UserNotLoggedInError } from '../../provider/camusnet';
@@ -11,14 +11,18 @@ import DayView from './DayView';
 
 const CalendarPage = () => {
   const location = useLocation();
+
   const [state, setState] = useState<'loading' | 'loaded' | 'error' | 'login'>(
     'loading',
   );
-  getSession().then(
-    () => setState('loaded'),
-    (reason) =>
-      setState(reason instanceof UserNotLoggedInError ? 'login' : 'error'),
-  );
+  useEffect(() => {
+    getSession().then(
+      () => setState('loaded'),
+      (reason) =>
+        setState(reason instanceof UserNotLoggedInError ? 'login' : 'error'),
+    );
+  }, []);
+
   const dayFromUrlStr = useMemo(
     () => new URLSearchParams(location.search).get('day'),
     [location.search],
@@ -44,66 +48,43 @@ const CalendarPage = () => {
     return m.format('ddd, D. MMM yy');
   };
   const selectionString = getDateString(selection);
-
-  const NavButton = (props: {
-    onClick?: MouseEventHandler;
-    icon: IconProp;
-    offset: number;
-  }) => (
-    <button
-      onClick={() =>
-        setSelection(moment(selection).add(props.offset, 'd').diff(0))
-      }
-      style={{
-        background: 'none',
-        border: 'none',
-        color: '#FFF',
-        fontSize: '1.25rem',
-        height: '2.5rem',
-        width: '2.5rem',
-      }}
-    >
-      <FontAwesomeIcon icon={props.icon} />
-    </button>
-  );
-
   if (state === 'login') return <CampusNetLoginTeaser title="Kalender" />;
 
   return (
     <PageFrame
-      title="Kalender"
-      style={{ display: 'flex', flexDirection: 'column' }}
+      title={selectionString}
+      className="flex flex-col bg-white"
+      style={{
+        // @ts-ignore
+        '--background': '#fff',
+      }}
+      headerProps={{
+        collapse: undefined,
+      }}
       syncState={{
         isLoading: state === 'loading',
         isOffline: state === 'error',
       }}
+      toolbarButtons={[
+        <IonButtons slot="primary">
+          <IonButton
+            className="w-8"
+            onClick={() => setSelection(moment(selection).add(1, 'd').diff(0))}
+          >
+            <FontAwesomeIcon icon={faAngleRight} />
+          </IonButton>
+        </IonButtons>,
+        <IonButtons slot="secondary">
+          <IonButton
+            className="w-8"
+            onClick={() => setSelection(moment(selection).add(-1, 'd').diff(0))}
+          >
+            <FontAwesomeIcon icon={faAngleLeft} />
+          </IonButton>
+        </IonButtons>,
+      ]}
     >
-      <div
-        style={{
-          backgroundColor: '#372649',
-          color: '#FFF',
-          display: 'flex',
-          marginTop: '-0.5em',
-        }}
-      >
-        <NavButton icon={faAngleLeft} offset={-1} />
-        <div
-          style={{
-            flexGrow: 1,
-            flexShrink: 1,
-            lineHeight: '1',
-            overflow: 'hidden',
-            padding: '0.75em 0',
-            textAlign: 'center',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {selectionString}
-        </div>
-        <NavButton icon={faAngleRight} offset={1} />
-      </div>
-      <div style={{ flexShrink: 1, overflow: 'scroll' }}>
+      <div className="flex-shrink overflow-y-scroll">
         <DayView autoScrollParent day={selection} />
       </div>
     </PageFrame>

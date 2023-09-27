@@ -24,30 +24,49 @@ const PageFrame = (props: {
   /** @deprecated */
   noMenu?: boolean;
   more?: React.ReactNode;
+  onMore?: React.MouseEventHandler<HTMLElement>;
   moreIcon?: IconProp;
+  pageProps?: React.ComponentProps<typeof IonPage>;
+  headerProps?: React.ComponentProps<typeof IonHeader>;
+  contentProps?: React.ComponentProps<typeof IonContent>;
+  extensionToolbarProps?: React.ComponentProps<typeof IonToolbar>;
+  toolbarButtons?: React.ReactNode[];
+  toolbarExtension?: React.ReactNode;
   syncState?: { isLoading: boolean; isOffline: boolean };
 }) => {
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <IonPage>
-      <IonHeader translucent collapse="fade">
+    <IonPage {...props.pageProps}>
+      <IonHeader translucent collapse="fade" {...props.headerProps}>
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton />
           </IonButtons>
           <IonTitle>{props.title}</IonTitle>
-          {props.more && (
+          {(props.more || props.onMore) && (
             <IonButtons slot="end">
-              <IonButton onClick={() => setMenuOpen(!menuOpen)}>
+              <IonButton
+                onClick={props.onMore || (() => setMenuOpen(!menuOpen))}
+              >
                 <FontAwesomeIcon icon={props.moreIcon || faEllipsisH} />
               </IonButton>
             </IonButtons>
           )}
+          {props.toolbarButtons && <>{...props.toolbarButtons}</>}
         </IonToolbar>
+        {props.toolbarExtension ? (
+          <IonToolbar {...props.extensionToolbarProps}>
+            {props.toolbarExtension}
+          </IonToolbar>
+        ) : null}
       </IonHeader>
-      <IonContent className={props.className} fullscreen style={props.style}>
+      <IonContent
+        className={props.className}
+        style={props.style}
+        {...props.contentProps}
+      >
         {(props.syncState?.isLoading || props.syncState?.isOffline) && (
           <div
             style={{
