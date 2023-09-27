@@ -3,32 +3,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { utc } from 'moment-timezone';
 import 'moment/locale/de';
 import { WidgetBox, WidgetTitle } from '../home/Widget';
-import eventApi from './eventApi';
+import eventApi, { baseUrl } from './eventApi';
 
 const EventWidget = () => {
   const highlights = eventApi.useHighlightsQuery();
 
   return (
     highlights.data && (
-      <div
-        style={{
-          marginBottom: '1rem',
-          paddingLeft: '1rem',
-          paddingRight: '1rem',
-        }}
-      >
+      <>
         <WidgetTitle
+          className="mx-5"
           onClick={() =>
             window.open('https://events.study-campus.de/', '_blank')
           }
         >
           Veranstaltungen
-        </WidgetTitle>{' '}
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">
+        </WidgetTitle>
+        <div className="mx-4 mb-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-2">
           {highlights.data.map((e) => (
             <WidgetBox
               key={e.id}
-              className="flex flex-shrink-0 flex-col overflow-clip rounded-xl text-xs lg:flex-row lg:text-sm"
+              className="flex flex-shrink-0 flex-col text-xs lg:flex-row lg:text-sm"
               onClick={() =>
                 window.open(
                   'https://events.study-campus.de/event/' + e.id,
@@ -39,7 +34,7 @@ const EventWidget = () => {
               <img
                 alt=""
                 className="block aspect-[3/2] w-full flex-shrink-0 object-cover lg:h-36 lg:w-auto"
-                src={'https://events.study-campus.de/api/image/54/' + e.image}
+                src={`${baseUrl}/image/54/${e.image}`}
               />
               <div className="min-w-0 flex-grow px-2 sm:px-4">
                 <div className="overflow-hidden text-ellipsis whitespace-nowrap pt-2 text-sm font-medium lg:pt-3 lg:text-xl">
@@ -68,7 +63,7 @@ const EventWidget = () => {
             </WidgetBox>
           ))}
         </div>
-      </div>
+      </>
     )
   );
 };

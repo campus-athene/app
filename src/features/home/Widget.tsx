@@ -4,19 +4,18 @@ import { twMerge } from 'tailwind-merge';
 export const WidgetTitle = (props: HTMLAttributes<HTMLHeadingElement>) =>
   React.createElement('h4', {
     ...props,
-    className: 'font-normal text-lg mb-1',
+    className: twMerge('font-normal text-lg mb-1', props.className),
   });
 
-export const WidgetBox = (props: HTMLAttributes<HTMLDivElement>) =>
-  React.createElement('div', {
-    ...props,
-    className: twMerge('snap-start rounded-xl border', props.className),
-    style: {
-      // Fix Safari not cropping in rounded corners
-      WebkitMaskImage: '-webkit-radial-gradient(white, black)',
-      ...props.style,
-    },
-  });
+export const WidgetBox = (props: HTMLAttributes<HTMLDivElement>) => (
+  <div
+    {...props}
+    className={twMerge(
+      'snap-start overflow-hidden rounded-xl border bg-white shadow-md',
+      props.className,
+    )}
+  />
+);
 
 const Widget = (props: {
   children?: ReactNode;
@@ -24,12 +23,14 @@ const Widget = (props: {
   style?: CSSProperties;
   title: ReactNode;
 }) => (
-  <div
-    style={{ marginBottom: '1rem', paddingLeft: '1rem', paddingRight: '1rem' }}
-  >
-    <WidgetTitle onClick={props.onClick}>{props.title}</WidgetTitle>
-    <WidgetBox style={props.style}>{props.children}</WidgetBox>
-  </div>
+  <>
+    <WidgetTitle onClick={props.onClick} className="mx-5">
+      {props.title}
+    </WidgetTitle>
+    <WidgetBox style={props.style} className="mx-4 mb-4">
+      {props.children}
+    </WidgetBox>
+  </>
 );
 
 export const ScrollWidget = (props: {
@@ -38,22 +39,19 @@ export const ScrollWidget = (props: {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   title: ReactNode;
 }) => (
-  <div style={{ marginBottom: '1rem' }}>
-    <WidgetTitle
-      onClick={props.onClick}
-      style={{ marginLeft: '1rem', marginRight: '1rem' }}
-    >
+  <>
+    <WidgetTitle onClick={props.onClick} className="mx-5">
       {props.title}
     </WidgetTitle>
     <div
       className={twMerge(
-        'no-scrollbar flex snap-x snap-mandatory scroll-p-4 gap-2 overflow-x-scroll px-3',
+        'no-scrollbar flex snap-x snap-mandatory scroll-p-4 gap-2 overflow-x-scroll px-4 pb-4',
         props.className,
       )}
     >
       {props.children}
     </div>
-  </div>
+  </>
 );
 
 export default Widget;

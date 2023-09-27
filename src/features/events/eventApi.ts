@@ -17,15 +17,15 @@ type Event = {
   image: string;
 };
 
+export const baseUrl =
+  import.meta.env.VITE_EVENTS_BASE_URL ||
+  (import.meta.env.DEV
+    ? 'https://dev.events.study-campus.de/api'
+    : 'https://events.study-campus.de/api');
+
 const eventApi = createApi({
   reducerPath: 'eventsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl:
-      import.meta.env.VITE_EVENTS_BASE_URL ||
-      (import.meta.env.DEV
-        ? 'https://dev.events.study-campus.de/api'
-        : 'https://events.study-campus.de/api'),
-  }),
+  baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (build) => ({
     highlights: build.query<Event[], null>({
       query: () => ({

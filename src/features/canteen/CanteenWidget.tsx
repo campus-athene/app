@@ -31,11 +31,14 @@ const CanteenWidgetContent = () => {
     >
       {data.menuItems.map((m) => (
         <WidgetBox
-          className="relative h-32 w-48 flex-shrink-0 overflow-hidden bg-cover bg-center bg-no-repeat"
+          className="relative h-32 w-48 flex-shrink-0 bg-cover bg-center bg-no-repeat"
           key={m.id}
           onClick={() => history.push(pageRoutes.canteen())}
           style={{
             backgroundImage: `url('${foodPlaceholder}')`,
+            // Fix Safari not cropping in rounded corners where blurred
+            // Beware: This removes the shadow
+            WebkitMaskImage: '-webkit-radial-gradient(white, black)',
           }}
         >
           <img
@@ -48,10 +51,9 @@ const CanteenWidgetContent = () => {
             }}
           />
           <div
-            className="absolute bottom-0 left-0 right-0 flex flex-col overflow-hidden rounded-b-2xl bg-black bg-opacity-50 p-2 text-xs text-white"
+            className="absolute bottom-0 left-0 right-0 flex flex-col bg-black bg-opacity-50 p-2 text-xs text-white"
             style={
               {
-                '--bs-bg-opacity': '0.5',
                 backdropFilter: 'blur(2px)',
                 WebkitBackdropFilter: 'blur(2px)',
               } as any
