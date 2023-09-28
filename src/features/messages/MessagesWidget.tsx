@@ -1,7 +1,6 @@
 import { useHistory } from 'react-router';
 import pageRoutes from '../../app/pageRoutes';
 import Widget from '../home/Widget';
-import { Envelope } from './icons';
 import MessageList from './MessageList';
 import { useMessages } from './messageModel';
 
@@ -15,7 +14,7 @@ const MessagesWidget = () => {
   const unreadMsgs = data.filter((m) => !m.read);
   const unreadMsgCount = unreadMsgs.length;
 
-  const numberMsgsShow = unreadMsgCount > 4 ? 3 : unreadMsgCount;
+  const numberMsgsShow = Math.min(4, unreadMsgCount);
   const moreMsgs = unreadMsgCount > 4;
 
   if (numberMsgsShow === 0) return null;
@@ -23,7 +22,7 @@ const MessagesWidget = () => {
   return (
     <Widget
       onClick={() => history.push(pageRoutes.messages())}
-      style={{ overflow: 'hidden', padding: 0 }}
+      style={{ position: 'relative' }}
       title={
         unreadMsgCount === 1
           ? 'Eine ungelesene Nachricht'
@@ -32,28 +31,21 @@ const MessagesWidget = () => {
     >
       <MessageList
         itemStyle={{ padding: '0.5rem' }}
-        messages={unreadMsgs.slice(-numberMsgsShow).reverse()}
+        messages={unreadMsgs.slice(0, numberMsgsShow)}
         unreadIndicators={false}
+        style={{
+          marginBottom: moreMsgs ? '-3.75rem' : 0,
+        }}
       />
       {moreMsgs && (
         <div
           onClick={() => history.push(pageRoutes.messages())}
+          className="absolute bottom-0 left-0 right-0 h-[3.25rem]"
           style={{
-            fontSize: '1.2em',
-            padding: '0.5rem',
-            borderTop: '1px solid rgba(0,0,0,.125)',
+            background:
+              'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,1) 95%)',
           }}
-        >
-          <Envelope
-            style={{
-              verticalAlign: '-40%',
-              display: 'inline-block',
-              marginRight: '0.5em',
-              width: '2em',
-            }}
-          />
-          {unreadMsgCount - numberMsgsShow} weitere neue Nachrichten
-        </div>
+        />
       )}
     </Widget>
   );

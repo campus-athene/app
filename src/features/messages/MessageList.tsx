@@ -9,12 +9,13 @@ import Sanitize from './Sanitize';
 const MessageList = (props: {
   itemStyle?: React.CSSProperties;
   messages: Message[];
+  style?: React.CSSProperties;
   unreadIndicators?: boolean;
 }) => {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
 
   return (
-    <div className="divide-y">
+    <div className="divide-y" style={props.style}>
       {props.messages
         .map((m) => [m, m])
         .map(([m, { id, source, sender, subject, preview, sent, read }]) => (
