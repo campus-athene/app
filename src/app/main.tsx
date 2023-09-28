@@ -1,7 +1,5 @@
 /* global SafariViewController */
 
-import { Capacitor } from '@capacitor/core';
-import { StatusBar } from '@capacitor/status-bar';
 import { setupIonicReact } from '@ionic/react';
 import { ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -45,10 +43,6 @@ const initializeCordova = () => {
           ...options,
         });
   });
-
-  // For ios this is set in Info.plist
-  if (Capacitor.getPlatform() === 'android')
-    StatusBar.setOverlaysWebView({ overlay: true });
 };
 
 const initializeReact = async () => {
