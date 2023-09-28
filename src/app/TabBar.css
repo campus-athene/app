@@ -2,3 +2,8 @@ ion-tab-button.tab-selected > ion-icon.unselected-state,
 ion-tab-button:not(.tab-selected) > ion-icon.selected-state {
   display: none;
 }
+
+ion-tab-button::part(native) {
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+}
