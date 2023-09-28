@@ -23,7 +23,7 @@ const pageRoutes = {
   ) => `/study/course/detail/list/${major}/${area}/${list}/${module}`,
   map: () => '/map',
   mapSingle: (map: string) => `/map/${encodeURIComponent(map)}`,
-  profile: () => '/profile',
+  settings: () => '/profile',
   documents: () => '/profile/documents',
 };
 

@@ -125,10 +125,7 @@ const SettingsPage = () => {
 
   return (
     <>
-      <PageFrame
-        title="Einstellungen"
-        style={{ background: '#F4F4F4', paddingBottom: '2em' }}
-      >
+      <PageFrame title="Einstellungen" style={{ '--padding-bottom': '2rem' }}>
         <Header>Profil</Header>
         <Setting>
           <div className="text-xs text-neutral-400">Vorname:</div>

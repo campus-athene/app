@@ -9,8 +9,8 @@ import iconHome from './tabIcons/home.svg';
 import iconHomeFilled from './tabIcons/homeFilled.svg';
 import iconMap from './tabIcons/map.svg';
 import iconMapFilled from './tabIcons/mapFilled.svg';
-import iconUser from './tabIcons/user.svg';
-import iconUserFilled from './tabIcons/userFilled.svg';
+import iconSettings from './tabIcons/settings.svg';
+import iconSettingsFilled from './tabIcons/settingsFilled.svg';
 
 const TabBar = () => {
   return (
@@ -35,10 +35,10 @@ const TabBar = () => {
         <IonIcon className="unselected-state p-1" icon={iconMap} />
         <IonLabel>Karten</IonLabel>
       </IonTabButton>
-      <IonTabButton tab="profile" href={pageRoutes.profile()}>
-        <IonIcon className="selected-state p-1" icon={iconUserFilled} />
-        <IonIcon className="unselected-state p-1" icon={iconUser} />
-        <IonLabel>Profil</IonLabel>
+      <IonTabButton tab="profile" href={pageRoutes.settings()}>
+        <IonIcon className="selected-state p-1" icon={iconSettingsFilled} />
+        <IonIcon className="unselected-state p-1" icon={iconSettings} />
+        <IonLabel>Einstellungen</IonLabel>
       </IonTabButton>
     </IonTabBar>
   );
