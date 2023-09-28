@@ -18,7 +18,7 @@ const Entry = ({ children, link, level }) => (
 
 const WikiPage = () => {
   return (
-    <PageFrame title="Orientierung">
+    <PageFrame title="Studieren A bis Z">
       <div className="divide-y">
         {articles
           .map(({ title, link, seealso }) => {

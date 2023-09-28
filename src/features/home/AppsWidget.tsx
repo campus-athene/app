@@ -1,10 +1,10 @@
 import { useHistory } from 'react-router-dom';
 import pageRoutes from '../../app/pageRoutes';
 import imgBonbon from './miniApps/bonbon.png';
-import imgLithire from './miniApps/lithire.svg';
 import imgMensa from './miniApps/mensa.png';
 import imgTufind from './miniApps/tufind.png';
 import imgUsz from './miniApps/usz.png';
+import wiki from './miniApps/wiki.svg';
 
 const Icon = (props: {
   src: string;
@@ -58,7 +58,12 @@ const AppsWidget = () => {
           )
         }
       />
-      <Icon src={imgLithire} title="lithire" transform="scale(2.4)" />
+      <Icon
+        src={wiki}
+        title="A bis Z"
+        transform="scale(0.8)"
+        onClick={() => history.push(pageRoutes.wiki())}
+      />
     </div>
   );
 };
