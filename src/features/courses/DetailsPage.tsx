@@ -8,12 +8,16 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { MouseEventHandler, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { log } from '../../app/errorReporting';
 import { Module, useCourseOffers } from '../../provider/camusnet/courses';
-import { selectStatusBarHeightCss } from '../../redux/globalSlice';
+import {
+  useCoreCoursesGetCourses,
+  useCoreWebserviceGetSiteInfo,
+  useToolMobileGetAutologinKey,
+} from '../../provider/moodle';
+import { CoreCourseSummaryData } from '../../provider/moodle/types';
 import ExamsTab from '../exams/ExamsTab';
 import AppointmentsTab from './AppointmentsTab';
 import { getCourseColor, useCoursesBySemesterAndNumber } from './coursesSlice';
@@ -43,8 +47,6 @@ const DetailsPage = () => {
   const module: Module | ModuleOffer | undefined =
     fromSemesterNumber || fromMajorAreaListId;
 
-  const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
-
   useEffect(() => {
     if (!module)
       log('warning', 'Could not find course.', {
@@ -58,20 +60,44 @@ const DetailsPage = () => {
       });
   }, []);
 
+  const coursesQuery = useCoreCoursesGetCourses({ classification: 'all' });
+  const moodleCourses = coursesQuery.data?.courses.filter((mc) => {
+    const id = Number.parseInt(mc.idnumber);
+    if (!id) return false;
+    return module?.courses.map((cc) => cc.courseId).includes(id);
+  });
+  const autologinQuery = useToolMobileGetAutologinKey();
+  const siteInfoQuery = useCoreWebserviceGetSiteInfo();
+
+  const openCourse = (course: CoreCourseSummaryData) => {
+    if (!autologinQuery.data || !siteInfoQuery.data) return;
+    if (!autologinQuery.data.autologinurl || !autologinQuery.data.key) {
+      window.open(course.viewurl, '_blank');
+    }
+    const autologin = autologinQuery.data;
+    const userid = siteInfoQuery.data.userid.toString();
+    const url = new URL(autologin.autologinurl);
+    url.searchParams.append('userid', userid);
+    url.searchParams.append('key', autologin.key);
+    url.searchParams.append('urltogo', course.viewurl);
+    window.open(url.toString(), '_blank');
+  };
+
   type tabs = 'overview' | 'appointments' | 'exams';
   const [tab, setTab] = useState<tabs>('overview');
   const selectedTab = tab;
 
-  const TabButton = (props: { children: React.ReactNode; tab: tabs }) => (
+  const TabButton = (props: {
+    children: React.ReactNode;
+    tab?: tabs;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
+  }) => (
     <button
-      onClick={() => setTab(props.tab)}
+      className="flex-shrink-0 px-3 pb-2 pt-8 font-bold"
       style={{
-        background: 'none',
-        border: 'none',
         color: selectedTab === props.tab ? 'white' : '#fffa',
-        fontWeight: 'bold',
-        padding: '2em 0.75em 0.5em',
       }}
+      onClick={props.onClick || (() => props.tab && setTab(props.tab))}
     >
       {props.children}
     </button>
@@ -123,6 +149,19 @@ const DetailsPage = () => {
           <div className="no-scrollbar flex overflow-y-scroll px-1">
             <TabButton tab="overview">Übersicht</TabButton>
             <TabButton tab="appointments">Termine</TabButton>
+            {coursesQuery.isLoading ? (
+              <TabButton>Moodle</TabButton>
+            ) : moodleCourses?.length === 1 ? (
+              <TabButton onClick={() => openCourse(moodleCourses[0])}>
+                Moodle
+              </TabButton>
+            ) : moodleCourses && moodleCourses.length > 1 ? (
+              moodleCourses.map((course) => (
+                <TabButton key={course.id} onClick={() => openCourse(course)}>
+                  Moodle ({course.fullname.slice(-2)})
+                </TabButton>
+              ))
+            ) : null}
             <TabButton tab="exams">Prüfungen</TabButton>
           </div>
         </IonToolbar>

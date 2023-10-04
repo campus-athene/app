@@ -65,4 +65,9 @@ export const selectMoodleToken =
   ({ auth: { moodle } }: RootState) =>
     moodle && moodle.token;
 
+export const selectMoodlePrivateToken =
+  () =>
+  ({ auth: { moodle } }: RootState) =>
+    moodle && moodle.privateToken;
+
 export default authSlice.reducer;

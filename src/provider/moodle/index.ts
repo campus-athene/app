@@ -1,10 +1,17 @@
+import { Capacitor, CapacitorHttp } from '@capacitor/core';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { selectMoodleToken } from '../../features/auth/authSlice';
+import { useSelector } from 'react-redux';
+import {
+  selectMoodlePrivateToken,
+  selectMoodleToken,
+} from '../../features/auth/authSlice';
 import { useAppStore } from '../../redux/hooks';
 import {
   AddonNotificationsGetMessagesWSParams,
   AddonNotificationsGetMessagesWSResponse,
   AddonNotificationsNotificationMessage,
+  CoreCourseGetEnrolledCoursesByTimelineClassificationWSResponse,
+  CoreSiteAutologinKeyResult,
   CoreSiteInfoResponse,
 } from './types';
 
@@ -29,24 +36,39 @@ const useRequestWithLateArg = <TResult>() => {
     if (!wsToken) throw new Error('No moodle token found.');
 
     const body = {
+      moodlewsrestformat: 'json',
       wsfunction: arg.wsFunction,
       wstoken: wsToken,
       ...arg.body,
     };
 
-    return await (
-      await fetch(
-        'https://moodle.tu-darmstadt.de/webservice/rest/server.php?moodlewsrestformat=json&wsfunction=' +
-          arg.wsFunction,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: Object.entries(body)
-            .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
-            .join('&'),
-        },
-      )
-    ).json();
+    return Capacitor.isNativePlatform()
+      ? (
+          await CapacitorHttp.request({
+            url: 'https://moodle.tu-darmstadt.de/webservice/rest/server.php',
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'User-Agent': 'MoodleMobile 4.3.0 (43000)',
+            },
+            data: Object.entries(body)
+              .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+              .join('&'),
+            responseType: 'json',
+          })
+        ).data
+      : (
+          await fetch(
+            'https://moodle.tu-darmstadt.de/webservice/rest/server.php',
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: Object.entries(body)
+                .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+                .join('&'),
+            },
+          )
+        ).json();
   };
 };
 
@@ -172,5 +194,43 @@ export const useCoreMessageMarkAllNotificationsAsRead = () => {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
     },
+  });
+};
+
+export const useCoreCoursesGetCourses = (params: {
+  classification: 'all' | 'inprogress' | 'future' | 'past';
+}) => {
+  const queryFn =
+    useRequest<CoreCourseGetEnrolledCoursesByTimelineClassificationWSResponse>({
+      wsFunction: 'core_course_get_enrolled_courses_by_timeline_classification',
+      body: {
+        classification: params.classification,
+      },
+    });
+  return useQuery({
+    queryKey: [
+      baseQueryKey,
+      'core_course_get_enrolled_courses_by_timeline_classification',
+      params,
+    ],
+    queryFn,
+  });
+};
+
+export const useToolMobileGetAutologinKey = () => {
+  const privatetoken = useSelector(selectMoodlePrivateToken());
+  if (!privatetoken) throw new Error('No moodle private token found.');
+
+  const queryFn = useRequest<CoreSiteAutologinKeyResult>({
+    wsFunction: 'tool_mobile_get_autologin_key',
+    body: {
+      privatetoken,
+    },
+  });
+  return useQuery({
+    queryKey: [baseQueryKey, 'tool_mobile_get_autologin_key'],
+    queryFn,
+    staleTime: 360000, // Max one request per hour is permitted.
+    cacheTime: 3600000,
   });
 };

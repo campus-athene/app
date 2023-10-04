@@ -178,3 +178,81 @@ export type CoreSiteInfoResponse = {
   /** Current theme for the user. */
   theme?: string;
 };
+
+/**
+ * Basic data obtained form any course.
+ */
+export type CoreCourseBasicData = {
+  /** Course id. */
+  id: number;
+  /** Course full name. */
+  fullname: string;
+  /** Course display name. */
+  displayname?: string;
+  /** Course short name. */
+  shortname: string;
+  /** Summary. */
+  summary: string;
+  /** Summary format (1 = HTML, 0 = MOODLE, 2 = PLAIN or 4 = MARKDOWN). */
+  summaryformat: number;
+  /** Course category id. */
+  categoryid?: number;
+};
+
+/**
+ * Course data exported by course_summary_exporter;
+ */
+export type CoreCourseSummaryData = CoreCourseBasicData & {
+  /** Idnumber. */
+  idnumber: string;
+  /** Startdate. */
+  startdate: number;
+  /** Enddate. */
+  enddate: number;
+  /** Visible. */
+  visible: boolean;
+  /** Showactivitydates. */
+  showactivitydates: boolean;
+  /** Showcompletionconditions. */
+  showcompletionconditions: boolean;
+  /** Fullnamedisplay. */
+  fullnamedisplay: string;
+  /** Viewurl. */
+  viewurl: string;
+  /** Courseimage. */
+  courseimage: string;
+  /** Progress. */
+  progress?: number;
+  /** Hasprogress. */
+  hasprogress: boolean;
+  /** Isfavourite. */
+  isfavourite: boolean;
+  /** Hidden. */
+  hidden: boolean;
+  /** Timeaccess. */
+  timeaccess?: number;
+  /** Showshortname. */
+  showshortname: boolean;
+  /** Coursecategory. */
+  coursecategory: string;
+};
+
+/**
+ * Data returned by core_course_get_enrolled_courses_by_timeline_classification WS.
+ */
+export type CoreCourseGetEnrolledCoursesByTimelineClassificationWSResponse = {
+  courses: CoreCourseSummaryData[];
+  /** Offset for the next request. */
+  nextoffset: number;
+};
+
+/**
+ * Result of WS tool_mobile_get_autologin_key.
+ */
+export type CoreSiteAutologinKeyResult = {
+  /** Auto-login key for a single usage with time expiration. */
+  key: string;
+  /** Auto-login URL. */
+  autologinurl: string;
+  warnings?: CoreWSExternalWarning[];
+};
