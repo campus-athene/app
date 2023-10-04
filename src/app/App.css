@@ -25,6 +25,7 @@ body {
   --ion-background-color: #fafafa;
   --ion-background-color-rgb: 250, 250, 250;
   --ion-tab-bar-color-selected: #27143c;
+  -webkit-tap-highlight-color: transparent;
 }
 
 :root.md {
