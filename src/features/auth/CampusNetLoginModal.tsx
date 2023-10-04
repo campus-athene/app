@@ -26,9 +26,10 @@ const CampusNetLoginModal = (
       return;
     }
     setProcessing(true);
-    setError(await login(username, password));
+    const error = await login(username, password);
+    setError(error);
     setProcessing(false);
-    props.onCompleted && props.onCompleted();
+    if (!error && props.onCompleted) props.onCompleted();
   };
 
   return (
