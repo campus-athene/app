@@ -1,3 +1,4 @@
+import { useIonAlert } from '@ionic/react';
 import { useState } from 'react';
 import Button from '../../components/Button';
 import CardModal, { CardModalProps } from '../../components/CardModal';
@@ -12,24 +13,24 @@ const CampusNetLoginModal = (
   >,
 ) => {
   const login = useLogin();
+  const [presentAlert] = useIonAlert();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const [processing, setProcessing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     if (!username || !password) {
-      setError('Bitte verfollständige Deine Eingaben.');
+      presentAlert('Bitte verfollständige Deine Eingaben.');
       return;
     }
     setProcessing(true);
     const error = await login(username, password);
-    setError(error);
     setProcessing(false);
-    if (!error && props.onCompleted) props.onCompleted();
+    if (error) presentAlert(error);
+    else if (props.onCompleted) props.onCompleted();
   };
 
   return (
@@ -51,11 +52,6 @@ const CampusNetLoginModal = (
           marginLeft: 'calc(1rem + env(safe-area-inset-left))',
         }}
       >
-        {error && (
-          <div className="rounded-3xl border border-solid border-amber-400 bg-amber-100 px-4 py-1.5">
-            {error}
-          </div>
-        )}
         <input
           className="rounded-full border-none bg-slate-200 px-4 py-1.5"
           type="text"
