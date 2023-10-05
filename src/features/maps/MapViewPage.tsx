@@ -5,7 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IonContent, IonPage } from '@ionic/react';
 import { LatLngTuple } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { createRoot } from 'react-dom/client';
 import { ImageOverlay, MapContainer } from 'react-leaflet';
 import { useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router';
@@ -58,6 +59,8 @@ const getViewData = (
 const MapViewPage = () => {
   const statusBarHeightCss = useSelector(selectStatusBarHeightCss());
 
+  const contentRef = useRef<HTMLIonContentElement>(null);
+
   useEffect(() => {
     if (!['android', 'ios'].includes(Capacitor.getPlatform())) return;
     const promise = StatusBar.setStyle({ style: Style.Light });
@@ -70,46 +73,53 @@ const MapViewPage = () => {
   const map = getViewData(mapArg);
   const history = useHistory();
 
+  useEffect(() => {
+    if (!contentRef.current) return;
+    createRoot(contentRef.current).render(
+      <MapContainer
+        className="absolute inset-0 bg-[#aaa]"
+        center={map.center}
+        maxBounds={[
+          [49.8901, 8.5783],
+          [49.8516, 8.694],
+        ]}
+        maxZoom={18}
+        minZoom={13}
+        zoom={map.zoom}
+        zoomControl={false}
+        zoomSnap={0}
+      >
+        <ImageOverlay
+          attribution="&copy; TU Darmstadt"
+          bounds={[
+            [49.8846, 8.6367],
+            [49.8655, 8.6666],
+          ]}
+          url={stadtmitte}
+        />
+        <ImageOverlay
+          attribution="&copy; TU Darmstadt"
+          bounds={[
+            [49.8716, 8.6636],
+            [49.8571, 8.6885],
+          ]}
+          url={lichtwiese}
+        />
+        <ImageOverlay
+          attribution="&copy; TU Darmstadt"
+          bounds={[
+            [49.8642, 8.5842],
+            [49.8547, 8.6001],
+          ]}
+          url={windkanal}
+        />
+      </MapContainer>,
+    );
+  }, [contentRef]);
+
   return (
     <IonPage>
-      <IonContent>
-        <MapContainer
-          className="absolute inset-0 bg-[#aaa]"
-          center={map.center}
-          maxBounds={[
-            [49.8901, 8.5783],
-            [49.8516, 8.694],
-          ]}
-          maxZoom={18}
-          minZoom={13}
-          zoom={map.zoom}
-          zoomControl={false}
-        >
-          <ImageOverlay
-            attribution="&copy; TU Darmstadt"
-            bounds={[
-              [49.8846, 8.6367],
-              [49.8655, 8.6666],
-            ]}
-            url={stadtmitte}
-          />
-          <ImageOverlay
-            attribution="&copy; TU Darmstadt"
-            bounds={[
-              [49.8716, 8.6636],
-              [49.8571, 8.6885],
-            ]}
-            url={lichtwiese}
-          />
-          <ImageOverlay
-            attribution="&copy; TU Darmstadt"
-            bounds={[
-              [49.8642, 8.5842],
-              [49.8547, 8.6001],
-            ]}
-            url={windkanal}
-          />
-        </MapContainer>
+      <IonContent ref={contentRef}>
         <div
           style={{
             position: 'absolute',
