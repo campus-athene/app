@@ -1,11 +1,14 @@
 import { Capacitor, CapacitorHttp } from '@capacitor/core';
+import { RetryValue } from '@tanstack/query-core/build/lib/retryer';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
+import { log } from '../../app/errorReporting';
 import {
   selectMoodlePrivateToken,
   selectMoodleToken,
 } from '../../features/auth/authSlice';
 import { useAppStore } from '../../redux/hooks';
+import { CoreWSError } from './error';
 import {
   AddonNotificationsGetMessagesWSParams,
   AddonNotificationsGetMessagesWSResponse,
@@ -24,11 +27,11 @@ type QueryArg = {
   };
 };
 
-const useRequest = <TResult>(arg: QueryArg) => {
+const useRequest = <TResult extends object>(arg: QueryArg) => {
   const withLateArg = useRequestWithLateArg<TResult>();
   return () => withLateArg(arg);
 };
-const useRequestWithLateArg = <TResult>() => {
+const useRequestWithLateArg = <TResult extends object>() => {
   const { getState } = useAppStore();
 
   return async (arg: QueryArg): Promise<TResult> => {
@@ -42,7 +45,7 @@ const useRequestWithLateArg = <TResult>() => {
       ...arg.body,
     };
 
-    return Capacitor.isNativePlatform()
+    const response: TResult | CoreWSError = Capacitor.isNativePlatform()
       ? (
           await CapacitorHttp.request({
             url: 'https://moodle.tu-darmstadt.de/webservice/rest/server.php',
@@ -57,7 +60,7 @@ const useRequestWithLateArg = <TResult>() => {
             responseType: 'json',
           })
         ).data
-      : (
+      : await (
           await fetch(
             'https://moodle.tu-darmstadt.de/webservice/rest/server.php',
             {
@@ -69,7 +72,23 @@ const useRequestWithLateArg = <TResult>() => {
             },
           )
         ).json();
+
+    if ('exception' in response || 'errorcode' in response) {
+      const error = new CoreWSError(response);
+      console.error(error);
+      throw error;
+    }
+
+    return response as TResult;
   };
+};
+
+const retry: RetryValue<Error> = (failureCount, error) => {
+  if (error instanceof CoreWSError && error.errorcode === 'invalidtoken')
+    return false;
+  if (failureCount === 3)
+    log('warning', 'Moodle request failed 3 times.', error);
+  return failureCount < 3;
 };
 
 export const useCoreWebserviceGetSiteInfo = () => {
@@ -78,6 +97,7 @@ export const useCoreWebserviceGetSiteInfo = () => {
   });
   return useQuery({
     queryKey: [baseQueryKey, 'core_webservice_get_site_info'],
+    retry,
     queryFn,
   });
 };
@@ -104,6 +124,7 @@ export const useCoreMessageGetMessages = (
 
   return useQuery({
     queryKey: [baseQueryKey, 'core_message_get_messages', params],
+    retry,
     queryFn,
     enabled: !!userId,
   });
@@ -116,6 +137,7 @@ export const useCoreMessageMarkNotificationRead = () => {
   const queryKey = [baseQueryKey, 'core_message_get_messages'];
 
   return useMutation({
+    retry,
     mutationFn: (notificationId: number) =>
       mutationFn({
         wsFunction: 'core_message_mark_notification_read',
@@ -160,6 +182,7 @@ export const useCoreMessageMarkAllNotificationsAsRead = () => {
   const queryKey = [baseQueryKey, 'core_message_get_messages'];
 
   return useMutation({
+    retry,
     mutationFn: async () =>
       userId &&
       (await mutationFn({
@@ -213,6 +236,7 @@ export const useCoreCoursesGetCourses = (params: {
       'core_course_get_enrolled_courses_by_timeline_classification',
       params,
     ],
+    retry,
     queryFn,
   });
 };
@@ -229,6 +253,7 @@ export const useToolMobileGetAutologinKey = () => {
   });
   return useQuery({
     queryKey: [baseQueryKey, 'tool_mobile_get_autologin_key'],
+    retry,
     queryFn,
     staleTime: 360000, // Max one request per hour is permitted.
     cacheTime: 3600000,
