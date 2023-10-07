@@ -1,6 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../../redux';
 
+const storageKey = 'canteenSettings';
+
 export const canteenFriendlyName = { 1: 'Stadtmitte', 2: 'Lichtwiese' };
 
 type State = {
@@ -12,7 +14,7 @@ type State = {
 
 const loadFromDisk = (): State => {
   try {
-    const stored = localStorage.getItem('cateenSettings');
+    const stored = localStorage.getItem(storageKey);
     if (stored) return JSON.parse(stored);
   } catch (e) {}
   return {
@@ -24,7 +26,7 @@ const loadFromDisk = (): State => {
 };
 
 const saveToDisk = (state: State): void => {
-  localStorage.setItem('canteenSettings', JSON.stringify(state));
+  localStorage.setItem(storageKey, JSON.stringify(state));
 };
 
 const canteenSettings = createSlice({
