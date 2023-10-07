@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
 import pageRoutes from '../../app/pageRoutes';
-import { ScrollWidget, WidgetBox } from '../home/Widget';
+import Widget from '../home/Widget';
 import Sanitize from '../messages/Sanitize';
 import asta from './logos/asta.png';
 import tu from './logos/tu.png';
@@ -19,19 +19,18 @@ const NewsWidget = () => {
   if (!articles.length) return null;
 
   return (
-    <ScrollWidget
+    <Widget
+      className="divide-y"
       onClick={() => history.push(pageRoutes.news())}
       title="Aktuelles"
     >
-      {articles.slice(0, 5).map((a) => (
-        <WidgetBox
+      {articles.slice(0, 10).map((a) => (
+        <div
           key={a.guid}
           onClick={() => window.open(a.link, '_blank')}
           style={{
-            flexShrink: 0,
             height: '9.75em',
             padding: '0.5rem',
-            width: 'min(18rem, 100vw - 4rem)',
           }}
         >
           <div className="flex text-sm">
@@ -50,17 +49,20 @@ const NewsWidget = () => {
               className="h-3"
             />
           </div>
-          <div className="line-clamp-2 font-semibold">{a.title}</div>
-          <div className="line-clamp-3 text-neutral-600">
-            {a.source === 'asta' ? (
-              <Sanitize>{a.description}</Sanitize>
-            ) : (
-              a.description
-            )}
+          <div className="line-clamp-5">
+            <span className="font-semibold">{a.title}</span>
+            <br />
+            <span className="text-neutral-600">
+              {a.source === 'asta' ? (
+                <Sanitize>{a.description}</Sanitize>
+              ) : (
+                a.description
+              )}
+            </span>
           </div>
-        </WidgetBox>
+        </div>
       ))}
-    </ScrollWidget>
+    </Widget>
   );
 };
 

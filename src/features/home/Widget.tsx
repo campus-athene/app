@@ -19,6 +19,7 @@ export const WidgetBox = (props: HTMLAttributes<HTMLDivElement>) => (
 
 const Widget = (props: {
   children?: ReactNode;
+  className?: string;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   style?: CSSProperties;
   title: ReactNode;
@@ -27,7 +28,10 @@ const Widget = (props: {
     <WidgetTitle onClick={props.onClick} className="mx-5">
       {props.title}
     </WidgetTitle>
-    <WidgetBox style={props.style} className="mx-4 mb-4">
+    <WidgetBox
+      style={props.style}
+      className={twMerge('mx-4 mb-4', props.className)}
+    >
       {props.children}
     </WidgetBox>
   </>
