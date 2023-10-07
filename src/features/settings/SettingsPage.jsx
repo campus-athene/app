@@ -223,7 +223,31 @@ const SettingsPage = () => {
       </PageFrame>
       <CardModal open={logoutModal} onClose={() => setLogoutModal(false)}>
         <ModalHeader>Abmelden</ModalHeader>
-        <p>Möchtest Du Dich wirklich abmelden?</p>
+        <p className="mb-2">Möchtest Du Dich wirklich abmelden?</p>
+        <p>
+          Um Dich auch im Webbrowser abzumelden, melde Dich in{' '}
+          <a
+            className="text-gray-700 underline"
+            onClick={() =>
+              window.open(
+                'https://moodle.tu-darmstadt.de/login/logout.php',
+                '_blank',
+              )
+            }
+          >
+            Moodle
+          </a>{' '}
+          und über das{' '}
+          <a
+            className="text-gray-700 underline"
+            onClick={() =>
+              window.open('https://login.tu-darmstadt.de/logout', '_blank')
+            }
+          >
+            Sign-Sign-Out der TU Darmstadt
+          </a>{' '}
+          ab.
+        </p>
         <div className="mt-4 flex gap-2">
           <Button className="bg-gray-400" onClick={() => setLogoutModal(false)}>
             Abbrechen
