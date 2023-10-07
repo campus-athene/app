@@ -44,18 +44,27 @@ const settingsSlice = createSlice({
   name: 'settings',
   initialState: { push: null } as SettingsState,
   reducers: {
-    setOnboardingCompleteValue: (settings, { payload }) => {
+    setOnboardingCompleteValue: (
+      settings,
+      { payload }: { payload: { isComplete: boolean } },
+    ) => {
       settings.onboardingComplete = !payload || payload.isComplete !== false;
       localStorage.setItem(
         'onboardingComplete',
         JSON.stringify(settings.onboardingComplete),
       );
     },
-    setPrivacy: (settings, { payload: { level } }) => {
+    setPrivacy: (
+      settings,
+      { payload: { level } }: { payload: { level: PrivacyLevel } },
+    ) => {
       settings.privacy = { level };
       localStorage.setItem('privacy', level);
     },
-    setPushNotif: (settings, { payload: { messages } }) => {
+    setPushNotif: (
+      settings,
+      { payload: { messages } }: { payload: { messages: boolean } },
+    ) => {
       // Todo: Send updated notification settings to server.
 
       if (messages) setupPush();

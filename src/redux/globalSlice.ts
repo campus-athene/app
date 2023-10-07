@@ -7,7 +7,7 @@ const globalSlice = createSlice({
     statusBarHeight: null as number | null,
   },
   reducers: {
-    setStatusBarHeight: (state, { payload }) => {
+    setStatusBarHeight: (state, { payload }: { payload: number }) => {
       state.statusBarHeight = payload;
     },
   },
