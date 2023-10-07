@@ -1,22 +1,27 @@
 import { Badge } from '@capawesome/capacitor-badge';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { log } from '../app/errorReporting';
 import { useUnreadMessagesCount } from '../features/messages/messageModel';
-import { useSyncSettings } from '../features/settings/settingsSlice';
+import {
+  selectPushEnabled,
+  useSyncSettings,
+} from '../features/settings/settingsSlice';
 
 export const UpdateEffect = () => {
   useSyncSettings();
 
   // Keep unread messages badge up to date
+  const pushEnabled = useSelector(selectPushEnabled('messages'));
   const unreadMessages = useUnreadMessagesCount().data;
   useEffect(() => {
-    if (unreadMessages !== undefined)
+    if (pushEnabled && unreadMessages !== undefined)
       try {
         Badge.set({ count: unreadMessages });
       } catch (e) {
         log('warning', 'Failed to set badge count', e);
       }
-  }, [unreadMessages]);
+  }, [pushEnabled, unreadMessages]);
 
   return null;
 };
