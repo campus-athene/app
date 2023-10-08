@@ -11,15 +11,16 @@ const CampusNetLoginTeaser = (props: { title: string }) => {
   }, [setDialogOpen]);
 
   return (
-    <PageFrame
-      title={props.title}
-      className="grid items-center justify-items-center"
-    >
-      <div className="w-[70%] text-center">
-        <p className="mb-4">
-          Verbinde Campus mit TUCaN um diesen Inhalt anzuzeigen.
-        </p>
-        <Button onClick={() => setDialogOpen(true)}>Verbinden</Button>
+    <PageFrame title={props.title}>
+      <div className="grid h-full items-center justify-items-center">
+        <div className="w-[70%] text-center">
+          <p className="mb-4">
+            Verbinde Campus mit TUCaN, um
+            <br />
+            diesen Inhalt anzuzeigen.
+          </p>
+          <Button onClick={() => setDialogOpen(true)}>Verbinden</Button>
+        </div>
       </div>
       <CampusNetLoginModal
         open={dialogOpen}
