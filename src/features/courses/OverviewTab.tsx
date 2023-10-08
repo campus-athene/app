@@ -76,19 +76,6 @@ const CourseDetails = (params: { course: CourseMobile | CourseOffer }) => {
           <i>Fehler</i>
         )}
       </InfoBlock>
-      <InfoBlock title="Credits">
-        {props.data ? (
-          props.data.credits === 0 ? (
-            'keine'
-          ) : (
-            props.data.credits
-          )
-        ) : props.isLoading ? (
-          <Skeleton />
-        ) : (
-          <i>Fehler</i>
-        )}
-      </InfoBlock>
       <InfoBlock title="Wochenstunden">
         {props.data ? (
           props.data.hoursPerWeek
