@@ -61,14 +61,6 @@ const MapViewPage = () => {
 
   const contentRef = useRef<HTMLIonContentElement>(null);
 
-  useEffect(() => {
-    if (!['android', 'ios'].includes(Capacitor.getPlatform())) return;
-    const promise = StatusBar.setStyle({ style: Style.Light });
-    return () => {
-      promise.then(() => StatusBar.setStyle({ style: Style.Dark }));
-    };
-  }, []);
-
   const { map: mapArg } = useParams<{ map: string }>();
   const map = getViewData(mapArg);
   const history = useHistory();
