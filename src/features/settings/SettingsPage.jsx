@@ -159,14 +159,13 @@ const SettingsPage = () => {
         <Setting checked={!pushMessages} onClick={setMessagePushHandler(false)}>
           Deaktiviert
         </Setting>
-        <Header>Privatsphäre</Header>
+        <Header>Fehlerberichte</Header>
         <Setting
           checked={privacy === 'complete'}
           description={
             <>
-              Unterstütze uns bei der Fehlersuche. Läuft was schief, werden
-              Fehlerberichte automatisch gesendet. Zusätzlich dürfen
-              Nutzungsstatistiken erhoben werden.
+              Helfe uns, Campus noch besser zu machen. Deine Daten dürfen
+              Fehlerbehebung verwendet werden.
             </>
           }
           onClick={setPrivacyHandler('complete')}
@@ -175,7 +174,9 @@ const SettingsPage = () => {
         </Setting>
         <Setting
           checked={privacy === 'balanced'}
-          description={<>Fehlerbericht werden nur anonymisiert gesammelt.</>}
+          description={
+            <>In Fehlerberichten wird besonderes auf Anonymisierung geachtet.</>
+          }
           onClick={setPrivacyHandler('balanced')}
         >
           Ausgewogen

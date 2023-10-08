@@ -16,9 +16,11 @@ const PrivacyPage = () => {
       <p>
         Deine Privatsphäre ist uns
         <br />
-        wichtig. Wähle selbst, welche Daten
+        wichtig. Wähle selbst, welche
         <br />
-        Du mit uns teilen möchtest.
+        Daten wir zur Fehlerbehebung
+        <br />
+        verwenden dürfen.
       </p>
       <div className="mx-auto max-w-xs text-left">
         <Radio
@@ -29,9 +31,9 @@ const PrivacyPage = () => {
         >
           Helfe uns, Campus noch besser zu
           <br />
-          machen, indem du uns erlaubst,
+          machen. Deine Daten dürfen zur
           <br />
-          Nutzungsstatistiken zu sammeln.
+          Fehlerbehebung verwendet werden.
         </Radio>
         <Radio
           checked={selected === 'balanced'}
@@ -39,10 +41,9 @@ const PrivacyPage = () => {
           label="Ausgewogen"
           onChange={(e) => e.target.checked && setSelected('balanced')}
         >
-          Anonymisierte Fehlerberichte werden
+          In Fehlerberichten wird besonderes
           <br />
-          automatisch gesendet.
-          <br />
+          auf Anonymisierung geachtet.
         </Radio>
         <Radio
           checked={selected === 'minimal'}

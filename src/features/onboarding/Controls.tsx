@@ -45,8 +45,8 @@ export const Frame = (props: {
       }}
     >
       <div
-        className="mx-3 flex max-w-xs flex-col self-center text-center text-chalk"
-        style={{ height: '100vh', maxHeight: '32rem' }}
+        className="mx-3 flex h-full max-w-xs flex-col self-center text-center text-chalk"
+        style={{ maxHeight: '32rem' }}
       >
         {props.title && <div className="text-2xl">{props.title}</div>}
         <div className="flex flex-grow flex-col justify-between">
