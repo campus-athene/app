@@ -52,13 +52,13 @@ const NewsWidget = () => {
           <div className="line-clamp-5">
             <span className="font-semibold">{a.title}</span>
             <br />
-            <span className="text-neutral-600">
-              {a.source === 'asta' ? (
-                <Sanitize>{a.description}</Sanitize>
-              ) : (
-                a.description
-              )}
-            </span>
+            {a.source === 'asta' ? (
+              <Sanitize as="span" className="text-neutral-600">
+                {a.description}
+              </Sanitize>
+            ) : (
+              <span className="text-neutral-600">{a.description}</span>
+            )}
           </div>
         </div>
       ))}
