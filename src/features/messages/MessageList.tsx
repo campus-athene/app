@@ -1,7 +1,6 @@
 import { utc } from 'moment-timezone';
-import { useState } from 'react';
+import { MouseEvent } from 'react';
 import { TucanLogo } from '../../components/Logo';
-import MessageDialog from './MessageDialog';
 import { Message } from './messageModel';
 import moodleIcon from './moodle.svg';
 import Sanitize from './Sanitize';
@@ -11,9 +10,11 @@ const MessageList = (props: {
   messages: Message[];
   style?: React.CSSProperties;
   unreadIndicators?: boolean;
+  onMessageClick?: (
+    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+    message: Message,
+  ) => void;
 }) => {
-  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-
   return (
     <div className="divide-y" style={props.style}>
       {props.messages
@@ -22,7 +23,7 @@ const MessageList = (props: {
           <div
             className="px-4 py-3"
             key={id}
-            onClick={() => setSelectedMessage(m)}
+            onClick={(e) => props.onMessageClick?.(e, m)}
             style={props.itemStyle}
           >
             <div className="flex items-baseline text-sm">
@@ -58,10 +59,6 @@ const MessageList = (props: {
             </Sanitize>
           </div>
         ))}
-      <MessageDialog
-        message={selectedMessage}
-        onClose={() => setSelectedMessage(null)}
-      />
     </div>
   );
 };

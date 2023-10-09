@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { ContextMenuItem } from '../../components/ContextMenu';
 import PageFrame from '../../components/PageFrame';
 import { UserNotLoggedInError } from '../../provider/camusnet';
 import CampusNetLoginTeaser from '../auth/CampusNetLoginTeaser';
+import MessageDialog from './MessageDialog';
 import MessageList from './MessageList';
-import { useMarkAllMessagesRead, useMessages } from './messageModel';
+import { Message, useMarkAllMessagesRead, useMessages } from './messageModel';
 
 // Must start with a capital letter as it is a React component.
 const ContextMenu = () => {
@@ -19,6 +21,8 @@ const ContextMenu = () => {
 };
 
 const MessagesPage = () => {
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+
   const { data, error, isError, isLoading } = useMessages();
 
   if (error instanceof UserNotLoggedInError)
@@ -33,7 +37,14 @@ const MessagesPage = () => {
         isOffline: isError,
       }}
     >
-      <MessageList messages={data || []} />
+      <MessageList
+        messages={data || []}
+        onMessageClick={(_e, message) => setSelectedMessage(message)}
+      />
+      <MessageDialog
+        message={selectedMessage}
+        onClose={() => setSelectedMessage(null)}
+      />
     </PageFrame>
   );
 };
