@@ -98,17 +98,21 @@ export const useMenuItems = ({
 }: {
   canteenId: '1' | '2';
   days: number;
-}) =>
-  useQuery<{ menuItems: MenuItem[] }>({
-    queryKey: ['canteen', 'menuItems', canteenId],
+}) => {
+  const minDate = new Date().toISOString().substring(0, 10);
+  const maxDate = new Date(Date.now() + (days - 1) * 24 * 60 * 60 * 1000)
+    .toISOString()
+    .substring(0, 10);
+
+  return useQuery<{ menuItems: MenuItem[] }>({
+    queryKey: ['canteen', 'menuItems', canteenId, minDate, maxDate],
     queryFn: () =>
       client.request(menuItemsQuery, {
-        minDate: new Date().toISOString().substring(0, 10),
-        maxDate: new Date(Date.now() + (days - 1) * 24 * 60 * 60 * 1000)
-          .toISOString()
-          .substring(0, 10),
+        minDate,
+        maxDate,
         status: 'STUDENT',
         lang: 'DE',
         canteenId,
       }),
   });
+};
