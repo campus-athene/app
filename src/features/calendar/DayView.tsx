@@ -19,7 +19,10 @@ const DayView = (props: {
   /** Returns amount of milliseconds parsed since start of day in German timezone. */
   const getTimeOfDay = (date: MomentInput) => {
     const m = moment(date).tz('Europe/Berlin');
-    return m.hours() * 60 * 60 * 1000;
+    return (
+      ((m.hours() * 60 + m.minutes()) * 60 + m.seconds()) * 1000 +
+      m.milliseconds()
+    );
   };
 
   const firstAppointmentOffset =
