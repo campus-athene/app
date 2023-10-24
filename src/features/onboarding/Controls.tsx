@@ -38,7 +38,7 @@ export const Frame = (props: {
 }) => {
   return (
     <div
-      className="flex h-screen flex-col justify-center bg-theme"
+      className="flex h-screen flex-col justify-center overflow-scroll bg-theme"
       style={{
         paddingTop: 'calc(2rem + env(safe-area-inset-top))',
         paddingBottom: 'calc(2rem + env(safe-area-inset-bottom))',
