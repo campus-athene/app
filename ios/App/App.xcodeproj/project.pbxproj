@@ -353,7 +353,7 @@
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.9.2;
+				MARKETING_VERSION = 2.9.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DDEBUG\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.oliverrm.campus.debug;
 				PRODUCT_DISPLAY_NAME = Debug;
@@ -375,7 +375,7 @@
 				INFOPLIST_FILE = App/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 2.9.2;
+				MARKETING_VERSION = 2.9.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.oliverrm.campus;
 				PRODUCT_DISPLAY_NAME = Campus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
